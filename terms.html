@@ -4,41 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Terms of Service - LuxPDF</title>
-    <meta name="description" content="Review the Terms of Service for LuxPDF. This page outlines the rules and guidelines for using our free online PDF tools and services.">
-    <link rel="stylesheet" href="styles.css">
+    <title>Terms of Service - ZyncPDF</title>
+    <link rel="stylesheet" href="modern-styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    
-    <!-- Favicon and App Icons -->
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" href="/logo.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="/logo.png">
     <link rel="manifest" href="/site.webmanifest">
-    
-    <!-- JSZip Library for ZIP functionality -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    
- 
-</head>
+    <script src="theme-switcher.js" defer></script>
 
 <body>
-    <header class="header">
-  <div class="container">
-    <a href="index.html" class="logo-link" aria-label="ZyncPDF Home">
-      <div class="logo">
-        <img src="logo.png" alt="ZyncPDF Logo" class="logo-img">
-        <span class="logo-text">ZyncPDF</span>
-      </div>
-    </a>
+     <header class="header">
+   <div class="container">
+     <a href="index.html" class="logo-link" aria-label="ZyncPDF Home">
+       <div class="logo">
+         <img src="logo.png" alt="ZyncPDF Logo" class="logo-img">
+         <span class="logo-text">ZyncPDF</span>
+       </div>
+     </a>
             <nav class="nav">
-                <a href="/#tools" class="nav-link">Tools</a>
-                <a href="support.html" class="nav-link">Support Us</a>
-                <a href="index.html#about" class="nav-link">About</a>
-                <a href="index.html#comparison" class="nav-link">Comparison</a>
-                <a href="index.html#faq" class="nav-link">FAQ</a>
+                <a href="index.html#tools" class="nav-link">Tools</a>
+                <a href="index.html#features" class="nav-link">Features</a>
+                <a href="support.html" class="nav-link">Support</a>
+                <a href="donate.html" class="nav-link" style="color: var(--support-us-color); font-weight: 700;">Donate</a>
             </nav>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-sun sun-icon"></i>
+                <i class="fas fa-moon moon-icon"></i>
+            </button>
         </div>
     </header>
 
@@ -68,7 +61,7 @@
     <p>You agree not to use the service for any illegal, harmful, or unauthorized purpose. You will not process unlawful or offensive content, nor attempt to disrupt or overload the Service (including automated access such as “bots”).</p>
 
     <h3>7. Third-Party Services</h3>
-    <p>ZyncPDF may use third-party services for analytics or monetization (e.g., Buy Me a Coffee, Plausible.io, Google Ads). These services are governed by their own terms and policies. ZyncPDF is not responsible for their content or practices.</p>
+    <p>ZyncPDF may use third-party services for analytics or monetization (e.g., GitHub Sponsors, Plausible.io, Google Ads). These services are governed by their own terms and policies. ZyncPDF is not responsible for their content or practices.</p>
 
     <h3>8. Disclaimers & Limitation of Liability</h3>
     <p>The Service is provided “as is” and “as available.” You use ZyncPDF at your own risk. We disclaim all warranties, express or implied, related to the use of the Service.</p>
@@ -134,26 +127,32 @@
 
 
 <!-- Client-Side Visit Counter -->
-<script>
-  // Use localStorage as a simple static counter for demo/local use
-  const counterKey = "ZyncPDF-visit-count";
-  let visitCount = localStorage.getItem(counterKey);
-  if (!visitCount) {
-    visitCount = 1;
-  } else {
-    visitCount = parseInt(visitCount) + 1;
-  }
-  localStorage.setItem(counterKey, visitCount);
-  document.getElementById("visit-count").textContent = visitCount.toLocaleString();
-</script>
+   <script>
+   // Use localStorage as a simple static counter for demo/local use
+   const counterKey = "ZyncPDF-visit-count";
+   let visitCount = localStorage.getItem(counterKey);
+   if (!visitCount) {
+     visitCount = 1;
+   } else {
+     visitCount = parseInt(visitCount) + 1;
+   }
+   localStorage.setItem(counterKey, visitCount);
+   document.getElementById("visit-count").textContent = visitCount.toLocaleString();
+ </script>
+
+ <script>
+     // Theme Toggle
+     const themeToggle = document.getElementById('theme-toggle');
+     if (themeToggle) {
+         themeToggle.addEventListener('click', () => {
+             window.themeManager.toggle();
+         });
+     }
+ </script>
+
 </body>
 
 </html>
 
 
-<!-- BuyMeACoffee Widget -->
-<script data-name='BMC-Widget' data-cfasync='false' src='https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js'
-  data-id='ZyncPDF' data-description='Support me on Buy me a coffee!'
-  data-message='Any Donation Would Be Greatly Appreciated! ?'
-  data-color='#f77053' data-position='Right' data-x_margin='18' data-y_margin='18'>
-</script>
+

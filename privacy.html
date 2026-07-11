@@ -4,42 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Privacy Policy - LuxPDF</title>
-    <meta name="description" content="Read the privacy policy for LuxPDF. Learn how we protect your data and respect your privacy while you use our free online PDF tools.">
-    <link rel="stylesheet" href="styles.css">
+    <title>Privacy Policy - ZyncPDF</title>
+    <link rel="stylesheet" href="modern-styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    
-    <!-- Favicon and App Icons -->
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" href="/logo.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="/logo.png">
     <link rel="manifest" href="/site.webmanifest">
-    
-    <!-- JSZip Library for ZIP functionality -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    
- 
-</head>
+    <script src="theme-switcher.js" defer></script>
 
 <body>
-    <header class="header">
-  <div class="container">
-    <a href="index.html" class="logo-link" aria-label="ZyncPDF Home">
-      <div class="logo">
-        <img src="logo.png" alt="ZyncPDF Logo" class="logo-img">
-        <span class="logo-text">ZyncPDF</span>
-      </div>
-    </a>
+     <header class="header">
+   <div class="container">
+     <a href="index.html" class="logo-link" aria-label="ZyncPDF Home">
+       <div class="logo">
+         <img src="logo.png" alt="ZyncPDF Logo" class="logo-img">
+         <span class="logo-text">ZyncPDF</span>
+       </div>
+     </a>
             <nav class="nav">
-                <a href="/#tools" class="nav-link">Tools</a>
-                <a href="support.html" class="nav-link">Support Us</a>
-                <a href="index.html#about" class="nav-link">About</a>
-                <a href="index.html#comparison" class="nav-link">Comparison</a>
-                <a href="index.html#faq" class="nav-link">FAQ</a>
-                <a href="terms.html">Terms of Service</a>
+                <a href="index.html#tools" class="nav-link">Tools</a>
+                <a href="index.html#features" class="nav-link">Features</a>
+                <a href="donate.html" class="nav-link">Support</a>
             </nav>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-sun sun-icon"></i>
+                <i class="fas fa-moon moon-icon"></i>
+            </button>
         </div>
     </header>
 
@@ -63,7 +54,7 @@
                         <li><strong>CDNs (infrastructure & delivery):</strong> Cloudflare (cdnjs.cloudflare.com), jsDelivr (cdn.jsdelivr.net), and UNPKG (unpkg.com) to serve JavaScript/CSS libraries. <em>Legal basis:</em> Legitimate interests (GDPR Art. 6(1)(f)).</li>
                         <li><strong>Google Fonts:</strong> To load the Inter webfont for consistent typography. <em>Legal basis:</em> Legitimate interests (GDPR Art. 6(1)(f)).</li>
                         <li><strong>Plausible Analytics:</strong> To measure site usage without cookies or persistent identifiers. EU-hosted. <em>Legal basis:</em> Legitimate interests (GDPR Art. 6(1)(f)).</li>
-                        <li><strong>Buy Me a Coffee:</strong> Optional donations/sponsorships. Processes necessary payment data. <em>Legal basis:</em> Performance of a contract (Art. 6(1)(b)) and/or legitimate interests (Art. 6(1)(f)).</li>
+                        <li><strong>GitHub Sponsors:</strong> Optional donations/sponsorships. Processes necessary payment data. <em>Legal basis:</em> Performance of a contract (Art. 6(1)(b)) and/or legitimate interests (Art. 6(1)(f)).</li>
                     </ul>
                     <p><strong>International transfers:</strong> Where data may be processed in the United States (e.g., by certain CDNs or Google Fonts), transfers rely on the provider’s EU–US Data Privacy Framework certification (if applicable) or on Standard Contractual Clauses with appropriate safeguards.</p>
 
@@ -77,13 +68,13 @@
                     <p>We use Plausible Analytics (EU‑hosted) to measure site usage without cookies or persistent identifiers. To count daily unique visits, Plausible briefly processes IP address and User‑Agent to create a rotating 24‑hour hash. The raw values aren’t stored; only aggregated statistics are retained. See Plausible’s data policy: <a href="https://plausible.io/data-policy" target="_blank" rel="noopener">plausible.io/data-policy</a>.</p>
 
                     <h3>4. Cookies and Tracking Technologies</h3>
-                    <p>ZyncPDF itself does not use cookies. Third‑party providers that we integrate (e.g., Buy Me a Coffee, Google Fonts) may use cookies or similar technologies where necessary to provide their services (e.g., load balancing, fraud prevention, payment flows). Please refer to each provider’s privacy policy for details and controls. You can also manage cookie behavior via your browser settings.</p>
+                    <p>ZyncPDF itself does not use cookies. Third‑party providers that we integrate (e.g., GitHub Sponsors, Google Fonts) may use cookies or similar technologies where necessary to provide their services (e.g., load balancing, fraud prevention, payment flows). Please refer to each provider's privacy policy for details and controls. You can also manage cookie behavior via your browser settings.</p>
                     
                     <h3>5. Do Not Track (DNT) Signals</h3>
                     <p>ZyncPDF does not currently respond to Do Not Track (DNT) signals from browsers. However, we are committed to your privacy and strive to limit tracking by avoiding unnecessary data collection wherever possible.</p>
 
                     <h3>6. Third-Party Links</h3>
-                    <p>Our site may contain links to third-party websites, including Buy Me a Coffee. We are not responsible for the content or privacy practices of these external sites. We encourage you to review their privacy policies before providing any personal information.</p>
+                    <p>Our site may contain links to third-party websites, including GitHub Sponsors. We are not responsible for the content or privacy practices of these external sites. We encourage you to review their privacy policies before providing any personal information.</p>
 
                     <h3>7. Children's Privacy</h3>
                     <p>In compliance with the Children’s Online Privacy Protection Act (COPPA), we do not knowingly collect personal information from children under the age of 13. If we learn that we have inadvertently collected such information, we will take steps to delete it.</p>
@@ -145,27 +136,32 @@
     </div>
   </div>
 </footer>
-    <!-- Client-Side Visit Counter -->
-<script>
-  // Use localStorage as a simple static counter for demo/local use
-  const counterKey = "ZyncPDF-visit-count";
-  let visitCount = localStorage.getItem(counterKey);
-  if (!visitCount) {
-    visitCount = 1;
-  } else {
-    visitCount = parseInt(visitCount) + 1;
-  }
-  localStorage.setItem(counterKey, visitCount);
-  document.getElementById("visit-count").textContent = visitCount.toLocaleString();
-</script>
+     <script>
+   // Use localStorage as a simple static counter for demo/local use
+   const counterKey = "ZyncPDF-visit-count";
+   let visitCount = localStorage.getItem(counterKey);
+   if (!visitCount) {
+     visitCount = 1;
+   } else {
+     visitCount = parseInt(visitCount) + 1;
+   }
+   localStorage.setItem(counterKey, visitCount);
+   document.getElementById("visit-count").textContent = visitCount.toLocaleString();
+ </script>
+
+ <script>
+     // Theme Toggle
+     const themeToggle = document.getElementById('theme-toggle');
+     if (themeToggle) {
+         themeToggle.addEventListener('click', () => {
+             window.themeManager.toggle();
+         });
+     }
+ </script>
+
 </body>
 
 </html>
 
 
-<!-- BuyMeACoffee Widget -->
-<script data-name='BMC-Widget' data-cfasync='false' src='https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js'
-  data-id='ZyncPDF' data-description='Support me on Buy me a coffee!'
-  data-message='Any Donation Would Be Greatly Appreciated! ?'
-  data-color='#f77053' data-position='Right' data-x_margin='18' data-y_margin='18'>
-</script>
+

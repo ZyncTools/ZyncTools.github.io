@@ -9,12 +9,12 @@
     <meta name="robots" content="index, follow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Merge PDF - Free PDF Merger & Combiner | ZyncPDF</title>
-    <link rel="stylesheet" href="styles.css?v=1.1">
+    <link rel="stylesheet" href="modern-styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" href="/logo.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="/logo.png">
-    <style>
+    <script src="theme-switcher.js" defer></script>
         :root {
             --primary: #4f46e5;
             --primary-dark: #4338ca;
@@ -410,7 +410,7 @@
         }
         
         .donate-btn {
-            background: linear-gradient(135deg, #f77053, #f55b3a);
+            background: linear-gradient(135deg, #1f6feb, #1b5fe0);
             color: white;
             border: none;
             padding: 10px 24px;
@@ -422,6 +422,7 @@
         
         .donate-btn:hover {
             transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
         }
         
         .close-popup {
@@ -475,22 +476,26 @@
 </head>
 
 <body>
-    <header class="header">
-        <div class="container">
-            <a href="index.html" class="logo-link" style="text-decoration: none;">
-                <div class="logo">
-                    <img src="logo.png" alt="ZyncPDF Logo" class="logo-img">
-                    <span class="logo-text">ZyncPDF</span>
-                </div>
-            </a>
-            <nav class="nav">
-                <a href="/#tools" class="nav-link">Tools</a>
-                <a href="support.html" class="nav-link">Support Us</a>
-                <a href="/#about" class="nav-link">About</a>
-                <a href="/#faq" class="nav-link">FAQ</a>
-            </nav>
-        </div>
-    </header>
+     <header class="header">
+         <div class="container">
+             <a href="index.html" class="logo-link" style="text-decoration: none;">
+                 <div class="logo">
+                     <img src="logo.png" alt="ZyncPDF Logo" class="logo-img">
+                     <span class="logo-text">ZyncPDF</span>
+                 </div>
+             </a>
+             <nav class="nav">
+                 <a href="index.html#tools" class="nav-link">Tools</a>
+                 <a href="donate.html" class="nav-link">Support Us</a>
+                 <a href="index.html#features" class="nav-link">Features</a>
+                 <a href="index.html#faq" class="nav-link">FAQ</a>
+             </nav>
+             <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                 <i class="fas fa-sun sun-icon"></i>
+                 <i class="fas fa-moon moon-icon"></i>
+             </button>
+         </div>
+     </header>
 
     <main class="main">
         <section class="tools-section">
@@ -649,11 +654,11 @@
 
     <div id="donation-popup" class="donation-popup">
         <div class="donation-popup-content">
-            <i class="fas fa-heart" style="font-size: 36px; color: #f77053; margin-bottom: 12px;"></i>
-            <h4>Enjoying ZyncPDF? ☕</h4>
-            <p>"We keep this tool free and private for everyone! If it helped you today, consider buying us a coffee to fuel our development."</p>
+            <i class="fas fa-heart" style="font-size: 36px; color: #1f6feb; margin-bottom: 12px;"></i>
+            <h4>Support ZyncPDF ❤️</h4>
+            <p>"We keep this tool free and private for everyone! If it helped you today, consider sponsoring us on GitHub to fuel our development."</p>
             <div class="donation-buttons">
-                <button class="donate-btn" id="popup-donate-btn"><i class="fas fa-coffee"></i> Buy me a coffee</button>
+                <button class="donate-btn" id="popup-donate-btn"><i class="fab fa-github"></i> Support on GitHub</button>
                 <button class="close-popup" id="close-popup-btn">Maybe later</button>
             </div>
         </div>
@@ -864,7 +869,7 @@
                 const close = () => popup.classList.remove('show');
                 document.getElementById('close-popup-btn').onclick = close;
                 document.getElementById('popup-donate-btn').onclick = () => {
-                    window.open('https://www.buymeacoffee.com/ZyncPDF', '_blank');
+                    window.open('https://github.com/sponsors/alanjollyc', '_blank');
                     close();
                 };
                 setTimeout(() => { if(popup.classList.contains('show')) setTimeout(() => popup.classList.remove('show'), 7000); }, 4000);
@@ -880,10 +885,19 @@
                 const answer = item.querySelector('.faq-answer');
                 answer.style.display = item.classList.contains('active') ? 'block' : 'none';
             });
-            const answer = question.parentElement.querySelector('.faq-answer');
-            answer.style.display = 'none';
-        });
-    </script>
-    <script data-name='BMC-Widget' data-cfasync='false' src='https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js' data-id='ZyncPDF' data-description='Support me on Buy me a coffee!' data-message='Any Donation Would Be Greatly Appreciated! ☕' data-color='#f77053' data-position='Right' data-x_margin='18' data-y_margin='18'></script>
+             const answer = question.parentElement.querySelector('.faq-answer');
+             answer.style.display = 'none';
+         });
+
+         // Theme Toggle
+         const themeToggle = document.getElementById('theme-toggle');
+         if (themeToggle) {
+             themeToggle.addEventListener('click', () => {
+                 window.themeManager.toggle();
+             });
+         }
+     </script>
+
+
 </body>
 </html>

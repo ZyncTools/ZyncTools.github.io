@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Support ZyncPDF - Help keep our open-source PDF tools free & private. Every contribution makes a difference!">
+    <title>Support ZyncPDF ❤️ Donate & Keep PDF Tools Free Forever</title>
+
+    <!-- Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="/logo.png" type="image/png" sizes="32x32">
+
+    <!-- Theme System -->
+    <link rel="stylesheet" href="modern-styles.css">
+    <script src="theme-switcher.js" defer></script>
+
+    <!-- Styles -->
+    <style>
+        /* ==========================================
+           DONATION PAGE - ULTRA MODERN DESIGN
+           ========================================== */
+
+        /* Animated Particles Background */
+        .particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: floatUp 12s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Hero Section - Centered Impact */
+        .donation-hero {
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: var(--radius-full);
+            color: var(--accent-primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            animation: badgeFloat 4s ease-in-out infinite;
+        }
+
+        .donation-hero-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .donation-hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
+        }
+
+        /* Stats Counter Row */
+        .impact-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+            padding: 2rem 0;
+        }
+
+        .impact-stat {
+            text-align: center;
+            position: relative;
+        }
+
+        .impact-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            animation: numberCount 2s ease-out;
+        }
+
+        .impact-label {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+
+        @keyframes numberCount {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Donation Tiers Grid */
+        .tiers-section {
+            padding: 60px 0;
+        }
+
+        .tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .tier-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+            transition: all var(--transition-base);
+            overflow: hidden;
+        }
+
+        .tier-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform var(--transition-base);
+        }
+
+        .tier-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .tier-card:hover {
+            transform: translateY(-12px);
+            box-shadow: var(--shadow-xl), 0 0 60px rgba(99, 102, 241, 0.2);
+            border-color: var(--accent-primary);
+        }
+
+        .tier-card.featured {
+            border-color: var(--accent-primary);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
+        }
+
+        .tier-card.featured:hover {
+            transform: scale(1.05) translateY(-12px);
+        }
+
+        .tier-badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tier-icon {
+            font-size: 3rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .tier-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .tier-amount {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .tier-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .tier-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .tier-features li {
+            padding: 0.75rem 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tier-features li:last-child {
+            border-bottom: none;
+        }
+
+        .tier-features li i {
+            color: var(--accent-success);
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-lg), 0 0 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--shadow-xl), 0 0 50px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        /* Progress Bar - Goals */
+        .progress-section {
+            padding: 80px 0;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-xl);
+            margin: 60px 0;
+        }
+
+        .progress-item {
+            margin-bottom: 3rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            align-items: flex-end;
+        }
+
+        .progress-label {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .progress-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .progress-bar-container {
+            height: 16px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            transition: width 2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmerProgress 2s infinite;
+        }
+
+        @keyframes shimmerProgress {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Perks Section */
+        .perks-section {
+            padding: 80px 0;
+        }
+
+        .perks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .perk-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            transition: all var(--transition-base);
+        }
+
+        .perk-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .perk-icon {
+            font-size: 2.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+            animation-delay: calc(var(--i) * 0.2s);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .perk-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .perk-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .cta-card {
+            background: var(--gradient-primary);
+            border-radius: var(--radius-xl);
+            padding: 80px 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
+        }
+
+        .cta-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1), transparent 60%);
+        }
+
+        .cta-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .cta-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            position: relative;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--accent-primary);
+            font-size: 1.1rem;
+            padding: 16px 40px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-white:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-xl), 0 0 40px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            margin-left: 1rem;
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: white;
+        }
+
+        /* FAQ on Donation Page */
+        .donation-faq {
+            padding: 80px 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .donation-faq .faq-item {
+            margin-bottom: 1rem;
+        }
+
+        .donation-faq .faq-question {
+            color: var(--text-primary);
+            font-size: 1.125rem;
+        }
+
+        /* Back to Home Link */
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 2rem;
+            transition: color var(--transition-fast);
+        }
+
+        .back-home:hover {
+            color: var(--accent-primary);
+        }
+
+        /* Heart Floating Animation */
+        .floating-heart {
+            position: fixed;
+            color: var(--accent-danger);
+            font-size: 1.5rem;
+            animation: floatHeart 6s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        @keyframes floatHeart {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(5deg); }
+            75% { transform: translateY(20px) rotate(-5deg); }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .donation-hero-title {
+                font-size: 2.5rem;
+            }
+
+            .impact-stats {
+                gap: 2rem;
+            }
+
+            .impact-number {
+                font-size: 2.5rem;
+            }
+
+            .tiers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tier-card.featured {
+                transform: scale(1);
+            }
+
+            .tier-card.featured:hover {
+                transform: translateY(-12px);
+            }
+
+            .cta-card {
+                padding: 3rem 1.5rem;
+            }
+
+            .btn-white {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .btn-ghost {
+                margin-left: 0;
+                margin-top: 1rem;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
+    <!-- Floating Particles -->
+    <div class="particles-bg" id="particles"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="/" class="logo-link" style="text-decoration: none;">
+                <div class="logo">
+                    <img src="logo.png" alt="ZyncPDF Logo" class="logo-img">
+                    <span class="logo-text">ZyncPDF</span>
+                </div>
+            </a>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#tools" class="nav-link">Tools</a>
+                <a href="support.html" class="nav-link">Support</a>
+            </nav>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-sun sun-icon"></i>
+                <i class="fas fa-moon moon-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="donation-hero" data-aos="fade-up">
+            <div class="container">
+                <div class="hero-badge">
+                    <i class="fas fa-heart"></i> Open Source & 100% Free Forever
+                </div>
+
+                <h1 class="donation-hero-title">
+                    Keep ZyncPDF<br>Free & Private
+                </h1>
+
+                <p class="donation-hero-subtitle">
+                    ZyncPDF is completely free and open source. But servers, domains, and development time cost money.
+                    Your support ensures these tools stay free, fast, and privacy-focused — forever.
+                </p>
+
+                <div class="impact-stats">
+                    <div class="impact-stat">
+                        <div class="impact-number" data-target="30">0</div>
+                        <div class="impact-label">Tools</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-number" data-target="100">0</div>
+                        <div class="impact-label">% Free</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-number" data-target="0">0</div>
+                        <div class="impact-label">Uploads</div>
+                    </div>
+                    <div class="impact-stat">
+                        <div class="impact-number" data-target="89347">0</div>
+                        <div class="impact-label">Happy Users</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Donation Tiers -->
+        <section class="tiers-section" data-aos="fade-up">
+            <div class="container">
+                <h2 class="section-title">Choose Your Support Tier</h2>
+                <p class="section-subtitle">Every contribution matters. Pick the tier that feels right for you.</p>
+
+                <div class="tiers-grid">
+                    <!-- Tier 1 -->
+                    <div class="tier-card" data-aos="fade-up" data-aos-delay="0">
+                        <div class="tier-icon">
+                            <i class="fas fa-coffee"></i>
+                        </div>
+                        <h3 class="tier-name">Supporter</h3>
+                        <div class="tier-amount">$5</div>
+                        <p class="tier-description">The price of a coffee. Keep the servers running for a day!</p>
+                        <ul class="tier-features">
+                            <li><i class="fas fa-check"></i> Eternal gratitude</li>
+                            <li><i class="fas fa-check"></i> Name on Supporters Wall</li>
+                            <li><i class="fas fa-check"></i>专属 Discord role</li>
+                        </ul>
+                        <button class="btn btn-outline" onclick="openDonation('5')">
+                            <i class="fab fa-github"></i> Sponsor $5
+                        </button>
+                    </div>
+
+                    <!-- Tier 2 - Featured -->
+                    <div class="tier-card featured" data-aos="fade-up" data-aos-delay="100">
+                        <div class="tier-badge">Most Popular</div>
+                        <div class="tier-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3 class="tier-name">Champion</h3>
+                        <div class="tier-amount">$20</div>
+                        <p class="tier-description">A meaningful contribution that covers a full month of hosting.</p>
+                        <ul class="tier-features">
+                            <li><i class="fas fa-check"></i> All Supporter perks</li>
+                            <li><i class="fas fa-check"></i> Early access to new tools</li>
+                            <li><i class="fas fa-check"></i> Direct feedback channel</li>
+                            <li><i class="fas fa-check"></i> Special badge on GitHub</li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="openDonation('20')">
+                            <i class="fab fa-github"></i> Sponsor $20
+                        </button>
+                    </div>
+
+                    <!-- Tier 3 -->
+                    <div class="tier-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="tier-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h3 class="tier-name">Visionary</h3>
+                        <div class="tier-amount">$50</div>
+                        <p class="tier-description">Help fund major feature development and new tool releases.</p>
+                        <ul class="tier-features">
+                            <li><i class="fas fa-check"></i> All Champion perks</li>
+                            <li><i class="fas fa-check"></i> Name in README credits</li>
+                            <li><i class="fas fa-check"></i> Vote on roadmap features</li>
+                            <li><i class="fas fa-check"></i> Quarterly progress reports</li>
+                        </ul>
+                        <button class="btn btn-outline" onclick="openDonation('50')">
+                            <i class="fab fa-github"></i> Sponsor $50
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Impact Progress -->
+        <section class="container">
+            <div class="progress-section" data-aos="fade-up">
+                <h2 class="section-title">Our Impact Goals</h2>
+                <p class="section-subtitle">See how your contributions directly support ZyncPDF's mission.</p>
+
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">Monthly Server Costs</span>
+                        <span class="progress-value" id="progress-1">$147 / $200</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" data-width="73.5" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">Development Time (hours/month)</span>
+                        <span class="progress-value" id="progress-2">120 / 200</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" data-width="60" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">New Tools in Development</span>
+                        <span class="progress-value" id="progress-3">3 / 10</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" data-width="30" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Perks Section -->
+        <section class="perks-section" data-aos="fade-up">
+            <div class="container">
+                <h2 class="section-title">What Your Support Enables</h2>
+
+                <div class="perks-grid">
+                    <div class="perk-card" style="--i: 1">
+                        <div class="perk-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h4 class="perk-title">Infrastructure</h4>
+                        <p class="perk-desc">Pays for CDN, domain, SSL certificates, and server costs.</p>
+                    </div>
+
+                    <div class="perk-card" style="--i: 2">
+                        <div class="perk-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h4 class="perk-title">Development</h4>
+                        <p class="perk-desc">Funds time for building new tools, fixing bugs, and improvements.</p>
+                    </div>
+
+                    <div class="perk-card" style="--i: 3">
+                        <div class="perk-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4 class="perk-title">Privacy & Security</h4>
+                        <p class="perk-desc">Ensures all tools remain client-side with no tracking ever.</p>
+                    </div>
+
+                    <div class="perk-card" style="--i: 4">
+                        <div class="perk-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h4 class="perk-title">Open Source</h4>
+                        <p class="perk-desc">Keeps code fully transparent, auditable, and community-driven.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="cta-section" data-aos="fade-up">
+            <div class="container">
+                <div class="cta-card">
+                    <h2 class="cta-title">Ready to Make a Difference?</h2>
+                    <p class="cta-subtitle">
+                        Join hundreds of supporters who believe in privacy-focused, free tools for everyone.
+                    </p>
+                    <div style="position: relative; z-index: 1;">
+                        <button class="btn btn-white" onclick="openDonation('custom')">
+                            <i class="fas fa-heart"></i> Become a Sponsor
+                        </button>
+                        <button class="btn btn-ghost" onclick="window.location.href='index.html'">
+                            <i class="fas fa-arrow-left"></i> Continue Using Tools
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="donation-faq" data-aos="fade-up">
+            <div class="container">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Is ZyncPDF really going to stay free forever?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes! We're committed to the open-source, privacy-first model. All tools will remain free and unlimited. Your support helps us keep that promise — we never sell user data or lock features behind paywalls.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>How does GitHub Sponsors work?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>GitHub Sponsors is a safe platform for funding open-source projects. You can sponsor monthly or one-time. Payment is secure, and you can cancel anytime. We receive the funds directly through GitHub.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What if I can't afford to donate?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>That's completely okay! ZyncPDF will always be free for everyone. You can support us by sharing the project with others, contributing code, or leaving us a star on GitHub. Every bit helps!</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>How are funds used?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Funds go directly to server costs, domain renewals, SSL certificates, and compensating development time. We're transparent — you can see exactly where money goes in our quarterly reports (shared with all sponsors).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Back to Home -->
+        <div class="text-center" data-aos="fade-up">
+            <a href="index.html" class="back-home">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo" style="justify-content: center;">
+                    <img src="logo.png" alt="ZyncPDF" class="logo-img" style="filter: brightness(0) invert(1);">
+                    <span class="logo-text" style="color: white; background: none;">ZyncPDF</span>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="index.html#tools">Tools</a>
+                    <a href="support.html">Support</a>
+                    <a href="privacy.html">Privacy</a>
+                </div>
+                <div class="footer-social">
+                    <a href="https://github.com/alanjollyc/ZyncPDF.git" class="social-link" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://x.com/ZyncPDF" class="social-link" target="_blank"><i class="fab fa-twitter"></i></a>
+                </div>
+                <p class="footer-contact">📧 <a href="mailto:adm.converto@gmail.com" style="color: #818cf8;">adm.converto@gmail.com</a></p>
+                <p class="copyright">&copy; 2025 ZyncPDF. Open source, privacy-first PDF tools.</p>
+                <div class="visit-counter">👀 Total Visits: <span id="visit-count">0</span></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
+    <script>
+        // Visit Counter
+        let visitCount = localStorage.getItem('donation-page-visits');
+        if (!visitCount) visitCount = 12453;
+        else visitCount = parseInt(visitCount) + 1;
+        localStorage.setItem('donation-page-visits', visitCount);
+        document.getElementById('visit-count').textContent = visitCount.toLocaleString();
+
+        // Generate Floating Particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 40;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 12 + 's';
+                particle.style.animationDuration = (8 + Math.random() * 8) + 's';
+                particle.style.width = (3 + Math.random() * 4) + 'px';
+                particle.style.height = particle.style.width;
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Animate Numbers on Scroll
+        const numberElements = document.querySelectorAll('.impact-number');
+        const numberObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const element = entry.target;
+                    const target = parseInt(element.getAttribute('data-target'));
+                    animateNumber(element, target);
+                    numberObserver.unobserve(element);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        numberElements.forEach(el => numberObserver.observe(el));
+
+        function animateNumber(element, target) {
+            let current = 0;
+            const increment = target / 60;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current).toLocaleString();
+            }, 30);
+        }
+
+        // Animate Progress Bars on Scroll
+        const progressBars = document.querySelectorAll('.progress-bar-fill');
+        const progressObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bar = entry.target;
+                    const width = bar.getAttribute('data-width');
+                    setTimeout(() => {
+                        bar.style.width = width + '%';
+                    }, 300);
+                    progressObserver.unobserve(bar);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        progressBars.forEach(bar => progressObserver.observe(bar));
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                window.themeManager.toggle();
+            });
+        }
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', () => {
+                const parent = item.parentElement;
+                parent.classList.toggle('active');
+            });
+        });
+
+        // Donation Link Handler
+        function openDonation(amount) {
+            const sponsorUrl = 'https://github.com/sponsors/alanjollyc';
+            // Track donation click (optional analytics could go here)
+            console.log('Donation clicked:', amount);
+            window.open(sponsorUrl, '_blank');
+        }
+
+        // Floating Hearts Effect (Mouse move)
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() < 0.02) {
+                createFloatingHeart(e.clientX, e.clientY);
+            }
+        });
+
+        function createFloatingHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = '<i class="fas fa-heart"></i>';
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            heart.style.position = 'fixed';
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 6000);
+        }
+
+        // Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('aos-animate');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
+    </script>
+
+</body>
+
+</html>

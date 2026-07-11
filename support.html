@@ -5,40 +5,38 @@
     <meta charset="UTF-8">
     <meta name="description" content="Support ZyncPDF and help us maintain our suite of free, private, and open-source PDF tools. Your contribution keeps our services available for everyone.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support Us - LuxPDF</title>
-    <link rel="stylesheet" href="styles.css?v=1.1">
+    <title>Support Us - ZyncPDF</title>
+    <link rel="stylesheet" href="modern-styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Favicon and App Icons -->
-    
     <link rel="icon" href="/logo.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="/logo.png">
     <link rel="manifest" href="/site.webmanifest">
-
-
-    
- 
-</head>
+    <script src="theme-switcher.js" defer></script>
 
 <body>
-    <header class="header">
-  <div class="container">
-    <a href="index.html" class="logo-link" aria-label="ZyncPDF Home">
-      <div class="logo">
-        <img src="logo.png" alt="ZyncPDF Logo" class="logo-img">
-        <span class="logo-text">ZyncPDF</span>
-      </div>
-    </a>
+     <header class="header">
+   <div class="container">
+     <a href="index.html" class="logo-link" aria-label="ZyncPDF Home">
+       <div class="logo">
+         <img src="logo.png" alt="ZyncPDF Logo" class="logo-img">
+         <span class="logo-text">ZyncPDF</span>
+       </div>
+     </a>
             <nav class="nav">
-                <a href="/#tools" class="nav-link">Tools</a>
-                <a href="/blog.html" class="nav-link">Blog</a>
-                <a href="/support.html" class="nav-link">Support Us</a>
+                <a href="index.html#tools" class="nav-link">Tools</a>
+                <a href="index.html#features" class="nav-link">Features</a>
+                <a href="donate.html" class="nav-link" style="color: var(--support-us-color); font-weight: 700;">Donate</a>
             </nav>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-sun sun-icon"></i>
+                <i class="fas fa-moon moon-icon"></i>
+            </button>
         </div>
     </header>
 <main class="main">
-  <section class="support-section">
-    <div class="container text-center">
+   <section class="support-section" data-aos="fade-up">
+     <div class="container text-center">
       <h2 class="section-title">Support ZyncPDF</h2>
       <p class="section-subtitle">
         ZyncPDF is a 100% free, open-source platform built to simplify file conversions — fast, private, and without limits. 
@@ -58,7 +56,7 @@
             Help us keep ZyncPDF ad-free, private, and accessible to everyone. Your donation directly supports 
             maintenance, new tool development, and hosting costs — no middlemen, no data selling.
           </p>
-          <a href="https://buymeacoffee.com/ZyncPDF" class="btn btn-primary">Donate Now</a>
+          <a href="https://github.com/sponsors/alanjollyc" class="btn btn-primary">Donate Now</a>
         </div>
 
         <!-- Sponsor Card -->
@@ -136,21 +134,40 @@
 </footer>
 
 
-<!-- Client-Side Visit Counter -->
-<script>
-  // Use localStorage as a simple static counter for demo/local use
-  const counterKey = "ZyncPDF-visit-count";
-  let visitCount = localStorage.getItem(counterKey);
-  if (!visitCount) {
-    visitCount = 1;
-  } else {
-    visitCount = parseInt(visitCount) + 1;
-  }
-  localStorage.setItem(counterKey, visitCount);
-  document.getElementById("visit-count").textContent = visitCount.toLocaleString();
-</script>
+    <!-- Client-Side Visit Counter -->
+    <script>
+      // Use localStorage as a simple static counter for demo/local use
+      const counterKey = "ZyncPDF-visit-count";
+      let visitCount = localStorage.getItem(counterKey);
+      if (!visitCount) {
+        visitCount = 1;
+      } else {
+        visitCount = parseInt(visitCount) + 1;
+      }
+      localStorage.setItem(counterKey, visitCount);
+      document.getElementById("visit-count").textContent = visitCount.toLocaleString();
+    </script>
 
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                window.themeManager.toggle();
+            });
+        }
 
+        // Scroll Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('aos-animate');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
+    </script>
 
     <script src="script.js?v=1.1"></script>
 </body>
@@ -158,9 +175,4 @@
 </html>
 
 
-<!-- BuyMeACoffee Widget -->
-<script data-name='BMC-Widget' data-cfasync='false' src='https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js'
-  data-id='ZyncPDF' data-description='Support me on Buy me a coffee!'
-  data-message='Any Donation Would Be Greatly Appreciated! ?'
-  data-color='#f77053' data-position='Right' data-x_margin='18' data-y_margin='18'>
-</script>
+
