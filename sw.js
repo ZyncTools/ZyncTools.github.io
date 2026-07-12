@@ -11,8 +11,7 @@ const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/logo.png',
-  '/assets/css/main.css',
-  '/assets/js/app.js',
+  '/modern-styles.css',
 ];
 
 const CACHE_STRATEGIES = {
