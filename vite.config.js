@@ -56,11 +56,11 @@ export default defineConfig({
       'Cross-Origin-Opener-Policy': 'same-origin'
     }
   },
-optimizeDeps: {
+  optimizeDeps: {
     include: ['pdf-lib', 'pdfjs-dist', 'jszip'],
     exclude: [],
     enabled: false
-},
+  },
   plugins: [
     // legacy({
     //   targets: ['defaults', 'not IE 11'],
