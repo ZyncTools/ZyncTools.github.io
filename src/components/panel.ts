@@ -777,44 +777,13 @@ export class Panel extends EventEmitter {
 
   setSelectedAnnotation(annotation: Annotation | null): void {
     this.selectedAnnotation = annotation;
-    if (this.activeTab === 'properties' || this.activeTab === 'styles') {
-      this.render();
+    this.render();
+  }
+
+  toggle(): void {
+    if (this.container) {
+      this.container.hidden = !this.container.hidden;
     }
-  }
-
-  private getAnnotationTypeLabel(type: string): string {
-    const labels: Record<string, string> = {
-      highlight: 'Highlight',
-      underline: 'Underline',
-      strikethrough: 'Strikethrough',
-      'sticky-note': 'Sticky Note',
-      'text-box': 'Text Box',
-      freehand: 'Freehand',
-      rectangle: 'Rectangle',
-      ellipse: 'Ellipse',
-      line: 'Line',
-      arrow: 'Arrow',
-      signature: 'Signature',
-      image: 'Image',
-      stamp: 'Stamp',
-    };
-    return labels[type] || type;
-  }
-
-  private hasStroke(type: string): boolean {
-    return ['freehand', 'rectangle', 'ellipse', 'line', 'arrow', 'signature'].includes(type);
-  }
-
-  private formatFileSize(bytes: number): string {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-  }
-
-  private escapeHtml(str: string): string {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
   }
 
   initialize(): Promise<void> {

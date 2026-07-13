@@ -151,6 +151,10 @@ export class StatusBar extends EventEmitter {
     }
   }
 
+  setDocument(doc: any): void {
+    this.setDocumentTitle(doc?.name || 'No document');
+  }
+
   setDocumentTitle(title: string): void {
     this.documentTitle = title;
     const titleEl = this.container?.querySelector('#status-doc-title');

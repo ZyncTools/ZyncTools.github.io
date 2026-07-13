@@ -218,7 +218,12 @@ async initialize(): Promise<void> {
 
     this.app.tabBar.activateTab(tab.id);
     this.emit('tab:activate', tab);
+    this.emit('activeDocument:change', doc);
     await this.saveWorkspaces();
+  }
+
+  setActiveDocument(doc: PDFDocument | null): void {
+    this.emit('activeDocument:change', doc);
   }
 
   getActiveTab(): DocumentTab | null {

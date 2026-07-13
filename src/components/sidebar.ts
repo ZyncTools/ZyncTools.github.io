@@ -708,6 +708,17 @@ export class Sidebar extends EventEmitter {
     return div.innerHTML;
   }
 
+  showSearch(): void {
+    this.state.activeTab = 'search';
+    this.render();
+  }
+
+  toggle(): void {
+    if (this.container) {
+      this.container.hidden = !this.container.hidden;
+    }
+  }
+
   initialize(): Promise<void> {
     return Promise.resolve();
   }

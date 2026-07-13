@@ -163,6 +163,13 @@ export class HistoryManager extends EventEmitter {
     };
   }
 
+  clear(): void {
+    const state = this.getCurrentState();
+    state.past = [];
+    state.future = [];
+    this.emit('history:change', { canUndo: false, canRedo: false });
+  }
+
   beginBatch(): void {
     this.batchMode = true;
     this.batchEntries = [];
