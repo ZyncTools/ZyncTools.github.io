@@ -424,7 +424,7 @@ this.mountPoint = mountPoint;
       );
 
       for (const file of files) {
-        await this.documents.open(file);
+        await this.documents.openDocumentFromFile(file);
       }
     });
   }

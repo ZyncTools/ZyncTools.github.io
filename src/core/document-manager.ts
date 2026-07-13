@@ -233,7 +233,7 @@ export class DocumentManager extends EventEmitter {
     await this.storage.addRecentFile({
       id: doc.id,
       name: doc.name,
-      size: doc.metadata.fileSize,
+      size: doc.metadata?.fileSize ?? 0,
       type: 'application/pdf',
       tool: 'viewer',
     });
@@ -277,6 +277,10 @@ export class DocumentManager extends EventEmitter {
   }
 
   async saveDocument(doc: PDFDocument): Promise<void> {
+    if (!doc.file) {
+      console.warn('[DocumentManager] Cannot save document: missing file', doc.id);
+      return;
+    }
     // Use pdf-lib to save with annotations
     const { PDFDocument: PDFLibDocument } = await import('pdf-lib');
     
@@ -481,7 +485,7 @@ export class DocumentManager extends EventEmitter {
 
   async insertPage(afterPage?: number): Promise<void> {
     const doc = this.getActiveDocument();
-    if (!doc) return;
+    if (!doc || !doc.file) return;
 
     const { PDFDocument: PDFLibDocument } = await import('pdf-lib');
     const arrayBuffer = await doc.file.arrayBuffer();
@@ -509,7 +513,7 @@ export class DocumentManager extends EventEmitter {
 
   async deletePage(pageNumber?: number): Promise<void> {
     const doc = this.getActiveDocument();
-    if (!doc || doc.pageCount <= 1) return;
+    if (!doc || !doc.file || doc.pageCount <= 1) return;
 
     const pageNum = pageNumber ?? this.currentPage;
     if (confirm(`Delete page ${pageNum}?`)) {
@@ -543,7 +547,7 @@ export class DocumentManager extends EventEmitter {
 
   async duplicatePage(pageNumber?: number): Promise<void> {
     const doc = this.getActiveDocument();
-    if (!doc) return;
+    if (!doc || !doc.file) return;
 
     const pageNum = pageNumber ?? this.currentPage;
     const { PDFDocument: PDFLibDocument } = await import('pdf-lib');
@@ -570,7 +574,7 @@ export class DocumentManager extends EventEmitter {
 
   async rotatePage(degrees: number): Promise<void> {
     const doc = this.getActiveDocument();
-    if (!doc) return;
+    if (!doc || !doc.file) return;
 
     const pageNum = this.currentPage;
     const { PDFDocument: PDFLibDocument } = await import('pdf-lib');
@@ -597,7 +601,7 @@ export class DocumentManager extends EventEmitter {
 
   async extractPage(pageNumber?: number): Promise<void> {
     const doc = this.getActiveDocument();
-    if (!doc) return;
+    if (!doc || !doc.file) return;
 
     const pageNum = pageNumber ?? this.currentPage;
     const { PDFDocument: PDFLibDocument } = await import('pdf-lib');
