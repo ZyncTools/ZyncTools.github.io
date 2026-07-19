@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Tool — ZyncTools</title>
-    <meta name="description" content="Privacy-first utility tool. 100% client-side. No uploads.">
+    <title id="page-title">File Viewer — ZyncTools</title>
+    <meta id="meta-description" name="description" content="Privacy-first file viewer. 100% client-side. No uploads.">
+    <meta id="meta-keywords" name="keywords" content="file viewer, online viewer">
+    <meta name="robots" content="index, follow">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%236366F1'>⚡</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,13 +18,14 @@
                 extend: {
                     fontFamily: { inter: ['Inter', 'system-ui', 'sans-serif'] },
                     colors: {
-                        slate: { 950: '#0F1115', 900: '#13151A', 850: '#1C1F26', 800: '#23262F', 700: '#2D313A' },
+                        slate: { 950: '#0B0D12', 900: '#111318', 850: '#151921', 800: '#1A1F2B', 700: '#2D313A' },
                         accent: { DEFAULT: '#6366F1', light: '#818CF8', dark: '#4F46E5' }
                     }
                 }
             }
         }
     </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <script>
         (function() {
@@ -55,7 +58,6 @@
             </a>
             <nav class="hidden md:flex items-center gap-8">
                 <a href="/#tools" class="text-sm text-gray-400 hover:text-white transition-colors">All Tools</a>
-                <a href="/#categories" class="text-sm text-gray-400 hover:text-white transition-colors">Categories</a>
                 <button id="theme-toggle" class="text-sm text-gray-400 hover:text-white transition-colors" aria-label="Toggle theme">
                     <i data-lucide="moon" class="w-4 h-4"></i>
                 </button>
@@ -69,11 +71,11 @@
             <div class="mb-8 animate-fade-in-up">
                 <div class="flex items-center gap-4 mb-2">
                     <div class="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xl">
-                        <i id="tool-icon" data-lucide="tool"></i>
+                        <i id="tool-icon" data-lucide="file-code"></i>
                     </div>
                     <div>
-                        <h1 id="tool-title" class="text-2xl md:text-3xl font-bold text-white tracking-tight">Tool Name</h1>
-                        <p id="tool-description" class="text-gray-400 mt-1">Tool description goes here.</p>
+                        <h1 id="tool-title" class="text-2xl md:text-3xl font-bold text-white tracking-tight">File Viewer</h1>
+                        <p id="tool-description" class="text-gray-400 mt-1">Upload a file to view its contents.</p>
                     </div>
                 </div>
             </div>
@@ -82,12 +84,11 @@
             <div class="workbench animate-fade-in-up stagger-1">
                 <!-- Main Stage -->
                 <div class="workbench-main">
-                    <!-- Step 1: Input -->
-                    <!-- File Upload (for file tools) -->
-                    <div id="file-input-section" class="mb-8">
-                        <div class="step-label">
-                            <span class="step-number">1</span>
-                            <span class="step-title">Upload Files</span>
+                    <!-- Step 1: Upload -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="w-6 h-6 rounded-full bg-accent/10 text-accent text-xs font-bold flex items-center justify-center border border-accent/20">1</span>
+                            <span class="text-sm font-semibold text-gray-300">Upload File</span>
                         </div>
                         <div id="drop-zone" class="drop-zone">
                             <div class="pointer-events-none">
@@ -100,54 +101,21 @@
                         <div id="file-list" class="mt-4 space-y-2"></div>
                     </div>
 
-                    <!-- Text Input (for text tools) -->
-                    <div id="text-input-section" class="mb-8 hidden">
-                        <div class="step-label">
-                            <span class="step-number">1</span>
-                            <span class="step-title">Enter Text</span>
-                        </div>
-                        <textarea id="text-input" rows="8" placeholder="Paste or type your text here..." class="w-full bg-slate-900 border border-white/10 rounded-xl p-4 text-gray-200 text-sm placeholder-gray-600 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/30 resize-vertical"></textarea>
-                    </div>
-
-                    <!-- Step 2: Settings -->
+                    <!-- Step 2: View -->
                     <div class="mb-8">
-                        <div class="step-label">
-                            <span class="step-number">2</span>
-                            <span class="step-title">Settings</span>
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="w-6 h-6 rounded-full bg-accent/10 text-accent text-xs font-bold flex items-center justify-center border border-accent/20">2</span>
+                            <span class="text-sm font-semibold text-gray-300">Viewer</span>
                         </div>
-                        <div id="tool-options" class="space-y-3">
-                            <!-- Dynamically populated -->
+                        <div id="viewer-toolbar" class="flex flex-wrap items-center gap-2 mb-3 hidden">
+                            <button id="toggle-tree-btn" class="btn-secondary text-xs py-2 px-3 hidden"><i data-lucide="git-branch" class="mr-1.5"></i>Tree View</button>
+                            <button id="format-btn" class="btn-secondary text-xs py-2 px-3 hidden"><i data-lucide="align-left" class="mr-1.5"></i>Beautify</button>
+                            <button id="minify-btn" class="btn-secondary text-xs py-2 px-3 hidden"><i data-lucide="minimize" class="mr-1.5"></i>Minify</button>
+                            <button id="copy-btn" class="btn-secondary text-xs py-2 px-3"><i data-lucide="copy" class="mr-1.5"></i>Copy</button>
+                            <button id="download-btn" class="btn-secondary text-xs py-2 px-3"><i data-lucide="download" class="mr-1.5"></i>Download</button>
                         </div>
-                    </div>
-
-                    <!-- Step 3: Process -->
-                    <div class="mb-8">
-                        <div class="step-label">
-                            <span class="step-number">3</span>
-                            <span class="step-title">Process</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-4">
-                            <button id="process-btn" class="btn-primary w-full sm:w-auto" disabled>
-                                <i data-lucide="zap" class="w-4 h-4"></i>
-                                <span id="process-btn-text">Process</span>
-                            </button>
-                            <div id="progress-container" class="w-full max-w-md hidden">
-                                <div class="progress-track">
-                                    <div id="progress-fill" class="progress-fill"></div>
-                                </div>
-                                <p id="progress-text" class="text-xs text-gray-500 text-center mt-2">0%</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Step 4: Results -->
-                    <div>
-                        <div class="step-label">
-                            <span class="step-number">4</span>
-                            <span class="step-title">Result</span>
-                        </div>
-                        <div id="results-section" class="space-y-3">
-                            <!-- Results appear here -->
+                        <div id="viewer-container" class="rounded-xl border border-white/5 bg-slate-900 overflow-hidden hidden">
+                            <div id="viewer-content" class="p-4 overflow-auto max-h-[70vh] text-sm leading-relaxed"></div>
                         </div>
                     </div>
                 </div>
@@ -184,11 +152,34 @@
         </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-docker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-ini.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-toml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-ruby.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-swift.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-r.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-matlab.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-julia.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="assets/js/registry-loader.js"></script>
     <script src="assets/js/tool-registry.js"></script>
-    <script src="assets/js/advanced-logic.js"></script>
-    <script src="assets/js/ui-components.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/seo-registry.js"></script>
+    <script src="assets/js/viewer.js"></script>
 </body>
 </html>

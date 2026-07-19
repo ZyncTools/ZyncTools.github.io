@@ -201,6 +201,57 @@ window.ZyncToolIcons = {
     'seo-dns-lookup': 'search',
     'seo-user-agent-parser': 'monitor',
 
+    // AI Image Tools
+    'background-remover': 'user-x',
+    'image-upscaler': 'up-right-and-down-left-from-center',
+    'color-palette-generator': 'swatchbook',
+    'meme-generator': 'image-plus',
+    'image-to-ascii': 'text-width',
+    'sprite-sheet-packer': 'table-cells',
+    'heic-converter': 'image',
+    'image-diff': 'not-equal',
+    'glitch-art-generator': 'bolt',
+    'color-blindness-simulator': 'eye',
+    'pixel-art-editor': 'border-all',
+    'deep-dream-lite': 'brain',
+
+    // Advanced Audio/Video
+    'audio-stem-splitter': 'music',
+    'video-to-gif': 'video',
+    'audio-visualizer': 'waveform',
+    'video-compressor': 'file-video',
+    'audio-pitch-shifter': 'gauge-high',
+    'silence-trimmer': 'volume-xmark',
+    'ringtone-maker': 'mobile-screen',
+    'video-watermarker': 'stamp',
+
+    // Data & Visualization
+    'csv-to-json': 'table',
+    'json-to-csv': 'file-csv',
+    'sql-to-json': 'database',
+    'chart-generator': 'chart-column',
+    'qr-code-generator': 'qr-code',
+    'barcode-generator': 'barcode',
+    'fake-data-generator': 'masks-theater',
+    'cron-job-builder': 'clock',
+    'regex-visualizer': 'asterisk',
+    'csv-to-json-bidirectional': 'arrows-left-right',
+    'chart-generator-advanced': 'chart-line',
+    'wifi-qr-generator': 'wifi',
+
+    // Privacy & Security
+    'password-strength-checker': 'lock',
+    'file-hash-generator': 'fingerprint',
+    'secure-note-encryptor': 'note-sticky',
+    'exif-viewer': 'circle-info',
+    'exif-remover': 'eraser',
+
+    // Fun & Creative
+    'pixel-art-editor': 'border-all',
+    'glitch-art-generator': 'bolt',
+    'deep-dream-lite': 'brain',
+    'color-blindness-simulator': 'eye',
+
     // Fallback icons by category
     'image-tools': 'image',
     'text-code-tools': 'file-code',

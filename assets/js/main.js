@@ -3,7 +3,9 @@
 
     const state = {
         toolId: '',
+        toolType: 'file',
         files: [],
+        textContent: '',
         toolConfig: null,
         modulesLoaded: new Set(),
         isProcessing: false
@@ -66,7 +68,13 @@
     function updateProcessButton() {
         const btn = $('#process-btn');
         if (!btn) return;
-        btn.disabled = state.files.length === 0 || state.isProcessing;
+        if (state.toolType === 'text') {
+            const textarea = $('#text-input');
+            const hasText = textarea && textarea.value.trim().length > 0;
+            btn.disabled = !hasText || state.isProcessing;
+        } else {
+            btn.disabled = state.files.length === 0 || state.isProcessing;
+        }
     }
 
     function addFileToList(file) {
@@ -122,20 +130,26 @@
         if (!section) return;
 
         const item = document.createElement('div');
-        item.className = 'flex items-center justify-between gap-4 p-4 rounded-xl bg-slate-900 border border-white/5 animate-fade-in-up';
+        item.className = 'flex items-start justify-between gap-4 p-4 rounded-xl bg-slate-900 border border-white/5 animate-fade-in-up';
 
-        const size = formatFileSize(result.size || result.blob?.size || 0);
+        const size = result.size || result.blob?.size || 0;
         const type = result.type || (result.blob?.type) || '';
+        const isText = !!result.text;
+        const textContent = result.text || '';
+
+        const sizeStr = size ? formatFileSize(size) : (textContent ? textContent.length + ' chars' : '');
 
         item.innerHTML = `
-            <div class="flex items-center gap-3 min-w-0">
-                <i data-lucide="${getFileIcon(type)}" class="text-accent"></i>
-                <div class="min-w-0">
+            <div class="flex items-start gap-3 min-w-0 flex-1">
+                <i data-lucide="${isText ? 'file-text' : getFileIcon(type)}" class="text-accent mt-0.5"></i>
+                <div class="min-w-0 flex-1">
                     <div class="text-sm font-medium text-white truncate">${escapeHtml(result.name)}</div>
-                    <div class="text-xs text-gray-500">${size}${type ? ' • ' + escapeHtml(type) : ''}</div>
+                    <div class="text-xs text-gray-500">${escapeHtml(sizeStr)}${type && !isText ? ' • ' + escapeHtml(type) : ''}</div>
+                    ${isText && textContent ? `<pre class="mt-2 text-xs text-gray-400 bg-slate-950/50 rounded-lg p-3 overflow-auto max-h-48 whitespace-pre-wrap break-words border border-white/5">${escapeHtml(textContent)}</pre>` : ''}
                 </div>
             </div>
             <div class="flex items-center gap-2 flex-shrink-0">
+                ${isText && textContent ? `<button class="copy-btn btn-secondary text-xs py-2 px-3" data-text="${escapeHtml(textContent)}"><i data-lucide="copy" class="mr-1.5"></i>Copy</button>` : ''}
                 ${result.url ? `<a href="${result.url}" download="${escapeHtml(result.name)}" class="btn-secondary text-xs py-2 px-3"><i data-lucide="download" class="mr-1.5"></i>Download</a>` : ''}
                 ${result.previewHtml ? `<button class="preview-btn btn-secondary text-xs py-2 px-3"><i data-lucide="eye" class="mr-1.5"></i>Preview</button>` : ''}
             </div>
@@ -143,6 +157,21 @@
 
         section.appendChild(item);
         if (window.lucide) lucide.createIcons();
+
+        const copyBtn = item.querySelector('.copy-btn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(copyBtn.dataset.text);
+                    const original = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i data-lucide="check" class="mr-1.5"></i>Copied';
+                    if (window.lucide) lucide.createIcons({ name: 'check', root: copyBtn.querySelector('i') });
+                    setTimeout(() => { copyBtn.innerHTML = original; if (window.lucide) lucide.createIcons(); }, 2000);
+                } catch (e) {
+                    showError('Failed to copy to clipboard');
+                }
+            });
+        }
     }
 
     function createPreviewModal() {
@@ -264,9 +293,23 @@
 
     async function processFiles() {
         if (state.isProcessing) return;
-        if (!state.files.length) {
-            showError('Please add files first.');
-            return;
+
+        if (state.toolType === 'text') {
+            const textarea = $('#text-input');
+            if (!textarea || !textarea.value.trim()) {
+                showError('Please enter some text first.');
+                return;
+            }
+            state.textContent = textarea.value;
+            if (!state.textContent.trim()) {
+                showError('Please enter some text first.');
+                return;
+            }
+        } else {
+            if (!state.files.length) {
+                showError('Please add files first.');
+                return;
+            }
         }
 
         state.isProcessing = true;
@@ -290,14 +333,36 @@
                 setProgress(20);
             }
 
-            const results = await toolModule.process(state.files, {
-                setStatus,
-                setProgress,
-                addResultItem,
-                showNotification,
-                showError,
-                config: state.toolConfig
-            });
+            let results;
+            if (state.toolType === 'text') {
+                results = await toolModule.process(state.textContent, {
+                    setStatus,
+                    setProgress,
+                    addResultItem,
+                    showNotification,
+                    showError,
+                    config: state.toolConfig
+                });
+            } else if (state.toolConfig && state.toolConfig.outputType === 'string' && state.files.length > 0) {
+                const fileText = await state.files[0].text();
+                results = await toolModule.process(fileText, {
+                    setStatus,
+                    setProgress,
+                    addResultItem,
+                    showNotification,
+                    showError,
+                    config: state.toolConfig
+                });
+            } else {
+                results = await toolModule.process(state.files, {
+                    setStatus,
+                    setProgress,
+                    addResultItem,
+                    showNotification,
+                    showError,
+                    config: state.toolConfig
+                });
+            }
 
             setProgress(100);
             if (!results || !results.length) {
@@ -359,6 +424,8 @@
         }
 
         state.toolConfig = toolConfig;
+        state.toolType = toolConfig.outputType === 'string' || !toolConfig.accept || !toolConfig.accept.includes('.') ? 'text' : 'file';
+
         document.title = `${toolConfig.name} — ZyncTools`;
         $('#tool-title').textContent = toolConfig.name;
         $('#tool-description').textContent = toolConfig.description;
@@ -369,11 +436,31 @@
             if (window.lucide) lucide.createIcons();
         }
 
+        const fileInputSection = $('#file-input-section');
+        const textInputSection = $('#text-input-section');
         const fileInput = $('#file-input');
-        if (fileInput && toolConfig.accept) {
-            fileInput.accept = toolConfig.accept;
+        const textInput = $('#text-input');
+        const processBtnText = $('#process-btn-text');
+
+        if (state.toolType === 'text') {
+            if (fileInputSection) fileInputSection.classList.add('hidden');
+            if (textInputSection) textInputSection.classList.remove('hidden');
+            if (fileInput) fileInput.style.display = 'none';
+            if (textInput) textInput.style.display = 'block';
+            if (processBtnText) processBtnText.textContent = 'Generate';
+            if (fileInput) fileInput.removeAttribute('accept');
+        } else {
+            if (fileInputSection) fileInputSection.classList.remove('hidden');
+            if (textInputSection) textInputSection.classList.add('hidden');
+            if (fileInput) fileInput.style.display = 'block';
+            if (textInput) textInput.style.display = 'none';
+            if (processBtnText) processBtnText.textContent = 'Process';
+            if (fileInput && toolConfig.accept) {
+                fileInput.accept = toolConfig.accept;
+            }
         }
 
+        updateProcessButton();
         buildRelatedTools();
 
         if (window.ZyncSeoTools) {
@@ -422,6 +509,14 @@
                 removeFile(name, Number(size), Number(modified));
             }
         });
+
+        const textInput = $('#text-input');
+        if (textInput) {
+            textInput.addEventListener('input', () => {
+                state.textContent = textInput.value;
+                updateProcessButton();
+            });
+        }
 
         $('#process-btn')?.addEventListener('click', processFiles);
     }

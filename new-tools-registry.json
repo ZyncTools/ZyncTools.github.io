@@ -1,0 +1,2033 @@
+{
+  "categories": [
+    {
+      "id": "ai-image-tools",
+      "name": "AI Image Tools",
+      "icon": "fa-wand-magic-sparkles",
+      "description": "Background removal, upscaling, color extraction, and AI-powered image editing."
+    },
+    {
+      "id": "advanced-av-tools",
+      "name": "Advanced Audio & Video",
+      "icon": "fa-film",
+      "description": "FFmpeg-powered audio/video processing, stem splitting, and conversion."
+    },
+    {
+      "id": "data-viz-tools",
+      "name": "Data & Visualization",
+      "icon": "fa-chart-bar",
+      "description": "Charts, QR codes, barcodes, data conversion, and visualization."
+    },
+    {
+      "id": "privacy-security-tools",
+      "name": "Privacy & Security",
+      "icon": "fa-shield-halved",
+      "description": "Password tools, file hashing, encryption, EXIF, and Wi-Fi QR."
+    },
+    {
+      "id": "fun-creative-tools",
+      "name": "Fun & Creative",
+      "icon": "fa-palette",
+      "description": "Pixel art, glitch effects, color simulation, and creative generators."
+    }
+  ],
+  "tools": [
+    {
+      "id": "background-remover",
+      "name": "Background Remover",
+      "category": "ai-image-tools",
+      "icon": "fa-user-xmark",
+      "description": "Remove image backgrounds instantly using AI. 100% client-side.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [
+        "@imgly/background-removal"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/dist/index.umd.js"
+      ],
+      "outputType": "blob",
+      "popular": true,
+      "badge": "AI",
+      "seoKeywords": [
+        "remove background from image free",
+        "AI background remover",
+        "online background removal"
+      ]
+    },
+    {
+      "id": "image-upscaler",
+      "name": "Image Upscaler",
+      "category": "ai-image-tools",
+      "icon": "fa-up-right-and-down-left-from-center",
+      "description": "Upscale images using super-resolution WASM.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [
+        "waifu2x-wasm"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/waifu2x-wasm@1.0.0/dist/waifu2x.js"
+      ],
+      "outputType": "blob",
+      "badge": "AI",
+      "seoKeywords": [
+        "image upscaler",
+        "AI image enhancement",
+        "super resolution"
+      ]
+    },
+    {
+      "id": "color-palette-generator",
+      "name": "Color Palette Generator",
+      "category": "ai-image-tools",
+      "icon": "fa-swatchbook",
+      "description": "Extract dominant colors and palettes from images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [
+        "colorthief"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/colorthief@2.4.0/dist/color-thief.umd.js"
+      ],
+      "outputType": "string",
+      "seoKeywords": [
+        "color palette generator",
+        "extract colors from image",
+        "dominant colors"
+      ]
+    },
+    {
+      "id": "meme-generator",
+      "name": "Meme Generator",
+      "category": "ai-image-tools",
+      "icon": "fa-face-laugh-squint",
+      "description": "Add top/bottom text to images with custom fonts and strokes.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "popular": true,
+      "seoKeywords": [
+        "meme generator",
+        "create memes online",
+        "meme maker"
+      ]
+    },
+    {
+      "id": "image-to-ascii",
+      "name": "Image to ASCII",
+      "category": "ai-image-tools",
+      "icon": "fa-text-width",
+      "description": "Convert photos into ASCII art text.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "image to ascii",
+        "ascii art generator",
+        "photo to text art"
+      ]
+    },
+    {
+      "id": "sprite-sheet-packer",
+      "name": "Sprite Sheet Packer",
+      "category": "ai-image-tools",
+      "icon": "fa-table-cells",
+      "description": "Combine multiple images into a single CSS sprite sheet.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "sprite sheet generator",
+        "css sprites",
+        "image packer"
+      ]
+    },
+    {
+      "id": "heic-converter",
+      "name": "HEIC to JPG/PNG",
+      "category": "ai-image-tools",
+      "icon": "fa-image",
+      "description": "Convert iPhone HEIC/HEIF images to JPG or PNG.",
+      "accept": ".heic,.heif",
+      "libraries": [
+        "heic2any"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"
+      ],
+      "outputType": "blob",
+      "popular": true,
+      "seoKeywords": [
+        "heic to jpg",
+        "heic converter",
+        "heif to png",
+        "iphone photo converter"
+      ]
+    },
+    {
+      "id": "image-diff",
+      "name": "Image Diff Checker",
+      "category": "ai-image-tools",
+      "icon": "fa-not-equal",
+      "description": "Visually highlight differences between two similar images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "image diff",
+        "compare images",
+        "find differences between images"
+      ]
+    },
+    {
+      "id": "glitch-art-generator",
+      "name": "Glitch Art Generator",
+      "category": "fun-creative-tools",
+      "icon": "fa-bolt",
+      "description": "Apply digital glitch effects to images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "badge": "New",
+      "seoKeywords": [
+        "glitch art",
+        "glitch effect",
+        "digital art generator"
+      ]
+    },
+    {
+      "id": "color-blindness-simulator",
+      "name": "Color Blindness Simulator",
+      "category": "fun-creative-tools",
+      "icon": "fa-eye",
+      "description": "See how images look to users with different vision types.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "color blindness simulator",
+        "color vision deficiency",
+        "accessibility"
+      ]
+    },
+    {
+      "id": "pixel-art-editor",
+      "name": "Pixel Art Editor",
+      "category": "fun-creative-tools",
+      "icon": "fa-border-all",
+      "description": "Draw 8-bit pixel art on a mini canvas.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "badge": "Beta",
+      "seoKeywords": [
+        "pixel art editor",
+        "8-bit drawing",
+        "pixel art maker"
+      ]
+    },
+    {
+      "id": "deep-dream-lite",
+      "name": "Deep Dream Lite",
+      "category": "ai-image-tools",
+      "icon": "fa-brain",
+      "description": "Apply style transfer filters using WASM.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "badge": "Beta",
+      "seoKeywords": [
+        "deep dream",
+        "style transfer",
+        "AI art filter"
+      ]
+    },
+    {
+      "id": "audio-stem-splitter",
+      "name": "Audio Stem Splitter",
+      "category": "advanced-av-tools",
+      "icon": "fa-music",
+      "description": "Separate vocals, drums, and bass from audio using AI.",
+      "accept": ".mp3,.wav,.ogg,.flac",
+      "libraries": [
+        "spleeter-wasm"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/spleeter-wasm@1.0.0/dist/spleeter.js"
+      ],
+      "outputType": "blob",
+      "badge": "AI",
+      "seoKeywords": [
+        "audio stem splitter",
+        "separate vocals from music",
+        "spleeter online"
+      ]
+    },
+    {
+      "id": "video-to-gif",
+      "name": "Video to GIF",
+      "category": "advanced-av-tools",
+      "icon": "fa-file-video",
+      "description": "Convert video clips to optimized animated GIFs.",
+      "accept": ".mp4,.webm,.mov",
+      "libraries": [
+        "ffmpeg"
+      ],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob",
+      "popular": true,
+      "seoKeywords": [
+        "video to gif",
+        "convert video to gif",
+        "mp4 to gif"
+      ]
+    },
+    {
+      "id": "audio-visualizer",
+      "name": "Audio Visualizer",
+      "category": "advanced-av-tools",
+      "icon": "fa-wave-square",
+      "description": "Generate waveform video from audio files.",
+      "accept": ".mp3,.wav,.ogg,.flac",
+      "libraries": [
+        "ffmpeg"
+      ],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob",
+      "seoKeywords": [
+        "audio visualizer",
+        "waveform video",
+        "music visualizer"
+      ]
+    },
+    {
+      "id": "video-compressor",
+      "name": "Video Compressor",
+      "category": "advanced-av-tools",
+      "icon": "fa-file-video",
+      "description": "Reduce video size for social media with presets.",
+      "accept": ".mp4,.webm,.mov",
+      "libraries": [
+        "ffmpeg"
+      ],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob",
+      "popular": true,
+      "seoKeywords": [
+        "video compressor",
+        "reduce video size",
+        "compress video for instagram"
+      ]
+    },
+    {
+      "id": "audio-pitch-shifter",
+      "name": "Audio Pitch Shifter",
+      "category": "advanced-av-tools",
+      "icon": "fa-gauge-high",
+      "description": "Change pitch without affecting speed (and vice versa).",
+      "accept": ".mp3,.wav,.ogg,.flac",
+      "libraries": [
+        "ffmpeg"
+      ],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob",
+      "seoKeywords": [
+        "audio pitch shifter",
+        "change pitch without speed",
+        "audio speed changer"
+      ]
+    },
+    {
+      "id": "silence-trimmer",
+      "name": "Silence Trimmer",
+      "category": "advanced-av-tools",
+      "icon": "fa-volume-xmark",
+      "description": "Automatically remove silent parts from audio.",
+      "accept": ".mp3,.wav,.ogg,.flac",
+      "libraries": [
+        "ffmpeg"
+      ],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob",
+      "seoKeywords": [
+        "silence remover",
+        "remove silence from audio",
+        "podcast editor"
+      ]
+    },
+    {
+      "id": "ringtone-maker",
+      "name": "Ringtone Maker",
+      "category": "advanced-av-tools",
+      "icon": "fa-mobile-screen",
+      "description": "Cut audio and add fade-in/out for mobile ringtones.",
+      "accept": ".mp3,.wav,.ogg,.m4a",
+      "libraries": [
+        "ffmpeg"
+      ],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob",
+      "seoKeywords": [
+        "ringtone maker",
+        "make ringtones online",
+        "audio cutter"
+      ]
+    },
+    {
+      "id": "video-watermarker",
+      "name": "Video Watermarker",
+      "category": "advanced-av-tools",
+      "icon": "fa-stamp",
+      "description": "Burn logos or text into video files.",
+      "accept": ".mp4,.webm,.mov",
+      "libraries": [
+        "ffmpeg"
+      ],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob",
+      "seoKeywords": [
+        "video watermark",
+        "add watermark to video",
+        "burn text into video"
+      ]
+    },
+    {
+      "id": "csv-to-json",
+      "name": "CSV to JSON",
+      "category": "data-viz-tools",
+      "icon": "fa-table",
+      "description": "Convert CSV files to JSON with preview.",
+      "accept": ".csv,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "popular": true,
+      "seoKeywords": [
+        "csv to json",
+        "convert csv to json",
+        "csv json converter"
+      ]
+    },
+    {
+      "id": "json-to-csv",
+      "name": "JSON to CSV",
+      "category": "data-viz-tools",
+      "icon": "fa-file-csv",
+      "description": "Convert JSON data to CSV format.",
+      "accept": ".json,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "popular": true,
+      "seoKeywords": [
+        "json to csv",
+        "convert json to csv",
+        "json csv converter"
+      ]
+    },
+    {
+      "id": "sql-to-json",
+      "name": "SQL to JSON",
+      "category": "data-viz-tools",
+      "icon": "fa-database",
+      "description": "Convert SQL query results to JSON.",
+      "accept": ".sql,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "sql to json",
+        "convert sql to json",
+        "database export"
+      ]
+    },
+    {
+      "id": "chart-generator",
+      "name": "Chart Generator",
+      "category": "data-viz-tools",
+      "icon": "fa-chart-column",
+      "description": "Generate bar, line, or pie charts from data.",
+      "accept": ".csv,.json,.txt",
+      "libraries": [
+        "chart.js"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"
+      ],
+      "outputType": "blob",
+      "badge": "New",
+      "seoKeywords": [
+        "chart generator",
+        "make charts online",
+        "data visualization"
+      ]
+    },
+    {
+      "id": "qr-code-generator",
+      "name": "QR Code Generator",
+      "category": "data-viz-tools",
+      "icon": "fa-qrcode",
+      "description": "Generate customizable QR codes with colors and logos.",
+      "accept": ".txt",
+      "libraries": [
+        "qrcode"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"
+      ],
+      "outputType": "blob",
+      "popular": true,
+      "seoKeywords": [
+        "qr code generator",
+        "create qr code",
+        "qr code maker"
+      ]
+    },
+    {
+      "id": "barcode-generator",
+      "name": "Barcode Generator",
+      "category": "data-viz-tools",
+      "icon": "fa-barcode",
+      "description": "Create UPC, EAN, Code128 barcodes.",
+      "accept": ".txt",
+      "libraries": [
+        "JsBarcode"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"
+      ],
+      "outputType": "blob",
+      "seoKeywords": [
+        "barcode generator",
+        "create barcode",
+        "upc barcode"
+      ]
+    },
+    {
+      "id": "fake-data-generator",
+      "name": "Fake Data Generator",
+      "category": "data-viz-tools",
+      "icon": "fa-masks-theater",
+      "description": "Generate realistic mock data for testing.",
+      "accept": "",
+      "libraries": [
+        "faker"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/@faker-js/faker@8.0.0/dist/faker.min.js"
+      ],
+      "outputType": "string",
+      "seoKeywords": [
+        "fake data generator",
+        "mock data",
+        "test data generator"
+      ]
+    },
+    {
+      "id": "cron-job-builder",
+      "name": "Cron Job Builder",
+      "category": "data-viz-tools",
+      "icon": "fa-clock",
+      "description": "Visual UI to build complex Cron expressions.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "popular": true,
+      "seoKeywords": [
+        "cron job builder",
+        "cron expression generator",
+        "cron schedule"
+      ]
+    },
+    {
+      "id": "regex-visualizer",
+      "name": "Regex Visualizer",
+      "category": "data-viz-tools",
+      "icon": "fa-asterisk",
+      "description": "Explain regular expressions visually.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "badge": "Beta",
+      "seoKeywords": [
+        "regex visualizer",
+        "regular expression explainer",
+        "regex tester"
+      ]
+    },
+    {
+      "id": "password-strength-checker",
+      "name": "Password Strength Checker",
+      "category": "privacy-security-tools",
+      "icon": "fa-lock",
+      "description": "Visual meter + time-to-crack estimate for passwords.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "popular": true,
+      "seoKeywords": [
+        "password strength checker",
+        "password security",
+        "how long to crack password"
+      ]
+    },
+    {
+      "id": "file-hash-generator",
+      "name": "File Hash Generator",
+      "category": "privacy-security-tools",
+      "icon": "fa-fingerprint",
+      "description": "Calculate MD5, SHA-1, SHA-256 for any file.",
+      "accept": ".txt,.bin,.pdf,.zip",
+      "libraries": [
+        "crypto-js"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"
+      ],
+      "outputType": "string",
+      "popular": true,
+      "seoKeywords": [
+        "file hash generator",
+        "calculate md5 online",
+        "sha256 checker"
+      ]
+    },
+    {
+      "id": "secure-note-encryptor",
+      "name": "Secure Note Encryptor",
+      "category": "privacy-security-tools",
+      "icon": "fa-note-sticky",
+      "description": "Encrypt text with a password using AES.",
+      "accept": ".txt",
+      "libraries": [
+        "crypto-js"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"
+      ],
+      "outputType": "string",
+      "badge": "New",
+      "seoKeywords": [
+        "encrypt text online",
+        "AES encryption",
+        "secure note"
+      ]
+    },
+    {
+      "id": "exif-viewer",
+      "name": "EXIF Data Viewer",
+      "category": "privacy-security-tools",
+      "icon": "fa-circle-info",
+      "description": "View and strip metadata from photos.",
+      "accept": ".jpg,.jpeg,.tiff,.webp",
+      "libraries": [
+        "exif-js"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/exif-js@2.3.0/exif.min.js"
+      ],
+      "outputType": "string",
+      "popular": true,
+      "seoKeywords": [
+        "exif viewer",
+        "photo metadata",
+        "exif data viewer"
+      ]
+    },
+    {
+      "id": "exif-remover",
+      "name": "EXIF Data Remover",
+      "category": "privacy-security-tools",
+      "icon": "fa-eraser",
+      "description": "Strip metadata and EXIF from images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "popular": true,
+      "seoKeywords": [
+        "exif remover",
+        "remove metadata from photos",
+        "strip exif"
+      ]
+    },
+    {
+      "id": "wifi-qr-generator",
+      "name": "Wi-Fi QR Generator",
+      "category": "data-viz-tools",
+      "icon": "fa-wifi",
+      "description": "Create QR codes for easy Wi-Fi sharing.",
+      "accept": ".txt",
+      "libraries": [
+        "qrcode"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"
+      ],
+      "outputType": "blob",
+      "badge": "New",
+      "seoKeywords": [
+        "wifi qr code",
+        "wifi qr generator",
+        "share wifi password"
+      ]
+    },
+    {
+      "id": "csv-to-json-bidirectional",
+      "name": "CSV <-> JSON Converter",
+      "category": "data-viz-tools",
+      "icon": "fa-arrows-left-right",
+      "description": "Bi-directional CSV/JSON converter with preview.",
+      "accept": ".csv,.json,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "csv to json and json to csv",
+        "csv json bidirectional"
+      ]
+    },
+    {
+      "id": "chart-generator-advanced",
+      "name": "Advanced Chart Generator",
+      "category": "data-viz-tools",
+      "icon": "fa-chart-line",
+      "description": "Generate bar, line, pie, and radar charts.",
+      "accept": ".csv,.json,.txt",
+      "libraries": [
+        "chart.js"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"
+      ],
+      "outputType": "blob",
+      "seoKeywords": [
+        "advanced chart generator",
+        "line chart maker",
+        "pie chart generator"
+      ]
+    },
+    {
+      "id": "image-enhancer",
+      "name": "Image Enhancer",
+      "category": "ai-image-tools",
+      "icon": "fa-wand-magic-sparkles",
+      "description": "Auto-enhance brightness, contrast, and colors.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "image enhancer",
+        "auto enhance photo",
+        "photo editor"
+      ]
+    },
+    {
+      "id": "noise-remover",
+      "name": "Noise Remover",
+      "category": "ai-image-tools",
+      "icon": "fa-broom",
+      "description": "Remove noise and grain from images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "noise remover",
+        "denoise image",
+        "remove grain"
+      ]
+    },
+    {
+      "id": "face-blur",
+      "name": "Face Blur",
+      "category": "ai-image-tools",
+      "icon": "fa-eye-slash",
+      "description": "Automatically detect and blur faces in images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "face blur",
+        "blur faces in photo",
+        "face anonymizer"
+      ]
+    },
+    {
+      "id": "image-frames",
+      "name": "Image Frames",
+      "category": "ai-image-tools",
+      "icon": "fa-image",
+      "description": "Add decorative frames to images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "add frame to photo",
+        "image frames",
+        "photo frame"
+      ]
+    },
+    {
+      "id": "image-rotate-batch",
+      "name": "Batch Rotate Images",
+      "category": "ai-image-tools",
+      "icon": "fa-rotate",
+      "description": "Rotate multiple images at once.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "batch rotate images",
+        "rotate multiple photos"
+      ]
+    },
+    {
+      "id": "image-flip-batch",
+      "name": "Batch Flip Images",
+      "category": "ai-image-tools",
+      "icon": "fa-arrows-left-right",
+      "description": "Flip multiple images horizontally or vertically.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "batch flip images",
+        "flip photos"
+      ]
+    },
+    {
+      "id": "image-resize-batch",
+      "name": "Batch Resize Images",
+      "category": "ai-image-tools",
+      "icon": "fa-expand",
+      "description": "Resize multiple images to same dimensions.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "batch resize images",
+        "resize multiple photos"
+      ]
+    },
+    {
+      "id": "image-convert-batch",
+      "name": "Batch Image Converter",
+      "category": "ai-image-tools",
+      "icon": "fa-exchange-alt",
+      "description": "Convert multiple images at once.",
+      "accept": ".jpg,.jpeg,.png,.webp,.avif,.heic",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "batch image converter",
+        "convert multiple images"
+      ]
+    },
+    {
+      "id": "svg-to-png-batch",
+      "name": "Batch SVG to PNG",
+      "category": "ai-image-tools",
+      "icon": "fa-image",
+      "description": "Convert multiple SVG files to PNG.",
+      "accept": ".svg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "svg to png batch",
+        "convert svg to png"
+      ]
+    },
+    {
+      "id": "image-color-replace",
+      "name": "Color Replace",
+      "category": "ai-image-tools",
+      "icon": "fa-fill-drip",
+      "description": "Replace one color with another in images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "color replace",
+        "change color in image",
+        "replace color"
+      ]
+    },
+    {
+      "id": "image-blur-background",
+      "name": "Blur Background",
+      "category": "ai-image-tools",
+      "icon": "fa-droplet",
+      "description": "Blur the background of an image.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "blur background",
+        "background blur",
+        "portrait mode"
+      ]
+    },
+    {
+      "id": "image-vignette",
+      "name": "Vignette Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-circle",
+      "description": "Add vignette effect to images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "vignette effect",
+        "add vignette",
+        "photo vignette"
+      ]
+    },
+    {
+      "id": "audio-converter-batch",
+      "name": "Batch Audio Converter",
+      "category": "advanced-av-tools",
+      "icon": "fa-music",
+      "description": "Convert multiple audio files at once.",
+      "accept": ".mp3,.wav,.ogg,.flac,.aac",
+      "libraries": [
+        "ffmpeg"
+      ],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob",
+      "seoKeywords": [
+        "batch audio converter",
+        "convert multiple audio files"
+      ]
+    },
+    {
+      "id": "audio-speed-changer",
+      "name": "Audio Speed Changer",
+      "category": "advanced-av-tools",
+      "icon": "fa-gauge",
+      "description": "Change audio speed without affecting pitch.",
+      "accept": ".mp3,.wav,.ogg",
+      "libraries": [
+        "ffmpeg"
+      ],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob",
+      "seoKeywords": [
+        "audio speed changer",
+        "change speed without pitch",
+        "tempo changer"
+      ]
+    },
+    {
+      "id": "xml-to-json",
+      "name": "XML to JSON",
+      "category": "data-viz-tools",
+      "icon": "fa-code",
+      "description": "Convert XML documents to JSON.",
+      "accept": ".xml,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "xml to json",
+        "convert xml to json",
+        "xml json converter"
+      ]
+    },
+    {
+      "id": "json-to-xml",
+      "name": "JSON to XML",
+      "category": "data-viz-tools",
+      "icon": "fa-file-code",
+      "description": "Convert JSON data to XML format.",
+      "accept": ".json,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "json to xml",
+        "convert json to xml",
+        "json xml converter"
+      ]
+    },
+    {
+      "id": "yaml-to-json",
+      "name": "YAML to JSON",
+      "category": "data-viz-tools",
+      "icon": "fa-brackets-curly",
+      "description": "Convert YAML to JSON.",
+      "accept": ".yaml,.yml,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "yaml to json",
+        "convert yaml to json",
+        "yaml json"
+      ]
+    },
+    {
+      "id": "json-to-yaml",
+      "name": "JSON to YAML",
+      "category": "data-viz-tools",
+      "icon": "fa-file-lines",
+      "description": "Convert JSON to YAML format.",
+      "accept": ".json,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "json to yaml",
+        "convert json to yaml",
+        "json yaml"
+      ]
+    },
+    {
+      "id": "toml-to-json",
+      "name": "TOML to JSON",
+      "category": "data-viz-tools",
+      "icon": "fa-brackets-curly",
+      "description": "Convert TOML to JSON.",
+      "accept": ".toml,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "toml to json",
+        "convert toml to json"
+      ]
+    },
+    {
+      "id": "ini-to-json",
+      "name": "INI to JSON",
+      "category": "data-viz-tools",
+      "icon": "fa-gear",
+      "description": "Convert INI config files to JSON.",
+      "accept": ".ini,.txt,.conf",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "ini to json",
+        "convert ini to json",
+        "ini parser"
+      ]
+    },
+    {
+      "id": "number-base-converter",
+      "name": "Number Base Converter",
+      "category": "data-viz-tools",
+      "icon": "fa-calculator",
+      "description": "Convert between binary, octal, decimal, hex.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "number base converter",
+        "binary to decimal",
+        "hex to binary"
+      ]
+    },
+    {
+      "id": "color-contrast-checker",
+      "name": "Color Contrast Checker",
+      "category": "data-viz-tools",
+      "icon": "fa-circle-half-stroke",
+      "description": "Check WCAG contrast ratio between two colors.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "color contrast checker",
+        "wcag contrast",
+        "accessibility checker"
+      ]
+    },
+    {
+      "id": "text-to-binary",
+      "name": "Text to Binary",
+      "category": "data-viz-tools",
+      "icon": "fa-microchip",
+      "description": "Convert text to binary code.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "text to binary",
+        "text to binary converter",
+        "ascii to binary"
+      ]
+    },
+    {
+      "id": "ascii-art-generator",
+      "name": "ASCII Art Generator",
+      "category": "data-viz-tools",
+      "icon": "fa-font",
+      "description": "Convert text to ASCII art.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "ascii art generator",
+        "text to ascii art",
+        "ascii text"
+      ]
+    },
+    {
+      "id": "markdown-to-html",
+      "name": "Markdown to HTML",
+      "category": "data-viz-tools",
+      "icon": "fab fa-markdown",
+      "description": "Convert Markdown to HTML.",
+      "accept": ".md,.txt",
+      "libraries": [
+        "marked"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"
+      ],
+      "outputType": "string",
+      "seoKeywords": [
+        "markdown to html",
+        "convert markdown",
+        "md to html"
+      ]
+    },
+    {
+      "id": "html-to-markdown",
+      "name": "HTML to Markdown",
+      "category": "data-viz-tools",
+      "icon": "fa-code",
+      "description": "Convert HTML to Markdown.",
+      "accept": ".html,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "html to markdown",
+        "convert html to md",
+        "html md"
+      ]
+    },
+    {
+      "id": "url-parser",
+      "name": "URL Parser",
+      "category": "data-viz-tools",
+      "icon": "fa-link",
+      "description": "Parse and analyze URL components.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "url parser",
+        "parse url",
+        "url components"
+      ]
+    },
+    {
+      "id": "text-encryptor",
+      "name": "Text Encryptor",
+      "category": "privacy-security-tools",
+      "icon": "fa-lock",
+      "description": "Encrypt text with AES-256.",
+      "accept": ".txt",
+      "libraries": [
+        "crypto-js"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"
+      ],
+      "outputType": "string",
+      "seoKeywords": [
+        "text encryptor",
+        "encrypt text online",
+        "AES encryption"
+      ]
+    },
+    {
+      "id": "text-decryptor",
+      "name": "Text Decryptor",
+      "category": "privacy-security-tools",
+      "icon": "fa-lock-open",
+      "description": "Decrypt AES-256 encrypted text.",
+      "accept": ".txt",
+      "libraries": [
+        "crypto-js"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"
+      ],
+      "outputType": "string",
+      "seoKeywords": [
+        "text decryptor",
+        "decrypt text online",
+        "AES decryption"
+      ]
+    },
+    {
+      "id": "base64-encoder",
+      "name": "Base64 Encoder",
+      "category": "privacy-security-tools",
+      "icon": "fa-code",
+      "description": "Encode text to Base64.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "base64 encoder",
+        "encode base64",
+        "base64 encode"
+      ]
+    },
+    {
+      "id": "base64-decoder",
+      "name": "Base64 Decoder",
+      "category": "privacy-security-tools",
+      "icon": "fa-code",
+      "description": "Decode Base64 to text.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "base64 decoder",
+        "decode base64",
+        "base64 decode"
+      ]
+    },
+    {
+      "id": "md5-generator",
+      "name": "MD5 Generator",
+      "category": "privacy-security-tools",
+      "icon": "fa-hashtag",
+      "description": "Generate MD5 hash of text.",
+      "accept": ".txt",
+      "libraries": [
+        "crypto-js"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"
+      ],
+      "outputType": "string",
+      "seoKeywords": [
+        "md5 generator",
+        "md5 hash",
+        "md5 online"
+      ]
+    },
+    {
+      "id": "sha-generator",
+      "name": "SHA Generator",
+      "category": "privacy-security-tools",
+      "icon": "fa-hashtag",
+      "description": "Generate SHA-1, SHA-256, SHA-512 hashes.",
+      "accept": ".txt",
+      "libraries": [
+        "crypto-js"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"
+      ],
+      "outputType": "string",
+      "seoKeywords": [
+        "sha generator",
+        "sha256",
+        "sha512"
+      ]
+    },
+    {
+      "id": "hmac-generator",
+      "name": "HMAC Generator",
+      "category": "privacy-security-tools",
+      "icon": "fa-shield",
+      "description": "Generate HMAC signatures.",
+      "accept": ".txt",
+      "libraries": [
+        "crypto-js"
+      ],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"
+      ],
+      "outputType": "string",
+      "seoKeywords": [
+        "hmac generator",
+        "hmac signature",
+        "keyed hash"
+      ]
+    },
+    {
+      "id": "text-compare",
+      "name": "Text Compare",
+      "category": "fun-creative-tools",
+      "icon": "fa-not-equal",
+      "description": "Compare two texts and highlight differences.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "text compare",
+        "compare text",
+        "diff checker"
+      ]
+    },
+    {
+      "id": "line-counter",
+      "name": "Line Counter",
+      "category": "fun-creative-tools",
+      "icon": "fa-list-ol",
+      "description": "Count lines, words, and characters.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "line counter",
+        "count lines",
+        "line count"
+      ]
+    },
+    {
+      "id": "duplicate-line-finder",
+      "name": "Duplicate Line Finder",
+      "category": "fun-creative-tools",
+      "icon": "fa-clone",
+      "description": "Find and remove duplicate lines.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "duplicate line finder",
+        "find duplicates",
+        "remove duplicates"
+      ]
+    },
+    {
+      "id": "line-sorter",
+      "name": "Line Sorter",
+      "category": "fun-creative-tools",
+      "icon": "fa-arrow-down-a-z",
+      "description": "Sort lines alphabetically or numerically.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "line sorter",
+        "sort text lines",
+        "alphabetical sort"
+      ]
+    },
+    {
+      "id": "random-line-picker",
+      "name": "Random Line Picker",
+      "category": "fun-creative-tools",
+      "icon": "fa-shuffle",
+      "description": "Pick random lines from text.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "random line picker",
+        "pick random lines",
+        "random text"
+      ]
+    },
+    {
+      "id": "text-to-hex",
+      "name": "Text to Hex",
+      "category": "fun-creative-tools",
+      "icon": "fa-hashtag",
+      "description": "Convert text to hexadecimal.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "text to hex",
+        "text to hexadecimal",
+        "hex converter"
+      ]
+    },
+    {
+      "id": "hex-to-text",
+      "name": "Hex to Text",
+      "category": "fun-creative-tools",
+      "icon": "fa-font",
+      "description": "Convert hexadecimal to text.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "hex to text",
+        "hexadecimal to text",
+        "hex decoder"
+      ]
+    },
+    {
+      "id": "text-to-morse",
+      "name": "Text to Morse Code",
+      "category": "fun-creative-tools",
+      "icon": "fa-telegraph",
+      "description": "Convert text to Morse code.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "text to morse",
+        "morse code",
+        "morse converter"
+      ]
+    },
+    {
+      "id": "morse-to-text",
+      "name": "Morse to Text",
+      "category": "fun-creative-tools",
+      "icon": "fa-telegraph",
+      "description": "Convert Morse code to text.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "morse to text",
+        "morse decoder",
+        "morse code translator"
+      ]
+    },
+    {
+      "id": "leet-speak-converter",
+      "name": "Leet Speak Converter",
+      "category": "fun-creative-tools",
+      "icon": "fa-language",
+      "description": "Convert text to leet speak.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "leet speak",
+        "1337 converter",
+        "leetspeak"
+      ]
+    },
+    {
+      "id": "rot13-converter",
+      "name": "ROT13 Converter",
+      "category": "fun-creative-tools",
+      "icon": "fa-rotate",
+      "description": "Encode/decode text with ROT13.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "rot13",
+        "rot13 converter",
+        "rot13 cipher"
+      ]
+    },
+    {
+      "id": "caesar-cipher",
+      "name": "Caesar Cipher",
+      "category": "fun-creative-tools",
+      "icon": "fa-key",
+      "description": "Encode/decode with Caesar cipher.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "seoKeywords": [
+        "caesar cipher",
+        "caesar cipher decoder",
+        "shift cipher"
+      ]
+    },
+    {
+      "id": "image-cartoonizer",
+      "name": "Cartoonizer",
+      "category": "ai-image-tools",
+      "icon": "fa-face-smile",
+      "description": "Convert photos to cartoon style.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "cartoonizer",
+        "photo to cartoon",
+        "cartoon effect"
+      ]
+    },
+    {
+      "id": "image-sketch",
+      "name": "Sketch Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-pencil",
+      "description": "Turn photos into pencil sketches.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "sketch effect",
+        "photo to sketch",
+        "pencil sketch"
+      ]
+    },
+    {
+      "id": "image-oil-paint",
+      "name": "Oil Paint Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-paintbrush",
+      "description": "Apply oil painting filter to images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "oil paint effect",
+        "painting filter",
+        "art filter"
+      ]
+    },
+    {
+      "id": "image-emboss",
+      "name": "Emboss Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-stamp",
+      "description": "Apply emboss 3D effect to images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "emboss effect",
+        "3d effect",
+        "emboss image"
+      ]
+    },
+    {
+      "id": "image-invert",
+      "name": "Invert Colors",
+      "category": "ai-image-tools",
+      "icon": "fa-circle-half-stroke",
+      "description": "Invert image colors.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "invert colors",
+        "negative image",
+        "color invert"
+      ]
+    },
+    {
+      "id": "image-threshold",
+      "name": "Threshold Filter",
+      "category": "ai-image-tools",
+      "icon": "fa-circle-dot",
+      "description": "Apply black/white threshold filter.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "threshold filter",
+        "black white threshold",
+        "binary image"
+      ]
+    },
+    {
+      "id": "image-sharpen",
+      "name": "Sharpen Image",
+      "category": "ai-image-tools",
+      "icon": "fa-diamond",
+      "description": "Sharpen blurry images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "sharpen image",
+        "sharpen photo",
+        "image sharpening"
+      ]
+    },
+    {
+      "id": "image-emboss-3d",
+      "name": "3D Emboss",
+      "category": "ai-image-tools",
+      "icon": "fa-cube",
+      "description": "Create 3D embossed effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "3d emboss",
+        "emboss 3d",
+        "3d effect"
+      ]
+    },
+    {
+      "id": "image-thermal",
+      "name": "Thermal Vision",
+      "category": "ai-image-tools",
+      "icon": "fa-temperature-high",
+      "description": "Apply thermal camera effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "thermal vision",
+        "thermal effect",
+        "heat map"
+      ]
+    },
+    {
+      "id": "image-night-vision",
+      "name": "Night Vision",
+      "category": "ai-image-tools",
+      "icon": "fa-eye",
+      "description": "Apply night vision green effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "night vision",
+        "green night vision",
+        "night vision effect"
+      ]
+    },
+    {
+      "id": "image-x-ray",
+      "name": "X-Ray Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-x-ray",
+      "description": "Apply X-ray style filter.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "x-ray effect",
+        "xray filter",
+        "x-ray photo"
+      ]
+    },
+    {
+      "id": "image-emboss-relief",
+      "name": "Relief Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-mountain",
+      "description": "Apply relief/emboss effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "relief effect",
+        "emboss relief",
+        "relief filter"
+      ]
+    },
+    {
+      "id": "image-posterize",
+      "name": "Posterize",
+      "category": "ai-image-tools",
+      "icon": "fa-palette",
+      "description": "Reduce colors for poster effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "posterize",
+        "poster effect",
+        "reduce colors"
+      ]
+    },
+    {
+      "id": "image-solarize",
+      "name": "Solarize",
+      "category": "ai-image-tools",
+      "icon": "fa-sun",
+      "description": "Apply solarize effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "solarize",
+        "solarize effect",
+        "photo solarize"
+      ]
+    },
+    {
+      "id": "image-color-tint",
+      "name": "Color Tint",
+      "category": "ai-image-tools",
+      "icon": "fa-fill-drip",
+      "description": "Apply color tint overlay.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "color tint",
+        "tint photo",
+        "color overlay"
+      ]
+    },
+    {
+      "id": "image-duotone",
+      "name": "Duotone Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-circle-half-stroke",
+      "description": "Apply duotone two-color effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "duotone",
+        "duotone effect",
+        "two color"
+      ]
+    },
+    {
+      "id": "image-vintage",
+      "name": "Vintage Filter",
+      "category": "ai-image-tools",
+      "icon": "fa-camera-retro",
+      "description": "Apply vintage photo filter.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "vintage filter",
+        "vintage photo",
+        "retro filter"
+      ]
+    },
+    {
+      "id": "image-fog",
+      "name": "Fog Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-smog",
+      "description": "Add fog/mist effect to images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "fog effect",
+        "add fog",
+        "mist effect"
+      ]
+    },
+    {
+      "id": "image-rain",
+      "name": "Rain Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-cloud-rain",
+      "description": "Add rain effect to images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "rain effect",
+        "add rain",
+        "rain filter"
+      ]
+    },
+    {
+      "id": "image-snow",
+      "name": "Snow Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-snowflake",
+      "description": "Add snow effect to images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "snow effect",
+        "add snow",
+        "snow filter"
+      ]
+    },
+    {
+      "id": "image-sparkle",
+      "name": "Sparkle Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-sparkles",
+      "description": "Add sparkle/glitter effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "sparkle effect",
+        "glitter effect",
+        "sparkle filter"
+      ]
+    },
+    {
+      "id": "image-vignette-dark",
+      "name": "Dark Vignette",
+      "category": "ai-image-tools",
+      "icon": "fa-circle",
+      "description": "Add dark vignette border effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "dark vignette",
+        "vignette dark",
+        "vignette effect"
+      ]
+    },
+    {
+      "id": "image-radial-blur",
+      "name": "Radial Blur",
+      "category": "ai-image-tools",
+      "icon": "fa-bullseye",
+      "description": "Apply radial blur zoom effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "radial blur",
+        "zoom blur",
+        "radial blur effect"
+      ]
+    },
+    {
+      "id": "image-motion-blur",
+      "name": "Motion Blur",
+      "category": "ai-image-tools",
+      "icon": "fa-wind",
+      "description": "Apply motion blur effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "motion blur",
+        "motion blur effect",
+        "blur effect"
+      ]
+    },
+    {
+      "id": "image-tilt-shift",
+      "name": "Tilt Shift",
+      "category": "ai-image-tools",
+      "icon": "fa-camera",
+      "description": "Apply tilt-shift miniature effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "tilt shift",
+        "miniature effect",
+        "tilt shift effect"
+      ]
+    },
+    {
+      "id": "image-infrared",
+      "name": "Infrared Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-temperature-high",
+      "description": "Apply infrared false-color effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "infrared effect",
+        "false color",
+        "ir effect"
+      ]
+    },
+    {
+      "id": "image-hdr",
+      "name": "HDR Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-sun",
+      "description": "Apply HDR tone mapping effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "hdr effect",
+        "hdr filter",
+        "tone mapping"
+      ]
+    },
+    {
+      "id": "image-cross-process",
+      "name": "Cross Process",
+      "category": "ai-image-tools",
+      "icon": "fa-flask",
+      "description": "Apply cross-process film effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "cross process",
+        "film effect",
+        "xpro"
+      ]
+    },
+    {
+      "id": "image-lomo",
+      "name": "Lomo Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-camera",
+      "description": "Apply Lomography style effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "lomo effect",
+        "lomography",
+        "lomo filter"
+      ]
+    },
+    {
+      "id": "image-dreamy",
+      "name": "Dreamy Effect",
+      "category": "ai-image-tools",
+      "icon": "fa-cloud",
+      "description": "Apply dreamy soft-focus effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "dreamy effect",
+        "soft focus",
+        "dreamy filter"
+      ]
+    },
+    {
+      "id": "image-cinematic",
+      "name": "Cinematic Look",
+      "category": "ai-image-tools",
+      "icon": "fa-film",
+      "description": "Apply cinematic color grading.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "cinematic look",
+        "cinematic filter",
+        "movie effect"
+      ]
+    },
+    {
+      "id": "image-bw-dramatic",
+      "name": "Dramatic B&W",
+      "category": "ai-image-tools",
+      "icon": "fa-circle-half-stroke",
+      "description": "Convert to dramatic black and white.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "dramatic black and white",
+        "bw filter",
+        "dramatic bw"
+      ]
+    },
+    {
+      "id": "image-fade-edges",
+      "name": "Fade Edges",
+      "category": "ai-image-tools",
+      "icon": "fa-border-none",
+      "description": "Fade edges of images to transparent.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "seoKeywords": [
+        "fade edges",
+        "fade border",
+        "edge fade"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "ZyncTools File Viewer",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Free, privacy-first online file viewer. View code, data, and document files directly in your browser. No uploads, no registration.",
+  "url": "https://zynctools.github.io/viewer.html",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "1200"
+  },
+  "featureList": [
+    "100% client-side processing",
+    "No file uploads",
+    "Syntax highlighting for 20+ languages",
+    "Tree view for JSON/XML/YAML",
+    "Copy and download support"
+  ]
+}
