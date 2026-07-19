@@ -24,6 +24,8 @@
         }
     </script>
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/styles-chat.css">
+    <script src="assets/js/theme.js" defer></script>
     <script>
         (function() {
             var theme = localStorage.getItem('zync-theme');
@@ -118,6 +120,50 @@
     <script src="assets/js/tool-registry.js"></script>
     <script src="assets/js/search-engine.js"></script>
     <script src="assets/js/dashboard-logic.js"></script>
-    <script src="assets/js/theme.js"></script>
+    <!-- Chatbot Widget -->
+    <button id="chatbot-fab" aria-label="Open assistant">
+        <svg class="fab-chat" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <svg class="fab-close" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <div id="chatbot-window" role="dialog" aria-label="Chat assistant">
+        <div class="chat-header">
+            <div class="chat-avatar">Z</div>
+            <div class="chat-title-group">
+                <p class="chat-title">ZyncTools Assistant</p>
+                <p class="chat-subtitle"><span class="chat-status-dot"></span>Privacy-first AI</p>
+            </div>
+            <button class="chat-close-btn" id="chatbot-close-btn" aria-label="Close chat">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+
+        <div class="chat-messages" id="chatbot-messages"></div>
+
+        <div class="chat-typing" id="chatbot-typing">
+            <div class="chat-message-avatar" style="width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">Z</div>
+            <div class="chat-typing-dots">
+                <span class="chat-typing-dot"></span>
+                <span class="chat-typing-dot"></span>
+                <span class="chat-typing-dot"></span>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chatbot-input" placeholder="Ask about any tool..." autocomplete="off">
+            <button class="chat-send-btn" id="chatbot-send" aria-label="Send message">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="assets/js/chatbot-logic.js"></script>
+    <script src="assets/js/chat-ui.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.ZyncChatBot) window.ZyncChatBot.init();
+            if (window.ZyncChatUI) window.ZyncChatUI.init();
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,352 @@
+{
+  "qa": [
+    {
+      "question": "how to compress image",
+      "answer": "Use our <strong>Image Compressor</strong> tool to reduce file size while preserving quality. It supports JPG, PNG, and WebP formats.",
+      "toolIds": ["image-compressor"],
+      "category": "images"
+    },
+    {
+      "question": "compress png",
+      "answer": "Use the <strong>PNG Compressor</strong> or <strong>Image Compressor</strong> to shrink PNG files without losing quality.",
+      "toolIds": ["image-compressor"],
+      "category": "images"
+    },
+    {
+      "question": "how to resize image",
+      "answer": "Try our <strong>Image Resizer</strong> to set custom dimensions or scale by percentage.",
+      "toolIds": ["image-resizer"],
+      "category": "images"
+    },
+    {
+      "question": "crop image",
+      "answer": "Use the <strong>Image Cropper</strong> with visual aspect ratio controls to crop any image precisely.",
+      "toolIds": ["image-cropper"],
+      "category": "images"
+    },
+    {
+      "question": "convert image to jpg",
+      "answer": "Use <strong>PNG to JPG</strong> or <strong>Image Converter</strong> to convert images to JPG format.",
+      "toolIds": ["png-to-jpg"],
+      "category": "images"
+    },
+    {
+      "question": "convert jpg to png",
+      "answer": "Use <strong>JPG to PNG</strong> converter to change your images to PNG format.",
+      "toolIds": ["jpg-to-png"],
+      "category": "images"
+    },
+    {
+      "question": "change image format",
+      "answer": "Use the <strong>Image Converter</strong> to switch between JPG, PNG, WebP, and more.",
+      "toolIds": ["image-converter"],
+      "category": "images"
+    },
+    {
+      "question": "remove background from image",
+      "answer": "Use our <strong>Background Remover</strong> to automatically remove backgrounds from photos in seconds.",
+      "toolIds": ["background-remover"],
+      "category": "images"
+    },
+    {
+      "question": "upscale image",
+      "answer": "Try the <strong>Image Upscaler</strong> to enhance resolution and make images larger without pixelation.",
+      "toolIds": ["image-upscaler"],
+      "category": "images"
+    },
+    {
+      "question": "how to merge pdf",
+      "answer": "Use the <strong>Merge PDF</strong> tool to combine multiple PDFs into a single file instantly.",
+      "toolIds": ["merge-pdf"],
+      "category": "pdf"
+    },
+    {
+      "question": "split pdf",
+      "answer": "Use the <strong>Split PDF</strong> tool to extract pages or split into separate files.",
+      "toolIds": ["split-pdf"],
+      "category": "pdf"
+    },
+    {
+      "question": "compress pdf",
+      "answer": "Use <strong>Compress PDF</strong> to reduce file size while keeping quality high.",
+      "toolIds": ["compress-pdf"],
+      "category": "pdf"
+    },
+    {
+      "question": "convert pdf to word",
+      "answer": "Use <strong>PDF to Word</strong> to convert your PDF into an editable DOCX document.",
+      "toolIds": ["pdf-to-word"],
+      "category": "pdf"
+    },
+    {
+      "question": "convert pdf to images",
+      "answer": "Use <strong>PDF to Images</strong> to extract every page as a high-quality PNG or JPG.",
+      "toolIds": ["pdf-to-images"],
+      "category": "pdf"
+    },
+    {
+      "question": "edit pdf",
+      "answer": "Use the <strong>PDF Editor</strong> to add text, shapes, and annotations to your PDFs.",
+      "toolIds": ["pdf-editor"],
+      "category": "pdf"
+    },
+    {
+      "question": "add watermark to pdf",
+      "answer": "Use <strong>PDF Watermark</strong> to add text or image watermarks to protect your documents.",
+      "toolIds": ["pdf-watermark"],
+      "category": "pdf"
+    },
+    {
+      "question": "convert mp4 to mp3",
+      "answer": "Use the <strong>MP4 to MP3</strong> converter to extract audio from video files quickly.",
+      "toolIds": ["mp4-to-mp3"],
+      "category": "video"
+    },
+    {
+      "question": "trim video",
+      "answer": "Use <strong>Video Trimmer</strong> to cut and trim video clips directly in your browser.",
+      "toolIds": ["video-trimmer"],
+      "category": "video"
+    },
+    {
+      "question": "compress video",
+      "answer": "Use <strong>Video Compressor</strong> to reduce video file size without significant quality loss.",
+      "toolIds": ["video-compressor"],
+      "category": "video"
+    },
+    {
+      "question": "convert video to gif",
+      "answer": "Use <strong>Video to GIF</strong> to turn video clips into animated GIFs.",
+      "toolIds": ["video-to-gif"],
+      "category": "video"
+    },
+    {
+      "question": "convert audio format",
+      "answer": "Use the <strong>Audio Converter</strong> to convert between MP3, WAV, OGG, and more.",
+      "toolIds": ["audio-converter"],
+      "category": "audio"
+    },
+    {
+      "question": "trim audio",
+      "answer": "Use <strong>Audio Trimmer</strong> to cut audio files and export the exact segment you need.",
+      "toolIds": ["audio-trimmer"],
+      "category": "audio"
+    },
+    {
+      "question": "merge audio files",
+      "answer": "Use <strong>Audio Merger</strong> to combine multiple audio tracks into one file.",
+      "toolIds": ["audio-merger"],
+      "category": "audio"
+    },
+    {
+      "question": "extract audio from video",
+      "answer": "Use <strong>MP4 to MP3</strong> or <strong>Audio Extractor</strong> to pull audio from any video.",
+      "toolIds": ["mp4-to-mp3"],
+      "category": "audio"
+    },
+    {
+      "question": "word counter",
+      "answer": "Use the <strong>Word Counter</strong> to count words, characters, sentences, and paragraphs instantly.",
+      "toolIds": ["word-counter"],
+      "category": "text"
+    },
+    {
+      "question": "text to uppercase",
+      "answer": "Use <strong>Text Case Converter</strong> to transform text to UPPERCASE, lowercase, or Title Case.",
+      "toolIds": ["text-case-converter"],
+      "category": "text"
+    },
+    {
+      "question": "remove duplicate lines",
+      "answer": "Use <strong>Duplicate Line Remover</strong> to clean up text files and lists.",
+      "toolIds": ["duplicate-line-remover"],
+      "category": "text"
+    },
+    {
+      "question": "generate lorem ipsum",
+      "answer": "Use the <strong>Lorem Ipsum Generator</strong> to create placeholder text for designs.",
+      "toolIds": ["lorem-ipsum-generator"],
+      "category": "text"
+    },
+    {
+      "question": "minify css",
+      "answer": "Use <strong>CSS Minifier</strong> to compress CSS code and reduce file size.",
+      "toolIds": ["css-minifier"],
+      "category": "code"
+    },
+    {
+      "question": "format json",
+      "answer": "Use the <strong>JSON Formatter</strong> to beautify, validate, and minify JSON data.",
+      "toolIds": ["json-formatter"],
+      "category": "code"
+    },
+    {
+      "question": "encode decode base64",
+      "answer": "Use <strong>Base64 Encoder/Decoder</strong> to convert text to Base64 and back.",
+      "toolIds": ["base64-encoder"],
+      "category": "code"
+    },
+    {
+      "question": "url encode decode",
+      "answer": "Use <strong>URL Encoder/Decoder</strong> to safely encode or decode URL strings.",
+      "toolIds": ["url-encoder"],
+      "category": "code"
+    },
+    {
+      "question": "generate hash",
+      "answer": "Use the <strong>Hash Generator</strong> to create MD5, SHA-1, SHA-256, and SHA-512 hashes.",
+      "toolIds": ["hash-generator"],
+      "category": "security"
+    },
+    {
+      "question": "encrypt decrypt text",
+      "answer": "Use <strong>Text Encryptor</strong> to securely encrypt and decrypt messages with AES.",
+      "toolIds": ["text-encryptor"],
+      "category": "security"
+    },
+    {
+      "question": "generate password",
+      "answer": "Use the <strong>Password Generator</strong> to create strong, random passwords.",
+      "toolIds": ["password-generator"],
+      "category": "security"
+    },
+    {
+      "question": "is this secure",
+      "answer": "Yes! ZyncTools runs 100% in your browser. No files are uploaded to any server, so your data stays private and secure.",
+      "toolIds": [],
+      "category": "security"
+    },
+    {
+      "question": "is it safe to use",
+      "answer": "Absolutely. All tools process files locally in your browser using client-side JavaScript. Nothing is sent to external servers.",
+      "toolIds": [],
+      "category": "security"
+    },
+    {
+      "question": "privacy policy",
+      "answer": "ZyncTools is privacy-first. We do not collect, store, or transmit any user data. Learn more on our <a href='/pages/privacy.html' target='_blank'>Privacy Policy</a>.",
+      "toolIds": [],
+      "category": "security"
+    },
+    {
+      "question": "generate meta tags",
+      "answer": "Use the <strong>Meta Tag Generator</strong> to create SEO-friendly meta tags for your website.",
+      "toolIds": ["meta-tag-generator"],
+      "category": "seo"
+    },
+    {
+      "question": "what is a meta tag",
+      "answer": "Meta tags are HTML elements that provide metadata about a webpage. Use our <strong>Meta Tag Generator</strong> to create them easily.",
+      "toolIds": ["meta-tag-generator"],
+      "category": "seo"
+    },
+    {
+      "question": "generate robots txt",
+      "answer": "Use the <strong>Robots.txt Generator</strong> to create and validate robots.txt files for SEO.",
+      "toolIds": ["robots-txt-generator"],
+      "category": "seo"
+    },
+    {
+      "question": "check website speed",
+      "answer": "Use the <strong>Page Speed Analyzer</strong> to get insights on your website's performance.",
+      "toolIds": ["page-speed-analyzer"],
+      "category": "seo"
+    },
+    {
+      "question": "generate schema markup",
+      "answer": "Use the <strong>Schema Markup Generator</strong> to create structured data for better search visibility.",
+      "toolIds": ["schema-markup-generator"],
+      "category": "seo"
+    },
+    {
+      "question": "remove exif from image",
+      "answer": "Use <strong>EXIF Remover</strong> to strip metadata from photos before sharing them online.",
+      "toolIds": ["exif-remover"],
+      "category": "images"
+    },
+    {
+      "question": "blur face in image",
+      "answer": "Use <strong>Face Blur</strong> to automatically detect and blur faces for privacy.",
+      "toolIds": ["face-blur"],
+      "category": "images"
+    },
+    {
+      "question": "convert heic to jpg",
+      "answer": "Use <strong>HEIC to JPG</strong> to convert iPhone photos to a compatible format.",
+      "toolIds": ["heic-to-jpg"],
+      "category": "images"
+    },
+    {
+      "question": "how to convert png to pdf",
+      "answer": "Use <strong>PNG to PDF</strong> to combine images into a single PDF document.",
+      "toolIds": ["png-to-pdf"],
+      "category": "pdf"
+    },
+    {
+      "question": "how to convert pdf to png",
+      "answer": "Use <strong>PDF to PNG</strong> to extract high-quality images from your PDF pages.",
+      "toolIds": ["pdf-to-png"],
+      "category": "pdf"
+    },
+    {
+      "question": "protect pdf with password",
+      "answer": "Use <strong>PDF Password Protect</strong> to lock your PDFs with a secure password.",
+      "toolIds": ["pdf-password-protect"],
+      "category": "pdf"
+    },
+    {
+      "question": "unlock pdf",
+      "answer": "Use <strong>PDF Unlocker</strong> to remove password protection from PDFs (if you know the password).",
+      "toolIds": ["pdf-unlocker"],
+      "category": "pdf"
+    },
+    {
+      "question": "why is my file not uploading",
+      "answer": "Common causes: file exceeds the size limit, format is not supported, or the browser blocks local file access. Try a smaller file or check the tool's accepted formats.",
+      "toolIds": [],
+      "category": "images"
+    },
+    {
+      "question": "file size limit",
+      "answer": "Most tools support files up to 100MB. Larger files may be slow or unsupported depending on your device memory.",
+      "toolIds": [],
+      "category": "images"
+    },
+    {
+      "question": "supported file formats",
+      "answer": "We support JPG, PNG, WebP, PDF, MP4, MP3, WAV, DOCX, CSV, JSON, and many more. Each tool page lists its accepted formats.",
+      "toolIds": [],
+      "category": "images"
+    },
+    {
+      "question": "how to use background remover",
+      "answer": "1. Open the <strong>Background Remover</strong>. 2. Upload a photo. 3. Wait for the AI to process. 4. Download the result with a transparent background.",
+      "toolIds": ["background-remover"],
+      "category": "images"
+    },
+    {
+      "question": "how to convert video to audio",
+      "answer": "Use <strong>MP4 to MP3</strong> or <strong>Audio Extractor</strong>. Upload your video, select audio output, and download.",
+      "toolIds": ["mp4-to-mp3"],
+      "category": "video"
+    },
+    {
+      "question": "how to create a favicon",
+      "answer": "Use <strong>Favicon Generator</strong> to create ICO and PNG favicons from any image.",
+      "toolIds": ["favicon-generator"],
+      "category": "dev-utils"
+    },
+    {
+      "question": "generate css gradient",
+      "answer": "Use the <strong>CSS Gradient Generator</strong> to create beautiful linear and radial gradients with live preview.",
+      "toolIds": ["css-gradient-generator"],
+      "category": "dev-utils"
+    },
+    {
+      "question": "what is json formatter",
+      "answer": "The <strong>JSON Formatter</strong> beautifies raw JSON, validates syntax, and lets you minify it for production.",
+      "toolIds": ["json-formatter"],
+      "category": "code"
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+================================================================================
+ ZYNCTOOLS REGISTRY — CRITICAL AUDIT REPORT
+================================================================================
+ Auditor      : Senior QA Engineer / Data Architect
+ Date         : 2026-07-19
+ Source file  : tools-database.json  (version 2.0.0, 1234 entries)
+ Output file  : tools-database-cleaned.json  (version 3.0.0-cleaned, 403 entries)
+================================================================================
+
+--------------------------------------------------------------------------------
+ 1. EXECUTIVE SUMMARY
+--------------------------------------------------------------------------------
+ Original entries ................................. 1234
+ DELETED (fake / placeholder / duplicate) .........  831   (67.3%)
+ KEPT (real, validated) ...........................  403   (32.7%)
+     ├─ ACTIVE (real logic verified) ..............  170
+     └─ COMING-SOON (real name+icon, no logic) ....  233
+
+ Result: 100% of remaining tools have a specific name, a valid category,
+ a defined type, a relevant Lucide icon, enriched tags, and unique SEO
+ metadata. ZERO broken links: every card either executes real logic or is
+ clearly flagged "Coming Soon".
+
+--------------------------------------------------------------------------------
+ 2. FAKE / PLACEHOLDER TOOLS PURGED  (831 total)
+--------------------------------------------------------------------------------
+ Detection was evidence-based, not name-guessing. Three fake signatures were
+ confirmed by inspecting the raw records:
+
+ (A) NUMERIC PLACEHOLDER IDs .............................. 710 deleted
+     Pattern: <category>-<number>  e.g. "ai-10", "pdf-2", "images-21".
+     Tell-tale signs, all present together:
+        • self-referential "function": id === function  (e.g. function:"ai-10")
+        • no description
+        • duplicated, numbered names ("Deep Dream", "Deep Dream 2", "Deep Dream 3")
+        • nonsensical catch-all accept: ".jpg,.png,.pdf,.mp4,.mp3,.txt"
+        • type cycled mechanically through file/text/generator
+     Example purged: ai-10 "Deep Dream", audio-14 "Audio Merge 2",
+                     images-21 "Image Compressor 3", pdf-2 "PDF Split".
+
+ (B) GENERIC "<X> TOOL <NNNN>" ENTRIES .................... 100 deleted
+     Pattern id: *-tool-<number>  name: "Media Tool 1135", "Seo Tool 1136",
+     "Dev Tool 1137".  All shared:
+        • icon "fa-tool" (generic wrench placeholder)
+        • bogus shared function "generateRobotsTxt"
+        • seoTitle "media Tool - Free Online | ZyncTools" (non-unique)
+        • no description
+
+ (C) DUPLICATE IDs ........................................  21 deleted
+     21 tool IDs appeared twice in the registry (a router can only ever open
+     one). The first occurrence was kept; the duplicate removed.
+     Affected IDs: css-minifier, js-minifier, mp3-cutter, video-trimmer,
+     audio-converter, video-converter, extract-audio, video-to-gif, audio-fade,
+     border-radius-generator, flexbox-generator, box-shadow-generator,
+     audio-amplify, video-frame-extract, og-tag-generator, robots-txt-generator,
+     sitemap-xml-generator, schema-markup-generator, html-minifier,
+     audio-converter-batch, audio-speed-changer.
+
+ Delete reason tally:
+     numeric placeholder id ....... 710
+     generic *-tool-N id .......... 100
+     duplicate id (removed) .......  21
+                                    ----
+                              TOTAL  831
+
+--------------------------------------------------------------------------------
+ 3. ICONS — 100% COVERAGE, MIGRATED TO LUCIDE  (403 fixed)
+--------------------------------------------------------------------------------
+ FINDING: The database used FontAwesome names (fa-*) in the "icon" field, but
+ the live UI renders LUCIDE icons via <i data-lucide="...">. The two were never
+ reconciled: only ~326 of 1213 IDs had a hand-mapped Lucide icon in
+ tool-registry.js; the remaining ~887 silently fell back to a generic icon.
+
+ ACTION: Every kept tool's icon was recomputed to a verified Lucide slug using
+ the keyword strategy in assets/js/icon-mapping-logic.js:
+        compress / minify ........ minimize-2
+        convert / change ......... arrow-right-left
+        merge / join ............. combine
+        split / cut / trim ....... scissors
+        image / photo ............ image
+        pdf / document ........... file-text
+        code / dev ............... code-2
+        security / lock .......... shield-check
+        search / seo ............. search
+        calculator / math ........ calculator
+    (+ 25 additional domain rules, category fallback, and a FA→Lucide table)
+
+ RESULT:
+        Icons rewritten from FontAwesome → Lucide ......... 403 / 403 (100%)
+        Tools with a missing/blank icon ................... 0
+        Tools still carrying an fa-* icon ................. 0
+        Distinct Lucide icons in use ..................... 32
+        Most-used: code-2 (81), arrow-right-left (80), image (60),
+                   shield-check (17), search (17), wand-sparkles (15).
+
+ SAFETY NET: icon-mapping-logic.js is also loadable at runtime
+ (window.ZyncIconMap.resolveIcon(tool)) so any tool added later without an icon
+ is auto-assigned a relevant one instead of a blank square.
+
+--------------------------------------------------------------------------------
+ 4. IMPLEMENTATION STATUS — NO BROKEN LINKS  (170 active / 233 coming-soon)
+--------------------------------------------------------------------------------
+ The live resolution chain (assets/js/main.js -> loadToolModule) was reverse-
+ engineered and used as the source of truth for "is this implemented?":
+        1) window.ZyncToolBridge.getModule(id)   (tool-bridge.js)
+        2) window.ZyncSeoTools.getModule(id)     (seo-logic.js TOOL_MODULES)
+        3) tools/<id>.js  ->  window.ZyncTool    (individual module file)
+ Anything unresolved throws "Tool module is not implemented yet." = broken link.
+
+ Implemented-set was computed from real evidence:
+        • 89  individual modules in tools/*.js
+        • 88  valid tool-bridge configs (target module.func verified to exist)
+        • 12  seo-logic TOOL_MODULES entries
+        = 170 unique implemented tool IDs.
+
+ ALSO FOUND (not counted as implemented): 46 tool-bridge entries whose target
+ function does NOT exist or points to a wrong stub — notably many mapped to the
+ filler "generateBoxShadow"/"generateRobotsTxt" (e.g. css-minifier, js-minifier,
+ html-minifier, ascii-table, cron-expression-builder). These were treated as
+ UNIMPLEMENTED and set to coming-soon so they can never surface a broken result.
+
+ DECISION APPLIED (spec option B): tools without verified logic are marked
+        "status": "coming-soon"  +  "badge": "Coming Soon"
+ keeping their REAL name and REAL icon. Front-end must render these as a badge,
+ not a working link. Verified live with implementation-check.js:
+        ✖ ACTIVE-but-broken tools ............ 0   (PASS)
+
+--------------------------------------------------------------------------------
+ 5. DATA ENRICHMENT
+--------------------------------------------------------------------------------
+ Descriptions added where missing ................. 113  (all 403 now non-empty)
+ Tags populated / normalized ...................... 403  (name+format+category
+                                                          keywords, deduped, ≤12)
+ seoTitle regenerated to be unique/descriptive .... 290  (removed boilerplate
+                                                          "Free Online Tool")
+ seoDescription generated (new field) ............. 403  (unique per tool)
+
+ Every kept tool now guarantees:
+        name (specific)  category (valid)  type (file|text|generator)
+        icon (lucide)    status            description   tags[]
+        seoTitle         seoDescription
+
+--------------------------------------------------------------------------------
+ 6. PER-CATEGORY BREAKDOWN (cleaned)
+--------------------------------------------------------------------------------
+   CATEGORY       ACTIVE   COMING-SOON   TOTAL
+   ai                  0           69      69
+   audio              10           18      28
+   code               27            3      30
+   dev                31            1      32
+   dev-utils          35           14      49
+   images              1           26      27
+   media              36            0      36
+   pdf                 0           30      30
+   security            0           12      12
+   seo                 0           28      28
+   text               27           25      52
+   video               3            7      10
+   ------------------------------------------------
+   TOTAL             170          233     403
+
+ NOTE: pdf, seo, security & images currently have real names + icons but their
+ client-side logic is not yet wired, so they are honestly flagged Coming Soon.
+ These are the highest-value targets for the next implementation sprint.
+
+--------------------------------------------------------------------------------
+ 7. FINAL VALIDATION (automated invariant check on output)
+--------------------------------------------------------------------------------
+   Duplicate IDs ......................... 0
+   Empty names ........................... 0
+   Missing category ...................... 0
+   Invalid type .......................... 0
+   Missing/blank icon .................... 0
+   Residual FontAwesome icons ............ 0
+   Non-Lucide icon slugs ................. 0
+   Missing description ................... 0
+   Missing tags .......................... 0
+   Missing seoTitle / seoDescription ..... 0
+   Generic "Tool N" names remaining ...... 0
+   Numbered-duplicate names remaining .... 0
+   ---------------------------------------------
+   TOTAL PROBLEMS ........................ 0   ->  AUDIT PASSED
+
+--------------------------------------------------------------------------------
+ 8. DELIVERABLES
+--------------------------------------------------------------------------------
+   tools-database-cleaned.json ......... purified 403-tool registry
+   assets/js/icon-mapping-logic.js ..... keyword -> Lucide auto-icon safety net
+   assets/js/implementation-check.js ... in-console verifier (no broken links)
+   audit-report.txt .................... this report
+   build-cleaned.js .................... reproducible build script (Node)
+
+--------------------------------------------------------------------------------
+ 9. RECOMMENDED FOLLOW-UPS
+--------------------------------------------------------------------------------
+   1. Point the dashboard loader at tools-database-cleaned.json (or replace the
+      original after review) and render a "Coming Soon" badge for
+      status === "coming-soon" (disable the <a> click).
+   2. Load icon-mapping-logic.js and use window.ZyncIconMap.resolveIcon() in the
+      card renderer so icon coverage stays at 100% for any future tool.
+   3. Load implementation-check.js in staging and run
+      ZyncImplementationCheck.run({ probeFiles:true }) in CI to block deploys
+      that introduce a broken "active" tool.
+   4. Prioritize implementing PDF, SEO, Security and Image tools to convert the
+      233 Coming-Soon entries into Active tools.
+================================================================================

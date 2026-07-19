@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZyncTools Chat Widget — Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { inter: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        slate: { 950: '#0F1115', 900: '#13151A', 850: '#1C1F26', 800: '#23262F', 700: '#2D313A' },
+                        accent: { DEFAULT: '#6366F1', light: '#818CF8', dark: '#4F46E5' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        /* Demo page background */
+        body.demo-page {
+            background: #0B0C10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        .demo-content {
+            text-align: center;
+            color: #9CA3AF;
+        }
+        .demo-content h1 {
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .demo-content p {
+            font-size: 1rem;
+            color: #6B7280;
+        }
+    </style>
+</head>
+<body class="demo-page">
+    <div class="demo-content">
+        <h1>ZyncTools Chat Widget</h1>
+        <p>Click the floating button in the bottom-right corner to open the chatbot.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #4B5563;">This is a preview. The widget is fully functional with client-side RAG.</p>
+    </div>
+
+    <!-- ============================================
+         CHATBOT WIDGET MARKUP
+         Copy this block into any page to enable the chatbot.
+         ============================================ -->
+
+    <!-- Chat FAB -->
+    <button id="chatbot-fab" aria-label="Open assistant">
+        <svg class="fab-chat" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <svg class="fab-close" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <!-- Chat Window -->
+    <div id="chatbot-window" role="dialog" aria-label="Chat assistant">
+        <div class="chat-header">
+            <div class="chat-avatar">Z</div>
+            <div class="chat-title-group">
+                <p class="chat-title">ZyncTools Assistant</p>
+                <p class="chat-subtitle"><span class="chat-status-dot"></span>Privacy-first AI</p>
+            </div>
+            <button class="chat-close-btn" id="chatbot-close-btn" aria-label="Close chat">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+
+        <div class="chat-messages" id="chatbot-messages">
+            <!-- Messages injected here -->
+        </div>
+
+        <div class="chat-typing" id="chatbot-typing">
+            <div class="chat-message-avatar" style="width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">Z</div>
+            <div class="chat-typing-dots">
+                <span class="chat-typing-dot"></span>
+                <span class="chat-typing-dot"></span>
+                <span class="chat-typing-dot"></span>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chatbot-input" placeholder="Ask about any tool..." autocomplete="off">
+            <button class="chat-send-btn" id="chatbot-send" aria-label="Send message">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- END CHATBOT WIDGET MARKUP -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="assets/js/chatbot-logic.js"></script>
+    <script src="assets/js/chat-ui.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+            if (window.ZyncChatBot) window.ZyncChatBot.init();
+            if (window.ZyncChatUI) window.ZyncChatUI.init();
+        });
+    </script>
+</body>
+</html>
