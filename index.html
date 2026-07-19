@@ -1,172 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="ZyncPDF — Your files stay with you. 30+ PDF tools. 100% private. No uploads. No registration. Merge, split, compress, convert, edit, rotate, and annotate PDFs entirely in your browser.">
-    <meta name="keywords" content="PDF editor, merge PDF, split PDF, compress PDF, PDF converter, PDF tools, privacy-first PDF, browser PDF, free PDF tools">
-    <meta name="author" content="ZyncPDF Team">
-    <meta name="robots" content="index, follow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="ZyncPDF - 100% Private PDF Toolkit">
-    <meta property="og:description" content="Professional PDF tools in your browser. No uploads, no tracking, no registration.">
-    <meta property="og:image" content="/logo.png">
-    <meta property="og:url" content="https://zyncpdf.github.io/">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ZyncPDF - 100% Private PDF Toolkit">
-    <meta name="twitter:description" content="Professional PDF tools in your browser. No uploads, no tracking, no registration.">
-    <meta name="twitter:image" content="/logo.png">
-    <link rel="canonical" href="https://zyncpdf.github.io/">
-    <link rel="icon" type="image/png" sizes="32x32" href="/logo.png">
-    <link rel="apple-touch-icon" href="/logo.png">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="stylesheet" href="assets/css/modern-styles.css">
+    <title>ZyncTools — Privacy-First Utilities</title>
+    <meta name="description" content="152 free, privacy-first, client-side utilities. No uploads. No tracking. No registration.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%236366F1'>⚡</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
-    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
-    <script src="assets/js/theme-switcher.js" defer></script>
-    <title>ZyncPDF - Professional PDF Workspace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { inter: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        slate: { 950: '#0F1115', 900: '#13151A', 850: '#1C1F26', 800: '#23262F', 700: '#2D313A' },
+                        accent: { DEFAULT: '#6366F1', light: '#818CF8', dark: '#4F46E5' }
+                    },
+                    boxShadow: {
+                        'glow': '0 0 40px -10px rgba(99, 102, 241, 0.25)',
+                        'card': '0 1px 2px 0 rgba(0,0,0,0.3), 0 1px 3px 0 rgba(0,0,0,0.2)'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script>
+        (function() {
+            var theme = localStorage.getItem('zync-theme');
+            if (theme === 'light' || theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', theme);
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+    <script src="assets/js/theme.js" defer></script>
 </head>
-<body>
-    <div class="animated-bg" aria-hidden="true"></div>
+<body class="bg-slate-950 text-gray-200 font-inter antialiased selection:bg-accent/20 selection:text-white">
 
-    <header class="header">
-        <div class="container">
-            <a href="index.html" class="logo-link" style="text-decoration:none;">
-                <div class="logo">
-                    <img src="assets/images/logo.png" alt="ZyncPDF Logo" class="logo-img">
-                    <span class="logo-text">ZyncPDF</span>
-                </div>
+    <!-- Background ambient glow -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="relative z-50 border-b border-white/5 bg-slate-950/70 backdrop-blur-xl">
+        <div class="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3 group">
+                <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent font-bold text-lg group-hover:bg-accent/20 transition-colors">⚡</div>
+                <span class="text-lg font-bold tracking-tight text-white">ZyncTools</span>
             </a>
-            <nav class="nav">
-                <a href="#tools" class="nav-link">Tools</a>
-                <a href="pages/support.html" class="nav-link">Support</a>
-                <a href="pages/blog.html" class="nav-link">Blog</a>
-                <a href="pages/changelog.html" class="nav-link">Changelog</a>
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#tools" class="text-sm text-gray-400 hover:text-white transition-colors">Tools</a>
+                <a href="#categories" class="text-sm text-gray-400 hover:text-white transition-colors">Categories</a>
+                <a href="/pages/privacy.html" class="text-sm text-gray-400 hover:text-white transition-colors">Privacy</a>
+                <a href="/pages/support.html" class="text-sm text-gray-400 hover:text-white transition-colors">Support</a>
             </nav>
-            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-                <i class="fas fa-sun sun-icon"></i>
-                <i class="fas fa-moon moon-icon"></i>
-            </button>
+            <div class="flex items-center gap-3">
+                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/5 border border-accent/10">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span class="text-xs text-gray-400">100% Offline</span>
+                </div>
+                <button id="theme-toggle" class="w-9 h-9 rounded-xl bg-slate-900 border border-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/10 transition-all" aria-label="Toggle theme">
+                    <i class="fas fa-moon text-sm"></i>
+                </button>
+            </div>
         </div>
     </header>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>Your Files Stay With You.</h1>
-                <p class="hero-subtitle">30+ PDF tools. 100% private. No uploads. No registration. No cost.</p>
-                <a href="#tools" class="btn-primary">Open Toolbox</a>
+    <main class="relative z-10">
+        <!-- Hero -->
+        <section class="pt-20 pb-16 md:pt-28 md:pb-24">
+            <div class="mx-auto max-w-7xl px-6 text-center">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/5 border border-accent/10 text-accent text-xs font-medium mb-8">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    152 tools. Zero uploads. Zero tracking.
+                </div>
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white mb-6 leading-[1.1]">
+                    Utilities that respect<br class="hidden sm:block"> your privacy.
+                </h1>
+                <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                    Professional-grade tools running entirely in your browser. No servers. No data collection. Just fast, secure utilities.
+                </p>
+
+                <!-- Search -->
+                <div class="max-w-xl mx-auto mb-10">
+                    <div class="relative group">
+                        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <input id="search-input" type="text" placeholder="Search tools... (e.g. compress, json, pdf)" class="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-900 border border-white/5 text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all text-base">
+                    </div>
+                </div>
+
+                <!-- Category filters -->
+                <div id="category-filters" class="flex flex-wrap justify-center gap-2 mb-16">
+                    <button data-category="all" class="cat-btn active px-4 py-2 rounded-xl text-sm font-medium bg-accent/10 text-accent border border-accent/20 hover:bg-accent/15 transition-all">All Tools</button>
+                    <button data-category="image-tools" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-slate-900 text-gray-400 border border-white/5 hover:border-white/10 hover:text-white transition-all">Images</button>
+                    <button data-category="text-code-tools" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-slate-900 text-gray-400 border border-white/5 hover:border-white/10 hover:text-white transition-all">Text & Code</button>
+                    <button data-category="audio-video-tools" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-slate-900 text-gray-400 border border-white/5 hover:border-white/10 hover:text-white transition-all">Audio / Video</button>
+                    <button data-category="document-tools" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-slate-900 text-gray-400 border border-white/5 hover:border-white/10 hover:text-white transition-all">Documents</button>
+                    <button data-category="dev-math-tools" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-slate-900 text-gray-400 border border-white/5 hover:border-white/10 hover:text-white transition-all">Dev & Math</button>
+                    <button data-category="seo-web-dev-tools" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-slate-900 text-gray-400 border border-white/5 hover:border-white/10 hover:text-white transition-all">SEO & Web Dev</button>
+                </div>
             </div>
         </section>
 
-        <section id="tools" class="tools-section">
-            <div class="container">
-                <div class="tools-category">
-                    <h2 class="category-title"><i class="fas fa-file-pdf"></i> PDF Tools</h2>
-                    <div class="tools-grid">
-                        <a href="tools/merge-pdf.html" class="tool-card" data-tooltip="Combine multiple PDFs into one"><i class="fas fa-object-group"></i><span>Merge PDF</span></a>
-                        <a href="tools/split-pdf.html" class="tool-card" data-tooltip="Split PDF into separate pages or ranges"><i class="fas fa-scissors"></i><span>Split PDF</span></a>
-                        <a href="tools/compress-pdf.html" class="tool-card" data-tooltip="Reduce PDF file size"><i class="fas fa-compress-alt"></i><span>Compress PDF</span></a>
-                        <a href="tools/rotate-pdf.html" class="tool-card" data-tooltip="Fix PDF page orientation"><i class="fas fa-sync-alt"></i><span>Rotate PDF</span></a>
-                        <a href="tools/extract-pages.html" class="tool-card" data-tooltip="Select and extract specific pages"><i class="fas fa-file-export"></i><span>Extract Pages</span></a>
-                        <a href="tools/remove-pages.html" class="tool-card" data-tooltip="Delete unwanted pages from PDF"><i class="fas fa-trash-alt"></i><span>Remove Pages</span></a>
-                        <a href="tools/sort-pages.html" class="tool-card" data-tooltip="Reorder pages in any order"><i class="fas fa-sort"></i><span>Sort Pages</span></a>
-                        <a href="tools/flatten-pdf.html" class="tool-card" data-tooltip="Embed forms and annotations permanently"><i class="fas fa-layer-group"></i><span>Flatten PDF</span></a>
-                        <a href="tools/compare-pdfs.html" class="tool-card" data-tooltip="Side-by-side visual diff"><i class="fas fa-columns"></i><span>Compare PDFs</span></a>
-                        <a href="tools/pdf-text-editor.html" class="tool-card" data-tooltip="Click to edit text directly in PDF"><i class="fas fa-pen"></i><span>PDF Text Editor</span></a>
-                        <a href="tools/add-password.html" class="tool-card" data-tooltip="Encrypt PDF with AES-256 password"><i class="fas fa-lock"></i><span>Add Password</span></a>
-                        <a href="tools/remove-password.html" class="tool-card" data-tooltip="Remove password protection from PDF"><i class="fas fa-unlock"></i><span>Remove Password</span></a>
-                        <a href="tools/edit-metadata.html" class="tool-card" data-tooltip="View and edit document properties"><i class="fas fa-tag"></i><span>Edit Metadata</span></a>
-                        <a href="tools/remove-metadata.html" class="tool-card" data-tooltip="Strip all metadata from PDF"><i class="fas fa-eraser"></i><span>Remove Metadata</span></a>
-                    </div>
+        <!-- Bento Grid -->
+        <section id="tools" class="pb-24">
+            <div class="mx-auto max-w-7xl px-6">
+                <div id="bento-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Dynamically rendered -->
                 </div>
-
-                <div class="tools-category">
-                    <h2 class="category-title"><i class="fas fa-exchange-alt"></i> Convert PDF</h2>
-                    <div class="tools-grid">
-                        <a href="tools/pdf-to-png.html" class="tool-card" data-tooltip="Convert PDF pages to PNG images"><i class="fas fa-file-image"></i><span>PDF to PNG</span></a>
-                        <a href="tools/pdf-to-jpeg.html" class="tool-card" data-tooltip="Convert PDF pages to JPEG images"><i class="fas fa-file-image"></i><span>PDF to JPEG</span></a>
-                        <a href="tools/pdf-to-txt.html" class="tool-card" data-tooltip="Extract text from PDF files"><i class="fas fa-file-alt"></i><span>PDF to Text</span></a>
-                        <a href="tools/png-to-pdf.html" class="tool-card" data-tooltip="Convert PNG images to PDF"><i class="fas fa-images"></i><span>PNG to PDF</span></a>
-                        <a href="tools/jpeg-to-pdf.html" class="tool-card" data-tooltip="Convert JPEG images to PDF"><i class="fas fa-images"></i><span>JPEG to PDF</span></a>
-                        <a href="tools/webp-to-pdf.html" class="tool-card" data-tooltip="Convert WebP images to PDF"><i class="fas fa-images"></i><span>WebP to PDF</span></a>
-                        <a href="tools/webp-to-png.html" class="tool-card" data-tooltip="Convert WebP images to PNG"><i class="fas fa-images"></i><span>WebP to PNG</span></a>
-                        <a href="tools/webp-to-jpeg.html" class="tool-card" data-tooltip="Convert WebP images to JPEG"><i class="fas fa-images"></i><span>WebP to JPEG</span></a>
-                        <a href="tools/svg-to-pdf.html" class="tool-card" data-tooltip="Convert SVG vectors to PDF"><i class="fas fa-bezier-curve"></i><span>SVG to PDF</span></a>
-                        <a href="tools/svg-to-png.html" class="tool-card" data-tooltip="Convert SVG to PNG raster"><i class="fas fa-bezier-curve"></i><span>SVG to PNG</span></a>
-                        <a href="tools/svg-to-jpeg.html" class="tool-card" data-tooltip="Convert SVG to JPEG raster"><i class="fas fa-bezier-curve"></i><span>SVG to JPEG</span></a>
-                        <a href="tools/heif-to-pdf.html" class="tool-card" data-tooltip="Convert HEIC/HEIF images to PDF"><i class="fas fa-file-image"></i><span>HEIF/HEIC to PDF</span></a>
-                        <a href="tools/html-to-pdf.html" class="tool-card" data-tooltip="Convert HTML documents to PDF"><i class="fas fa-code"></i><span>HTML to PDF</span></a>
-                        <a href="tools/markdown-to-pdf.html" class="tool-card" data-tooltip="Convert Markdown files to PDF"><i class="fab fa-markdown"></i><span>Markdown to PDF</span></a>
-                        <a href="tools/txt-to-pdf.html" class="tool-card" data-tooltip="Convert plain text to PDF"><i class="fas fa-file-alt"></i><span>Text to PDF</span></a>
-                        <a href="tools/rtf-to-pdf.html" class="tool-card" data-tooltip="Convert RTF documents to PDF"><i class="fas fa-file-alt"></i><span>RTF to PDF</span></a>
-                        <a href="tools/word-to-pdf.html" class="tool-card" data-tooltip="Convert Word DOCX to PDF"><i class="fas fa-file-word"></i><span>Word to PDF</span></a>
-                        <a href="tools/excel-to-pdf.html" class="tool-card" data-tooltip="Convert Excel spreadsheets to PDF"><i class="fas fa-file-excel"></i><span>Excel to PDF</span></a>
-                        <a href="tools/ppt-to-pdf.html" class="tool-card" data-tooltip="Convert PowerPoint presentations to PDF"><i class="fas fa-file-powerpoint"></i><span>PowerPoint to PDF</span></a>
-                    </div>
-                </div>
-
-                <div class="tools-category">
-                    <h2 class="category-title"><i class="fas fa-image"></i> Image Tools</h2>
-                    <div class="tools-grid">
-                        <a href="tools/compress-image.html" class="tool-card" data-tooltip="Reduce image file size"><i class="fas fa-compress-arrows-alt"></i><span>Compress Image</span></a>
-                    </div>
-                </div>
-
-                <div class="tools-category">
-                    <h2 class="category-title"><i class="fas fa-info-circle"></i> About</h2>
-                    <div class="tools-grid">
-                        <a href="pages/blog.html" class="tool-card" data-tooltip="Latest updates and news"><i class="fas fa-newspaper"></i><span>Blog</span></a>
-                        <a href="pages/changelog.html" class="tool-card" data-tooltip="Version history and changelog"><i class="fas fa-list-ul"></i><span>Changelog</span></a>
-                        <a href="pages/support.html" class="tool-card" data-tooltip="Support our mission"><i class="fas fa-heart"></i><span>Support Us</span></a>
-                        <a href="pages/donate.html" class="tool-card" data-tooltip="Sponsor us on GitHub"><i class="fab fa-github"></i><span>Donate</span></a>
-                        <a href="pages/privacy.html" class="tool-card" data-tooltip="How we protect your data"><i class="fas fa-shield-alt"></i><span>Privacy Policy</span></a>
-                        <a href="pages/terms.html" class="tool-card" data-tooltip="Terms of service"><i class="fas fa-file-contract"></i><span>Terms of Service</span></a>
-                    </div>
+                <div id="no-results" class="hidden text-center py-20">
+                    <div class="text-gray-500 text-lg">No tools match your search.</div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="logo" style="justify-content:center;margin-bottom:28px;">
-                <img src="assets/images/logo.png" alt="ZyncPDF" class="logo-img" style="filter: brightness(0) invert(1);">
-                <span class="logo-text" style="color:white;background:none;">ZyncPDF</span>
+    <footer class="relative z-10 border-t border-white/5 py-12">
+        <div class="mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-7 h-7 rounded-md bg-accent/10 border border-accent/20 flex items-center justify-center text-accent font-bold text-sm">⚡</div>
+                <span class="text-sm font-semibold text-white">ZyncTools</span>
             </div>
-            <p style="text-align:center;color:#94a3b8;">&copy; 2025 ZyncPDF. Open source, privacy-first PDF tools.</p>
-            <p style="text-align:center;color:#94a3b8;margin-top:16px;">ðŸ‘€ Total Visits: <span id="visit-count">0</span></p>
+            <p class="text-sm text-gray-500">2026 ZyncTools. Open source, privacy-first utilities.</p>
         </div>
     </footer>
 
-    <script>
-        let visitCount = localStorage.getItem('zyncpdf_visits');
-        if (!visitCount) visitCount = 41723;
-        else visitCount = parseInt(visitCount) + 1;
-        localStorage.setItem('zyncpdf_visits', visitCount);
-        document.getElementById('visit-count').textContent = visitCount.toLocaleString();
-
-        document.querySelectorAll('.faq-question').forEach(function(question) {
-            question.addEventListener('click', function() {
-                var item = question.parentElement;
-                item.classList.toggle('active');
-                var answer = item.querySelector('.faq-answer');
-                if (answer) answer.style.display = item.classList.contains('active') ? 'block' : 'none';
-            });
-            var answer = question.parentElement.querySelector('.faq-answer');
-            if (answer) answer.style.display = 'none';
-        });
-
-        var themeToggle = document.getElementById('theme-toggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('click', function() {
-                if (window.themeManager) window.themeManager.toggle();
-            });
-        }
-    </script>
+    <script src="assets/js/app.js"></script>
 </body>
 </html>

@@ -1,0 +1,2191 @@
+{
+  "categories": [
+    {
+      "id": "image-tools",
+      "name": "Image Tools",
+      "icon": "fa-image",
+      "description": "Compress, convert, resize, crop, and edit images."
+    },
+    {
+      "id": "text-code-tools",
+      "name": "Text & Code Tools",
+      "icon": "fa-file-code",
+      "description": "Format, encode, hash, and transform text and code."
+    },
+    {
+      "id": "audio-video-tools",
+      "name": "Audio / Video Tools",
+      "icon": "fa-music",
+      "description": "Trim, convert, compress, and edit media files."
+    },
+    {
+      "id": "document-tools",
+      "name": "Document Tools",
+      "icon": "fa-file-alt",
+      "description": "Merge, split, convert, sign, and OCR documents."
+    },
+    {
+      "id": "dev-math-tools",
+      "name": "Dev & Math Tools",
+      "icon": "fa-code",
+      "description": "Generators, converters, calculators, and testing utilities."
+    },
+    {
+      "id": "seo-web-dev-tools",
+      "name": "SEO & Web Dev",
+      "icon": "fa-search",
+      "description": "SEO generators, web utilities, formatters, and developer tools."
+    }
+  ],
+  "tools": [
+    {
+      "id": "image-compressor",
+      "name": "Image Compressor",
+      "category": "image-tools",
+      "icon": "fa-compress-arrows-alt",
+      "description": "Reduce image file size while preserving quality.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": ["compressorjs"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/compressorjs@1.2.1/dist/compressor.min.js"
+      ],
+      "outputType": "blob",
+      "popular": true
+    },
+    {
+      "id": "image-resizer",
+      "name": "Image Resizer",
+      "category": "image-tools",
+      "icon": "fa-expand-arrows-alt",
+      "description": "Resize images to custom dimensions.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "popular": true
+    },
+    {
+      "id": "image-cropper",
+      "name": "Image Cropper",
+      "category": "image-tools",
+      "icon": "fa-crop-alt",
+      "description": "Crop images with a visual aspect ratio.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "image-converter",
+      "name": "Image Converter",
+      "category": "image-tools",
+      "icon": "fa-exchange-alt",
+      "description": "Convert between WebP, AVIF, HEIC, PNG, and JPEG.",
+      "accept": ".jpg,.jpeg,.png,.webp,.heic,.heif,.avif",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob",
+      "badge": "New"
+    },
+    {
+      "id": "image-rotate",
+      "name": "Rotate Image",
+      "category": "image-tools",
+      "icon": "fa-sync-alt",
+      "description": "Rotate images by 90, 180, or 270 degrees.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "image-flip",
+      "name": "Flip Image",
+      "category": "image-tools",
+      "icon": "fa-arrows-alt-h",
+      "description": "Flip images horizontally or vertically.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "image-watermark",
+      "name": "Watermark Image",
+      "category": "image-tools",
+      "icon": "fa-stamp",
+      "description": "Overlay text or image watermarks on photos.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "meme-generator",
+      "name": "Meme Generator",
+      "category": "image-tools",
+      "icon": "fa-theater-masks",
+      "description": "Add top and bottom text to create memes.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "exif-viewer",
+      "name": "EXIF Viewer",
+      "category": "image-tools",
+      "icon": "fa-info-circle",
+      "description": "Inspect image metadata and EXIF data.",
+      "accept": ".jpg,.jpeg,.tiff",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "exif-remover",
+      "name": "EXIF Remover",
+      "category": "image-tools",
+      "icon": "fa-eraser",
+      "description": "Strip metadata and EXIF from images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "color-picker-image",
+      "name": "Color Picker from Image",
+      "category": "image-tools",
+      "icon": "fa-eye-dropper",
+      "description": "Pick dominant and palette colors from images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "image-ocr",
+      "name": "Image to Text (OCR)",
+      "category": "image-tools",
+      "icon": "fa-font",
+      "description": "Extract text from images using browser OCR.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": ["tesseractjs"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"
+      ],
+      "outputType": "string"
+    },
+    {
+      "id": "batch-rename-images",
+      "name": "Batch Rename Images",
+      "category": "image-tools",
+      "icon": "fa-i-cursor",
+      "description": "Rename multiple images with a pattern.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": ["jszip"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "image-filters",
+      "name": "Filters / Effects",
+      "category": "image-tools",
+      "icon": "fa-magic",
+      "description": "Apply CSS-style filters to images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "image-blur",
+      "name": "Blur Image",
+      "category": "image-tools",
+      "icon": "fa-water",
+      "description": "Apply Gaussian blur to images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "background-remover",
+      "name": "Background Remover",
+      "category": "image-tools",
+      "icon": "fa-user-circle",
+      "description": "Remove simple backgrounds from images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "svg-optimizer",
+      "name": "SVG Optimizer",
+      "category": "image-tools",
+      "icon": "fa-bezier-curve",
+      "description": "Minify and clean SVG files.",
+      "accept": ".svg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "ico-converter",
+      "name": "ICO Converter",
+      "category": "image-tools",
+      "icon": "fa-image",
+      "description": "Convert PNG/JPEG to Windows ICO format.",
+      "accept": ".png,.jpg,.jpeg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "favicon-generator",
+      "name": "Favicon Generator",
+      "category": "image-tools",
+      "icon": "fa-star",
+      "description": "Generate favicons and app icons from an image.",
+      "accept": ".png,.jpg,.jpeg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "image-joiner",
+      "name": "Image Joiner",
+      "category": "image-tools",
+      "icon": "fa-layer-group",
+      "description": "Combine multiple images side-by-side or stacked.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "image-splitter",
+      "name": "Image Splitter",
+      "category": "image-tools",
+      "icon": "fa-cut",
+      "description": "Slice an image into tiles or strips.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "image-pixelate",
+      "name": "Pixelate Image",
+      "category": "image-tools",
+      "icon": "fa-th",
+      "description": "Pixelate images for privacy or artistic effect.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "image-grayscale",
+      "name": "Grayscale Image",
+      "category": "image-tools",
+      "icon": "fa-adjust",
+      "description": "Convert images to black and white.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "image-sepia",
+      "name": "Sepia Image",
+      "category": "image-tools",
+      "icon": "fa-palette",
+      "description": "Apply a sepia tone to images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "image-brightness-contrast",
+      "name": "Brightness / Contrast",
+      "category": "image-tools",
+      "icon": "fa-sun",
+      "description": "Adjust brightness and contrast of images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "image-histogram",
+      "name": "Histogram",
+      "category": "image-tools",
+      "icon": "fa-chart-bar",
+      "description": "View RGB histogram of an image.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "duplicate-image-finder",
+      "name": "Duplicate Image Finder",
+      "category": "image-tools",
+      "icon": "fa-copy",
+      "description": "Find visually similar or duplicate images.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "base64-image-encoder",
+      "name": "Base64 Image Encoder / Decoder",
+      "category": "image-tools",
+      "icon": "fa-code",
+      "description": "Encode and decode images to and from Base64.",
+      "accept": ".jpg,.jpeg,.png,.webp,.svg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "json-formatter",
+      "name": "JSON Formatter",
+      "category": "text-code-tools",
+      "icon": "fa-brackets-curly",
+      "description": "Beautify, minify, and validate JSON.",
+      "accept": ".json,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "popular": true,
+      "badge": "Hot"
+    },
+    {
+      "id": "xml-formatter",
+      "name": "XML Formatter",
+      "category": "text-code-tools",
+      "icon": "fa-code",
+      "description": "Beautify and validate XML documents.",
+      "accept": ".xml,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "sql-beautify",
+      "name": "SQL Beautify",
+      "category": "text-code-tools",
+      "icon": "fa-database",
+      "description": "Format SQL queries with proper indentation.",
+      "accept": ".sql,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "html-encoder-decoder",
+      "name": "HTML Encoder / Decoder",
+      "category": "text-code-tools",
+      "icon": "fa-html5",
+      "description": "Encode and decode HTML entities.",
+      "accept": ".html,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "url-encoder-decoder",
+      "name": "URL Encoder / Decoder",
+      "category": "text-code-tools",
+      "icon": "fa-link",
+      "description": "Encode and decode URL parameters.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "base64-text",
+      "name": "Base64 Text",
+      "category": "text-code-tools",
+      "icon": "fa-code",
+      "description": "Encode and decode text to Base64.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "popular": true
+    },
+    {
+      "id": "hash-generator",
+      "name": "MD5 / SHA Hash",
+      "category": "text-code-tools",
+      "icon": "fa-fingerprint",
+      "description": "Generate MD5, SHA-1, SHA-256, and SHA-512 hashes.",
+      "accept": ".txt,.bin",
+      "libraries": ["crypto-js"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"
+      ],
+      "outputType": "string",
+      "popular": true
+    },
+    {
+      "id": "uuid-generator",
+      "name": "UUID Generator",
+      "category": "text-code-tools",
+      "icon": "fa-fingerprint",
+      "description": "Generate random UUIDs / GUIDs.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "popular": true
+    },
+    {
+      "id": "lorem-ipsum",
+      "name": "Lorem Ipsum",
+      "category": "text-code-tools",
+      "icon": "fa-paragraph",
+      "description": "Generate placeholder text by paragraph or word.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "word-counter",
+      "name": "Word Counter",
+      "category": "text-code-tools",
+      "icon": "fa-calculator",
+      "description": "Count words, characters, sentences, and reading time.",
+      "accept": ".txt,.md",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "case-converter",
+      "name": "Case Converter",
+      "category": "text-code-tools",
+      "icon": "fa-font",
+      "description": "Convert text to upper, lower, camel, snake, and more.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "regex-tester",
+      "name": "Regex Tester",
+      "category": "text-code-tools",
+      "icon": "fa-asterisk",
+      "description": "Test regular expressions with match highlighting.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "badge": "Beta"
+    },
+    {
+      "id": "diff-checker",
+      "name": "Diff Checker",
+      "category": "text-code-tools",
+      "icon": "fa-not-equal",
+      "description": "Compare two texts and highlight differences.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "markdown-editor",
+      "name": "Markdown Editor",
+      "category": "text-code-tools",
+      "icon": "fab fa-markdown",
+      "description": "Write markdown with live preview.",
+      "accept": ".md,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "qr-code-generator",
+      "name": "QR Code Generator",
+      "category": "text-code-tools",
+      "icon": "fa-qrcode",
+      "description": "Generate QR codes from text or URLs.",
+      "accept": ".txt",
+      "libraries": ["qrcode"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"
+      ],
+      "outputType": "blob",
+      "badge": "New"
+    },
+    {
+      "id": "password-generator",
+      "name": "Password Generator",
+      "category": "text-code-tools",
+      "icon": "fa-key",
+      "description": "Generate secure random passwords.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "cron-builder",
+      "name": "Cron Builder",
+      "category": "text-code-tools",
+      "icon": "fa-clock",
+      "description": "Build and visualize cron expressions.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "jwt-decoder",
+      "name": "JWT Decoder",
+      "category": "text-code-tools",
+      "icon": "fa-unlock-alt",
+      "description": "Decode and inspect JSON Web Tokens.",
+      "accept": ".txt,.jwt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "unix-timestamp-converter",
+      "name": "Unix Timestamp Converter",
+      "category": "text-code-tools",
+      "icon": "fa-history",
+      "description": "Convert Unix timestamps to human-readable dates.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "ipv4-ipv6-converter",
+      "name": "IPv4 / IPv6 Converter",
+      "category": "text-code-tools",
+      "icon": "fa-network-wired",
+      "description": "Convert and validate IPv4 and IPv6 addresses.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "color-code-converter",
+      "name": "Color Code Converter",
+      "category": "text-code-tools",
+      "icon": "fa-palette",
+      "description": "Convert between HEX, RGB, HSL, and more.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "badge": "New"
+    },
+    {
+      "id": "css-minifier",
+      "name": "CSS Minifier",
+      "category": "text-code-tools",
+      "icon": "fa-css3-alt",
+      "description": "Minify and compress CSS code.",
+      "accept": ".css,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "js-minifier",
+      "name": "JS Minifier",
+      "category": "text-code-tools",
+      "icon": "fa-js-square",
+      "description": "Minify JavaScript code.",
+      "accept": ".js,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "slug-generator",
+      "name": "Slug Generator",
+      "category": "text-code-tools",
+      "icon": "fa-link",
+      "description": "Generate URL-friendly slugs from text.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "text-reverser",
+      "name": "Text Reverser",
+      "category": "text-code-tools",
+      "icon": "fa-exchange-alt",
+      "description": "Reverse text character by character.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "binary-hex-converter",
+      "name": "Binary / Hex Converter",
+      "category": "text-code-tools",
+      "icon": "fa-microchip",
+      "description": "Convert between binary, hex, decimal, and text.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "mp3-cutter",
+      "name": "MP3 Cutter",
+      "category": "audio-video-tools",
+      "icon": "fa-cut",
+      "description": "Trim MP3 files with millisecond precision.",
+      "accept": ".mp3,.wav,.ogg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "video-trimmer",
+      "name": "Video Trimmer",
+      "category": "audio-video-tools",
+      "icon": "fa-film",
+      "description": "Trim video files with frame-accurate controls.",
+      "accept": ".mp4,.webm,.mov",
+      "libraries": ["ffmpeg"],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob",
+      "badge": "New"
+    },
+    {
+      "id": "audio-converter",
+      "name": "Audio Converter",
+      "category": "audio-video-tools",
+      "icon": "fa-music",
+      "description": "Convert between MP3, WAV, OGG, and AAC.",
+      "accept": ".mp3,.wav,.ogg,.aac,.flac",
+      "libraries": ["ffmpeg"],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob",
+      "popular": true
+    },
+    {
+      "id": "video-converter",
+      "name": "Video Converter",
+      "category": "audio-video-tools",
+      "icon": "fa-video",
+      "description": "Convert between MP4, WebM, and MOV.",
+      "accept": ".mp4,.webm,.mov,.avi",
+      "libraries": ["ffmpeg"],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "compress-audio",
+      "name": "Compress Audio",
+      "category": "audio-video-tools",
+      "icon": "fa-volume-down",
+      "description": "Reduce audio file size with adjustable bitrate.",
+      "accept": ".mp3,.wav,.ogg,.flac",
+      "libraries": ["ffmpeg"],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob",
+      "popular": true
+    },
+    {
+      "id": "compress-video",
+      "name": "Compress Video",
+      "category": "audio-video-tools",
+      "icon": "fa-file-video",
+      "description": "Reduce video file size with quality presets.",
+      "accept": ".mp4,.webm,.mov",
+      "libraries": ["ffmpeg"],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "extract-audio",
+      "name": "Extract Audio from Video",
+      "category": "audio-video-tools",
+      "icon": "fa-volume-up",
+      "description": "Extract the audio track from a video file.",
+      "accept": ".mp4,.webm,.mov,.avi",
+      "libraries": ["ffmpeg"],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "merge-audio",
+      "name": "Merge Audio",
+      "category": "audio-video-tools",
+      "icon": "fa-object-group",
+      "description": "Join multiple audio files into one.",
+      "accept": ".mp3,.wav,.ogg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "merge-video",
+      "name": "Merge Video",
+      "category": "audio-video-tools",
+      "icon": "fa-film",
+      "description": "Join multiple video files into one.",
+      "accept": ".mp4,.webm,.mov",
+      "libraries": ["ffmpeg"],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "volume-normalizer",
+      "name": "Volume Normalizer",
+      "category": "audio-video-tools",
+      "icon": "fa-volume-up",
+      "description": "Normalize audio levels across files.",
+      "accept": ".mp3,.wav,.ogg,.flac",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "audio-speed-pitch",
+      "name": "Change Speed / Pitch",
+      "category": "audio-video-tools",
+      "icon": "fa-tachometer-alt",
+      "description": "Adjust playback speed and pitch of audio.",
+      "accept": ".mp3,.wav,.ogg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "record-audio",
+      "name": "Record Audio",
+      "category": "audio-video-tools",
+      "icon": "fa-microphone",
+      "description": "Record audio directly from the browser.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "record-screen",
+      "name": "Record Screen",
+      "category": "audio-video-tools",
+      "icon": "fa-desktop",
+      "description": "Record your screen as a video.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "gif-maker",
+      "name": "GIF Maker",
+      "category": "audio-video-tools",
+      "icon": "fa-file-video",
+      "description": "Create animated GIFs from images or video.",
+      "accept": ".jpg,.jpeg,.png,.webp,.mp4",
+      "libraries": ["gif.js"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "video-to-gif",
+      "name": "Video to GIF",
+      "category": "audio-video-tools",
+      "icon": "fa-file-video",
+      "description": "Convert video clips into animated GIFs.",
+      "accept": ".mp4,.webm,.mov",
+      "libraries": ["ffmpeg"],
+      "cdns": [
+        "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js",
+        "https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "audio-joiner",
+      "name": "Audio Joiner",
+      "category": "audio-video-tools",
+      "icon": "fa-object-group",
+      "description": "Join multiple audio tracks sequentially.",
+      "accept": ".mp3,.wav,.ogg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "ringtone-maker",
+      "name": "Ringtone Maker",
+      "category": "audio-video-tools",
+      "icon": "fa-mobile-alt",
+      "description": "Trim audio into a custom ringtone.",
+      "accept": ".mp3,.wav,.ogg,.m4a",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "audio-metadata-editor",
+      "name": "Metadata Editor",
+      "category": "audio-video-tools",
+      "icon": "fa-tag",
+      "description": "Edit ID3 tags and metadata in audio files.",
+      "accept": ".mp3,.wav,.ogg,.flac,.m4a",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "silence-remover",
+      "name": "Silence Remover",
+      "category": "audio-video-tools",
+      "icon": "fa-volume-mute",
+      "description": "Remove silent parts from audio recordings.",
+      "accept": ".mp3,.wav,.ogg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "audio-fade",
+      "name": "Fade In / Out",
+      "category": "audio-video-tools",
+      "icon": "fa-wave-square",
+      "description": "Apply fade in and fade out effects to audio.",
+      "accept": ".mp3,.wav,.ogg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "audio-visualizer",
+      "name": "Audio Visualizer",
+      "category": "audio-video-tools",
+      "icon": "fa-wave-square",
+      "description": "Visualize audio waveforms and frequencies.",
+      "accept": ".mp3,.wav,.ogg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "pdf-to-word",
+      "name": "PDF to Word",
+      "category": "document-tools",
+      "icon": "fa-file-word",
+      "description": "Convert PDF documents to editable Word files.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob",
+      "popular": true
+    },
+    {
+      "id": "word-to-pdf",
+      "name": "Word to PDF",
+      "category": "document-tools",
+      "icon": "fa-file-word",
+      "description": "Convert Word documents to PDF.",
+      "accept": ".docx",
+      "libraries": ["pdf-lib", "mammoth"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js",
+        "https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "pdf-to-jpg",
+      "name": "PDF to JPG",
+      "category": "document-tools",
+      "icon": "fa-file-image",
+      "description": "Convert PDF pages to JPEG images.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob",
+      "badge": "New"
+    },
+    {
+      "id": "jpg-to-pdf",
+      "name": "JPG to PDF",
+      "category": "document-tools",
+      "icon": "fa-images",
+      "description": "Convert JPEG images to PDF.",
+      "accept": ".jpg,.jpeg,.png",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "merge-pdf",
+      "name": "Merge PDF",
+      "category": "document-tools",
+      "icon": "fa-object-group",
+      "description": "Combine multiple PDF files into one.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob",
+      "popular": true,
+      "badge": "Hot"
+    },
+    {
+      "id": "split-pdf",
+      "name": "Split PDF",
+      "category": "document-tools",
+      "icon": "fa-scissors",
+      "description": "Split a PDF into separate files or page ranges.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "compress-pdf",
+      "name": "Compress PDF",
+      "category": "document-tools",
+      "icon": "fa-compress-alt",
+      "description": "Reduce PDF file size.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob",
+      "popular": true
+    },
+    {
+      "id": "rotate-pdf",
+      "name": "Rotate PDF",
+      "category": "document-tools",
+      "icon": "fa-sync-alt",
+      "description": "Rotate pages in a PDF.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "add-page-numbers",
+      "name": "Add Page Numbers",
+      "category": "document-tools",
+      "icon": "fa-sort-numeric-down",
+      "description": "Insert page numbers into a PDF.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "watermark-pdf",
+      "name": "Watermark PDF",
+      "category": "document-tools",
+      "icon": "fa-stamp",
+      "description": "Overlay text or image watermarks on PDF pages.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "unlock-pdf",
+      "name": "Unlock PDF",
+      "category": "document-tools",
+      "icon": "fa-unlock",
+      "description": "Remove password protection from a PDF.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "protect-pdf",
+      "name": "Protect PDF",
+      "category": "document-tools",
+      "icon": "fa-lock",
+      "description": "Encrypt a PDF with a password.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "html-to-pdf",
+      "name": "HTML to PDF",
+      "category": "document-tools",
+      "icon": "fa-code",
+      "description": "Convert HTML documents to PDF.",
+      "accept": ".html,.htm",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "markdown-to-pdf",
+      "name": "Markdown to PDF",
+      "category": "document-tools",
+      "icon": "fab fa-markdown",
+      "description": "Convert Markdown documents to PDF.",
+      "accept": ".md,.markdown,.txt",
+      "libraries": ["pdf-lib", "marked"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js",
+        "https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "ebook-converter",
+      "name": "E-book Converter",
+      "category": "document-tools",
+      "icon": "fa-book",
+      "description": "Convert between EPUB, MOBI, and PDF formats.",
+      "accept": ".epub,.mobi,.pdf",
+      "libraries": ["jszip"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "ocr-pdf",
+      "name": "OCR PDF",
+      "category": "document-tools",
+      "icon": "fa-font",
+      "description": "Run OCR on scanned PDFs to extract text.",
+      "accept": ".pdf",
+      "libraries": ["tesseractjs", "pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js",
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "sign-pdf",
+      "name": "Sign PDF",
+      "category": "document-tools",
+      "icon": "fa-signature",
+      "description": "Add a text or image signature to a PDF.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "delete-pages",
+      "name": "Delete Pages",
+      "category": "document-tools",
+      "icon": "fa-trash-alt",
+      "description": "Remove specific pages from a PDF.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "extract-pages",
+      "name": "Extract Pages",
+      "category": "document-tools",
+      "icon": "fa-file-export",
+      "description": "Extract selected pages from a PDF.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "rearrange-pages",
+      "name": "Rearrange Pages",
+      "category": "document-tools",
+      "icon": "fa-sort",
+      "description": "Reorder pages inside a PDF.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "compare-pdfs",
+      "name": "Compare PDFs",
+      "category": "document-tools",
+      "icon": "fa-columns",
+      "description": "Compare two PDFs side by side.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "string"
+    },
+    {
+      "id": "unit-converter",
+      "name": "Unit Converter",
+      "category": "dev-math-tools",
+      "icon": "fa-ruler",
+      "description": "Convert between length, weight, temperature, and more.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "binary-calculator",
+      "name": "Binary Calculator",
+      "category": "dev-math-tools",
+      "icon": "fa-microchip",
+      "description": "Perform arithmetic on binary numbers.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "hex-calculator",
+      "name": "Hex Calculator",
+      "category": "dev-math-tools",
+      "icon": "fa-microchip",
+      "description": "Perform arithmetic on hexadecimal numbers.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "percentage-calculator",
+      "name": "Percentage Calculator",
+      "category": "dev-math-tools",
+      "icon": "fa-percent",
+      "description": "Calculate percentages, discounts, and changes.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "aspect-ratio-calculator",
+      "name": "Aspect Ratio Calculator",
+      "category": "dev-math-tools",
+      "icon": "fa-crop-alt",
+      "description": "Calculate aspect ratios for images and video.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "css-shadow-generator",
+      "name": "CSS Shadow Generator",
+      "category": "dev-math-tools",
+      "icon": "fa-clone",
+      "description": "Generate CSS box-shadow values visually.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "css-gradient-generator",
+      "name": "CSS Gradient Generator",
+      "category": "dev-math-tools",
+      "icon": "fa-fill-drip",
+      "description": "Create linear and radial CSS gradients.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string",
+      "popular": true
+    },
+    {
+      "id": "border-radius-generator",
+      "name": "Border Radius Generator",
+      "category": "dev-math-tools",
+      "icon": "fa-square",
+      "description": "Generate border-radius CSS with visual controls.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "flexbox-generator",
+      "name": "Flexbox Generator",
+      "category": "dev-math-tools",
+      "icon": "fa-columns",
+      "description": "Visually build flexbox layouts and copy CSS.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "grid-generator",
+      "name": "Grid Generator",
+      "category": "dev-math-tools",
+      "icon": "fa-th-large",
+      "description": "Visually build CSS grid layouts.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "http-status-codes",
+      "name": "HTTP Status Codes",
+      "category": "dev-math-tools",
+      "icon": "fa-globe",
+      "description": "Lookup and search HTTP status codes.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "user-agent-parser",
+      "name": "User Agent Parser",
+      "category": "dev-math-tools",
+      "icon": "fa-desktop",
+      "description": "Parse browser and OS details from a user agent.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "what-is-my-ip",
+      "name": "What Is My IP",
+      "category": "dev-math-tools",
+      "icon": "fa-globe",
+      "description": "View your public IP address and basic info.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "dns-lookup",
+      "name": "DNS Lookup",
+      "category": "dev-math-tools",
+      "icon": "fa-search",
+      "description": "Simulated DNS record lookup for common types.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "ping-test",
+      "name": "Ping Test",
+      "category": "dev-math-tools",
+      "icon": "fa-bolt",
+      "description": "Simulated network ping and latency test.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "stopwatch",
+      "name": "Stopwatch",
+      "category": "dev-math-tools",
+      "icon": "fa-stopwatch",
+      "description": "Precision stopwatch with laps.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "timer",
+      "name": "Timer",
+      "category": "dev-math-tools",
+      "icon": "fa-hourglass-half",
+      "description": "Countdown timer with alerts.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "world-clock",
+      "name": "World Clock",
+      "category": "dev-math-tools",
+      "icon": "fa-clock",
+      "description": "Show current time across multiple cities.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "timezone-converter",
+      "name": "Time Zone Converter",
+      "category": "dev-math-tools",
+      "icon": "fa-exchange-alt",
+      "description": "Convert times between time zones.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "age-calculator",
+      "name": "Age Calculator",
+      "category": "dev-math-tools",
+      "icon": "fa-birthday-cake",
+      "description": "Calculate exact age from a birth date.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "date-difference",
+      "name": "Date Difference",
+      "category": "dev-math-tools",
+      "icon": "fa-calendar-alt",
+      "description": "Calculate days between two dates.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "binary-to-text",
+      "name": "Binary to Text",
+      "category": "dev-math-tools",
+      "icon": "fa-file-code",
+      "description": "Decode binary strings to readable text.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "ascii-converter",
+      "name": "ASCII Converter",
+      "category": "dev-math-tools",
+      "icon": "fa-keyboard",
+      "description": "Convert between characters and ASCII codes.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "box-shadow-generator",
+      "name": "Box Shadow Generator",
+      "category": "dev-math-tools",
+      "icon": "fa-clone",
+      "description": "Generate CSS box-shadow values visually.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "color-picker",
+      "name": "Color Picker",
+      "category": "dev-math-tools",
+      "icon": "fa-eye-dropper",
+      "description": "Pick colors and copy CSS values.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "gradient-preview",
+      "name": "Gradient Preview",
+      "category": "dev-math-tools",
+      "icon": "fa-fill-drip",
+      "description": "Preview CSS gradients with presets.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "font-preview",
+      "name": "Font Preview",
+      "category": "dev-math-tools",
+      "icon": "fa-font",
+      "description": "Preview text in system and web fonts.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "json-path-finder",
+      "name": "JSON Path Finder",
+      "category": "dev-math-tools",
+      "icon": "fa-map-marker-alt",
+      "description": "Query JSON with simple path expressions.",
+      "accept": ".json,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "regex-generator",
+      "name": "Regex Generator",
+      "category": "dev-math-tools",
+      "icon": "fa-asterisk",
+      "description": "Build regex patterns with a guided UI.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "sql-formatter",
+      "name": "SQL Formatter",
+      "category": "dev-math-tools",
+      "icon": "fa-database",
+      "description": "Format SQL queries with keyword casing.",
+      "accept": ".sql,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "image-metadata-viewer",
+      "name": "Image Metadata Viewer",
+      "category": "image-tools",
+      "icon": "fa-info-circle",
+      "description": "View image dimensions, size, and metadata.",
+      "accept": ".jpg,.jpeg,.png,.webp,.gif,.bmp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "image-compare",
+      "name": "Image Compare",
+      "category": "image-tools",
+      "icon": "fa-columns",
+      "description": "Compare two images side by side.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "image-watermark-batch",
+      "name": "Batch Watermark Images",
+      "category": "image-tools",
+      "icon": "fa-stamp",
+      "description": "Apply watermarks to multiple images at once.",
+      "accept": ".jpg,.jpeg,.png,.webp",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "yaml-formatter",
+      "name": "YAML Formatter",
+      "category": "text-code-tools",
+      "icon": "fa-file-code",
+      "description": "Beautify and validate YAML documents.",
+      "accept": ".yaml,.yml,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "toml-formatter",
+      "name": "TOML Formatter",
+      "category": "text-code-tools",
+      "icon": "fa-file-code",
+      "description": "Format TOML configuration files.",
+      "accept": ".toml,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "ini-editor",
+      "name": "INI Editor",
+      "category": "text-code-tools",
+      "icon": "fa-cog",
+      "description": "Edit and validate INI configuration files.",
+      "accept": ".ini,.txt,.cfg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "csv-formatter",
+      "name": "CSV Formatter",
+      "category": "text-code-tools",
+      "icon": "fa-table",
+      "description": "Format, sort, and clean CSV data.",
+      "accept": ".csv,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "audio-trimmer",
+      "name": "Audio Trimmer",
+      "category": "audio-video-tools",
+      "icon": "fa-cut",
+      "description": "Trim audio files with a waveform view.",
+      "accept": ".mp3,.wav,.ogg,.flac,.m4a",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "audio-splitter",
+      "name": "Audio Splitter",
+      "category": "audio-video-tools",
+      "icon": "fa-cut",
+      "description": "Split audio into multiple segments.",
+      "accept": ".mp3,.wav,.ogg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "audio-reverse",
+      "name": "Audio Reverse",
+      "category": "audio-video-tools",
+      "icon": "fa-exchange-alt",
+      "description": "Reverse audio playback for creative effects.",
+      "accept": ".mp3,.wav,.ogg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "audio-amplify",
+      "name": "Audio Amplify",
+      "category": "audio-video-tools",
+      "icon": "fa-volume-up",
+      "description": "Increase or decrease audio volume.",
+      "accept": ".mp3,.wav,.ogg,.flac",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "video-screenshot",
+      "name": "Video Screenshot",
+      "category": "audio-video-tools",
+      "icon": "fa-camera",
+      "description": "Extract frames from video as images.",
+      "accept": ".mp4,.webm,.mov",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "video-frame-extract",
+      "name": "Video Frame Extractor",
+      "category": "audio-video-tools",
+      "icon": "fa-images",
+      "description": "Extract all frames from a video.",
+      "accept": ".mp4,.webm,.mov",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "video-speed-change",
+      "name": "Video Speed Change",
+      "category": "audio-video-tools",
+      "icon": "fa-tachometer-alt",
+      "description": "Speed up or slow down video playback.",
+      "accept": ".mp4,.webm,.mov",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "video-reverse",
+      "name": "Video Reverse",
+      "category": "audio-video-tools",
+      "icon": "fa-exchange-alt",
+      "description": "Reverse video playback.",
+      "accept": ".mp4,.webm,.mov",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "video-merge-audio",
+      "name": "Merge Audio to Video",
+      "category": "audio-video-tools",
+      "icon": "fa-file-video",
+      "description": "Replace or add audio track to video.",
+      "accept": ".mp4,.webm,.mov,.mp3,.wav",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "audio-waveform",
+      "name": "Audio Waveform",
+      "category": "audio-video-tools",
+      "icon": "fa-wave-square",
+      "description": "Visualize audio waveform as an image.",
+      "accept": ".mp3,.wav,.ogg",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "blob"
+    },
+    {
+      "id": "pdf-redact",
+      "name": "PDF Redact",
+      "category": "document-tools",
+      "icon": "fa-eraser",
+      "description": "Permanently redact sensitive text from PDFs.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "pdf-annotate",
+      "name": "PDF Annotate",
+      "category": "document-tools",
+      "icon": "fa-sticky-note",
+      "description": "Add text annotations to PDF pages.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "pdf-highlight",
+      "name": "PDF Highlight",
+      "category": "document-tools",
+      "icon": "fa-highlighter",
+      "description": "Highlight text regions in PDFs.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "pdf-stamp",
+      "name": "PDF Stamp",
+      "category": "document-tools",
+      "icon": "fa-stamp",
+      "description": "Add image or text stamps to PDF pages.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "pdf-form-fill",
+      "name": "PDF Form Fill",
+      "category": "document-tools",
+      "icon": "fa-edit",
+      "description": "Fill PDF form fields with data.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "pdf-ocr-scan",
+      "name": "OCR Scanned PDF",
+      "category": "document-tools",
+      "icon": "fa-font",
+      "description": "OCR scanned PDFs and make text searchable.",
+      "accept": ".pdf",
+      "libraries": ["tesseractjs", "pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js",
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "pdf-merge-images",
+      "name": "Images to PDF",
+      "category": "document-tools",
+      "icon": "fa-images",
+      "description": "Combine images into a single PDF.",
+      "accept": ".jpg,.jpeg,.png,.webp,.bmp",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "pdf-add-header-footer",
+      "name": "PDF Header / Footer",
+      "category": "document-tools",
+      "icon": "fa-heading",
+      "description": "Add headers and footers to every page.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "pdf-extract-images",
+      "name": "Extract Images from PDF",
+      "category": "document-tools",
+      "icon": "fa-file-image",
+      "description": "Pull embedded images out of a PDF.",
+      "accept": ".pdf",
+      "libraries": ["pdf-lib", "jszip"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js",
+        "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "meta-tag-generator",
+      "name": "Meta Tag Generator",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-tags",
+      "description": "Generate HTML meta tags for SEO and social sharing.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "og-tag-generator",
+      "name": "OG Tag Generator",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-share-alt",
+      "description": "Create Open Graph meta tags for social previews.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "robots-txt-generator",
+      "name": "Robots.txt Generator",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-robot",
+      "description": "Build and validate robots.txt rules.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "sitemap-xml-generator",
+      "name": "Sitemap.xml Generator",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-sitemap",
+      "description": "Generate XML sitemaps from URLs.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "schema-markup-generator",
+      "name": "Schema Markup Generator",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-code",
+      "description": "Create JSON-LD structured data for rich results.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "canonical-tag-generator",
+      "name": "Canonical Tag Generator",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-link",
+      "description": "Generate canonical link tags to avoid duplicate content.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "hreflang-generator",
+      "name": "Hreflang Generator",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-globe",
+      "description": "Generate hreflang tags for multilingual SEO.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-md5-hash-generator",
+      "name": "MD5 / SHA Hash",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-fingerprint",
+      "description": "Generate MD5, SHA-1, SHA-256, and SHA-512 hashes.",
+      "accept": ".txt,.bin",
+      "libraries": ["crypto-js"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"
+      ],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-base64-encoder-decoder",
+      "name": "Base64 Encoder / Decoder",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-code",
+      "description": "Encode and decode text and files to Base64.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-url-encoder-decoder",
+      "name": "URL Encoder / Decoder",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-link",
+      "description": "Encode and decode URL parameters safely.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "html-minifier",
+      "name": "HTML Minifier",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-html5",
+      "description": "Minify HTML by removing whitespace and comments.",
+      "accept": ".html,.htm,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "css-minifier",
+      "name": "CSS Minifier",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-css3-alt",
+      "description": "Minify and compress CSS code.",
+      "accept": ".css,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "js-minifier",
+      "name": "JS Minifier",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-js-square",
+      "description": "Minify JavaScript code.",
+      "accept": ".js,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-json-formatter",
+      "name": "JSON Formatter",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-brackets-curly",
+      "description": "Beautify, minify, and validate JSON.",
+      "accept": ".json,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-xml-formatter",
+      "name": "XML Formatter",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-code",
+      "description": "Beautify and validate XML documents.",
+      "accept": ".xml,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-sql-beautifier",
+      "name": "SQL Beautifier",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-database",
+      "description": "Format SQL queries with proper indentation.",
+      "accept": ".sql,.txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-regex-tester",
+      "name": "Regex Tester",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-asterisk",
+      "description": "Test regular expressions with match highlighting.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-uuid-generator",
+      "name": "UUID Generator",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-fingerprint",
+      "description": "Generate random UUIDs / GUIDs.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-qr-code-generator",
+      "name": "QR Code Generator",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-qrcode",
+      "description": "Generate QR codes from text or URLs.",
+      "accept": ".txt",
+      "libraries": ["qrcode"],
+      "cdns": [
+        "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"
+      ],
+      "outputType": "blob"
+    },
+    {
+      "id": "seo-password-generator",
+      "name": "Password Generator",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-key",
+      "description": "Generate secure random passwords.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-word-counter",
+      "name": "Word Counter",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-calculator",
+      "description": "Count words, characters, sentences, and reading time.",
+      "accept": ".txt,.md",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-case-converter",
+      "name": "Case Converter",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-font",
+      "description": "Convert text to upper, lower, camel, snake, and more.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-slug-generator",
+      "name": "Slug Generator",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-link",
+      "description": "Generate URL-friendly slugs from text.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-unix-timestamp-converter",
+      "name": "Unix Timestamp Converter",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-history",
+      "description": "Convert Unix timestamps to human-readable dates.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-color-converter",
+      "name": "Color Converter",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-palette",
+      "description": "Convert between HEX, RGB, HSL, and more.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "contrast-checker",
+      "name": "Contrast Checker",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-adjust",
+      "description": "Check WCAG color contrast ratios.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-css-shadow-generator",
+      "name": "CSS Shadow Generator",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-clone",
+      "description": "Generate CSS box-shadow values visually.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-gradient-generator",
+      "name": "Gradient Generator",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-fill-drip",
+      "description": "Create linear and radial CSS gradients.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-aspect-ratio-calculator",
+      "name": "Aspect Ratio Calculator",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-crop-alt",
+      "description": "Calculate aspect ratios for images and video.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "pixel-to-rem-converter",
+      "name": "Pixel to REM Converter",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-ruler",
+      "description": "Convert pixel values to REM units.",
+      "accept": "",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-dns-lookup",
+      "name": "DNS Lookup",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-search",
+      "description": "Simulated DNS record lookup for common types.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    },
+    {
+      "id": "seo-user-agent-parser",
+      "name": "User Agent Parser",
+      "category": "seo-web-dev-tools",
+      "icon": "fa-desktop",
+      "description": "Parse browser and OS details from a user agent.",
+      "accept": ".txt",
+      "libraries": [],
+      "cdns": [],
+      "outputType": "string"
+    }
+  ]
+}
