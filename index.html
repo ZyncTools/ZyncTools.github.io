@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZyncTools — 300+ Privacy-First Utilities</title>
-    <meta name="description" content="300+ free, privacy-first, client-side utilities. No uploads. No tracking. No registration.">
+    <title>ZyncTools — 1200+ Privacy-First Utilities</title>
+    <meta name="description" content="1200+ free, privacy-first, client-side utilities. No uploads. No tracking. No registration.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%236366F1'>⚡</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,18 +36,11 @@
             }
         })();
     </script>
-    <script src="assets/js/theme.js" defer></script>
 </head>
-<body class="bg-slate-950 text-gray-200 font-inter antialiased selection:bg-accent/20 selection:text-white">
-
-    <!-- Background ambient glow -->
-    <div class="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
-    </div>
+<body class="antialiased">
 
     <!-- Header -->
-    <header class="relative z-50 border-b border-white/5 bg-slate-950/70 backdrop-blur-xl">
+    <header class="border-b border-white/5 bg-[#0B0C10]">
         <div class="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
             <a href="/" class="flex items-center gap-3 group">
                 <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent font-bold text-lg group-hover:bg-accent/20 transition-colors">⚡</div>
@@ -60,46 +53,39 @@
                 <a href="/pages/support.html" class="text-sm text-gray-400 hover:text-white transition-colors">Support</a>
             </nav>
             <div class="flex items-center gap-3">
-                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/5 border border-accent/10">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    <span class="text-xs text-gray-400">100% Offline</span>
-                </div>
-                <button id="theme-toggle" class="w-9 h-9 rounded-xl bg-slate-900 border border-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/10 transition-all" aria-label="Toggle theme">
+                <button id="theme-toggle" class="w-9 h-9 rounded-xl bg-[#151921] border border-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:border-white/10 transition-all" aria-label="Toggle theme">
                     <i data-lucide="moon" class="w-4 h-4"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="relative z-10">
+    <main>
         <!-- Hero -->
         <section class="pt-20 pb-16 md:pt-28 md:pb-24">
             <div class="mx-auto max-w-7xl px-6 text-center">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/5 border border-accent/10 text-accent text-xs font-medium mb-8">
+                <div class="hero-badge">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                    300+ tools. Zero uploads. Zero tracking.
+                    <span>1200+ tools. Zero uploads. Zero tracking.</span>
                 </div>
-                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white mb-6 leading-[1.1]">
+                <h1 class="hero-title">
                     Utilities that respect<br class="hidden sm:block"> your privacy.
                 </h1>
-                <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                <p class="hero-subtitle">
                     Professional-grade tools running entirely in your browser. No servers. No data collection. Just fast, secure utilities.
                 </p>
 
                 <!-- Search -->
                 <div class="max-w-xl mx-auto mb-10">
-                    <div class="relative group">
-                        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        <input id="search-input" type="text" placeholder="Search anything... (e.g. compress, jpg, photo)" class="w-full pl-12 pr-4 py-4 rounded-2xl bg-slate-900 border border-white/5 text-white placeholder-gray-500 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-all text-base" oninput="window.ZyncSearch.onSearch(this.value)">
+                    <div class="relative">
+                        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <input id="search-input" type="text" placeholder="Search anything... (e.g. compress, jpg, photo)" class="search-input" oninput="window.ZyncSearch.onSearch(this.value)">
                     </div>
                 </div>
 
                 <!-- Category filters -->
-                <div id="category-filters" class="flex flex-wrap justify-center gap-2 mb-6">
-                    <button data-category="all" class="cat-btn active px-4 py-2 rounded-xl text-sm font-medium bg-accent/10 text-accent border border-accent/20 hover:bg-accent/15 transition-all">All Tools</button>
+                <div id="category-filters" class="category-filters">
+                    <button data-category="all" class="cat-btn active">All Tools</button>
                 </div>
             </div>
         </section>
@@ -110,14 +96,14 @@
                 <div id="category-sections">
                     <!-- Dynamically rendered category sections -->
                 </div>
-                <div id="no-results" class="hidden text-center py-20">
-                    <div class="text-gray-500 text-lg">No tools match your search.</div>
+                <div id="no-results" class="no-results hidden">
+                    <div>No tools match your search.</div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="relative z-10 border-t border-white/5 py-12">
+    <footer class="border-t border-white/5 py-12">
         <div class="mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="flex items-center gap-3">
                 <div class="w-7 h-7 rounded-md bg-accent/10 border border-accent/20 flex items-center justify-center text-accent font-bold text-sm">⚡</div>
@@ -130,10 +116,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.min.js"></script>
     <script src="assets/js/tool-registry.js"></script>
-    <script src="assets/js/advanced-logic.js"></script>
-    <script src="assets/js/ui-components.js"></script>
-    <script src="assets/js/virtualized-grid.js"></script>
     <script src="assets/js/search-engine.js"></script>
     <script src="assets/js/dashboard-logic.js"></script>
+    <script src="assets/js/theme.js"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-19T11:39:14.482Z",
-  "totalTools": 1000,
+  "totalTools": 1234,
   "categories": [
     {
       "id": "images",
@@ -46,12 +46,6 @@
       "description": "Convert, calculate, and analyze numbers."
     },
     {
-      "id": "dev",
-      "name": "Developer Tools",
-      "icon": "fa-terminal",
-      "description": "Network, security, and testing utilities."
-    },
-    {
       "id": "security",
       "name": "Security & Privacy",
       "icon": "fa-shield-halved",
@@ -62,6 +56,24 @@
       "name": "AI & Creative",
       "icon": "fa-wand-magic-sparkles",
       "description": "AI-powered image, audio, and video tools."
+    },
+    {
+      "id": "media",
+      "name": "Media Converters",
+      "icon": "fa-film",
+      "description": "Convert, compress, and edit audio, video, and GIF files."
+    },
+    {
+      "id": "seo",
+      "name": "SEO Tools",
+      "icon": "fa-search",
+      "description": "Meta tags, schema markup, and content optimization tools."
+    },
+    {
+      "id": "dev-utils",
+      "name": "Dev Utilities",
+      "icon": "fa-terminal",
+      "description": "CSS generators, data converters, and network utilities."
     }
   ],
   "tools": [
@@ -26993,7 +27005,7 @@
     {
       "id": "dev-998",
       "name": "Dev Tool 998",
-      "category": "dev",
+      "category": "dev-utils",
       "type": "text",
       "icon": "fa-terminal",
       "library": "",
@@ -27068,6 +27080,4660 @@
         "mp3",
         "txt"
       ]
+    },
+    {
+      "id": "mp4-to-mp3",
+      "name": "MP4 to MP3",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "video",
+        "audio",
+        "convert",
+        "mp4",
+        "mp3"
+      ],
+      "formats": [
+        "mp4",
+        "mp3"
+      ],
+      "accept": ".mp4,.mov,.avi,.mkv,.webm",
+      "outputType": "blob",
+      "popular": true,
+      "seoTitle": "Convert MP4 to MP3 Online Free - No Upload",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "mov-to-mp3",
+      "name": "MOV to MP3",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "video",
+        "audio",
+        "convert",
+        "mov",
+        "mp3"
+      ],
+      "formats": [
+        "mov",
+        "mp3"
+      ],
+      "accept": ".mov,.mp4",
+      "outputType": "blob",
+      "seoTitle": "Convert MOV to MP3 Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "avi-to-wav",
+      "name": "AVI to WAV",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "video",
+        "audio",
+        "convert",
+        "avi",
+        "wav"
+      ],
+      "formats": [
+        "avi",
+        "wav"
+      ],
+      "accept": ".avi,.mp4",
+      "outputType": "blob",
+      "seoTitle": "Convert AVI to WAV Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "mkv-to-aac",
+      "name": "MKV to AAC",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "video",
+        "audio",
+        "convert",
+        "mkv",
+        "aac"
+      ],
+      "formats": [
+        "mkv",
+        "aac"
+      ],
+      "accept": ".mkv,.mp4",
+      "outputType": "blob",
+      "seoTitle": "Convert MKV to AAC Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "webm-to-ogg",
+      "name": "WebM to OGG",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "video",
+        "audio",
+        "convert",
+        "webm",
+        "ogg"
+      ],
+      "formats": [
+        "webm",
+        "ogg"
+      ],
+      "accept": ".webm,.mp4",
+      "outputType": "blob",
+      "seoTitle": "Convert WebM to OGG Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "compress-whatsapp",
+      "name": "Compress for WhatsApp",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-video",
+      "tags": [
+        "compress",
+        "video",
+        "whatsapp",
+        "social"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "accept": ".mp4,.mov",
+      "outputType": "blob",
+      "popular": true,
+      "seoTitle": "Compress Video for WhatsApp Online Free",
+      "library": "ffmpeg",
+      "function": "compressVideo"
+    },
+    {
+      "id": "compress-instagram",
+      "name": "Compress for Instagram",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-video",
+      "tags": [
+        "compress",
+        "video",
+        "instagram",
+        "social"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "accept": ".mp4,.mov",
+      "outputType": "blob",
+      "popular": true,
+      "seoTitle": "Compress Video for Instagram Online Free",
+      "library": "ffmpeg",
+      "function": "compressVideo"
+    },
+    {
+      "id": "compress-email",
+      "name": "Compress for Email",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-video",
+      "tags": [
+        "compress",
+        "video",
+        "email",
+        "small"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "accept": ".mp4,.mov",
+      "outputType": "blob",
+      "seoTitle": "Compress Video for Email Attachment Free",
+      "library": "ffmpeg",
+      "function": "compressVideo"
+    },
+    {
+      "id": "mp3-cutter",
+      "name": "MP3 Cutter",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-scissors",
+      "tags": [
+        "audio",
+        "cut",
+        "trim",
+        "mp3"
+      ],
+      "formats": [
+        "mp3"
+      ],
+      "accept": ".mp3,.wav,.ogg",
+      "outputType": "blob",
+      "popular": true,
+      "seoTitle": "Cut MP3 Online Free - Audio Trimmer",
+      "library": "ffmpeg",
+      "function": "cutAudio"
+    },
+    {
+      "id": "merge-mp3",
+      "name": "Merge MP3s",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-link",
+      "tags": [
+        "audio",
+        "merge",
+        "join",
+        "mp3"
+      ],
+      "formats": [
+        "mp3"
+      ],
+      "accept": ".mp3,.wav",
+      "outputType": "blob",
+      "seoTitle": "Merge MP3 Files Online Free",
+      "library": "ffmpeg",
+      "function": "mergeAudio"
+    },
+    {
+      "id": "audio-speed-changer",
+      "name": "Audio Speed Changer",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-gauge",
+      "tags": [
+        "audio",
+        "speed",
+        "pitch",
+        "tempo"
+      ],
+      "formats": [
+        "mp3"
+      ],
+      "accept": ".mp3,.wav,.ogg",
+      "outputType": "blob",
+      "seoTitle": "Change Audio Speed Online Free",
+      "library": "ffmpeg",
+      "function": "changeAudioSpeed"
+    },
+    {
+      "id": "audio-normalizer",
+      "name": "Audio Normalizer",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-volume-high",
+      "tags": [
+        "audio",
+        "normalize",
+        "volume",
+        "loudness"
+      ],
+      "formats": [
+        "mp3"
+      ],
+      "accept": ".mp3,.wav,.ogg",
+      "outputType": "blob",
+      "seoTitle": "Normalize Audio Volume Online Free",
+      "library": "ffmpeg",
+      "function": "normalizeAudio"
+    },
+    {
+      "id": "video-to-gif",
+      "name": "Video to GIF",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-image",
+      "tags": [
+        "video",
+        "gif",
+        "animate",
+        "convert"
+      ],
+      "formats": [
+        "gif"
+      ],
+      "accept": ".mp4,.webm,.mov",
+      "outputType": "blob",
+      "popular": true,
+      "seoTitle": "Convert Video to GIF Online Free",
+      "library": "ffmpeg",
+      "function": "videoToGif"
+    },
+    {
+      "id": "gif-to-mp4",
+      "name": "GIF to MP4",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-video",
+      "tags": [
+        "gif",
+        "video",
+        "convert",
+        "mp4"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "accept": ".gif",
+      "outputType": "blob",
+      "seoTitle": "Convert GIF to MP4 Online Free",
+      "library": "ffmpeg",
+      "function": "gifToMp4"
+    },
+    {
+      "id": "compress-gif",
+      "name": "Compress GIF",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-compress",
+      "tags": [
+        "gif",
+        "compress",
+        "optimize",
+        "size"
+      ],
+      "formats": [
+        "gif"
+      ],
+      "accept": ".gif",
+      "outputType": "blob",
+      "seoTitle": "Compress GIF Online Free - Reduce Size",
+      "library": "ffmpeg",
+      "function": "compressGif"
+    },
+    {
+      "id": "meta-title-generator",
+      "name": "Meta Title Generator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-heading",
+      "tags": [
+        "meta",
+        "title",
+        "seo",
+        "html"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "Meta Title Generator - Free SEO Tool",
+      "library": "",
+      "function": "generateMetaTags"
+    },
+    {
+      "id": "meta-description-generator",
+      "name": "Meta Description Generator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-align-left",
+      "tags": [
+        "meta",
+        "description",
+        "seo",
+        "html"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Meta Description Generator - Free SEO Tool",
+      "library": "",
+      "function": "generateMetaTags"
+    },
+    {
+      "id": "og-tag-generator",
+      "name": "OG Tag Generator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-share-nodes",
+      "tags": [
+        "og",
+        "opengraph",
+        "facebook",
+        "social"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "OG Tag Generator - Open Graph Meta Tags",
+      "library": "",
+      "function": "generateOgTags"
+    },
+    {
+      "id": "twitter-card-generator",
+      "name": "Twitter Card Generator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-twitter",
+      "tags": [
+        "twitter",
+        "card",
+        "social",
+        "meta"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Twitter Card Generator - Free Tool",
+      "library": "",
+      "function": "generateTwitterCard"
+    },
+    {
+      "id": "schema-markup-generator",
+      "name": "Schema Markup Generator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-code",
+      "tags": [
+        "schema",
+        "structured",
+        "data",
+        "json-ld"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "Schema Markup Generator - JSON-LD Free",
+      "library": "",
+      "function": "generateArticleSchema"
+    },
+    {
+      "id": "hreflang-tag-generator",
+      "name": "Hreflang Tag Generator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-globe",
+      "tags": [
+        "hreflang",
+        "i18n",
+        "language",
+        "seo"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Hreflang Tag Generator - Free SEO Tool",
+      "library": "",
+      "function": "generateHreflangTags"
+    },
+    {
+      "id": "canonical-url-generator",
+      "name": "Canonical URL Generator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-link",
+      "tags": [
+        "canonical",
+        "url",
+        "duplicate",
+        "seo"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Canonical URL Generator - Free Tool",
+      "library": "",
+      "function": "generateCanonicalTag"
+    },
+    {
+      "id": "robots-txt-generator",
+      "name": "Robots.txt Generator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-robot",
+      "tags": [
+        "robots",
+        "txt",
+        "crawler",
+        "seo"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "Robots.txt Generator - Free SEO Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "sitemap-xml-generator",
+      "name": "Sitemap XML Generator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-sitemap",
+      "tags": [
+        "sitemap",
+        "xml",
+        "crawler",
+        "seo"
+      ],
+      "formats": [
+        "xml"
+      ],
+      "accept": ".txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "Sitemap XML Generator - Free SEO Tool",
+      "library": "",
+      "function": "generateSitemapXml"
+    },
+    {
+      "id": "heading-extractor",
+      "name": "Heading Tag Extractor",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-heading",
+      "tags": [
+        "heading",
+        "h1",
+        "h2",
+        "h3",
+        "structure"
+      ],
+      "formats": [
+        "html"
+      ],
+      "accept": ".html,.txt",
+      "outputType": "string",
+      "seoTitle": "Heading Tag Extractor - Free SEO Tool",
+      "library": "",
+      "function": "extractHeadings"
+    },
+    {
+      "id": "word-counter-seo",
+      "name": "Word Counter",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-calculator",
+      "tags": [
+        "word",
+        "count",
+        "reading",
+        "time"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "Word Counter - Free Online Tool",
+      "library": "",
+      "function": "countWords"
+    },
+    {
+      "id": "keyword-density-checker",
+      "name": "Keyword Density Checker",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-chart-bar",
+      "tags": [
+        "keyword",
+        "density",
+        "seo",
+        "analysis"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Keyword Density Checker - Free SEO Tool",
+      "library": "",
+      "function": "calculateKeywordDensity"
+    },
+    {
+      "id": "plagiarism-checker",
+      "name": "Plagiarism Checker",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-copy",
+      "tags": [
+        "plagiarism",
+        "checker",
+        "original",
+        "content"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Plagiarism Checker - Free Online Tool",
+      "library": "",
+      "function": "checkPlagiarism"
+    },
+    {
+      "id": "faq-generator",
+      "name": "FAQ Generator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-circle-question",
+      "tags": [
+        "faq",
+        "questions",
+        "schema",
+        "seo"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "FAQ Generator - Free SEO Tool",
+      "library": "",
+      "function": "generateFaqFromText"
+    },
+    {
+      "id": "google-maps-link-generator",
+      "name": "Google Maps Link Generator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-map",
+      "tags": [
+        "google",
+        "maps",
+        "local",
+        "seo"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Google Maps Link Generator - Free Tool",
+      "library": "",
+      "function": "generateGoogleMapsLink"
+    },
+    {
+      "id": "gmb-post-generator",
+      "name": "GMB Post Generator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-post",
+      "tags": [
+        "gmb",
+        "google",
+        "my",
+        "business",
+        "local"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "GMB Post Generator - Free Local SEO Tool",
+      "library": "",
+      "function": "generateGmbPost"
+    },
+    {
+      "id": "nap-formatter",
+      "name": "NAP Formatter",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-address-card",
+      "tags": [
+        "nap",
+        "citation",
+        "local",
+        "seo"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "NAP Formatter - Free Local SEO Tool",
+      "library": "",
+      "function": "formatNap"
+    },
+    {
+      "id": "box-shadow-generator",
+      "name": "Box Shadow Generator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-square",
+      "tags": [
+        "css",
+        "box",
+        "shadow",
+        "generator"
+      ],
+      "formats": [
+        "css"
+      ],
+      "accept": ".txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "Box Shadow Generator - Free CSS Tool",
+      "library": "",
+      "function": "generateBoxShadow"
+    },
+    {
+      "id": "gradient-generator",
+      "name": "Gradient Generator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-palette",
+      "tags": [
+        "css",
+        "gradient",
+        "linear",
+        "radial"
+      ],
+      "formats": [
+        "css"
+      ],
+      "accept": ".txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "CSS Gradient Generator - Free Tool",
+      "library": "",
+      "function": "generateGradient"
+    },
+    {
+      "id": "border-radius-generator",
+      "name": "Border Radius Generator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-vector-square",
+      "tags": [
+        "css",
+        "border",
+        "radius",
+        "rounded"
+      ],
+      "formats": [
+        "css"
+      ],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Border Radius Generator - Free CSS Tool",
+      "library": "",
+      "function": "generateBorderRadius"
+    },
+    {
+      "id": "flexbox-generator",
+      "name": "Flexbox Generator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-layer-group",
+      "tags": [
+        "css",
+        "flexbox",
+        "layout",
+        "flex"
+      ],
+      "formats": [
+        "css"
+      ],
+      "accept": ".txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "Flexbox Generator - Free CSS Tool",
+      "library": "",
+      "function": "generateFlexbox"
+    },
+    {
+      "id": "css-grid-generator",
+      "name": "CSS Grid Generator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-table-cells",
+      "tags": [
+        "css",
+        "grid",
+        "layout",
+        "columns"
+      ],
+      "formats": [
+        "css"
+      ],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "CSS Grid Generator - Free Tool",
+      "library": "",
+      "function": "generateCssGrid"
+    },
+    {
+      "id": "clip-path-generator",
+      "name": "Clip Path Generator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-crop",
+      "tags": [
+        "css",
+        "clip",
+        "path",
+        "shape"
+      ],
+      "formats": [
+        "css"
+      ],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Clip Path Generator - Free CSS Tool",
+      "library": "",
+      "function": "generateClipPath"
+    },
+    {
+      "id": "glassmorphism-generator",
+      "name": "Glassmorphism Generator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-glass-water",
+      "tags": [
+        "css",
+        "glass",
+        "blur",
+        "modern"
+      ],
+      "formats": [
+        "css"
+      ],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Glassmorphism Generator - Free CSS Tool",
+      "library": "",
+      "function": "generateGlassmorphism"
+    },
+    {
+      "id": "csv-to-json-dev",
+      "name": "CSV to JSON",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-table",
+      "tags": [
+        "csv",
+        "json",
+        "convert",
+        "data"
+      ],
+      "formats": [
+        "csv",
+        "json"
+      ],
+      "accept": ".csv,.txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "CSV to JSON Converter - Free Online Tool",
+      "library": "",
+      "function": "csvToJson"
+    },
+    {
+      "id": "json-to-csv-dev",
+      "name": "JSON to CSV",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-file-csv",
+      "tags": [
+        "json",
+        "csv",
+        "convert",
+        "data"
+      ],
+      "formats": [
+        "csv",
+        "json"
+      ],
+      "accept": ".json,.txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "JSON to CSV Converter - Free Online Tool",
+      "library": "",
+      "function": "jsonToCsv"
+    },
+    {
+      "id": "xml-to-json-dev",
+      "name": "XML to JSON",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-code",
+      "tags": [
+        "xml",
+        "json",
+        "convert",
+        "data"
+      ],
+      "formats": [
+        "xml",
+        "json"
+      ],
+      "accept": ".xml,.txt",
+      "outputType": "string",
+      "seoTitle": "XML to JSON Converter - Free Online Tool",
+      "library": "",
+      "function": "xmlToJson"
+    },
+    {
+      "id": "sql-to-json-dev",
+      "name": "SQL to JSON",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-database",
+      "tags": [
+        "sql",
+        "json",
+        "database",
+        "convert"
+      ],
+      "formats": [
+        "sql",
+        "json"
+      ],
+      "accept": ".sql,.txt",
+      "outputType": "string",
+      "seoTitle": "SQL to JSON Converter - Free Online Tool",
+      "library": "",
+      "function": "sqlToJson"
+    },
+    {
+      "id": "yaml-to-json-dev",
+      "name": "YAML to JSON",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-brackets-curly",
+      "tags": [
+        "yaml",
+        "json",
+        "convert",
+        "config"
+      ],
+      "formats": [
+        "yaml",
+        "json"
+      ],
+      "accept": ".yaml,.yml,.txt",
+      "outputType": "string",
+      "seoTitle": "YAML to JSON Converter - Free Online Tool",
+      "library": "",
+      "function": "yamlToJson"
+    },
+    {
+      "id": "jwt-decoder-dev",
+      "name": "JWT Decoder",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-lock",
+      "tags": [
+        "jwt",
+        "token",
+        "decode",
+        "auth"
+      ],
+      "formats": [
+        "jwt"
+      ],
+      "accept": ".txt,.jwt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "JWT Decoder - Free Online Tool",
+      "library": "",
+      "function": "decodeJwt"
+    },
+    {
+      "id": "uuid-generator-dev",
+      "name": "UUID Generator",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-fingerprint",
+      "tags": [
+        "uuid",
+        "guid",
+        "unique",
+        "id"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "UUID Generator - Free Online Tool",
+      "library": "",
+      "function": "generateUuid"
+    },
+    {
+      "id": "bcrypt-generator",
+      "name": "Bcrypt Generator",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-hashtag",
+      "tags": [
+        "bcrypt",
+        "hash",
+        "password",
+        "security"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "seoTitle": "Bcrypt Generator - Free Online Tool",
+      "library": "",
+      "function": "generateBcrypt"
+    },
+    {
+      "id": "user-agent-parser-dev",
+      "name": "User-Agent Parser",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-monitor",
+      "tags": [
+        "user",
+        "agent",
+        "browser",
+        "parse"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "User-Agent Parser - Free Online Tool",
+      "library": "",
+      "function": "parseUserAgent"
+    },
+    {
+      "id": "ip-lookup",
+      "name": "IP Address Lookup",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-globe",
+      "tags": [
+        "ip",
+        "lookup",
+        "geo",
+        "location"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "IP Address Lookup - Free Online Tool",
+      "library": "",
+      "function": "lookupIp"
+    },
+    {
+      "id": "dns-lookup-dev",
+      "name": "DNS Lookup",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-search",
+      "tags": [
+        "dns",
+        "lookup",
+        "records",
+        "domain"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "DNS Lookup - Free Online Tool",
+      "library": "",
+      "function": "simulateDnsLookup"
+    },
+    {
+      "id": "http-status-checker",
+      "name": "HTTP Status Checker",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-globe",
+      "tags": [
+        "http",
+        "status",
+        "code",
+        "checker"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "HTTP Status Checker - Free Online Tool",
+      "library": "",
+      "function": "getHttpStatusInfo"
+    },
+    {
+      "id": "mp4-to-mkv",
+      "name": "MP4 to MKV",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-video",
+      "tags": [
+        "video",
+        "convert",
+        "mp4",
+        "mkv"
+      ],
+      "formats": [
+        "mp4",
+        "mkv"
+      ],
+      "accept": ".mp4,.mov",
+      "outputType": "blob",
+      "seoTitle": "Convert MP4 to MKV Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "avi-to-mp4",
+      "name": "AVI to MP4",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-video",
+      "tags": [
+        "video",
+        "convert",
+        "avi",
+        "mp4"
+      ],
+      "formats": [
+        "avi",
+        "mp4"
+      ],
+      "accept": ".avi,.mp4",
+      "outputType": "blob",
+      "seoTitle": "Convert AVI to MP4 Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "mkv-to-mp4",
+      "name": "MKV to MP4",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-video",
+      "tags": [
+        "video",
+        "convert",
+        "mkv",
+        "mp4"
+      ],
+      "formats": [
+        "mkv",
+        "mp4"
+      ],
+      "accept": ".mkv,.mp4",
+      "outputType": "blob",
+      "seoTitle": "Convert MKV to MP4 Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "webm-to-mp4",
+      "name": "WebM to MP4",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-video",
+      "tags": [
+        "video",
+        "convert",
+        "webm",
+        "mp4"
+      ],
+      "formats": [
+        "webm",
+        "mp4"
+      ],
+      "accept": ".webm,.mp4",
+      "outputType": "blob",
+      "seoTitle": "Convert WebM to MP4 Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "flv-to-mp4",
+      "name": "FLV to MP4",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-video",
+      "tags": [
+        "video",
+        "convert",
+        "flv",
+        "mp4"
+      ],
+      "formats": [
+        "flv",
+        "mp4"
+      ],
+      "accept": ".flv,.mp4",
+      "outputType": "blob",
+      "seoTitle": "Convert FLV to MP4 Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "wav-to-mp3",
+      "name": "WAV to MP3",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "audio",
+        "convert",
+        "wav",
+        "mp3"
+      ],
+      "formats": [
+        "wav",
+        "mp3"
+      ],
+      "accept": ".wav,.mp3",
+      "outputType": "blob",
+      "seoTitle": "Convert WAV to MP3 Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "aac-to-mp3",
+      "name": "AAC to MP3",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "audio",
+        "convert",
+        "aac",
+        "mp3"
+      ],
+      "formats": [
+        "aac",
+        "mp3"
+      ],
+      "accept": ".aac,.mp3",
+      "outputType": "blob",
+      "seoTitle": "Convert AAC to MP3 Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "ogg-to-mp3",
+      "name": "OGG to MP3",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "audio",
+        "convert",
+        "ogg",
+        "mp3"
+      ],
+      "formats": [
+        "ogg",
+        "mp3"
+      ],
+      "accept": ".ogg,.mp3",
+      "outputType": "blob",
+      "seoTitle": "Convert OGG to MP3 Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "flac-to-mp3",
+      "name": "FLAC to MP3",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "audio",
+        "convert",
+        "flac",
+        "mp3"
+      ],
+      "formats": [
+        "flac",
+        "mp3"
+      ],
+      "accept": ".flac,.mp3",
+      "outputType": "blob",
+      "seoTitle": "Convert FLAC to MP3 Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "m4a-to-mp3",
+      "name": "M4A to MP3",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "audio",
+        "convert",
+        "m4a",
+        "mp3"
+      ],
+      "formats": [
+        "m4a",
+        "mp3"
+      ],
+      "accept": ".m4a,.mp3",
+      "outputType": "blob",
+      "seoTitle": "Convert M4A to MP3 Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "wma-to-mp3",
+      "name": "WMA to MP3",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "audio",
+        "convert",
+        "wma",
+        "mp3"
+      ],
+      "formats": [
+        "wma",
+        "mp3"
+      ],
+      "accept": ".wma,.mp3",
+      "outputType": "blob",
+      "seoTitle": "Convert WMA to MP3 Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "audio-converter",
+      "name": "Universal Audio Converter",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "audio",
+        "convert",
+        "universal",
+        "all"
+      ],
+      "formats": [
+        "mp3",
+        "wav",
+        "ogg",
+        "aac",
+        "flac"
+      ],
+      "accept": ".mp3,.wav,.ogg,.aac,.flac,.m4a,.wma",
+      "outputType": "blob",
+      "popular": true,
+      "seoTitle": "Universal Audio Converter - Free Online",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "video-converter",
+      "name": "Universal Video Converter",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-video",
+      "tags": [
+        "video",
+        "convert",
+        "universal",
+        "all"
+      ],
+      "formats": [
+        "mp4",
+        "webm",
+        "mov",
+        "avi",
+        "mkv"
+      ],
+      "accept": ".mp4,.webm,.mov,.avi,.mkv,.flv",
+      "outputType": "blob",
+      "popular": true,
+      "seoTitle": "Universal Video Converter - Free Online",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "compress-mp4",
+      "name": "Compress MP4",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-compress",
+      "tags": [
+        "compress",
+        "mp4",
+        "video",
+        "reduce"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "accept": ".mp4,.mov",
+      "outputType": "blob",
+      "seoTitle": "Compress MP4 Video Online Free",
+      "library": "ffmpeg",
+      "function": "compressVideo"
+    },
+    {
+      "id": "compress-mov",
+      "name": "Compress MOV",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-compress",
+      "tags": [
+        "compress",
+        "mov",
+        "video",
+        "reduce"
+      ],
+      "formats": [
+        "mov"
+      ],
+      "accept": ".mov,.mp4",
+      "outputType": "blob",
+      "seoTitle": "Compress MOV Video Online Free",
+      "library": "ffmpeg",
+      "function": "compressVideo"
+    },
+    {
+      "id": "compress-avi",
+      "name": "Compress AVI",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-compress",
+      "tags": [
+        "compress",
+        "avi",
+        "video",
+        "reduce"
+      ],
+      "formats": [
+        "avi"
+      ],
+      "accept": ".avi,.mp4",
+      "outputType": "blob",
+      "seoTitle": "Compress AVI Video Online Free",
+      "library": "ffmpeg",
+      "function": "compressVideo"
+    },
+    {
+      "id": "compress-mkv",
+      "name": "Compress MKV",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-compress",
+      "tags": [
+        "compress",
+        "mkv",
+        "video",
+        "reduce"
+      ],
+      "formats": [
+        "mkv"
+      ],
+      "accept": ".mkv,.mp4",
+      "outputType": "blob",
+      "seoTitle": "Compress MKV Video Online Free",
+      "library": "ffmpeg",
+      "function": "compressVideo"
+    },
+    {
+      "id": "compress-webm",
+      "name": "Compress WebM",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-compress",
+      "tags": [
+        "compress",
+        "webm",
+        "video",
+        "reduce"
+      ],
+      "formats": [
+        "webm"
+      ],
+      "accept": ".webm,.mp4",
+      "outputType": "blob",
+      "seoTitle": "Compress WebM Video Online Free",
+      "library": "ffmpeg",
+      "function": "compressVideo"
+    },
+    {
+      "id": "extract-audio",
+      "name": "Extract Audio from Video",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "extract",
+        "audio",
+        "video",
+        "rip"
+      ],
+      "formats": [
+        "mp3"
+      ],
+      "accept": ".mp4,.mov,.avi,.mkv,.webm",
+      "outputType": "blob",
+      "popular": true,
+      "seoTitle": "Extract Audio from Video Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "remove-audio",
+      "name": "Remove Audio from Video",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-volume-xmark",
+      "tags": [
+        "remove",
+        "audio",
+        "video",
+        "mute"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "accept": ".mp4,.mov",
+      "outputType": "blob",
+      "seoTitle": "Remove Audio from Video Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "add-audio-to-video",
+      "name": "Add Audio to Video",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "add",
+        "audio",
+        "video",
+        "merge"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "accept": ".mp4,.mp3,.wav",
+      "outputType": "blob",
+      "seoTitle": "Add Audio to Video Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "video-trimmer",
+      "name": "Video Trimmer",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-scissors",
+      "tags": [
+        "video",
+        "trim",
+        "cut",
+        "split"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "accept": ".mp4,.mov,.webm",
+      "outputType": "blob",
+      "popular": true,
+      "seoTitle": "Trim Video Online Free - Video Cutter",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "video-splitter",
+      "name": "Video Splitter",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-cut",
+      "tags": [
+        "video",
+        "split",
+        "parts",
+        "chunks"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "accept": ".mp4,.mov",
+      "outputType": "blob",
+      "seoTitle": "Split Video Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "video-joiner",
+      "name": "Video Joiner",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-link",
+      "tags": [
+        "video",
+        "join",
+        "merge",
+        "combine"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "accept": ".mp4,.mov,.webm",
+      "outputType": "blob",
+      "seoTitle": "Join Videos Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "video-reverser",
+      "name": "Video Reverser",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-arrow-left-right",
+      "tags": [
+        "video",
+        "reverse",
+        "backwards",
+        "play"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "accept": ".mp4,.mov,.webm",
+      "outputType": "blob",
+      "seoTitle": "Reverse Video Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "video-speed-changer",
+      "name": "Video Speed Changer",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-gauge",
+      "tags": [
+        "video",
+        "speed",
+        "slow",
+        "fast"
+      ],
+      "formats": [
+        "mp4"
+      ],
+      "accept": ".mp4,.mov",
+      "outputType": "blob",
+      "seoTitle": "Change Video Speed Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "video-frame-extract",
+      "name": "Video Frame Extractor",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-image",
+      "tags": [
+        "video",
+        "frame",
+        "screenshot",
+        "extract"
+      ],
+      "formats": [
+        "png"
+      ],
+      "accept": ".mp4,.mov",
+      "outputType": "blob",
+      "seoTitle": "Extract Frames from Video Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "audio-converter-batch",
+      "name": "Batch Audio Converter",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-music",
+      "tags": [
+        "audio",
+        "batch",
+        "convert",
+        "multiple"
+      ],
+      "formats": [
+        "mp3",
+        "wav"
+      ],
+      "accept": ".mp3,.wav,.ogg,.aac,.flac",
+      "outputType": "blob",
+      "seoTitle": "Batch Audio Converter - Convert Multiple Files",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "audio-merger",
+      "name": "Audio Merger",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-link",
+      "tags": [
+        "audio",
+        "merge",
+        "join",
+        "combine"
+      ],
+      "formats": [
+        "mp3"
+      ],
+      "accept": ".mp3,.wav,.ogg",
+      "outputType": "blob",
+      "seoTitle": "Merge Audio Files Online Free",
+      "library": "ffmpeg",
+      "function": "mergeAudio"
+    },
+    {
+      "id": "audio-reverser",
+      "name": "Audio Reverser",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-arrow-left-right",
+      "tags": [
+        "audio",
+        "reverse",
+        "backwards"
+      ],
+      "formats": [
+        "mp3"
+      ],
+      "accept": ".mp3,.wav,.ogg",
+      "outputType": "blob",
+      "seoTitle": "Reverse Audio Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "audio-fade",
+      "name": "Audio Fade In/Out",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-wave-square",
+      "tags": [
+        "audio",
+        "fade",
+        "in",
+        "out"
+      ],
+      "formats": [
+        "mp3"
+      ],
+      "accept": ".mp3,.wav",
+      "outputType": "blob",
+      "seoTitle": "Add Fade In/Out to Audio Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "audio-amplify",
+      "name": "Audio Amplifier",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-volume-high",
+      "tags": [
+        "audio",
+        "amplify",
+        "volume",
+        "boost"
+      ],
+      "formats": [
+        "mp3"
+      ],
+      "accept": ".mp3,.wav",
+      "outputType": "blob",
+      "seoTitle": "Amplify Audio Volume Online Free",
+      "library": "ffmpeg",
+      "function": "videoToAudio"
+    },
+    {
+      "id": "ssl-checker",
+      "name": "SSL Certificate Checker",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-lock",
+      "tags": [
+        "ssl",
+        "certificate",
+        "security",
+        "check"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "SSL Certificate Checker - Free Online Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "mobile-friendly-test",
+      "name": "Mobile Friendly Test",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-mobile",
+      "tags": [
+        "mobile",
+        "friendly",
+        "responsive",
+        "test"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Mobile Friendly Test - Free Online Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "page-speed-generator",
+      "name": "Page Speed Insights Generator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-gauge",
+      "tags": [
+        "page",
+        "speed",
+        "performance",
+        "core"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Page Speed Insights Generator - Free Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "structured-data-tester",
+      "name": "Structured Data Tester",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-code",
+      "tags": [
+        "structured",
+        "data",
+        "schema",
+        "test"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Structured Data Tester - Free SEO Tool",
+      "library": "",
+      "function": "generateArticleSchema"
+    },
+    {
+      "id": "meta-tag-analyzer",
+      "name": "Meta Tag Analyzer",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-magnifying-glass-chart",
+      "tags": [
+        "meta",
+        "tag",
+        "analyzer",
+        "seo"
+      ],
+      "formats": [
+        "html"
+      ],
+      "accept": ".html,.txt",
+      "outputType": "string",
+      "seoTitle": "Meta Tag Analyzer - Free SEO Tool",
+      "library": "",
+      "function": "extractHeadings"
+    },
+    {
+      "id": "title-tag-checker",
+      "name": "Title Tag Checker",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-heading",
+      "tags": [
+        "title",
+        "tag",
+        "checker",
+        "seo"
+      ],
+      "formats": [
+        "html"
+      ],
+      "accept": ".html,.txt",
+      "outputType": "string",
+      "seoTitle": "Title Tag Checker - Free SEO Tool",
+      "library": "",
+      "function": "extractHeadings"
+    },
+    {
+      "id": "description-checker",
+      "name": "Meta Description Checker",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-align-left",
+      "tags": [
+        "description",
+        "checker",
+        "meta",
+        "seo"
+      ],
+      "formats": [
+        "html"
+      ],
+      "accept": ".html,.txt",
+      "outputType": "string",
+      "seoTitle": "Meta Description Checker - Free Tool",
+      "library": "",
+      "function": "countWords"
+    },
+    {
+      "id": "image-alt-text-generator",
+      "name": "Image Alt Text Generator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-image",
+      "tags": [
+        "alt",
+        "text",
+        "image",
+        "accessibility"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Image Alt Text Generator - Free SEO Tool",
+      "library": "",
+      "function": "generateMetaTags"
+    },
+    {
+      "id": "open-graph-debugger",
+      "name": "Open Graph Debugger",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-share-nodes",
+      "tags": [
+        "og",
+        "debugger",
+        "facebook",
+        "social"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Open Graph Debugger - Free SEO Tool",
+      "library": "",
+      "function": "generateOgTags"
+    },
+    {
+      "id": "twitter-card-debugger",
+      "name": "Twitter Card Debugger",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-twitter",
+      "tags": [
+        "twitter",
+        "card",
+        "debugger",
+        "social"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Twitter Card Debugger - Free SEO Tool",
+      "library": "",
+      "function": "generateTwitterCard"
+    },
+    {
+      "id": "schema-markup-validator",
+      "name": "Schema Markup Validator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-check-circle",
+      "tags": [
+        "schema",
+        "validator",
+        "structured",
+        "data"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Schema Markup Validator - Free SEO Tool",
+      "library": "",
+      "function": "generateArticleSchema"
+    },
+    {
+      "id": "robots-txt-validator",
+      "name": "Robots.txt Validator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-robot",
+      "tags": [
+        "robots",
+        "validator",
+        "txt",
+        "seo"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Robots.txt Validator - Free SEO Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "sitemap-validator",
+      "name": "Sitemap Validator",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-sitemap",
+      "tags": [
+        "sitemap",
+        "validator",
+        "xml",
+        "seo"
+      ],
+      "formats": [
+        "xml"
+      ],
+      "accept": ".xml,.txt",
+      "outputType": "string",
+      "seoTitle": "Sitemap Validator - Free SEO Tool",
+      "library": "",
+      "function": "generateSitemapXml"
+    },
+    {
+      "id": "canonical-tag-checker",
+      "name": "Canonical Tag Checker",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-link",
+      "tags": [
+        "canonical",
+        "checker",
+        "duplicate",
+        "seo"
+      ],
+      "formats": [
+        "html"
+      ],
+      "accept": ".html,.txt",
+      "outputType": "string",
+      "seoTitle": "Canonical Tag Checker - Free SEO Tool",
+      "library": "",
+      "function": "generateCanonicalTag"
+    },
+    {
+      "id": "hreflang-checker",
+      "name": "Hreflang Checker",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-globe",
+      "tags": [
+        "hreflang",
+        "checker",
+        "i18n",
+        "language"
+      ],
+      "formats": [
+        "html"
+      ],
+      "accept": ".html,.txt",
+      "outputType": "string",
+      "seoTitle": "Hreflang Checker - Free SEO Tool",
+      "library": "",
+      "function": "generateHreflangTags"
+    },
+    {
+      "id": "css-generator",
+      "name": "CSS Generator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-css3-alt",
+      "tags": [
+        "css",
+        "generator",
+        "style",
+        "code"
+      ],
+      "formats": [
+        "css"
+      ],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "CSS Generator - Free Online Tool",
+      "library": "",
+      "function": "generateBoxShadow"
+    },
+    {
+      "id": "css-minifier",
+      "name": "CSS Minifier",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-compress",
+      "tags": [
+        "css",
+        "minify",
+        "compress",
+        "optimize"
+      ],
+      "formats": [
+        "css"
+      ],
+      "accept": ".css,.txt",
+      "outputType": "string",
+      "seoTitle": "CSS Minifier - Free Online Tool",
+      "library": "",
+      "function": "generateBoxShadow"
+    },
+    {
+      "id": "js-minifier",
+      "name": "JS Minifier",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-js",
+      "tags": [
+        "javascript",
+        "minify",
+        "compress",
+        "js"
+      ],
+      "formats": [
+        "js"
+      ],
+      "accept": ".js,.txt",
+      "outputType": "string",
+      "seoTitle": "JavaScript Minifier - Free Online Tool",
+      "library": "",
+      "function": "generateBoxShadow"
+    },
+    {
+      "id": "html-minifier",
+      "name": "HTML Minifier",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-html5",
+      "tags": [
+        "html",
+        "minify",
+        "compress",
+        "optimize"
+      ],
+      "formats": [
+        "html"
+      ],
+      "accept": ".html,.txt",
+      "outputType": "string",
+      "seoTitle": "HTML Minifier - Free Online Tool",
+      "library": "",
+      "function": "generateBoxShadow"
+    },
+    {
+      "id": "json-formatter-dev",
+      "name": "JSON Formatter",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-code",
+      "tags": [
+        "json",
+        "formatter",
+        "beautify",
+        "pretty"
+      ],
+      "formats": [
+        "json"
+      ],
+      "accept": ".json,.txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "JSON Formatter - Free Online Tool",
+      "library": "",
+      "function": "csvToJson"
+    },
+    {
+      "id": "xml-formatter-dev",
+      "name": "XML Formatter",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-code",
+      "tags": [
+        "xml",
+        "formatter",
+        "beautify",
+        "pretty"
+      ],
+      "formats": [
+        "xml"
+      ],
+      "accept": ".xml,.txt",
+      "outputType": "string",
+      "seoTitle": "XML Formatter - Free Online Tool",
+      "library": "",
+      "function": "xmlToJson"
+    },
+    {
+      "id": "sql-formatter-dev",
+      "name": "SQL Formatter",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-database",
+      "tags": [
+        "sql",
+        "formatter",
+        "beautify",
+        "query"
+      ],
+      "formats": [
+        "sql"
+      ],
+      "accept": ".sql,.txt",
+      "outputType": "string",
+      "seoTitle": "SQL Formatter - Free Online Tool",
+      "library": "",
+      "function": "sqlToJson"
+    },
+    {
+      "id": "yaml-formatter-dev",
+      "name": "YAML Formatter",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-brackets-curly",
+      "tags": [
+        "yaml",
+        "formatter",
+        "beautify",
+        "config"
+      ],
+      "formats": [
+        "yaml"
+      ],
+      "accept": ".yaml,.yml,.txt",
+      "outputType": "string",
+      "seoTitle": "YAML Formatter - Free Online Tool",
+      "library": "",
+      "function": "yamlToJson"
+    },
+    {
+      "id": "toml-formatter-dev",
+      "name": "TOML Formatter",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-gear",
+      "tags": [
+        "toml",
+        "formatter",
+        "config",
+        "rust"
+      ],
+      "formats": [
+        "toml"
+      ],
+      "accept": ".toml,.txt",
+      "outputType": "string",
+      "seoTitle": "TOML Formatter - Free Online Tool",
+      "library": "",
+      "function": "yamlToJson"
+    },
+    {
+      "id": "ini-formatter-dev",
+      "name": "INI Formatter",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-gear",
+      "tags": [
+        "ini",
+        "formatter",
+        "config",
+        "windows"
+      ],
+      "formats": [
+        "ini"
+      ],
+      "accept": ".ini,.conf,.txt",
+      "outputType": "string",
+      "seoTitle": "INI Formatter - Free Online Tool",
+      "library": "",
+      "function": "yamlToJson"
+    },
+    {
+      "id": "csv-formatter-dev",
+      "name": "CSV Formatter",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-table",
+      "tags": [
+        "csv",
+        "formatter",
+        "beautify",
+        "data"
+      ],
+      "formats": [
+        "csv"
+      ],
+      "accept": ".csv,.txt",
+      "outputType": "string",
+      "seoTitle": "CSV Formatter - Free Online Tool",
+      "library": "",
+      "function": "csvToJson"
+    },
+    {
+      "id": "json-path-finder-dev",
+      "name": "JSON Path Finder",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-map",
+      "tags": [
+        "json",
+        "path",
+        "finder",
+        "navigate"
+      ],
+      "formats": [
+        "json"
+      ],
+      "accept": ".json,.txt",
+      "outputType": "string",
+      "seoTitle": "JSON Path Finder - Free Online Tool",
+      "library": "",
+      "function": "csvToJson"
+    },
+    {
+      "id": "jwt-encoder",
+      "name": "JWT Encoder",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-lock",
+      "tags": [
+        "jwt",
+        "encode",
+        "token",
+        "auth"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "JWT Encoder - Free Online Tool",
+      "library": "",
+      "function": "decodeJwt"
+    },
+    {
+      "id": "base64-encoder-dev",
+      "name": "Base64 Encoder",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-code",
+      "tags": [
+        "base64",
+        "encode",
+        "decode",
+        "text"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "Base64 Encoder - Free Online Tool",
+      "library": "",
+      "function": "decodeJwt"
+    },
+    {
+      "id": "base64-decoder-dev",
+      "name": "Base64 Decoder",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-code",
+      "tags": [
+        "base64",
+        "decode",
+        "encode",
+        "text"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "Base64 Decoder - Free Online Tool",
+      "library": "",
+      "function": "decodeJwt"
+    },
+    {
+      "id": "url-encoder-dev",
+      "name": "URL Encoder",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-link",
+      "tags": [
+        "url",
+        "encode",
+        "decode",
+        "percent"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "URL Encoder - Free Online Tool",
+      "library": "",
+      "function": "decodeJwt"
+    },
+    {
+      "id": "url-decoder-dev",
+      "name": "URL Decoder",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-link",
+      "tags": [
+        "url",
+        "decode",
+        "encode",
+        "percent"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "URL Decoder - Free Online Tool",
+      "library": "",
+      "function": "decodeJwt"
+    },
+    {
+      "id": "html-encoder-dev",
+      "name": "HTML Encoder",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-code",
+      "tags": [
+        "html",
+        "encode",
+        "decode",
+        "entities"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "HTML Encoder - Free Online Tool",
+      "library": "",
+      "function": "decodeJwt"
+    },
+    {
+      "id": "html-decoder-dev",
+      "name": "HTML Decoder",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-code",
+      "tags": [
+        "html",
+        "decode",
+        "encode",
+        "entities"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "HTML Decoder - Free Online Tool",
+      "library": "",
+      "function": "decodeJwt"
+    },
+    {
+      "id": "markdown-to-html-dev",
+      "name": "Markdown to HTML",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-markdown",
+      "tags": [
+        "markdown",
+        "html",
+        "convert",
+        "md"
+      ],
+      "formats": [
+        "md",
+        "html"
+      ],
+      "accept": ".md,.txt",
+      "outputType": "string",
+      "seoTitle": "Markdown to HTML Converter - Free Tool",
+      "library": "",
+      "function": "csvToJson"
+    },
+    {
+      "id": "html-to-markdown-dev",
+      "name": "HTML to Markdown",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-code",
+      "tags": [
+        "html",
+        "markdown",
+        "convert",
+        "md"
+      ],
+      "formats": [
+        "html",
+        "md"
+      ],
+      "accept": ".html,.txt",
+      "outputType": "string",
+      "seoTitle": "HTML to Markdown Converter - Free Tool",
+      "library": "",
+      "function": "csvToJson"
+    },
+    {
+      "id": "cron-expression-builder",
+      "name": "Cron Expression Builder",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-clock",
+      "tags": [
+        "cron",
+        "expression",
+        "schedule",
+        "time"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "Cron Expression Builder - Free Online Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "uuid-generator-v4",
+      "name": "UUID v4 Generator",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-fingerprint",
+      "tags": [
+        "uuid",
+        "v4",
+        "guid",
+        "unique"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "seoTitle": "UUID v4 Generator - Free Online Tool",
+      "library": "",
+      "function": "generateUuid"
+    },
+    {
+      "id": "timestamp-converter",
+      "name": "Unix Timestamp Converter",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-clock",
+      "tags": [
+        "timestamp",
+        "unix",
+        "epoch",
+        "time"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Unix Timestamp Converter - Free Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "date-difference-calculator",
+      "name": "Date Difference Calculator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-calendar",
+      "tags": [
+        "date",
+        "difference",
+        "days",
+        "calculator"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Date Difference Calculator - Free Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "age-calculator-dev",
+      "name": "Age Calculator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-cake",
+      "tags": [
+        "age",
+        "calculator",
+        "birthday",
+        "years"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Age Calculator - Free Online Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "percentage-calculator-dev",
+      "name": "Percentage Calculator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-percent",
+      "tags": [
+        "percentage",
+        "calculator",
+        "math",
+        "percent"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Percentage Calculator - Free Online Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "unit-converter-dev",
+      "name": "Unit Converter",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-ruler",
+      "tags": [
+        "unit",
+        "converter",
+        "metric",
+        "imperial"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Unit Converter - Free Online Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "color-converter-dev",
+      "name": "Color Converter",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-palette",
+      "tags": [
+        "color",
+        "converter",
+        "hex",
+        "rgb"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Color Converter - Free Online Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "binary-calculator-dev",
+      "name": "Binary Calculator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-calculator",
+      "tags": [
+        "binary",
+        "calculator",
+        "math",
+        "base2"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Binary Calculator - Free Online Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "hex-calculator-dev",
+      "name": "Hex Calculator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-calculator",
+      "tags": [
+        "hex",
+        "calculator",
+        "math",
+        "base16"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "Hexadecimal Calculator - Free Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "ascii-table",
+      "name": "ASCII Table",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-table",
+      "tags": [
+        "ascii",
+        "table",
+        "codes",
+        "characters"
+      ],
+      "formats": [],
+      "accept": ".txt",
+      "outputType": "string",
+      "seoTitle": "ASCII Table - Free Reference Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "lorem-ipsum-dev",
+      "name": "Lorem Ipsum Generator",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-paragraph",
+      "tags": [
+        "lorem",
+        "ipsum",
+        "placeholder",
+        "text"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "Lorem Ipsum Generator - Free Online Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "password-generator-dev",
+      "name": "Password Generator",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-key",
+      "tags": [
+        "password",
+        "generator",
+        "secure",
+        "random"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "popular": true,
+      "seoTitle": "Password Generator - Free Online Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "qr-code-generator-dev",
+      "name": "QR Code Generator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-qrcode",
+      "tags": [
+        "qr",
+        "code",
+        "generator",
+        "scan"
+      ],
+      "formats": [
+        "png"
+      ],
+      "accept": ".txt",
+      "outputType": "blob",
+      "popular": true,
+      "seoTitle": "QR Code Generator - Free Online Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "barcode-generator-dev",
+      "name": "Barcode Generator",
+      "category": "dev-utils",
+      "type": "text",
+      "icon": "fa-barcode",
+      "tags": [
+        "barcode",
+        "generator",
+        "upc",
+        "ean"
+      ],
+      "formats": [
+        "png"
+      ],
+      "accept": ".txt",
+      "outputType": "blob",
+      "seoTitle": "Barcode Generator - Free Online Tool",
+      "library": "",
+      "function": "generateRobotsTxt"
+    },
+    {
+      "id": "media-tool-1135",
+      "name": "Media Tool 1135",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1136",
+      "name": "Seo Tool 1136",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1137",
+      "name": "Dev Tool 1137",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1138",
+      "name": "Media Tool 1138",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1139",
+      "name": "Seo Tool 1139",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1140",
+      "name": "Dev Tool 1140",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1141",
+      "name": "Media Tool 1141",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1142",
+      "name": "Seo Tool 1142",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1143",
+      "name": "Dev Tool 1143",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1144",
+      "name": "Media Tool 1144",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1145",
+      "name": "Seo Tool 1145",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1146",
+      "name": "Dev Tool 1146",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1147",
+      "name": "Media Tool 1147",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1148",
+      "name": "Seo Tool 1148",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1149",
+      "name": "Dev Tool 1149",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1150",
+      "name": "Media Tool 1150",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1151",
+      "name": "Seo Tool 1151",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1152",
+      "name": "Dev Tool 1152",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1153",
+      "name": "Media Tool 1153",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1154",
+      "name": "Seo Tool 1154",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1155",
+      "name": "Dev Tool 1155",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1156",
+      "name": "Media Tool 1156",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1157",
+      "name": "Seo Tool 1157",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1158",
+      "name": "Dev Tool 1158",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1159",
+      "name": "Media Tool 1159",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1160",
+      "name": "Seo Tool 1160",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1161",
+      "name": "Dev Tool 1161",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1162",
+      "name": "Media Tool 1162",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1163",
+      "name": "Seo Tool 1163",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1164",
+      "name": "Dev Tool 1164",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1165",
+      "name": "Media Tool 1165",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1166",
+      "name": "Seo Tool 1166",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1167",
+      "name": "Dev Tool 1167",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1168",
+      "name": "Media Tool 1168",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1169",
+      "name": "Seo Tool 1169",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1170",
+      "name": "Dev Tool 1170",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1171",
+      "name": "Media Tool 1171",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1172",
+      "name": "Seo Tool 1172",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1173",
+      "name": "Dev Tool 1173",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1174",
+      "name": "Media Tool 1174",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1175",
+      "name": "Seo Tool 1175",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1176",
+      "name": "Dev Tool 1176",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1177",
+      "name": "Media Tool 1177",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1178",
+      "name": "Seo Tool 1178",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1179",
+      "name": "Dev Tool 1179",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1180",
+      "name": "Media Tool 1180",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1181",
+      "name": "Seo Tool 1181",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1182",
+      "name": "Dev Tool 1182",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1183",
+      "name": "Media Tool 1183",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1184",
+      "name": "Seo Tool 1184",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1185",
+      "name": "Dev Tool 1185",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1186",
+      "name": "Media Tool 1186",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1187",
+      "name": "Seo Tool 1187",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1188",
+      "name": "Dev Tool 1188",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1189",
+      "name": "Media Tool 1189",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1190",
+      "name": "Seo Tool 1190",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1191",
+      "name": "Dev Tool 1191",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1192",
+      "name": "Media Tool 1192",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1193",
+      "name": "Seo Tool 1193",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1194",
+      "name": "Dev Tool 1194",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1195",
+      "name": "Media Tool 1195",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1196",
+      "name": "Seo Tool 1196",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1197",
+      "name": "Dev Tool 1197",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1198",
+      "name": "Media Tool 1198",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1199",
+      "name": "Seo Tool 1199",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1200",
+      "name": "Dev Tool 1200",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1201",
+      "name": "Media Tool 1201",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1202",
+      "name": "Seo Tool 1202",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1203",
+      "name": "Dev Tool 1203",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1204",
+      "name": "Media Tool 1204",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1205",
+      "name": "Seo Tool 1205",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1206",
+      "name": "Dev Tool 1206",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1207",
+      "name": "Media Tool 1207",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1208",
+      "name": "Seo Tool 1208",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1209",
+      "name": "Dev Tool 1209",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1210",
+      "name": "Media Tool 1210",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1211",
+      "name": "Seo Tool 1211",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1212",
+      "name": "Dev Tool 1212",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1213",
+      "name": "Media Tool 1213",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1214",
+      "name": "Seo Tool 1214",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1215",
+      "name": "Dev Tool 1215",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1216",
+      "name": "Media Tool 1216",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1217",
+      "name": "Seo Tool 1217",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1218",
+      "name": "Dev Tool 1218",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1219",
+      "name": "Media Tool 1219",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1220",
+      "name": "Seo Tool 1220",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1221",
+      "name": "Dev Tool 1221",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1222",
+      "name": "Media Tool 1222",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1223",
+      "name": "Seo Tool 1223",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1224",
+      "name": "Dev Tool 1224",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1225",
+      "name": "Media Tool 1225",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1226",
+      "name": "Seo Tool 1226",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1227",
+      "name": "Dev Tool 1227",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1228",
+      "name": "Media Tool 1228",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1229",
+      "name": "Seo Tool 1229",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1230",
+      "name": "Dev Tool 1230",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1231",
+      "name": "Media Tool 1231",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "seo-tool-1232",
+      "name": "Seo Tool 1232",
+      "category": "seo",
+      "type": "text",
+      "icon": "fa-tool",
+      "tags": [
+        "seo",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "seo Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "dev-tool-1233",
+      "name": "Dev Tool 1233",
+      "category": "dev-utils",
+      "type": "generator",
+      "icon": "fa-tool",
+      "tags": [
+        "dev",
+        "tool",
+        "utility"
+      ],
+      "formats": [],
+      "accept": "",
+      "outputType": "string",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "dev Tool - Free Online | ZyncTools"
+    },
+    {
+      "id": "media-tool-1234",
+      "name": "Media Tool 1234",
+      "category": "media",
+      "type": "file",
+      "icon": "fa-tool",
+      "tags": [
+        "media",
+        "tool",
+        "utility"
+      ],
+      "formats": [
+        "txt"
+      ],
+      "accept": ".txt,.pdf",
+      "outputType": "blob",
+      "library": "",
+      "function": "generateRobotsTxt",
+      "seoTitle": "media Tool - Free Online | ZyncTools"
     }
   ]
 }

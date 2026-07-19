@@ -68,7 +68,9 @@
     function updateProcessButton() {
         const btn = $('#process-btn');
         if (!btn) return;
-        if (state.toolType === 'text') {
+        if (state.toolType === 'generator') {
+            btn.disabled = state.isProcessing;
+        } else if (state.toolType === 'text') {
             const textarea = $('#text-input');
             const hasText = textarea && textarea.value.trim().length > 0;
             btn.disabled = !hasText || state.isProcessing;
@@ -274,6 +276,10 @@
     }
 
     async function loadToolModule(toolId) {
+        if (window.ZyncToolBridge) {
+            const bridgeModule = window.ZyncToolBridge.getModule(toolId);
+            if (bridgeModule) return bridgeModule;
+        }
         if (window.ZyncSeoTools) {
             const seoModule = window.ZyncSeoTools.getModule(toolId);
             if (seoModule) return seoModule;
@@ -286,7 +292,7 @@
             script.onload = resolve;
             script.onerror = () => reject(new Error('Failed to load tool module: ' + modulePath));
         });
-        if (typeof window.ZyncTool === 'function') return window.ZyncTool;
+        if (typeof window.ZyncTool === 'function') return { process: window.ZyncTool };
         if (typeof window.ZyncTool === 'object' && typeof window.ZyncTool.process === 'function') return window.ZyncTool;
         return null;
     }
@@ -294,7 +300,9 @@
     async function processFiles() {
         if (state.isProcessing) return;
 
-        if (state.toolType === 'text') {
+        if (state.toolType === 'generator') {
+            // No input validation needed for generators
+        } else if (state.toolType === 'text') {
             const textarea = $('#text-input');
             if (!textarea || !textarea.value.trim()) {
                 showError('Please enter some text first.');
@@ -323,7 +331,7 @@
             if (!toolModule) {
                 toolModule = await loadToolModule(state.toolId);
             }
-            if (!toolModule || typeof toolModule.process !== 'function') {
+            if (!toolModule || (typeof toolModule.process !== 'function' && typeof toolModule.generate !== 'function')) {
                 throw new Error('Tool module is not implemented yet.');
             }
 
@@ -334,7 +342,16 @@
             }
 
             let results;
-            if (state.toolType === 'text') {
+            if (state.toolType === 'generator') {
+                results = await toolModule.generate({
+                    setStatus,
+                    setProgress,
+                    addResultItem,
+                    showNotification,
+                    showError,
+                    config: state.toolConfig
+                });
+            } else if (state.toolType === 'text') {
                 results = await toolModule.process(state.textContent, {
                     setStatus,
                     setProgress,
@@ -424,7 +441,7 @@
         }
 
         state.toolConfig = toolConfig;
-        state.toolType = toolConfig.outputType === 'string' || !toolConfig.accept || !toolConfig.accept.includes('.') ? 'text' : 'file';
+        state.toolType = toolConfig.type === 'generator' ? 'generator' : (toolConfig.outputType === 'string' || !toolConfig.accept || !toolConfig.accept.includes('.') ? 'text' : 'file');
 
         document.title = `${toolConfig.name} — ZyncTools`;
         $('#tool-title').textContent = toolConfig.name;
@@ -438,13 +455,23 @@
 
         const fileInputSection = $('#file-input-section');
         const textInputSection = $('#text-input-section');
+        const generatorInputSection = $('#generator-input-section');
         const fileInput = $('#file-input');
         const textInput = $('#text-input');
         const processBtnText = $('#process-btn-text');
 
-        if (state.toolType === 'text') {
+        if (state.toolType === 'generator') {
+            if (fileInputSection) fileInputSection.classList.add('hidden');
+            if (textInputSection) textInputSection.classList.add('hidden');
+            if (generatorInputSection) generatorInputSection.classList.remove('hidden');
+            if (fileInput) fileInput.style.display = 'none';
+            if (textInput) textInput.style.display = 'none';
+            if (processBtnText) processBtnText.textContent = 'Generate';
+            if (fileInput) fileInput.removeAttribute('accept');
+        } else if (state.toolType === 'text') {
             if (fileInputSection) fileInputSection.classList.add('hidden');
             if (textInputSection) textInputSection.classList.remove('hidden');
+            if (generatorInputSection) generatorInputSection.classList.add('hidden');
             if (fileInput) fileInput.style.display = 'none';
             if (textInput) textInput.style.display = 'block';
             if (processBtnText) processBtnText.textContent = 'Generate';
@@ -452,6 +479,7 @@
         } else {
             if (fileInputSection) fileInputSection.classList.remove('hidden');
             if (textInputSection) textInputSection.classList.add('hidden');
+            if (generatorInputSection) generatorInputSection.classList.add('hidden');
             if (fileInput) fileInput.style.display = 'block';
             if (textInput) textInput.style.display = 'none';
             if (processBtnText) processBtnText.textContent = 'Process';

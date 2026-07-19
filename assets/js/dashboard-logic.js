@@ -1,16 +1,11 @@
 (function () {
     'use strict';
 
-    /* ============================================
-       ZyncTools — Dashboard Logic
-       ============================================ */
-
     const state = {
         tools: [],
         categories: [],
         activeCategory: 'all',
-        searchQuery: '',
-        loadedScripts: new Set()
+        searchQuery: ''
     };
 
     const $ = (sel) => document.querySelector(sel);
@@ -35,178 +30,34 @@
         return 'tool';
     }
 
-    function getCardSizeClass(tool, index) {
-        if (tool.popular) return 'bento-wide';
-        if ((index + 1) % 4 === 0) return 'bento-large';
-        return 'bento-standard';
+    function getCategoryName(categoryId) {
+        const cat = state.categories.find(c => c.id === categoryId);
+        if (cat) return cat.name;
+        return categoryId.charAt(0).toUpperCase() + categoryId.slice(1);
     }
 
-    /* --- Spotlight Effect --- */
-    function initSpotlight() {
-        const cards = $$('.bento-card');
-        cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-                card.classList.add('spotlight-active');
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.classList.remove('spotlight-active');
-            });
-        });
-    }
-
-    /* --- Magnetic Hover Effect --- */
-    function initMagneticHover() {
-        const cards = $$('.bento-card');
-        cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const deltaX = (x - centerX) / centerX;
-                const deltaY = (y - centerY) / centerY;
-                const moveX = deltaX * 3;
-                const moveY = deltaY * 3;
-                card.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(1.01)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-            });
-        });
-    }
-
-    /* --- Intersection Observer for Scroll Animations --- */
-    function initScrollAnimations() {
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px 0px -10% 0px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    
-                    const cards = entry.target.querySelectorAll('.bento-animate');
-                    cards.forEach((card, index) => {
-                        card.style.animationDelay = `${index * 50}ms`;
-                        card.classList.add('bento-animate');
-                    });
-                    
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        const sections = $$('.category-section');
-        sections.forEach(section => {
-            observer.observe(section);
-        });
-
-        const headers = $$('.category-header');
-        const headerObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('category-header-animate');
-                    headerObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        headers.forEach(header => {
-            headerObserver.observe(header);
-        });
-    }
-
-    /* --- Render Dashboard (used by search-engine.js) --- */
-    function renderDashboard(tools, query = '') {
-        const container = $('#category-sections');
-        const noResults = $('#no-results');
-        if (!container) return;
-
-        if (!tools || tools.length === 0) {
-            container.innerHTML = '';
-            if (noResults) noResults.classList.remove('hidden');
-            return;
+    function getCategoryIcon(categoryId) {
+        const cat = state.categories.find(c => c.id === categoryId);
+        if (cat) return cat.icon;
+        if (window.ZyncToolIcons && window.ZyncToolIcons[categoryId]) {
+            return window.ZyncToolIcons[categoryId];
         }
-
-        if (noResults) noResults.classList.add('hidden');
-
-        // Group by category
-        const grouped = {};
-        tools.forEach(tool => {
-            if (!grouped[tool.category]) grouped[tool.category] = [];
-            grouped[tool.category].push(tool);
-        });
-
-        // Get category order
-        const categoryOrder = getCategoryOrder();
-        
-        let html = '';
-        
-        categoryOrder.forEach(categoryId => {
-            const categoryTools = grouped[categoryId];
-            if (!categoryTools || categoryTools.length === 0) return;
-            
-            const category = window.ZyncRegistry?.getCategory?.(categoryId) || {
-                id: categoryId,
-                name: categoryId.charAt(0).toUpperCase() + categoryId.slice(1),
-                icon: 'tool'
-            };
-            
-            html += `
-                <div class="category-section" data-category="${categoryId}">
-                    <div class="category-header">
-                        <div class="category-icon"><i data-lucide="${category.icon}"></i></div>
-                        <h2 class="category-title">${escapeHtml(category.name)}</h2>
-                        <span class="category-count">${categoryTools.length} tool${categoryTools.length !== 1 ? 's' : ''}</span>
-                    </div>
-                    <div class="bento-grid">
-                        ${categoryTools.map((tool, i) => renderCard(tool, i, query)).join('')}
-                    </div>
-                </div>
-            `;
-        });
-
-        container.innerHTML = html;
-        
-        if (window.lucide) lucide.createIcons();
-        
-        initScrollAnimations();
-        initSpotlight();
-        initMagneticHover();
+        return 'tool';
     }
 
-    function renderCard(tool, index, query = '') {
+    function renderCard(tool, query = '') {
         const name = query ? highlightText(tool.name, query) : escapeHtml(tool.name);
         const desc = query ? highlightText(tool.description, query) : escapeHtml(tool.description || '');
-        const sizeClass = getCardSizeClass(tool, index);
         const iconName = getToolIcon(tool);
-        
-        let badgeClass = 'bento-badge';
-        if (tool.badge === 'AI') badgeClass += ' ai';
-        if (tool.badge === 'Beta') badgeClass += ' beta';
 
         return `
-            <a href="/tool.html?id=${tool.id}" 
-               class="bento-card ${sizeClass} bento-animate" 
+            <a href="/tool.html?id=${tool.id}"
+               class="tool-card"
                data-tool-id="${tool.id}"
                data-tool-type="${tool.type || 'file'}">
-                <div class="bento-icon"><i data-lucide="${iconName}"></i></div>
-                <div>
-                    <div class="bento-title">${name}</div>
-                    <div class="bento-desc">${desc}</div>
-                </div>
-                ${tool.badge ? `<span class="${badgeClass}">${escapeHtml(tool.badge)}</span>` : ''}
+                <div class="tool-card-icon"><i data-lucide="${iconName}"></i></div>
+                <div class="tool-card-title">${name}</div>
+                <div class="tool-card-desc">${desc}</div>
             </a>
         `;
     }
@@ -224,6 +75,54 @@
         return result;
     }
 
+    function renderDashboard(tools, query = '') {
+        const container = $('#category-sections');
+        const noResults = $('#no-results');
+        if (!container) return;
+
+        if (!tools || tools.length === 0) {
+            container.innerHTML = '';
+            if (noResults) noResults.classList.remove('hidden');
+            return;
+        }
+
+        if (noResults) noResults.classList.add('hidden');
+
+        const grouped = {};
+        tools.forEach(tool => {
+            if (!grouped[tool.category]) grouped[tool.category] = [];
+            grouped[tool.category].push(tool);
+        });
+
+        const categoryOrder = getCategoryOrder();
+        let html = '';
+
+        categoryOrder.forEach(categoryId => {
+            const categoryTools = grouped[categoryId];
+            if (!categoryTools || categoryTools.length === 0) return;
+
+            const categoryName = getCategoryName(categoryId);
+            const categoryIcon = getCategoryIcon(categoryId);
+
+            html += `
+                <div class="category-section" data-category="${categoryId}">
+                    <div class="category-header">
+                        <div class="category-icon"><i data-lucide="${categoryIcon}"></i></div>
+                        <h2 class="category-title">${escapeHtml(categoryName)}</h2>
+                        <span class="category-count">${categoryTools.length} tool${categoryTools.length !== 1 ? 's' : ''}</span>
+                    </div>
+                    <div class="tools-grid">
+                        ${categoryTools.map((tool, i) => renderCard(tool, query)).join('')}
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+
+        if (window.lucide) lucide.createIcons();
+    }
+
     function getCategoryOrder() {
         if (state.tools.length > 0) {
             const seen = new Set();
@@ -236,10 +135,9 @@
             });
             return order;
         }
-        return ['images', 'pdf', 'video', 'audio', 'text', 'code', 'math', 'dev', 'security', 'ai'];
+        return ['images', 'pdf', 'video', 'audio', 'text', 'code', 'math', 'dev', 'security', 'ai', 'media', 'seo', 'dev-utils'];
     }
 
-    /* --- Data Loading --- */
     async function loadRegistry() {
         try {
             const res = await fetch('/tools-database.json', { cache: 'no-store' });
@@ -254,7 +152,6 @@
         }
     }
 
-    /* --- Category Filters --- */
     function initFilters() {
         const container = $('#category-filters');
         if (!container) return;
@@ -264,49 +161,50 @@
             if (!btn) return;
 
             $$('.cat-btn').forEach(b => {
-                b.classList.remove('active', 'bg-accent/10', 'text-accent', 'border-accent/20');
-                b.classList.add('bg-slate-900', 'text-gray-400', 'border-white/5');
+                b.classList.remove('active');
             });
 
-            btn.classList.remove('bg-slate-900', 'text-gray-400', 'border-white/5');
-            btn.classList.add('active', 'bg-accent/10', 'text-accent', 'border-accent/20');
+            btn.classList.add('active');
 
             state.activeCategory = btn.dataset.category || 'all';
-            
-            // If search is active, re-filter
+
             if (state.searchQuery && window.ZyncSearch) {
                 window.ZyncSearch.performSearch(state.searchQuery);
             } else {
-                renderDashboard(state.tools);
+                filterByCategory();
             }
         });
     }
 
-    /* --- Populate Category Filters --- */
+    function filterByCategory() {
+        if (state.activeCategory === 'all') {
+            renderDashboard(state.tools);
+        } else {
+            const filtered = state.tools.filter(t => t.category === state.activeCategory);
+            renderDashboard(filtered);
+        }
+    }
+
     function populateCategoryFilters() {
         const container = $('#category-filters');
         if (!container) return;
 
-        const allBtn = container.querySelector('[data-category="all"]');
-        
         state.categories.forEach(category => {
             const btn = document.createElement('button');
-            btn.className = 'cat-btn px-4 py-2 rounded-xl text-sm font-medium bg-slate-900 text-gray-400 border border-white/5 hover:border-white/10 hover:text-white transition-all';
+            btn.className = 'cat-btn px-4 py-2 rounded-xl text-sm font-medium';
             btn.dataset.category = category.id;
             btn.textContent = category.name;
             container.appendChild(btn);
         });
     }
 
-    /* --- Init --- */
     async function init() {
         await loadRegistry();
         populateCategoryFilters();
         initFilters();
-        
-        // Initial render
+
         renderDashboard(state.tools);
-        
+
         initThemeToggle();
     }
 
@@ -314,10 +212,12 @@
         const btn = $('#theme-toggle');
         if (!btn) return;
         btn.addEventListener('click', () => {
-            const next = window.ZyncTheme.toggle();
-            updateThemeIcon(next);
+            if (window.ZyncTheme) {
+                const next = window.ZyncTheme.toggle();
+                updateThemeIcon(next);
+            }
         });
-        updateThemeIcon(window.ZyncTheme.getCurrent());
+        updateThemeIcon(window.ZyncTheme ? window.ZyncTheme.getCurrent() : 'dark');
     }
 
     function updateThemeIcon(theme) {
@@ -336,12 +236,10 @@
         init();
     }
 
-    window.ZyncApp = { 
-        state, 
-        renderDashboard, 
+    window.ZyncApp = {
+        state,
+        renderDashboard,
         loadRegistry,
-        initScrollAnimations,
-        initSpotlight,
-        initMagneticHover
+        filterByCategory
     };
 })();
