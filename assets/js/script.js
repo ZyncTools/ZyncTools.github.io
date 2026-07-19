@@ -6992,3 +6992,186 @@ document.addEventListener('DOMContentLoaded', function () {
     // Note: Tool-specific pages have their own initialization script in their respective HTML files,
     // which creates an instance of PDFConverterPro and calls setupToolSpecificPage().
 });
+
+/* ============================================
+   SUPER COOL — MICRO-INTERACTIONS
+   ============================================ */
+
+// Confetti Effect
+window.confettiEffect = function(canvas) {
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const particles = [];
+    const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b', '#3b82f6'];
+    for (let i = 0; i < 120; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            w: Math.random() * 10 + 4,
+            h: Math.random() * 6 + 3,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            vx: (Math.random() - 0.5) * 4,
+            vy: Math.random() * 3 + 2,
+            rotation: Math.random() * 360,
+            rotationSpeed: (Math.random() - 0.5) * 10,
+            opacity: 1
+        });
+    }
+    let frame = 0;
+    const maxFrames = 180;
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+        particles.forEach(p => {
+            if (frame < maxFrames) {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.05;
+                p.rotation += p.rotationSpeed;
+                p.opacity = Math.max(0, 1 - frame / maxFrames);
+                alive = true;
+            }
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation * Math.PI / 180);
+            ctx.globalAlpha = p.opacity;
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+        });
+        frame++;
+        if (alive && frame < maxFrames + 60) {
+            requestAnimationFrame(animate);
+        } else {
+            canvas.remove();
+        }
+    }
+    animate();
+};
+
+// Trigger success animation (confetti + overlay)
+window.showSuccess = function(message, downloadCallback) {
+    // Confetti canvas
+    const canvas = document.createElement('canvas');
+    canvas.className = 'confetti-canvas';
+    document.body.appendChild(canvas);
+    window.confettiEffect(canvas);
+
+    // Overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'success-overlay';
+    overlay.innerHTML = `
+        <div class="success-card">
+            <div class="success-checkmark"><i class="fas fa-check"></i></div>
+            <h3 style="font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;color:var(--text-primary)">${message || 'Done!'}</h3>
+            <p style="color:var(--text-secondary);margin-bottom:1.5rem">Your file has been processed successfully.</p>
+            ${downloadCallback ? '<button class="btn btn-primary" id="success-download-btn"><i class="fas fa-download"></i> Download</button>' : ''}
+            <button class="btn btn-outline" id="success-close-btn" style="margin-left:0.5rem">Close</button>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => overlay.classList.add('active'));
+
+    overlay.querySelector('#success-close-btn')?.addEventListener('click', () => {
+        overlay.classList.remove('active');
+        setTimeout(() => overlay.remove(), 300);
+    });
+    if (downloadCallback) {
+        overlay.querySelector('#success-download-btn')?.addEventListener('click', () => {
+            downloadCallback();
+            overlay.classList.remove('active');
+            setTimeout(() => overlay.remove(), 300);
+        });
+    }
+    setTimeout(() => {
+        if (overlay.parentNode) {
+            overlay.classList.remove('active');
+            setTimeout(() => overlay.remove(), 300);
+        }
+    }, 8000);
+};
+
+// Tactile ripple effect for buttons
+window.addRipple = function(e) {
+    const btn = e.currentTarget;
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    const rect = btn.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+    ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+    btn.appendChild(ripple);
+    ripple.addEventListener('animationend', () => ripple.remove());
+};
+
+// Attach ripple to all process buttons
+function attachRippleToButtons() {
+    document.querySelectorAll('.process-btn, .btn-primary, .btn').forEach(btn => {
+        if (!btn.dataset.rippleAttached) {
+            btn.dataset.rippleAttached = 'true';
+            btn.addEventListener('click', window.addRipple);
+        }
+    });
+}
+
+// Animated progress bar setter
+window.setProgress = function(percent, text) {
+    const fill = document.getElementById('progress-fill');
+    const txt = document.getElementById('progress-text');
+    if (fill) {
+        fill.style.width = Math.min(100, Math.max(0, percent)) + '%';
+        fill.classList.remove('indeterminate');
+    }
+    if (txt && text) txt.textContent = text;
+};
+
+window.setProgressIndeterminate = function(text) {
+    const fill = document.getElementById('progress-fill');
+    const txt = document.getElementById('progress-text');
+    if (fill) {
+        fill.classList.add('indeterminate');
+        fill.style.width = '30%';
+    }
+    if (txt && text) txt.textContent = text;
+};
+
+// Bouncy drop animation trigger
+window.triggerBouncyDrop = function(uploadArea) {
+    if (!uploadArea) return;
+    uploadArea.classList.remove('dropped');
+    void uploadArea.offsetWidth;
+    uploadArea.classList.add('dropped');
+    setTimeout(() => uploadArea.classList.remove('dropped'), 600);
+};
+
+// Lazy-load PDF.js worker only when first PDF is dropped
+let pdfJsLoaded = false;
+window.ensurePdfJs = function() {
+    if (pdfJsLoaded) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+        script.onload = () => {
+            if (typeof pdfjsLib !== 'undefined') {
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            }
+            pdfJsLoaded = true;
+            resolve();
+        };
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+};
+
+// Initialize ripple on DOM ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachRippleToButtons);
+} else {
+    attachRippleToButtons();
+}
+
+// Re-attach after tool-specific page setup (tool pages rebuild DOM)
+const observer = new MutationObserver(() => attachRippleToButtons());
+observer.observe(document.body, { childList: true, subtree: true });
