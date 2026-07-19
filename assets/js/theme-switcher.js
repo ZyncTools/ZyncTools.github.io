@@ -6,7 +6,7 @@
 
 class ThemeManager {
     constructor() {
-        this.theme = localStorage.getItem('zyncpdf-theme') || 'light';
+        this.theme = localStorage.getItem('zyncpdf-theme') || 'dark';
         this.transitioning = false;
         this.init();
     }

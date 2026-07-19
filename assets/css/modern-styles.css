@@ -4,43 +4,44 @@
    Glassmorphism | Smooth Transitions
    ============================================ */
 
-/* Theme Variables */
+/* Theme Variables — Dark by default (Privacy-Tech) */
 :root {
-    /* Light Theme (default) */
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
-    --bg-tertiary: #f1f5f9;
-    --bg-glass: rgba(255, 255, 255, 0.7);
-    --bg-glass-hover: rgba(255, 255, 255, 0.85);
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #111118;
+    --bg-tertiary: #1a1a24;
+    --bg-glass: rgba(20, 20, 30, 0.72);
+    --bg-glass-hover: rgba(30, 30, 45, 0.88);
+    --bg-elevated: rgba(30, 30, 45, 0.6);
 
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-tertiary: #64748b;
-    --text-inverted: #ffffff;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #94a3b8;
+    --text-inverted: #0a0a0f;
 
-    --border-color: rgba(148, 163, 184, 0.2);
-    --border-hover: rgba(148, 163, 184, 0.4);
+    --border-color: rgba(148, 163, 184, 0.1);
+    --border-hover: rgba(148, 163, 184, 0.25);
 
-    --accent-primary: #6366f1;
-    --accent-secondary: #8b5cf6;
-    --accent-tertiary: #ec4899;
+    --accent: #00F5D4;
+    --accent-primary: #00F5D4;
+    --accent-secondary: #B983FF;
+    --accent-tertiary: #00C2A8;
     --accent-success: #10b981;
     --accent-warning: #f59e0b;
     --accent-danger: #ef4444;
 
-    --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
-    --gradient-secondary: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
-    --gradient-mesh-1: radial-gradient(at 0% 0%, hsla(245, 90%, 65%, 0.3) 0px, transparent 50%),
-                      radial-gradient(at 100% 100%, hsla(320, 80%, 60%, 0.25) 0px, transparent 50%);
-    --gradient-mesh-2: radial-gradient(at 80% 20%, hsla(200, 90%, 60%, 0.2) 0px, transparent 50%),
-                      radial-gradient(at 20% 80%, hsla(280, 70%, 65%, 0.2) 0px, transparent 50%);
+    --gradient-primary: linear-gradient(135deg, #00F5D4 0%, #B983FF 100%);
+    --gradient-secondary: linear-gradient(135deg, #00C2A8 0%, #00F5D4 100%);
+    --gradient-mesh-1: radial-gradient(at 0% 0%, hsla(168, 100%, 50%, 0.12) 0px, transparent 50%),
+                      radial-gradient(at 100% 100%, hsla(280, 80%, 65%, 0.1) 0px, transparent 50%);
+    --gradient-mesh-2: radial-gradient(at 80% 20%, hsla(200, 90%, 60%, 0.08) 0px, transparent 50%),
+                      radial-gradient(at 20% 80%, hsla(280, 70%, 65%, 0.08) 0px, transparent 50%);
 
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
-    --shadow-glow-pink: 0 0 40px rgba(236, 72, 153, 0.3);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    --shadow-glow: 0 0 40px rgba(0, 245, 212, 0.25);
+    --shadow-glow-pink: 0 0 40px rgba(185, 131, 255, 0.25);
 
     --radius-sm: 8px;
     --radius-md: 12px;
@@ -58,37 +59,34 @@
     --duration-base: 250ms;
     --duration-slow: 400ms;
     --duration-normal: 250ms;
-    --border-glass: rgba(255, 255, 255, 0.35);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.4) inset;
-    --accent-soft: rgba(99, 102, 241, 0.08);
-    --accent-glow: rgba(99, 102, 241, 0.25);
+    --border-glass: rgba(255, 255, 255, 0.06);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+    --accent-soft: rgba(0, 245, 212, 0.08);
+    --accent-glow: rgba(0, 245, 212, 0.3);
 }
 
-[data-theme="dark"] {
-    --bg-primary: #0a0a0f;
-    --bg-secondary: #111118;
-    --bg-tertiary: #1a1a24;
-    --bg-glass: rgba(20, 20, 30, 0.7);
-    --bg-glass-hover: rgba(30, 30, 45, 0.85);
+[data-theme="light"] {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    --bg-glass: rgba(255, 255, 255, 0.72);
+    --bg-glass-hover: rgba(255, 255, 255, 0.88);
+    --bg-elevated: rgba(255, 255, 255, 0.6);
 
-    --text-primary: #f1f5f9;
-    --text-secondary: #cbd5e1;
-    --text-tertiary: #94a3b8;
-    --text-inverted: #0a0a0f;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-tertiary: #64748b;
+    --text-inverted: #ffffff;
 
-    --border-color: rgba(148, 163, 184, 0.1);
-    --border-hover: rgba(148, 163, 184, 0.25);
+    --border-color: rgba(148, 163, 184, 0.2);
+    --border-hover: rgba(148, 163, 184, 0.4);
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-    --shadow-glow: 0 0 60px rgba(99, 102, 241, 0.4);
-    --shadow-glow-pink: 0 0 60px rgba(236, 72, 153, 0.4);
-    --border-glass: rgba(255, 255, 255, 0.06);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.05) inset;
-    --accent-soft: rgba(129, 140, 248, 0.1);
-    --accent-glow: rgba(129, 140, 248, 0.3);
+    --shadow-glow: 0 0 60px rgba(0, 245, 212, 0.35);
+    --shadow-glow-pink: 0 0 60px rgba(185, 131, 255, 0.35);
 }
 
 /* Smooth theme transition */
@@ -1787,5 +1785,86 @@ body {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+}
+
+/* ============================================
+   TOOLTIP (CSS-only, no JS)
+   ============================================ */
+.tool-card[data-tooltip] {
+    position: relative;
+}
+
+.tool-card[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: all var(--duration-fast) var(--ease-out);
+    box-shadow: var(--shadow-md);
+    z-index: 100;
+}
+
+.tool-card[data-tooltip]::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    border: 6px solid transparent;
+    border-top-color: var(--border-color);
+    pointer-events: none;
+    opacity: 0;
+    transition: all var(--duration-fast) var(--ease-out);
+    z-index: 100;
+}
+
+.tool-card[data-tooltip]:hover::after,
+.tool-card[data-tooltip]:focus::after,
+.tool-card.tooltip-active::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.tool-card[data-tooltip]:hover::before,
+.tool-card[data-tooltip]:focus::before,
+.tool-card.tooltip-active::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Mobile: tooltips become touch-friendly bottom sheets */
+@media (max-width: 768px) {
+    .tool-card[data-tooltip]::after {
+        bottom: auto;
+        top: calc(100% + 10px);
+        left: 50%;
+        transform: translateX(-50%) translateY(-6px);
+    }
+    .tool-card[data-tooltip]::before {
+        bottom: auto;
+        top: calc(100% + 2px);
+        border-top-color: transparent;
+        border-bottom-color: var(--border-color);
+        transform: translateX(-50%) translateY(-6px);
+    }
+    .tool-card[data-tooltip]:hover::after,
+    .tool-card[data-tooltip]:focus::after {
+        transform: translateX(-50%) translateY(0);
+    }
+    .tool-card[data-tooltip]:hover::before,
+    .tool-card[data-tooltip]:focus::before {
+        transform: translateX(-50%) translateY(0);
     }
 }

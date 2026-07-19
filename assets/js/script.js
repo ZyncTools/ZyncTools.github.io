@@ -7003,7 +7003,7 @@ window.confettiEffect = function(canvas) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const particles = [];
-    const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#10b981', '#f59e0b', '#3b82f6'];
+    const colors = ['#00F5D4', '#B983FF', '#00C2A8', '#10b981', '#f59e0b', '#6366f1'];
     for (let i = 0; i < 120; i++) {
         particles.push({
             x: Math.random() * canvas.width,
@@ -7175,3 +7175,18 @@ if (document.readyState === 'loading') {
 // Re-attach after tool-specific page setup (tool pages rebuild DOM)
 const observer = new MutationObserver(() => attachRippleToButtons());
 observer.observe(document.body, { childList: true, subtree: true });
+
+// Touch-friendly tooltips for mobile (CSS tooltips don't fire on touch)
+document.addEventListener('touchstart', function(e) {
+    const card = e.target.closest('.tool-card[data-tooltip]');
+    if (card) {
+        document.querySelectorAll('.tool-card.tooltip-active').forEach(c => c.classList.remove('tooltip-active'));
+        card.classList.toggle('tooltip-active');
+    }
+}, { passive: true });
+
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.tool-card[data-tooltip]')) {
+        document.querySelectorAll('.tool-card.tooltip-active').forEach(c => c.classList.remove('tooltip-active'));
+    }
+});
