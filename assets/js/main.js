@@ -40,7 +40,7 @@
     };
 
     /* =========================================
-       ICON RESOLUTION — Lucide names + category fallbacks
+       ICON RESOLUTION — Lucide names + fa- fallback map
        ========================================= */
     var CATEGORY_ICON_MAP = {
         'images': 'image',
@@ -57,6 +57,200 @@
         'dev-utils': 'terminal'
     };
 
+    var FA_TO_LUCIDE = {
+        "address-card": "id-card",
+        "adjust": "contrast",
+        "align-left": "align-left",
+        "arrow-down-a-z": "arrow-down-a-z",
+        "arrow-left-right": "arrow-left-right",
+        "arrows-alt-h": "move-horizontal",
+        "arrows-left-right": "arrows-left-right",
+        "asterisk": "asterisk",
+        "barcode": "barcode",
+        "bezier-curve": "bezier-curve",
+        "birthday-cake": "cake",
+        "bolt": "zap",
+        "book": "book-open",
+        "border-all": "border-all",
+        "border-none": "border-none",
+        "brackets-curly": "braces",
+        "brain": "brain",
+        "broom": "broom",
+        "bullseye": "target",
+        "cake": "cake",
+        "calculator": "calculator",
+        "calendar": "calendar",
+        "calendar-alt": "calendar",
+        "camera": "camera",
+        "camera-retro": "camera",
+        "chart-bar": "bar-chart-3",
+        "chart-column": "bar-chart-3",
+        "chart-line": "line-chart",
+        "check-circle": "check-circle-2",
+        "circle": "circle",
+        "circle-dot": "circle-dot",
+        "circle-half-stroke": "half",
+        "circle-info": "info",
+        "circle-question": "help-circle",
+        "clock": "clock",
+        "clone": "copy",
+        "cloud": "cloud",
+        "cloud-rain": "cloud-rain",
+        "code": "code",
+        "cog": "settings",
+        "columns": "columns",
+        "compress": "compress",
+        "compress-alt": "compress",
+        "compress-arrows-alt": "compress",
+        "copy": "copy",
+        "crop": "crop",
+        "crop-alt": "crop",
+        "css3-alt": "file-code-2",
+        "cube": "box",
+        "cut": "scissors",
+        "database": "database",
+        "desktop": "monitor",
+        "diamond": "gem",
+        "droplet": "droplets",
+        "edit": "pencil",
+        "eraser": "eraser",
+        "exchange-alt": "arrow-left-right",
+        "expand": "maximize",
+        "expand-arrows-alt": "maximize",
+        "eye": "eye",
+        "eye-dropper": "pipette",
+        "eye-slash": "eye-off",
+        "face-laugh-squint": "smile",
+        "face-smile": "smile",
+        "file-code": "file-code",
+        "file-csv": "file-spreadsheet",
+        "file-export": "download",
+        "file-image": "image",
+        "file-lines": "file-text",
+        "file-pdf": "file-text",
+        "file-video": "video",
+        "file-word": "file-type-2",
+        "fill-drip": "paintbrush",
+        "film": "film",
+        "fingerprint": "fingerprint",
+        "flask": "flask-conical",
+        "font": "type",
+        "gauge": "gauge",
+        "gauge-high": "gauge",
+        "gear": "settings",
+        "glass-water": "glass-water",
+        "globe": "globe",
+        "hashtag": "hash",
+        "heading": "heading",
+        "highlighter": "highlighter",
+        "history": "history",
+        "hourglass-half": "hourglass",
+        "html5": "file-code-2",
+        "i-cursor": "mouse-pointer-click",
+        "image": "image",
+        "images": "images",
+        "info-circle": "info",
+        "js": "file-code-2",
+        "js-square": "file-code-2",
+        "key": "key",
+        "keyboard": "keyboard",
+        "language": "languages",
+        "layer-group": "layers",
+        "link": "link",
+        "list-ol": "list-ordered",
+        "lock": "lock",
+        "lock-open": "lock-open",
+        "magic": "wand-2",
+        "magnifying-glass-chart": "search",
+        "map": "map",
+        "map-marker-alt": "map-pin",
+        "markdown": "file-type-2",
+        "masks-theater": "drama",
+        "microchip": "cpu",
+        "microphone": "mic",
+        "mobile": "smartphone",
+        "mobile-screen": "smartphone",
+        "monitor": "monitor",
+        "mountain": "mountain",
+        "music": "music",
+        "network-wired": "network",
+        "not-equal": "not-equal",
+        "note-sticky": "sticky-note",
+        "object-group": "layers",
+        "paintbrush": "paintbrush",
+        "palette": "palette",
+        "paragraph": "paragraph",
+        "pencil": "pencil",
+        "percent": "percent",
+        "post": "send",
+        "qrcode": "qr-code",
+        "robot": "bot",
+        "rotate": "rotate-cw",
+        "ruler": "ruler",
+        "scissors": "scissors",
+        "search": "search",
+        "share-alt": "share",
+        "share-nodes": "share-2",
+        "shield": "shield",
+        "shield-halved": "shield-half",
+        "shuffle": "shuffle",
+        "signature": "pen-tool",
+        "sitemap": "sitemap",
+        "smog": "cloud-fog",
+        "snowflake": "snowflake",
+        "sort": "arrow-up-down",
+        "sort-numeric-down": "arrow-up-narrow-wide",
+        "sparkles": "sparkles",
+        "square": "square",
+        "stamp": "stamp",
+        "star": "star",
+        "sticky-note": "sticky-note",
+        "stopwatch": "timer",
+        "sun": "sun",
+        "swatchbook": "swatch-book",
+        "sync-alt": "refresh-cw",
+        "table": "table",
+        "table-cells": "table-2",
+        "tachometer-alt": "gauge",
+        "tag": "tag",
+        "tags": "tags",
+        "telegraph": "send",
+        "temperature-high": "thermometer",
+        "terminal": "terminal",
+        "text-width": "type",
+        "th": "layout-grid",
+        "th-large": "layout-grid",
+        "tool": "tool",
+        "trash-alt": "trash-2",
+        "twitter": "twitter",
+        "unlock": "unlock",
+        "unlock-alt": "unlock",
+        "up-right-and-down-left-from-center": "maximize-2",
+        "user-xmark": "user-x",
+        "vector-square": "vector-square",
+        "video": "video",
+        "volume-down": "volume-1",
+        "volume-high": "volume-2",
+        "volume-mute": "volume-x",
+        "volume-up": "volume-2",
+        "volume-xmark": "volume-x",
+        "wand-magic-sparkles": "wand-2",
+        "water": "droplets",
+        "wave-square": "wave-square",
+        "wifi": "wifi",
+        "wind": "wind",
+        "x-ray": "scan"
+    };
+
+    function normalizeFaIcon(raw) {
+        if (!raw) return null;
+        if (/^fa-/.test(raw)) {
+            var key = raw.slice(3);
+            return FA_TO_LUCIDE[key] || null;
+        }
+        return raw;
+    }
+
     function resolveIcon(tool) {
         // 1. Per-tool override from ZyncToolIcons global
         if (window.ZyncToolIcons && window.ZyncToolIcons[tool.id]) {
@@ -66,8 +260,10 @@
         if (window.ZyncToolIcons && window.ZyncToolIcons[tool.category]) {
             return window.ZyncToolIcons[tool.category];
         }
-        // 3. Tool's own icon field (already Lucide-compatible in final DB)
+        // 3. Tool's own icon field — convert fa- names to Lucide
         if (tool.icon) {
+            var normalized = normalizeFaIcon(tool.icon);
+            if (normalized) return normalized;
             return tool.icon;
         }
         // 4. Category fallback
@@ -101,7 +297,11 @@
 
     function catIcon(id) {
         var c = state.categories.find(function (x) { return x.id === id; });
-        if (c && c.icon) return c.icon;
+        if (c && c.icon) {
+            var normalized = normalizeFaIcon(c.icon);
+            if (normalized) return normalized;
+            return c.icon;
+        }
         return CATEGORY_ICON_MAP[id] || 'tool';
     }
 
@@ -117,12 +317,39 @@
     }
 
     /* =========================================
-       LUCIDE ICON REFRESH
+       LUCIDE ICON REFRESH — waits for CDN if needed
        ========================================= */
+    var lucideReady = false;
+    var lucideQueue = [];
+
     function refreshLucide() {
-        if (window.lucide && typeof window.lucide.createIcons === 'function') {
-            window.lucide.createIcons();
+        if (lucideReady) {
+            try { window.lucide.createIcons(); } catch (e) { /* ignore */ }
+            return;
         }
+        // Queue one call to run when lucide loads
+        if (lucideQueue.length === 0) {
+            lucideQueue.push(true);
+            pollLucide();
+        }
+    }
+
+    function pollLucide() {
+        if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            lucideReady = true;
+            window.lucide.createIcons();
+            lucideQueue = [];
+            return;
+        }
+        setTimeout(pollLucide, 80);
+    }
+
+    // Also listen for lucide load event
+    if (typeof window !== 'undefined') {
+        window.addEventListener('load', function () {
+            lucideReady = true;
+            try { window.lucide.createIcons(); } catch (e) { /* ignore */ }
+        });
     }
 
     /* =========================================

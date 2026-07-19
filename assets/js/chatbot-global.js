@@ -71,10 +71,8 @@
                 });
             }
 
-            // Theme-aware window styling
-            if (typeof window.ZyncTheme !== 'undefined' && window.ZyncTheme.onThemeChange) {
-                window.ZyncTheme.onThemeChange((theme) => this.onThemeChange(theme));
-            }
+            // Theme-aware window styling — chatbot adapts via CSS variables automatically
+            // (ZyncTheme is handled by main.js; no extra listener needed here)
         },
 
         postInit() {
