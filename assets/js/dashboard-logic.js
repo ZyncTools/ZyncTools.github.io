@@ -3,9 +3,6 @@
 
     /* ============================================
        ZyncTools — Dashboard Logic
-       Advanced Bento Grid rendering with
-       intersection observer, spotlight, and
-       magnetic hover effects.
        ============================================ */
 
     const state = {
@@ -16,11 +13,11 @@
         loadedScripts: new Set()
     };
 
-    /* --- Utilities --- */
     const $ = (sel) => document.querySelector(sel);
     const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
     function escapeHtml(str) {
+        if (!str) return '';
         return String(str)
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
@@ -28,14 +25,6 @@
             .replace(/"/g, '&quot;');
     }
 
-    function highlightText(text, query) {
-        if (!query) return escapeHtml(text);
-        const escaped = escapeHtml(text);
-        const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-        return escaped.replace(regex, '<mark>$1</mark>');
-    }
-
-    /* --- Icon Resolution --- */
     function getToolIcon(tool) {
         if (window.ZyncToolIcons && window.ZyncToolIcons[tool.id]) {
             return window.ZyncToolIcons[tool.id];
@@ -46,28 +35,9 @@
         return 'tool';
     }
 
-    /* --- Card Sizing Logic --- */
-    function getCardSizeClass(tool, index, categoryTools) {
-        // Find the most popular tool across ALL categories
-        const allPopular = state.tools.filter(t => t.popular);
-        const mostPopular = allPopular.length > 0 ? allPopular[0] : null;
-        
-        // Hero card: the #1 most popular tool overall
-        if (mostPopular && tool.id === mostPopular.id) {
-            return 'bento-hero';
-        }
-        
-        // Wide cards: other popular tools
-        if (tool.popular) {
-            return 'bento-wide';
-        }
-        
-        // Mix of standard and large for visual variety
-        // Use large for every 4th card to create 3-per-row sections
-        if ((index + 1) % 4 === 0) {
-            return 'bento-large';
-        }
-        
+    function getCardSizeClass(tool, index) {
+        if (tool.popular) return 'bento-wide';
+        if ((index + 1) % 4 === 0) return 'bento-large';
         return 'bento-standard';
     }
 
@@ -102,11 +72,8 @@
                 const centerY = rect.height / 2;
                 const deltaX = (x - centerX) / centerX;
                 const deltaY = (y - centerY) / centerY;
-                
-                // Subtle magnetic pull (max 3px)
                 const moveX = deltaX * 3;
                 const moveY = deltaY * 3;
-                
                 card.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) scale(1.01)`;
             });
 
@@ -129,26 +96,22 @@
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
                     
-                    // Animate cards within this section with stagger
                     const cards = entry.target.querySelectorAll('.bento-animate');
                     cards.forEach((card, index) => {
                         card.style.animationDelay = `${index * 50}ms`;
                         card.classList.add('bento-animate');
                     });
                     
-                    // Unobserve after animation
                     observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
 
-        // Observe all category sections
         const sections = $$('.category-section');
         sections.forEach(section => {
             observer.observe(section);
         });
 
-        // Also observe category headers for blur-in effect
         const headers = $$('.category-header');
         const headerObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -164,79 +127,71 @@
         });
     }
 
-    /* --- Render Category Sections --- */
-    function renderDashboard() {
+    /* --- Render Dashboard (used by search-engine.js) --- */
+    function renderDashboard(tools, query = '') {
         const container = $('#category-sections');
         const noResults = $('#no-results');
         if (!container) return;
 
-        const filtered = state.tools.filter(tool => {
-            const matchesCategory = state.activeCategory === 'all' || tool.category === state.activeCategory;
-            const matchesSearch = !state.searchQuery ||
-                tool.name.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
-                tool.description.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
-                tool.id.toLowerCase().includes(state.searchQuery.toLowerCase());
-            return matchesCategory && matchesSearch;
-        });
-
-        if (filtered.length === 0) {
+        if (!tools || tools.length === 0) {
             container.innerHTML = '';
-            noResults?.classList.remove('hidden');
+            if (noResults) noResults.classList.remove('hidden');
             return;
         }
 
-        noResults?.classList.add('hidden');
+        if (noResults) noResults.classList.add('hidden');
 
         // Group by category
         const grouped = {};
-        filtered.forEach(tool => {
+        tools.forEach(tool => {
             if (!grouped[tool.category]) grouped[tool.category] = [];
             grouped[tool.category].push(tool);
         });
 
+        // Get category order
+        const categoryOrder = getCategoryOrder();
+        
         let html = '';
-
-        state.categories.forEach(category => {
-            const tools = grouped[category.id];
-            if (!tools || tools.length === 0) return;
-
+        
+        categoryOrder.forEach(categoryId => {
+            const categoryTools = grouped[categoryId];
+            if (!categoryTools || categoryTools.length === 0) return;
+            
+            const category = window.ZyncRegistry?.getCategory?.(categoryId) || {
+                id: categoryId,
+                name: categoryId.charAt(0).toUpperCase() + categoryId.slice(1),
+                icon: 'tool'
+            };
+            
             html += `
-                <div class="category-section" data-category="${category.id}">
+                <div class="category-section" data-category="${categoryId}">
                     <div class="category-header">
                         <div class="category-icon"><i data-lucide="${category.icon}"></i></div>
                         <h2 class="category-title">${escapeHtml(category.name)}</h2>
-                        <span class="category-count">${tools.length} tool${tools.length !== 1 ? 's' : ''}</span>
+                        <span class="category-count">${categoryTools.length} tool${categoryTools.length !== 1 ? 's' : ''}</span>
                     </div>
                     <div class="bento-grid">
-                        ${tools.map((tool, i) => renderCard(tool, i, tools.length)).join('')}
+                        ${categoryTools.map((tool, i) => renderCard(tool, i, query)).join('')}
                     </div>
                 </div>
             `;
         });
 
         container.innerHTML = html;
-
-        // Initialize Lucide icons
+        
         if (window.lucide) lucide.createIcons();
-
-        // Initialize animations and effects
+        
         initScrollAnimations();
         initSpotlight();
         initMagneticHover();
     }
 
-    /* --- Render Single Card --- */
-    function renderCard(tool, index, totalInCategory) {
-        const name = highlightText(tool.name, state.searchQuery);
-        const desc = highlightText(tool.description, state.searchQuery);
-        const sizeClass = getCardSizeClass(tool, index, totalInCategory);
+    function renderCard(tool, index, query = '') {
+        const name = query ? highlightText(tool.name, query) : escapeHtml(tool.name);
+        const desc = query ? highlightText(tool.description, query) : escapeHtml(tool.description || '');
+        const sizeClass = getCardSizeClass(tool, index);
         const iconName = getToolIcon(tool);
         
-        // Determine input icon based on tool type
-        const isFileTool = tool.accept && tool.accept.includes('.');
-        const inputIcon = isFileTool ? 'upload' : getToolIcon(tool);
-        
-        // Badge styling
         let badgeClass = 'bento-badge';
         if (tool.badge === 'AI') badgeClass += ' ai';
         if (tool.badge === 'Beta') badgeClass += ' beta';
@@ -245,10 +200,8 @@
             <a href="/tool.html?id=${tool.id}" 
                class="bento-card ${sizeClass} bento-animate" 
                data-tool-id="${tool.id}"
-               data-tool-type="${isFileTool ? 'file' : 'text'}">
-                <div class="bento-icon">
-                    <i data-lucide="${inputIcon}"></i>
-                </div>
+               data-tool-type="${tool.type || 'file'}">
+                <div class="bento-icon"><i data-lucide="${iconName}"></i></div>
                 <div>
                     <div class="bento-title">${name}</div>
                     <div class="bento-desc">${desc}</div>
@@ -256,6 +209,34 @@
                 ${tool.badge ? `<span class="${badgeClass}">${escapeHtml(tool.badge)}</span>` : ''}
             </a>
         `;
+    }
+
+    function highlightText(text, query) {
+        if (!query || !text) return escapeHtml(text);
+        const escaped = escapeHtml(text);
+        const q = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+        let result = escaped;
+        terms.forEach(term => {
+            const regex = new RegExp(`(${term})`, 'gi');
+            result = result.replace(regex, '<mark>$1</mark>');
+        });
+        return result;
+    }
+
+    function getCategoryOrder() {
+        if (state.tools.length > 0) {
+            const seen = new Set();
+            const order = [];
+            state.tools.forEach(t => {
+                if (!seen.has(t.category)) {
+                    seen.add(t.category);
+                    order.push(t.category);
+                }
+            });
+            return order;
+        }
+        return ['images', 'pdf', 'video', 'audio', 'text', 'code', 'math', 'dev', 'security', 'ai'];
     }
 
     /* --- Data Loading --- */
@@ -271,21 +252,6 @@
             state.tools = [];
             state.categories = [];
         }
-    }
-
-    /* --- Search --- */
-    function initSearch() {
-        const input = $('#search-input');
-        if (!input) return;
-
-        let debounce;
-        input.addEventListener('input', (e) => {
-            clearTimeout(debounce);
-            debounce = setTimeout(() => {
-                state.searchQuery = e.target.value.trim();
-                renderDashboard();
-            }, 150);
-        });
     }
 
     /* --- Category Filters --- */
@@ -306,7 +272,13 @@
             btn.classList.add('active', 'bg-accent/10', 'text-accent', 'border-accent/20');
 
             state.activeCategory = btn.dataset.category || 'all';
-            renderDashboard();
+            
+            // If search is active, re-filter
+            if (state.searchQuery && window.ZyncSearch) {
+                window.ZyncSearch.performSearch(state.searchQuery);
+            } else {
+                renderDashboard(state.tools);
+            }
         });
     }
 
@@ -330,9 +302,11 @@
     async function init() {
         await loadRegistry();
         populateCategoryFilters();
-        initSearch();
         initFilters();
-        renderDashboard();
+        
+        // Initial render
+        renderDashboard(state.tools);
+        
         initThemeToggle();
     }
 
@@ -362,5 +336,12 @@
         init();
     }
 
-    window.ZyncApp = { state, renderDashboard, loadRegistry };
+    window.ZyncApp = { 
+        state, 
+        renderDashboard, 
+        loadRegistry,
+        initScrollAnimations,
+        initSpotlight,
+        initMagneticHover
+    };
 })();

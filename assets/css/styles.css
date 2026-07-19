@@ -81,7 +81,21 @@ body {
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: 1fr;
   gap: var(--grid-gap);
+}
+
+@media (max-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
 }
 
 /* Card span utilities */
@@ -109,14 +123,14 @@ body {
 @media (max-width: 1024px) {
   .bento-hero,
   .bento-wide {
-    grid-column: span 6;
+    grid-column: span 4;
     grid-row: span 1;
   }
   .bento-standard {
-    grid-column: span 6;
+    grid-column: span 4;
   }
   .bento-large {
-    grid-column: span 6;
+    grid-column: span 4;
   }
 }
 
@@ -125,8 +139,11 @@ body {
   .bento-wide,
   .bento-standard,
   .bento-large {
-    grid-column: span 12;
+    grid-column: span 1;
     grid-row: span 1;
+  }
+  .bento-grid {
+    grid-template-columns: 1fr;
   }
   :root {
     --grid-gap: 16px;
@@ -644,10 +661,20 @@ footer {
 
 /* --- Search highlight --- */
 mark {
-  background: rgba(99, 102, 241, 0.2);
+  background: rgba(99, 102, 241, 0.25);
   color: inherit;
   border-radius: 2px;
-  padding: 0 2px;
+  padding: 0 3px;
+  font-weight: 600;
+}
+
+.search-highlight {
+  animation: highlightPulse 2s ease-in-out;
+}
+
+@keyframes highlightPulse {
+  0%, 100% { background: rgba(99, 102, 241, 0.25); }
+  50% { background: rgba(99, 102, 241, 0.4); }
 }
 
 /* --- Code / Textarea --- */
