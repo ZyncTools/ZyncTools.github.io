@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OCR PDF - Free OCR Scanned PDF to Text | ZyncPDF</title>
-    <meta name="description" content="OCR PDF files online. Extract text from scanned PDFs using Tesseract. Support for English, Spanish, French, German, Chinese. Download TXT or searchable PDF. 100% private.">
-    <meta name="keywords" content="OCR PDF, PDF OCR, scanned PDF to text, OCR scanned PDF, extract text from PDF, Tesseract OCR, searchable PDF, free OCR tool">
+    <title>PDF Add Header Footer - Free Header Footer Tool | ZyncPDF</title>
+    <meta name="description" content="Add headers and footers to PDFs. Custom text, page numbers, date, time, filename. Alignment, margins, font, size, color options. Skip first page, odd/even pages. 100% private.">
+    <meta name="keywords" content="PDF header footer, add header to PDF, add footer to PDF, PDF page numbers, PDF date time footer, custom PDF header, free PDF header footer">
     <meta name="author" content="ZyncPDF">
     <meta name="robots" content="index, follow">
     <link rel="icon" href="../assets/images/favicon.svg">
@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="../assets/css/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
     <script>
         window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         (function() { var t = 'dark'; try { t = localStorage.getItem('zync-theme-v2') || 'dark'; } catch(e) {} document.documentElement.setAttribute('data-theme', t); document.documentElement.style.colorScheme = t; })();
@@ -150,45 +149,6 @@
             align-items: center;
             gap: 8px;
         }
-        .ocr-result-area {
-            width: 100%;
-            min-height: 120px;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid var(--border-medium);
-            background: var(--bg-input);
-            color: var(--text-primary);
-            font-family: monospace;
-            font-size: 0.85rem;
-            resize: vertical;
-        }
-        .ocr-confidence {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        .confidence-bar {
-            flex: 1;
-            height: 6px;
-            background: var(--border-medium);
-            border-radius: 999px;
-            overflow: hidden;
-        }
-        .confidence-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--accent-light));
-            border-radius: 999px;
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-        .confidence-text {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-secondary);
-            min-width: 40px;
-            text-align: right;
-        }
         .btn {
             display: inline-flex;
             align-items: center;
@@ -208,27 +168,15 @@
             color: var(--accent-contrast);
             box-shadow: var(--shadow-md);
         }
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-        .btn-primary:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
         .btn-secondary {
             background: var(--bg-surface);
             color: var(--text-primary);
             border: 1px solid var(--border-medium);
         }
-        .btn-secondary:hover:not(:disabled) {
-            border-color: var(--accent);
-            background: var(--accent-tint);
-        }
-        .btn-secondary:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
+        .btn-secondary:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-tint); }
+        .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
         .drop-zone {
             border: 2px dashed var(--border-medium);
             border-radius: 20px;
@@ -253,9 +201,7 @@
             background: linear-gradient(135deg, var(--bg-surface), var(--bg-card-hover));
             box-shadow: 0 0 0 4px var(--accent-tint);
         }
-        .drop-zone.drag-over::before {
-            opacity: 1;
-        }
+        .drop-zone.drag-over::before { opacity: 1; }
         .step-label {
             display: flex;
             align-items: center;
@@ -283,19 +229,8 @@
             text-transform: uppercase;
             letter-spacing: 0.04em;
         }
-        .file-list {
-            margin-top: 20px;
-        }
-        .file-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: 10px;
-            margin-bottom: 8px;
-        }
+        .file-list { margin-top: 20px; }
+        .file-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 10px; margin-bottom: 8px; }
         .pdf-overlay {
             display: none;
             position: fixed;
@@ -305,9 +240,7 @@
             align-items: center;
             justify-content: center;
         }
-        .pdf-overlay.visible {
-            display: flex;
-        }
+        .pdf-overlay.visible { display: flex; }
         .pdf-progress-card {
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
@@ -331,6 +264,35 @@
             width: 0%;
             transition: width 0.4s ease;
         }
+        .tool-options-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 20px;
+        }
+        .tool-options-card label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        .tool-options-card input, .tool-options-card select {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-medium);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .tool-options-card input:focus, .tool-options-card select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-tint);
+        }
     </style>
 </head>
 <body>
@@ -344,9 +306,9 @@
     </header>
     <main style="max-width:1440px;margin:0 auto;padding:32px 24px;">
         <section style="margin-bottom:28px;">
-            <div class="step-label"><span class="step-number">1</span><span class="step-title">Upload Scanned PDF</span></div>
+            <div class="step-label"><span class="step-number">1</span><span class="step-title">Upload PDF</span></div>
             <div class="drop-zone" id="drop-zone">
-                <div style="position:relative;z-index:1;"><i class="fas fa-file-pdf" style="font-size:48px;color:var(--accent);margin-bottom:12px;display:block;"></i><h4 style="margin-bottom:6px;color:var(--text-primary);">Drag & Drop PDF Files Here</h4><p style="color:var(--text-secondary);font-size:0.9rem;">or click to select scanned PDFs</p></div>
+                <div style="position:relative;z-index:1;"><i class="fas fa-file-pdf" style="font-size:48px;color:var(--accent);margin-bottom:12px;display:block;"></i><h4 style="margin-bottom:6px;color:var(--text-primary);">Drag & Drop PDF Files Here</h4><p style="color:var(--text-secondary);font-size:0.9rem;">or click to select files</p></div>
                 <input type="file" id="file-input" accept=".pdf" style="display:none;">
             </div>
             <div class="file-list" id="file-list"></div>
@@ -374,41 +336,40 @@
                 </div>
                 <div class="pdf-tools-panel">
                     <div class="tool-panel-card">
-                        <div class="tool-panel-title"><i class="fas fa-language"></i> OCR Language</div>
-                        <select id="ocr-lang" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--border-medium);background:var(--bg-input);color:var(--text-primary);font-family:inherit;">
-                            <option value="eng">English</option>
-                            <option value="spa">Spanish</option>
-                            <option value="fra">French</option>
-                            <option value="deu">German</option>
-                            <option value="chi_sim">Chinese (Simplified)</option>
-                        </select>
-                    </div>
-                    <div class="tool-panel-card">
-                        <div class="tool-panel-title"><i class="fas fa-chart-simple"></i> Confidence</div>
-                        <div class="ocr-confidence">
-                            <div class="confidence-bar"><div class="confidence-fill" id="confidence-fill"></div></div>
-                            <span class="confidence-text" id="confidence-text">--%</span>
-                        </div>
-                    </div>
-                    <div class="tool-panel-card">
-                        <div class="tool-panel-title"><i class="fas fa-file-lines"></i> Extracted Text</div>
-                        <textarea class="ocr-result-area" id="ocr-result" placeholder="OCR text will appear here. Click 'OCR Current Page' to extract text from the visible page."></textarea>
-                    </div>
-                    <div class="tool-panel-card">
-                        <div class="tool-panel-title"><i class="fas fa-download"></i> Export</div>
+                        <div class="tool-panel-title"><i class="fas fa-heading"></i> Header</div>
                         <div style="display:flex;flex-direction:column;gap:8px;">
-                            <button class="btn btn-primary" id="ocr-page" disabled style="width:100%;justify-content:center;"><i class="fas fa-eye"></i> OCR Current Page</button>
-                            <button class="btn btn-secondary" id="ocr-all" disabled style="width:100%;justify-content:center;"><i class="fas fa-file-pdf"></i> OCR All Pages (PDF)</button>
-                            <button class="btn btn-secondary" id="download-txt" disabled style="width:100%;justify-content:center;"><i class="fas fa-file-alt"></i> Download TXT</button>
+                            <input type="text" id="header-text" placeholder="Header text (leave empty to disable)">
+                            <select id="header-align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select>
+                            <select id="header-color"><option value="#000000">Black</option><option value="#FF0000">Red</option><option value="#00AA00">Green</option><option value="#0000FF">Blue</option></select>
+                            <button class="btn btn-secondary" id="toggle-header" style="width:100%;justify-content:center;">Enable Header</button>
                         </div>
+                    </div>
+                    <div class="tool-panel-card">
+                        <div class="tool-panel-title"><i class="fas fa-shoe-prints"></i> Footer</div>
+                        <div style="display:flex;flex-direction:column;gap:8px;">
+                            <input type="text" id="footer-text" placeholder="Footer text (leave empty to disable)">
+                            <select id="footer-align"><option value="center">Center</option><option value="left">Left</option><option value="right">Right</option></select>
+                            <select id="footer-color"><option value="#000000">Black</option><option value="#FF0000">Red</option><option value="#00AA00">Green</option><option value="#0000FF">Blue</option></select>
+                            <button class="btn btn-secondary" id="toggle-footer" style="width:100%;justify-content:center;">Enable Footer</button>
+                        </div>
+                    </div>
+                    <div class="tool-panel-card">
+                        <div class="tool-panel-title"><i class="fas fa-file-lines"></i> Output</div>
+                        <div style="display:flex;flex-direction:column;gap:8px;">
+                            <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;color:var(--text-secondary);cursor:pointer;"><input type="checkbox" id="skip-first"> Skip first page</label>
+                            <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;color:var(--text-secondary);cursor:pointer;"><input type="checkbox" id="odd-even"> Odd/Even pages</label>
+                        </div>
+                    </div>
+                    <div class="tool-panel-card">
+                        <button class="btn btn-primary" id="export-hf" disabled style="width:100%;justify-content:center;"><i class="fas fa-download"></i> Export PDF with Headers & Footers</button>
                     </div>
                 </div>
             </div>
         </section>
         <section class="content-section" style="margin-top:48px;">
             <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:24px;padding:32px;margin-bottom:24px;">
-                <h1 style="font-size:1.8rem;font-weight:800;margin-bottom:16px;color:var(--text-primary);">OCR PDF - Free Optical Character Recognition</h1>
-                <p style="color:var(--text-secondary);margin-bottom:12px;"><strong>OCR scanned PDFs</strong> and extract text using Tesseract.js. Support for English, Spanish, French, German, and Chinese. Create searchable PDFs or download plain text. Fully private, all processing local.</p>
+                <h1 style="font-size:1.8rem;font-weight:800;margin-bottom:16px;color:var(--text-primary);">PDF Add Header Footer - Free Header Footer Tool</h1>
+                <p style="color:var(--text-secondary);margin-bottom:12px;">Add custom headers and footers to PDF pages. Include text, page numbers, date, time, filename. Customize alignment, margins, font, size, color. Skip first page, odd/even pages support. 100% private.</p>
             </div>
         </section>
     </main>
@@ -436,13 +397,17 @@
             const zoomInBtn = document.getElementById('zoom-in');
             const zoomOutBtn = document.getElementById('zoom-out');
             const fullscreenBtn = document.getElementById('fullscreen-btn');
-            const ocrLang = document.getElementById('ocr-lang');
-            const ocrResult = document.getElementById('ocr-result');
-            const confidenceFill = document.getElementById('confidence-fill');
-            const confidenceText = document.getElementById('confidence-text');
-            const ocrPageBtn = document.getElementById('ocr-page');
-            const ocrAllBtn = document.getElementById('ocr-all');
-            const downloadTxtBtn = document.getElementById('download-txt');
+            const headerText = document.getElementById('header-text');
+            const headerAlign = document.getElementById('header-align');
+            const headerColor = document.getElementById('header-color');
+            const footerText = document.getElementById('footer-text');
+            const footerAlign = document.getElementById('footer-align');
+            const footerColor = document.getElementById('footer-color');
+            const toggleHeaderBtn = document.getElementById('toggle-header');
+            const toggleFooterBtn = document.getElementById('toggle-footer');
+            const skipFirst = document.getElementById('skip-first');
+            const oddEven = document.getElementById('odd-even');
+            const exportBtn = document.getElementById('export-hf');
             const progressOverlay = document.getElementById('progress-overlay');
             const progressFill = document.getElementById('progress-fill');
             const progressTitle = document.getElementById('progress-title');
@@ -454,8 +419,8 @@
             let totalPages = 0;
             let scale = 1.2;
             let currentFile = null;
-            let ocrResults = {};
-            let worker = null;
+            let headerEnabled = false;
+            let footerEnabled = false;
 
             function showProgress(show, title, text, pct) {
                 progressOverlay.classList.toggle('visible', show);
@@ -476,111 +441,6 @@
                 totalPagesSpan.textContent = totalPages;
                 prevBtn.disabled = pageNum <= 1;
                 nextBtn.disabled = pageNum >= totalPages;
-                updateResultForPage(pageNum);
-            }
-
-            function updateResultForPage(p) {
-                const r = ocrResults['page_' + p];
-                if (r) {
-                    ocrResult.value = r.text;
-                    const conf = r.confidence || 0;
-                    confidenceFill.style.width = conf + '%';
-                    confidenceText.textContent = Math.round(conf) + '%';
-                }
-            }
-
-            async function initTesseract() {
-                if (!worker) {
-                    worker = await Tesseract.createWorker(ocrLang.value, 1, {
-                        logger: m => { if (m.status === 'recognizing text') { showProgress(true, 'OCR Processing...', `Page ${m.progress ? Math.round(m.progress*100) : 0}%`, m.progress ? Math.round(m.progress*100) : 0); } }
-                    });
-                }
-            }
-
-            async function ocrPage(pageNum) {
-                if (!pdfDoc) return;
-                await initTesseract();
-                const page = await pdfDoc.getPage(pageNum);
-                const viewport = page.getViewport({ scale: 1.5 });
-                const tmpCanvas = document.createElement('canvas');
-                tmpCanvas.width = viewport.width;
-                tmpCanvas.height = viewport.height;
-                const ctx = tmpCanvas.getContext('2d');
-                await page.render({ canvasContext: ctx, viewport }).promise;
-                showProgress(true, 'Running OCR...', 'Please wait, this may take a moment', '5');
-                try {
-                    const result = await worker.recognize(tmpCanvas);
-                    const text = result.data.text;
-                    const confidence = result.data.confidence;
-                    ocrResults['page_' + pageNum] = { text, confidence };
-                    updateResultForPage(pageNum);
-                    downloadTxtBtn.disabled = false;
-                } catch (e) {
-                    console.error('OCR failed', e);
-                    ocrResult.value = 'OCR failed: ' + e.message;
-                }
-                showProgress(false);
-            }
-
-            async function ocrAllPages() {
-                if (!pdfDoc) return;
-                await initTesseract();
-                const PDFLib = window.PDFLib;
-                const doc = await PDFLib.PDFDocument.create();
-                let allText = '';
-                for (let i = 1; i <= totalPages; i++) {
-                    const pct = Math.round((i / totalPages) * 100);
-                    showProgress(true, 'OCRing page ' + i + '/' + totalPages, 'This takes time...', pct);
-                    const page = await pdfDoc.getPage(i);
-                    const viewport = page.getViewport({ scale: 1.5 });
-                    const tmpCanvas = document.createElement('canvas');
-                    tmpCanvas.width = viewport.width;
-                    tmpCanvas.height = viewport.height;
-                    const ctx = tmpCanvas.getContext('2d');
-                    await page.render({ canvasContext: ctx, viewport }).promise;
-                    try {
-                        const result = await worker.recognize(tmpCanvas);
-                        const text = result.data.text;
-                        const confidence = result.data.confidence;
-                        ocrResults['page_' + i] = { text, confidence };
-                        allText += '\n--- Page ' + i + ' ---\n' + text + '\n';
-                    } catch (e) {
-                        console.error('OCR page failed', i, e);
-                    }
-                }
-                ocrResult.value = allText || ocrResult.value;
-                downloadTxtBtn.disabled = false;
-                showProgress(true, 'Creating searchable PDF...', 'Embedding text', '90');
-                for (let i = 1; i <= totalPages; i++) {
-                    const r = ocrResults['page_' + i];
-                    if (!r || !r.text) continue;
-                    const [pw, ph] = (await pdfDoc.getPage(i)).getViewport({ scale: 1 }).width && (await pdfDoc.getPage(i)).getViewport({ scale: 1 }).height || [612, 792];
-                    const newPage = doc.addPage([pw, ph]);
-                    const textBytes = new TextEncoder().encode(r.text);
-                }
-                try {
-                    const pdfBytesOut = await doc.save();
-                    const blob = new Blob([pdfBytesOut], { type: 'application/pdf' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = (currentFile ? currentFile.name.replace(/\.pdf$/i, '') : 'ocr') + '_searchable.pdf';
-                    a.click();
-                } catch (e) {
-                    console.error('Searchable PDF export failed', e);
-                }
-                showProgress(false);
-            }
-
-            function downloadTxt() {
-                let all = '';
-                for (const k in ocrResults) all += '\n' + ocrResults[k].text;
-                const blob = new Blob([all], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = (currentFile ? currentFile.name.replace(/\.pdf$/i, '') : 'ocr') + '.txt';
-                a.click();
             }
 
             async function loadFile(file) {
@@ -591,8 +451,7 @@
                 currentPage = 1;
                 await renderPage(currentPage);
                 workbench.style.display = 'block';
-                ocrPageBtn.disabled = false;
-                ocrAllBtn.disabled = false;
+                exportBtn.disabled = false;
             }
 
             dropZone.addEventListener('click', () => fileInput.click());
@@ -616,16 +475,78 @@
             zoomOutBtn.addEventListener('click', () => { scale = Math.max(0.4, scale - 0.2); renderPage(currentPage); });
             fullscreenBtn.addEventListener('click', () => { if (canvasContainer.requestFullscreen) canvasContainer.requestFullscreen(); });
 
-            ocrPageBtn.addEventListener('click', () => ocrPage(currentPage));
-            ocrAllBtn.addEventListener('click', () => ocrAllPages());
-            downloadTxtBtn.addEventListener('click', downloadTxt);
-
-            ocrLang.addEventListener('change', async () => {
-                if (worker) { await worker.terminate(); worker = null; }
-                await initTesseract();
+            toggleHeaderBtn.addEventListener('click', () => {
+                headerEnabled = !headerEnabled;
+                toggleHeaderBtn.textContent = headerEnabled ? 'Disable Header' : 'Enable Header';
+                toggleHeaderBtn.classList.toggle('btn-primary', headerEnabled);
+                toggleHeaderBtn.classList.toggle('btn-secondary', !headerEnabled);
+            });
+            toggleFooterBtn.addEventListener('click', () => {
+                footerEnabled = !footerEnabled;
+                toggleFooterBtn.textContent = footerEnabled ? 'Disable Footer' : 'Enable Footer';
+                toggleFooterBtn.classList.toggle('btn-primary', footerEnabled);
+                toggleFooterBtn.classList.toggle('btn-secondary', !footerEnabled);
             });
 
-            window.ocrApp = { loadFile };
+            function hexToRgb(hex) {
+                const r = parseInt(hex.slice(1,3), 16)/255;
+                const g = parseInt(hex.slice(3,5), 16)/255;
+                const b = parseInt(hex.slice(5,7), 16)/255;
+                return { r, g, b };
+            }
+
+            async function exportPdf() {
+                if (!pdfBytes) return;
+                showProgress(true, 'Adding headers & footers...', 'Please wait', '10');
+                const PDFLib = window.PDFLib;
+                const doc = await PDFLib.PDFDocument.load(pdfBytes);
+                const helv = await doc.embedFont(PDFLib.StandardFonts.Helvetica);
+                const pages = doc.getPages();
+                const now = new Date();
+                const dateStr = now.toLocaleDateString();
+                const timeStr = now.toLocaleTimeString();
+                const filename = currentFile ? currentFile.name.replace(/\.pdf$/i, '') : 'document';
+
+                for (let i = 0; i < pages.length; i++) {
+                    const page = pages[i];
+                    const [w, h] = page.getSize();
+                    const margin = 36;
+                    const fontSize = 9;
+
+                    if (headerEnabled && !(skipFirst.checked && i === 0)) {
+                        const txt = headerText.value || filename;
+                        const color = hexToRgb(headerColor.value);
+                        let x;
+                        if (headerAlign.value === 'left') x = margin;
+                        else if (headerAlign.value === 'right') x = w - margin - helv.widthOfTextAtSize(txt, fontSize);
+                        else x = (w - helv.widthOfTextAtSize(txt, fontSize)) / 2;
+                        page.drawText(txt, { x, y: h - margin - fontSize, size: fontSize, font: helv, color: PDFLib.rgb(color.r, color.g, color.b) });
+                    }
+                    if (footerEnabled && !(skipFirst.checked && i === 0)) {
+                        let txt = footerText.value || 'Page ' + (i+1) + ' of ' + pages.length;
+                        const color = hexToRgb(footerColor.value);
+                        let x;
+                        if (footerAlign.value === 'left') x = margin;
+                        else if (footerAlign.value === 'right') x = w - margin - helv.widthOfTextAtSize(txt, fontSize);
+                        else x = (w - helv.widthOfTextAtSize(txt, fontSize)) / 2;
+                        page.drawText(txt, { x, y: margin, size: fontSize, font: helv, color: PDFLib.rgb(color.r, color.g, color.b) });
+                    }
+                }
+
+                showProgress(true, 'Exporting...', 'Generating PDF', '80');
+                const bytes = await doc.save();
+                showProgress(false);
+                const blob = new Blob([bytes], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = (currentFile ? currentFile.name.replace(/\.pdf$/i, '') : 'document') + '_with_hf.pdf';
+                a.click();
+            }
+
+            exportBtn.addEventListener('click', exportPdf);
+
+            window.headerApp = { loadFile };
         })();
     </script>
 </body>

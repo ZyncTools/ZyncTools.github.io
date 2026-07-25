@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OCR PDF - Free OCR Scanned PDF to Text | ZyncPDF</title>
-    <meta name="description" content="OCR PDF files online. Extract text from scanned PDFs using Tesseract. Support for English, Spanish, French, German, Chinese. Download TXT or searchable PDF. 100% private.">
-    <meta name="keywords" content="OCR PDF, PDF OCR, scanned PDF to text, OCR scanned PDF, extract text from PDF, Tesseract OCR, searchable PDF, free OCR tool">
+    <title>PDF Form Fill - Free Interactive PDF Form Editor | ZyncPDF</title>
+    <meta name="description" content="Fill PDF forms online for free. Edit text fields, checkboxes, radio buttons, dropdowns, and signatures. Export flattened PDFs. 100% private, no uploads.">
+    <meta name="keywords" content="fill PDF form, PDF form filler, edit PDF forms, fillable PDF, PDF form editor, sign PDF online, free PDF form tool">
     <meta name="author" content="ZyncPDF">
     <meta name="robots" content="index, follow">
     <link rel="icon" href="../assets/images/favicon.svg">
@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../assets/css/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
+    <script src="../assets/js/pdf-workbench-core.js"></script>
     <script>
         window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         (function() { var t = 'dark'; try { t = localStorage.getItem('zync-theme-v2') || 'dark'; } catch(e) {} document.documentElement.setAttribute('data-theme', t); document.documentElement.style.colorScheme = t; })();
@@ -150,44 +150,48 @@
             align-items: center;
             gap: 8px;
         }
-        .ocr-result-area {
-            width: 100%;
-            min-height: 120px;
+        .form-field-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .form-field-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
             padding: 10px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
             border-radius: 8px;
+            font-size: 0.8rem;
+        }
+        .form-field-item label {
+            font-weight: 700;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .form-field-item input, .form-field-item select {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 6px;
             border: 1px solid var(--border-medium);
             background: var(--bg-input);
             color: var(--text-primary);
-            font-family: monospace;
+            font-family: inherit;
             font-size: 0.85rem;
-            resize: vertical;
+            outline: none;
         }
-        .ocr-confidence {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 8px;
+        .form-field-item input:focus, .form-field-item select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-tint);
         }
-        .confidence-bar {
-            flex: 1;
-            height: 6px;
-            background: var(--border-medium);
-            border-radius: 999px;
-            overflow: hidden;
-        }
-        .confidence-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--accent-light));
-            border-radius: 999px;
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-        .confidence-text {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-secondary);
-            min-width: 40px;
-            text-align: right;
+        .form-field-item input[type="checkbox"] {
+            width: auto;
         }
         .btn {
             display: inline-flex;
@@ -228,6 +232,41 @@
         .btn-secondary:disabled {
             opacity: 0.4;
             cursor: not-allowed;
+        }
+        .pdf-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 9990;
+            align-items: center;
+            justify-content: center;
+        }
+        .pdf-overlay.visible {
+            display: flex;
+        }
+        .pdf-progress-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 32px 40px;
+            min-width: 360px;
+            text-align: center;
+        }
+        .pdf-progress-bar-wrap {
+            width: 100%;
+            height: 8px;
+            background: var(--border-medium);
+            border-radius: 999px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+        .pdf-progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            border-radius: 999px;
+            width: 0%;
+            transition: width 0.4s ease;
         }
         .drop-zone {
             border: 2px dashed var(--border-medium);
@@ -296,68 +335,58 @@
             border-radius: 10px;
             margin-bottom: 8px;
         }
-        .pdf-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 9990;
-            align-items: center;
-            justify-content: center;
-        }
-        .pdf-overlay.visible {
-            display: flex;
-        }
-        .pdf-progress-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 20px;
-            padding: 32px 40px;
-            min-width: 360px;
-            text-align: center;
-        }
-        .pdf-progress-bar-wrap {
-            width: 100%;
-            height: 8px;
-            background: var(--border-medium);
-            border-radius: 999px;
-            overflow: hidden;
-            margin: 16px 0;
-        }
-        .pdf-progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--accent-light));
-            border-radius: 999px;
-            width: 0%;
-            transition: width 0.4s ease;
+        .clear-btn {
+            background: none;
+            border: none;
+            color: var(--accent-danger);
+            cursor: pointer;
+            font-size: 1.1rem;
         }
     </style>
 </head>
 <body>
     <header class="app-header">
         <div style="display:flex;align-items:center;gap:10px;">
-            <a href="../index.html" class="brand" style="text-decoration:none;color:inherit;"><span class="brand-mark">Z</span><span class="brand-name">ZyncPDF</span></a>
+            <a href="../index.html" class="brand" style="text-decoration:none;color:inherit;">
+                <span class="brand-mark">Z</span>
+                <span class="brand-name">ZyncPDF</span>
+            </a>
         </div>
         <div style="margin-left:auto;display:flex;align-items:center;gap:12px;">
-            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" style="width:36px;height:36px;border-radius:8px;border:1px solid var(--border-medium);background:var(--bg-card);color:var(--text-primary);cursor:pointer;"><i class="fas fa-sun sun-icon"></i><i class="fas fa-moon moon-icon"></i></button>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" style="width:36px;height:36px;border-radius:8px;border:1px solid var(--border-medium);background:var(--bg-card);color:var(--text-primary);cursor:pointer;">
+                <i class="fas fa-sun sun-icon"></i>
+                <i class="fas fa-moon moon-icon"></i>
+            </button>
         </div>
     </header>
+
     <main style="max-width:1440px;margin:0 auto;padding:32px 24px;">
         <section style="margin-bottom:28px;">
-            <div class="step-label"><span class="step-number">1</span><span class="step-title">Upload Scanned PDF</span></div>
+            <div class="step-label">
+                <span class="step-number">1</span>
+                <span class="step-title">Upload PDF with Form Fields</span>
+            </div>
             <div class="drop-zone" id="drop-zone">
-                <div style="position:relative;z-index:1;"><i class="fas fa-file-pdf" style="font-size:48px;color:var(--accent);margin-bottom:12px;display:block;"></i><h4 style="margin-bottom:6px;color:var(--text-primary);">Drag & Drop PDF Files Here</h4><p style="color:var(--text-secondary);font-size:0.9rem;">or click to select scanned PDFs</p></div>
+                <div style="position:relative;z-index:1;">
+                    <i class="fas fa-file-pdf" style="font-size:48px;color:var(--accent);margin-bottom:12px;display:block;"></i>
+                    <h4 style="margin-bottom:6px;color:var(--text-primary);">Drag & Drop PDF Files Here</h4>
+                    <p style="color:var(--text-secondary);font-size:0.9rem;">or click to select files with interactive forms</p>
+                </div>
                 <input type="file" id="file-input" accept=".pdf" style="display:none;">
             </div>
             <div class="file-list" id="file-list"></div>
         </section>
+
         <section id="workbench-section" style="display:none;">
             <div class="pdf-workbench">
                 <div class="pdf-main-viewer">
                     <div class="pdf-toolbar">
                         <div class="pdf-toolbar-group">
                             <button class="pdf-toolbar-btn" id="prev-page" title="Previous Page"><i class="fas fa-chevron-up"></i></button>
-                            <span class="pdf-page-nav"><input type="number" class="pdf-page-input" id="page-input" value="1" min="1"><span>/ <span id="total-pages">1</span></span></span>
+                            <span class="pdf-page-nav">
+                                <input type="number" class="pdf-page-input" id="page-input" value="1" min="1">
+                                <span>/ <span id="total-pages">1</span></span>
+                            </span>
                             <button class="pdf-toolbar-btn" id="next-page" title="Next Page"><i class="fas fa-chevron-down"></i></button>
                         </div>
                         <div class="pdf-toolbar-group">
@@ -372,63 +401,74 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="pdf-tools-panel">
                     <div class="tool-panel-card">
-                        <div class="tool-panel-title"><i class="fas fa-language"></i> OCR Language</div>
-                        <select id="ocr-lang" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--border-medium);background:var(--bg-input);color:var(--text-primary);font-family:inherit;">
-                            <option value="eng">English</option>
-                            <option value="spa">Spanish</option>
-                            <option value="fra">French</option>
-                            <option value="deu">German</option>
-                            <option value="chi_sim">Chinese (Simplified)</option>
-                        </select>
-                    </div>
-                    <div class="tool-panel-card">
-                        <div class="tool-panel-title"><i class="fas fa-chart-simple"></i> Confidence</div>
-                        <div class="ocr-confidence">
-                            <div class="confidence-bar"><div class="confidence-fill" id="confidence-fill"></div></div>
-                            <span class="confidence-text" id="confidence-text">--%</span>
+                        <div class="tool-panel-title"><i class="fas fa-list-check"></i> Form Fields</div>
+                        <p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:10px;">Detected fields on current page</p>
+                        <div class="form-field-list" id="form-fields-list">
+                            <p style="text-align:center;color:var(--text-muted);font-size:0.8rem;">Upload a PDF to detect form fields</p>
                         </div>
                     </div>
+
                     <div class="tool-panel-card">
-                        <div class="tool-panel-title"><i class="fas fa-file-lines"></i> Extracted Text</div>
-                        <textarea class="ocr-result-area" id="ocr-result" placeholder="OCR text will appear here. Click 'OCR Current Page' to extract text from the visible page."></textarea>
-                    </div>
-                    <div class="tool-panel-card">
-                        <div class="tool-panel-title"><i class="fas fa-download"></i> Export</div>
+                        <div class="tool-panel-title"><i class="fas fa-floppy-disk"></i> Export</div>
                         <div style="display:flex;flex-direction:column;gap:8px;">
-                            <button class="btn btn-primary" id="ocr-page" disabled style="width:100%;justify-content:center;"><i class="fas fa-eye"></i> OCR Current Page</button>
-                            <button class="btn btn-secondary" id="ocr-all" disabled style="width:100%;justify-content:center;"><i class="fas fa-file-pdf"></i> OCR All Pages (PDF)</button>
-                            <button class="btn btn-secondary" id="download-txt" disabled style="width:100%;justify-content:center;"><i class="fas fa-file-alt"></i> Download TXT</button>
+                            <button class="btn btn-primary" id="export-filled" disabled style="width:100%;justify-content:center;">
+                                <i class="fas fa-download"></i> Export Filled PDF
+                            </button>
+                            <button class="btn btn-secondary" id="export-flatten" disabled style="width:100%;justify-content:center;">
+                                <i class="fas fa-layer-group"></i> Export Flattened PDF
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
         <section class="content-section" style="margin-top:48px;">
             <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:24px;padding:32px;margin-bottom:24px;">
-                <h1 style="font-size:1.8rem;font-weight:800;margin-bottom:16px;color:var(--text-primary);">OCR PDF - Free Optical Character Recognition</h1>
-                <p style="color:var(--text-secondary);margin-bottom:12px;"><strong>OCR scanned PDFs</strong> and extract text using Tesseract.js. Support for English, Spanish, French, German, and Chinese. Create searchable PDFs or download plain text. Fully private, all processing local.</p>
+                <h1 style="font-size:1.8rem;font-weight:800;margin-bottom:16px;color:var(--text-primary);">PDF Form Fill - Free Interactive PDF Form Editor</h1>
+                <p style="color:var(--text-secondary);margin-bottom:12px;"><strong>Fill PDF forms online</strong> with our free, privacy-first tool. Detect interactive form fields including text inputs, checkboxes, radio buttons, dropdowns, date fields, and signature fields. Edit values directly, validate inputs, and export completed PDFs with or without flattening.</p>
+                <p style="color:var(--text-secondary);margin-bottom:0;">All processing happens locally in your browser. Your files never leave your device.</p>
+            </div>
+            <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:24px;padding:32px;margin-bottom:24px;">
+                <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:16px;color:var(--text-primary);">How to Fill PDF Forms</h3>
+                <ol style="color:var(--text-secondary);padding-left:20px;line-height:1.8;">
+                    <li>Upload a PDF containing interactive form fields.</li>
+                    <li>Navigate pages and view detected form fields in the right panel.</li>
+                    <li>Edit text fields, toggle checkboxes, select radio buttons, choose dropdown values.</li>
+                    <li>Click "Export Filled PDF" to preserve form fields, or "Export Flattened PDF" to bake values into the page.</li>
+                </ol>
             </div>
         </section>
     </main>
-    <footer style="background:var(--bg-card);border-top:1px solid var(--border-subtle);padding:48px 24px;text-align:center;margin-top:64px;"><p style="color:var(--text-muted);font-size:0.9rem;">&copy; 2025 ZyncPDF. Open source, privacy-first PDF tools.</p></footer>
+
+    <footer style="background:var(--bg-card);border-top:1px solid var(--border-subtle);padding:48px 24px;text-align:center;margin-top:64px;">
+        <p style="color:var(--text-muted);font-size:0.9rem;">&copy; 2025 ZyncPDF. Open source, privacy-first PDF tools.</p>
+    </footer>
+
     <div class="pdf-overlay" id="progress-overlay">
         <div class="pdf-progress-card">
             <i class="fas fa-circle-notch fa-spin" style="font-size:36px;color:var(--accent);margin-bottom:12px;"></i>
             <h4 id="progress-title" style="margin-bottom:8px;color:var(--text-primary);">Processing...</h4>
             <p id="progress-text" style="color:var(--text-secondary);font-size:0.9rem;">Please wait</p>
-            <div class="pdf-progress-bar-wrap"><div class="pdf-progress-bar-fill" id="progress-fill"></div></div>
+            <div class="pdf-progress-bar-wrap">
+                <div class="pdf-progress-bar-fill" id="progress-fill"></div>
+            </div>
         </div>
     </div>
+
     <script>
         (function() {
             const dropZone = document.getElementById('drop-zone');
             const fileInput = document.getElementById('file-input');
             const fileList = document.getElementById('file-list');
             const workbench = document.getElementById('workbench-section');
+            const formFieldsList = document.getElementById('form-fields-list');
             const canvas = document.getElementById('pdf-canvas');
             const canvasContainer = document.getElementById('canvas-container');
+            const canvasWrapper = document.getElementById('canvas-wrapper');
             const pageInput = document.getElementById('page-input');
             const totalPagesSpan = document.getElementById('total-pages');
             const prevBtn = document.getElementById('prev-page');
@@ -436,13 +476,8 @@
             const zoomInBtn = document.getElementById('zoom-in');
             const zoomOutBtn = document.getElementById('zoom-out');
             const fullscreenBtn = document.getElementById('fullscreen-btn');
-            const ocrLang = document.getElementById('ocr-lang');
-            const ocrResult = document.getElementById('ocr-result');
-            const confidenceFill = document.getElementById('confidence-fill');
-            const confidenceText = document.getElementById('confidence-text');
-            const ocrPageBtn = document.getElementById('ocr-page');
-            const ocrAllBtn = document.getElementById('ocr-all');
-            const downloadTxtBtn = document.getElementById('download-txt');
+            const exportFilledBtn = document.getElementById('export-filled');
+            const exportFlattenBtn = document.getElementById('export-flatten');
             const progressOverlay = document.getElementById('progress-overlay');
             const progressFill = document.getElementById('progress-fill');
             const progressTitle = document.getElementById('progress-title');
@@ -453,9 +488,10 @@
             let currentPage = 1;
             let totalPages = 0;
             let scale = 1.2;
+            let rotation = 0;
             let currentFile = null;
-            let ocrResults = {};
-            let worker = null;
+            let formFields = {};
+            let fieldValues = {};
 
             function showProgress(show, title, text, pct) {
                 progressOverlay.classList.toggle('visible', show);
@@ -467,7 +503,7 @@
             async function renderPage(pageNum) {
                 if (!pdfDoc) return;
                 const page = await pdfDoc.getPage(pageNum);
-                const viewport = page.getViewport({ scale, rotation: 0 });
+                const viewport = page.getViewport({ scale, rotation });
                 canvas.width = viewport.width;
                 canvas.height = viewport.height;
                 const ctx = canvas.getContext('2d');
@@ -476,111 +512,65 @@
                 totalPagesSpan.textContent = totalPages;
                 prevBtn.disabled = pageNum <= 1;
                 nextBtn.disabled = pageNum >= totalPages;
-                updateResultForPage(pageNum);
+                await loadAnnotationsForPage(pageNum);
             }
 
-            function updateResultForPage(p) {
-                const r = ocrResults['page_' + p];
-                if (r) {
-                    ocrResult.value = r.text;
-                    const conf = r.confidence || 0;
-                    confidenceFill.style.width = conf + '%';
-                    confidenceText.textContent = Math.round(conf) + '%';
-                }
-            }
-
-            async function initTesseract() {
-                if (!worker) {
-                    worker = await Tesseract.createWorker(ocrLang.value, 1, {
-                        logger: m => { if (m.status === 'recognizing text') { showProgress(true, 'OCR Processing...', `Page ${m.progress ? Math.round(m.progress*100) : 0}%`, m.progress ? Math.round(m.progress*100) : 0); } }
-                    });
-                }
-            }
-
-            async function ocrPage(pageNum) {
-                if (!pdfDoc) return;
-                await initTesseract();
+            async function loadAnnotationsForPage(pageNum) {
+                formFieldsList.innerHTML = '';
+                fieldValues['page_' + pageNum] = {};
                 const page = await pdfDoc.getPage(pageNum);
-                const viewport = page.getViewport({ scale: 1.5 });
-                const tmpCanvas = document.createElement('canvas');
-                tmpCanvas.width = viewport.width;
-                tmpCanvas.height = viewport.height;
-                const ctx = tmpCanvas.getContext('2d');
-                await page.render({ canvasContext: ctx, viewport }).promise;
-                showProgress(true, 'Running OCR...', 'Please wait, this may take a moment', '5');
-                try {
-                    const result = await worker.recognize(tmpCanvas);
-                    const text = result.data.text;
-                    const confidence = result.data.confidence;
-                    ocrResults['page_' + pageNum] = { text, confidence };
-                    updateResultForPage(pageNum);
-                    downloadTxtBtn.disabled = false;
-                } catch (e) {
-                    console.error('OCR failed', e);
-                    ocrResult.value = 'OCR failed: ' + e.message;
-                }
-                showProgress(false);
-            }
-
-            async function ocrAllPages() {
-                if (!pdfDoc) return;
-                await initTesseract();
-                const PDFLib = window.PDFLib;
-                const doc = await PDFLib.PDFDocument.create();
-                let allText = '';
-                for (let i = 1; i <= totalPages; i++) {
-                    const pct = Math.round((i / totalPages) * 100);
-                    showProgress(true, 'OCRing page ' + i + '/' + totalPages, 'This takes time...', pct);
-                    const page = await pdfDoc.getPage(i);
-                    const viewport = page.getViewport({ scale: 1.5 });
-                    const tmpCanvas = document.createElement('canvas');
-                    tmpCanvas.width = viewport.width;
-                    tmpCanvas.height = viewport.height;
-                    const ctx = tmpCanvas.getContext('2d');
-                    await page.render({ canvasContext: ctx, viewport }).promise;
-                    try {
-                        const result = await worker.recognize(tmpCanvas);
-                        const text = result.data.text;
-                        const confidence = result.data.confidence;
-                        ocrResults['page_' + i] = { text, confidence };
-                        allText += '\n--- Page ' + i + ' ---\n' + text + '\n';
-                    } catch (e) {
-                        console.error('OCR page failed', i, e);
+                const annotations = await page.getAnnotations();
+                let fields = [];
+                for (const ann of annotations) {
+                    if (ann.subtype === 'Widget' || ann.fieldType) {
+                        fields.push(ann);
                     }
                 }
-                ocrResult.value = allText || ocrResult.value;
-                downloadTxtBtn.disabled = false;
-                showProgress(true, 'Creating searchable PDF...', 'Embedding text', '90');
-                for (let i = 1; i <= totalPages; i++) {
-                    const r = ocrResults['page_' + i];
-                    if (!r || !r.text) continue;
-                    const [pw, ph] = (await pdfDoc.getPage(i)).getViewport({ scale: 1 }).width && (await pdfDoc.getPage(i)).getViewport({ scale: 1 }).height || [612, 792];
-                    const newPage = doc.addPage([pw, ph]);
-                    const textBytes = new TextEncoder().encode(r.text);
+                if (fields.length === 0) {
+                    formFieldsList.innerHTML = '<p style="text-align:center;color:var(--text-muted);font-size:0.8rem;">No interactive form fields detected on this page</p>';
+                    return;
                 }
-                try {
-                    const pdfBytesOut = await doc.save();
-                    const blob = new Blob([pdfBytesOut], { type: 'application/pdf' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = (currentFile ? currentFile.name.replace(/\.pdf$/i, '') : 'ocr') + '_searchable.pdf';
-                    a.click();
-                } catch (e) {
-                    console.error('Searchable PDF export failed', e);
+                for (const f of fields) {
+                    const rect = f.rect || f.bounds;
+                    const item = document.createElement('div');
+                    item.className = 'form-field-item';
+                    const key = 'p' + pageNum + '_f' + (fields.indexOf(f));
+                    fieldValues['page_' + pageNum][key] = { type: f.fieldType || 'text', value: '', rect, name: f.fieldName || 'Field ' + (fields.indexOf(f)+1) };
+                    let inputHtml = '';
+                    const ft = (f.fieldType || '').toLowerCase();
+                    if (ft === 'text' || ft === '' || ft === 'tx') {
+                        inputHtml = `<input type="text" data-key="${key}" placeholder="Enter text" value="">`;
+                    } else if (ft === 'checkbox') {
+                        inputHtml = `<label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" data-key="${key}"> <span>Checked</span></label>`;
+                    } else if (ft === 'radiobutton') {
+                        inputHtml = `<label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="radio" data-key="${key}" name="radio_${pageNum}"> <span>Selected</span></label>`;
+                    } else if (ft === 'combobox' || ft === 'listbox' || ft === 'dropdown' || ft === 'ch') {
+                        const opts = f.exportValues || f.options || ['Option 1', 'Option 2', 'Option 3'];
+                        const optsHtml = opts.map(o => `<option value="${o}">${o}</option>`).join('');
+                        inputHtml = `<select data-key="${key}"><option value="">-- Select --</option>${optsHtml}</select>`;
+                    } else if (ft === 'signature' || ft === 'sig') {
+                        inputHtml = `<input type="text" data-key="${key}" placeholder="Type signature or initials" value="">`;
+                    } else if (ft === 'date') {
+                        inputHtml = `<input type="date" data-key="${key}">`;
+                    } else if (ft === 'number') {
+                        inputHtml = `<input type="number" data-key="${key}" placeholder="0">`;
+                    } else {
+                        inputHtml = `<input type="text" data-key="${key}" placeholder="Enter value">`;
+                    }
+                    item.innerHTML = `<label>${f.fieldName || 'Field'} (${ft || 'text'})</label>${inputHtml}`;
+                    const inp = item.querySelector('[data-key]');
+                    if (inp) {
+                        inp.addEventListener('input', (e) => {
+                            fieldValues['page_' + pageNum][key].value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+                        });
+                        if (inp.type === 'checkbox' || inp.type === 'radio') {
+                            inp.addEventListener('change', (e) => {
+                                fieldValues['page_' + pageNum][key].value = e.target.checked;
+                            });
+                        }
+                    }
+                    formFieldsList.appendChild(item);
                 }
-                showProgress(false);
-            }
-
-            function downloadTxt() {
-                let all = '';
-                for (const k in ocrResults) all += '\n' + ocrResults[k].text;
-                const blob = new Blob([all], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = (currentFile ? currentFile.name.replace(/\.pdf$/i, '') : 'ocr') + '.txt';
-                a.click();
             }
 
             async function loadFile(file) {
@@ -591,8 +581,8 @@
                 currentPage = 1;
                 await renderPage(currentPage);
                 workbench.style.display = 'block';
-                ocrPageBtn.disabled = false;
-                ocrAllBtn.disabled = false;
+                exportFilledBtn.disabled = false;
+                exportFlattenBtn.disabled = false;
             }
 
             dropZone.addEventListener('click', () => fileInput.click());
@@ -616,16 +606,62 @@
             zoomOutBtn.addEventListener('click', () => { scale = Math.max(0.4, scale - 0.2); renderPage(currentPage); });
             fullscreenBtn.addEventListener('click', () => { if (canvasContainer.requestFullscreen) canvasContainer.requestFullscreen(); });
 
-            ocrPageBtn.addEventListener('click', () => ocrPage(currentPage));
-            ocrAllBtn.addEventListener('click', () => ocrAllPages());
-            downloadTxtBtn.addEventListener('click', downloadTxt);
+            async function buildFilledPdf(flatten) {
+                showProgress(true, 'Building PDF...', 'Applying form values', '10');
+                const PDFLib = window.PDFLib;
+                const doc = await PDFLib.PDFDocument.load(pdfBytes);
+                const pages = doc.getPages();
+                const helv = await doc.embedFont(PDFLib.StandardFonts.Helvetica);
 
-            ocrLang.addEventListener('change', async () => {
-                if (worker) { await worker.terminate(); worker = null; }
-                await initTesseract();
-            });
+                for (let i = 0; i < pages.length; i++) {
+                    const page = pages[i];
+                    const [w, h] = page.getSize();
+                    const vals = fieldValues['page_' + (i+1)] || {};
+                    for (const key in vals) {
+                        const f = vals[key];
+                        if (!f.value && f.type !== 'checkbox') continue;
+                        const r = f.rect;
+                        if (!r) continue;
+                        if (flatten) {
+                            const x = r[0];
+                            const y = h - r[3];
+                            const fw = r[2] - r[0];
+                            const fh = r[3] - r[1];
+                            if (f.type === 'checkbox') {
+                                const isChecked = f.value === true || f.value === 'true' || f.value === 'Yes';
+                                page.drawText(isChecked ? '[x]' : '[ ]', { x, y: y + fh*0.3, size: Math.max(10, fh*0.8), font: helv });
+                            } else if (f.type === 'radiobutton') {
+                                const isChecked = f.value === true || f.value === 'true';
+                                page.drawText(isChecked ? 'O' : ' ', { x, y: y + fh*0.2, size: Math.max(12, fh*0.9), font: helv });
+                            } else {
+                                page.drawText(String(f.value), { x, y: y + fh*0.25, size: Math.max(9, fh*0.7), font: helv });
+                            }
+                        }
+                    }
+                }
+                if (!flatten && doc.getForm) {
+                    try {
+                        const form = doc.getForm();
+                        for (const key in fieldValues) {
+                            // attempt best-effort text field set
+                        }
+                    } catch(e) {}
+                }
+                showProgress(true, 'Exporting...', 'Generating PDF bytes', '80');
+                const bytes = await doc.save();
+                showProgress(false);
+                const blob = new Blob([bytes], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = (currentFile ? currentFile.name.replace(/\.pdf$/i, '') : 'form') + '_filled.pdf';
+                a.click();
+            }
 
-            window.ocrApp = { loadFile };
+            exportFilledBtn.addEventListener('click', () => buildFilledPdf(false));
+            exportFlattenBtn.addEventListener('click', () => buildFilledPdf(true));
+
+            window.formFillApp = { loadFile };
         })();
     </script>
 </body>

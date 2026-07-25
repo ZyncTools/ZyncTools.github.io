@@ -21,7 +21,7 @@ window.ZyncToolBridge = (function () {
             'merge-mp3': { module: 'ZyncMediaLogic', func: 'mergeAudio', type: 'file', outputType: 'blob' },
             'audio-speed-changer': { module: 'ZyncMediaLogic', func: 'changeAudioSpeed', type: 'file', outputType: 'blob' },
             'audio-normalizer': { module: 'ZyncMediaLogic', func: 'normalizeAudio', type: 'file', outputType: 'blob' },
-            'video-to-gif': { module: 'ZyncMediaLogic', func: 'videoToGif', type: 'file', outputType: 'blob' },
+            'video-to-gif': { module: 'ZyncMediaLogic', func: 'videoToGifWithOptions', type: 'file', outputType: 'blob' },
             'gif-to-mp4': { module: 'ZyncMediaLogic', func: 'gifToMp4', type: 'file', outputType: 'blob' },
             'compress-gif': { module: 'ZyncMediaLogic', func: 'compressGif', type: 'file', outputType: 'blob' },
             'mp4-to-mkv': { module: 'ZyncMediaLogic', func: 'videoToAudio', type: 'file', outputType: 'blob', outputFormat: 'mkv' },
@@ -35,8 +35,16 @@ window.ZyncToolBridge = (function () {
             'flac-to-mp3': { module: 'ZyncMediaLogic', func: 'videoToAudio', type: 'file', outputType: 'blob', outputFormat: 'mp3' },
             'm4a-to-mp3': { module: 'ZyncMediaLogic', func: 'videoToAudio', type: 'file', outputType: 'blob', outputFormat: 'mp3' },
             'wma-to-mp3': { module: 'ZyncMediaLogic', func: 'videoToAudio', type: 'file', outputType: 'blob', outputFormat: 'mp3' },
+            'ringtone-maker': { module: 'ZyncMediaLogic', func: 'makeRingtone', type: 'file', outputType: 'blob' },
+            'audio-visualizer': { module: 'ZyncMediaLogic', func: 'createAudioVisualizer', type: 'file', outputType: 'blob' },
+            'audio-stem-splitter': { module: 'ZyncMediaLogic', func: 'splitStems', type: 'file', outputType: 'blob' },
+            'compress-video': { module: 'ZyncMediaLogic', func: 'compressVideoPreset', type: 'file', outputType: 'blob' },
+            'audio-pitch-shifter': { module: 'ZyncMediaLogic', func: 'shiftPitch', type: 'file', outputType: 'blob' },
+            'silence-trimmer': { module: 'ZyncMediaLogic', func: 'trimSilence', type: 'file', outputType: 'blob' },
+            'video-watermarker': { module: 'ZyncMediaLogic', func: 'addVideoWatermark', type: 'file', outputType: 'blob' },
+            'audio-converter-batch': { module: 'ZyncMediaLogic', func: 'batchConvert', type: 'file', outputType: 'blob' },
+            'audio-speed-changer': { module: 'ZyncMediaLogic', func: 'changeAudioSpeed', type: 'file', outputType: 'blob' },
             'audio-converter': { module: 'ZyncMediaLogic', func: 'videoToAudio', type: 'file', outputType: 'blob' },
-            'video-converter': { module: 'ZyncMediaLogic', func: 'videoToAudio', type: 'file', outputType: 'blob' },
             'compress-mp4': { module: 'ZyncMediaLogic', func: 'compressVideo', type: 'file', outputType: 'blob' },
             'compress-mov': { module: 'ZyncMediaLogic', func: 'compressVideo', type: 'file', outputType: 'blob' },
             'compress-avi': { module: 'ZyncMediaLogic', func: 'compressVideo', type: 'file', outputType: 'blob' },
@@ -199,15 +207,20 @@ window.ZyncToolBridge = (function () {
         }
 
         // File tools
+        const BATCH_TOOLS = ['audio-converter-batch', 'merge-audio', 'merge-video', 'audio-joiner'];
+        const isBatch = BATCH_TOOLS.indexOf(toolId) !== -1;
         return {
-            process: async (files) => {
+            process: async (files, ctx = {}) => {
                 if (!files || !files.length) return [];
-                const file = files[0];
-                const options = {};
-                if (config.preset) options.preset = config.preset;
-                if (config.outputFormat) options.outputFormat = config.outputFormat;
-                
-                const result = await func(file, options);
+                const options = {
+                    preset: config.preset,
+                    outputFormat: config.outputFormat,
+                    ...ctx
+                };
+                if (options.outputFormat === undefined && config.outputFormat) options.outputFormat = config.outputFormat;
+
+                const input = isBatch ? files : files[0];
+                const result = await func(input, options);
                 return Array.isArray(result) ? result : [result];
             },
             type: 'file',

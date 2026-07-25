@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Tool — ZyncTools</title>
+    <title>Rearrange Pages — ZyncTools</title>
     <meta name="description" content="Privacy-first PDF tool. 100% client-side. No uploads.">
     <link rel="icon" href="assets/images/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,7 +29,6 @@
         window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
     <style>
-        /* PDF Tool Specific Styles */
         .pdf-workbench {
             display: grid;
             grid-template-columns: 240px 1fr 340px;
@@ -91,10 +90,22 @@
             box-shadow: 0 0 0 3px var(--accent-tint), 0 4px 12px rgba(0,0,0,0.2);
         }
         
+        .page-thumb.drag-over {
+            border-color: var(--accent);
+            border-style: dashed;
+            box-shadow: 0 0 0 4px var(--accent-tint);
+        }
+        
+        .page-thumb.dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+        
         .page-thumb canvas {
             width: 100%;
             height: 100%;
             object-fit: contain;
+            pointer-events: none;
         }
         
         .page-thumb-num {
@@ -107,6 +118,29 @@
             font-weight: 700;
             padding: 2px 8px;
             border-radius: 999px;
+            pointer-events: none;
+        }
+        
+        .page-thumb-handle {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 24px;
+            height: 24px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            cursor: grab;
+            z-index: 2;
+            pointer-events: all;
+        }
+        
+        .page-thumb-handle:active {
+            cursor: grabbing;
         }
         
         .pdf-main-viewer {
@@ -536,10 +570,10 @@
     <div class="mx-auto max-w-7xl px-6">
         <div class="flex items-center gap-4 mb-6">
             <div class="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xl">
-                <i id="tool-icon" class="fas fa-file-pdf"></i>
+                <i id="tool-icon" class="fas fa-sort"></i>
             </div>
             <div>
-                <h1 id="tool-title" class="text-2xl font-bold text-white tracking-tight">PDF Tool</h1>
+                <h1 id="tool-title" class="text-2xl font-bold text-white tracking-tight">Rearrange Pages</h1>
                 <p id="tool-description" class="text-gray-400 mt-1">Upload a PDF to get started.</p>
             </div>
         </div>
@@ -619,7 +653,18 @@
                     <div class="tool-panel-card">
                         <div class="tool-panel-title"><i class="fas fa-sliders-h mr-1"></i> Tool Controls</div>
                         <div id="tool-controls">
-                            <p class="text-sm text-gray-500">Configure options for this tool.</p>
+                            <p class="text-sm text-gray-500 mb-3">Drag thumbnails in the left sidebar to reorder pages. Use the buttons below for quick actions.</p>
+                            <div class="flex flex-col gap-2">
+                                <button id="duplicate-page-btn" class="btn btn-secondary btn-full" disabled>
+                                    <i class="fas fa-clone"></i> Duplicate Selected Page
+                                </button>
+                                <button id="delete-page-btn" class="btn btn-danger btn-full" disabled>
+                                    <i class="fas fa-trash"></i> Delete Selected Page
+                                </button>
+                                <button id="reset-order-btn" class="btn btn-secondary btn-full" disabled>
+                                    <i class="fas fa-arrow-rotate-left"></i> Reset Page Order
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="tool-panel-card">
@@ -671,9 +716,6 @@
 (function() {
   var $ = function(id) { return document.getElementById(id); };
   var engine = window.ZyncPdfEngine;
-  var toolActions = [];
-  var isProcessing = false;
-  var currentTool = 'pdf-tool';
   
   // === Utility ===
   function formatBytes(b) {
@@ -706,6 +748,12 @@
     $('loading-overlay').classList.remove('visible');
   }
   
+  // === Rearrange State ===
+  var pageOrder = [];
+  var originalOrder = [];
+  var rearrangeUndoStack = [];
+  var rearrangeRedoStack = [];
+  
   // === PDF Core ===
   var pdfDoc = null;
   var currentPage = 1;
@@ -714,6 +762,7 @@
   var rotation = 0;
   var loadedFile = null;
   var pageRenderPromises = {};
+  var selectedPageIndex = 0;
   
   async function initPdfReader(file) {
     pdfDoc = await window.pdfjsLib.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise;
@@ -722,6 +771,12 @@
     zoomScale = 1.2;
     rotation = 0;
     loadedFile = file;
+    
+    pageOrder = Array.from({ length: totalPages }, function(_, i) { return i + 1; });
+    originalOrder = pageOrder.slice();
+    rearrangeUndoStack = [];
+    rearrangeRedoStack = [];
+    selectedPageIndex = 0;
     
     $('total-pages-span').textContent = totalPages;
     $('page-input').max = totalPages;
@@ -736,6 +791,7 @@
     
     await renderCurrentPage();
     await buildThumbnails();
+    updateRearrangeButtons();
     updateUndoRedo();
   }
   
@@ -759,12 +815,10 @@
       wrapper.style.width = viewport.width + 'px';
       wrapper.style.height = viewport.height + 'px';
       
-      // Render annotations for this page
       if (engine.annotations && engine.annotations[currentPage]) {
         renderAnnotations(currentPage, annLayer, viewport);
       }
       
-      // Trigger tool-specific render hook
       if (window.ZyncToolOnPageRender) {
         window.ZyncToolOnPageRender(currentPage, canvas, viewport);
       }
@@ -844,23 +898,30 @@
     if (!pdfDoc) return;
     var container = $('pdf-thumbnails');
     container.innerHTML = '';
-    for (var i = 1; i <= totalPages; i++) {
+    for (var i = 0; i < pageOrder.length; i++) {
+      var pageNum = pageOrder[i];
       var item = document.createElement('div');
       item.className = 'page-thumb';
-      item.dataset.page = i;
-      item.innerHTML = '<div style="padding:4px;"><div style="background:white;border-radius:4px;overflow:hidden;" class="thumb-inner"><canvas></canvas></div><div class="page-thumb-num">' + i + '</div></div>';
-      if (i === currentPage) item.classList.add('active');
+      item.draggable = true;
+      item.dataset.page = pageNum;
+      item.dataset.index = i;
+      item.innerHTML = '<div style="padding:4px;"><div style="background:white;border-radius:4px;overflow:hidden;position:relative;" class="thumb-inner"><canvas></canvas><div class="page-thumb-handle" title="Drag to reorder"><i class="fas fa-grip-vertical"></i></div></div><div class="page-thumb-num">' + (i + 1) + '</div></div>';
+      if (pageNum === currentPage) item.classList.add('active');
       
-      item.addEventListener('click', function() {
-        var p = parseInt(this.dataset.page);
-        goToPage(p);
+      item.addEventListener('click', function(e) {
+        if (e.target.closest('.page-thumb-handle')) return;
+        var idx = parseInt(this.dataset.index);
+        selectedPageIndex = idx;
+        goToPage(parseInt(this.dataset.page));
+        updateRearrangeButtons();
+        highlightSelectedThumb();
       });
       
       container.appendChild(item);
       
       var wrapper = item.querySelector('.thumb-inner');
       try {
-        var page = await pdfDoc.getPage(i);
+        var page = await pdfDoc.getPage(pageNum);
         var nativeViewport = page.getViewport({ scale: 1 });
         var thumbWidth = 200;
         var thumbScale = thumbWidth / nativeViewport.width;
@@ -874,15 +935,21 @@
         // Skip failed thumbnail
       }
     }
+    
+    initDragAndDrop();
+    highlightSelectedThumb();
+  }
+  
+  function highlightSelectedThumb() {
+    document.querySelectorAll('.page-thumb').forEach(function(el) {
+      el.classList.toggle('active', parseInt(el.dataset.page) === currentPage);
+    });
   }
   
   function goToPage(page) {
     if (!pdfDoc || page < 1 || page > totalPages) return;
     currentPage = page;
     $('page-input').value = page;
-    document.querySelectorAll('.page-thumb').forEach(function(el) {
-      el.classList.toggle('active', parseInt(el.dataset.page) === page);
-    });
     renderCurrentPage();
     if (window.ZyncToolOnPageChange) {
       window.ZyncToolOnPageChange(page);
@@ -890,8 +957,145 @@
   }
   
   function updateUndoRedo() {
-    $('undo-btn').disabled = engine.undoStack.length === 0;
-    $('redo-btn').disabled = engine.redoStack.length === 0;
+    $('undo-btn').disabled = engine.undoStack.length === 0 && rearrangeUndoStack.length === 0;
+    $('redo-btn').disabled = engine.redoStack.length === 0 && rearrangeRedoStack.length === 0;
+  }
+  
+  function updateRearrangeButtons() {
+    var hasDoc = !!pdfDoc;
+    $('duplicate-page-btn').disabled = !hasDoc;
+    $('delete-page-btn').disabled = !hasDoc || totalPages <= 1;
+    $('reset-order-btn').disabled = !hasDoc || pageOrder.join(',') === originalOrder.join(',');
+  }
+  
+  function pushRearrangeUndo() {
+    rearrangeUndoStack.push(pageOrder.slice());
+    if (rearrangeUndoStack.length > 50) rearrangeUndoStack.shift();
+    rearrangeRedoStack = [];
+    updateUndoRedo();
+  }
+  
+  function undoRearrange() {
+    if (rearrangeUndoStack.length === 0) return;
+    rearrangeRedoStack.push(pageOrder.slice());
+    pageOrder = rearrangeUndoStack.pop();
+    updateUndoRedo();
+    buildThumbnails();
+    updateRearrangeButtons();
+  }
+  
+  function redoRearrange() {
+    if (rearrangeRedoStack.length === 0) return;
+    rearrangeUndoStack.push(pageOrder.slice());
+    pageOrder = rearrangeRedoStack.pop();
+    updateUndoRedo();
+    buildThumbnails();
+    updateRearrangeButtons();
+  }
+  
+  function duplicateSelectedPage() {
+    if (!pdfDoc || totalPages === 0) return;
+    var idx = selectedPageIndex;
+    if (idx < 0 || idx >= pageOrder.length) return;
+    pushRearrangeUndo();
+    var pageToDuplicate = pageOrder[idx];
+    pageOrder.splice(idx + 1, 0, pageToDuplicate);
+    totalPages = pageOrder.length;
+    $('total-pages-span').textContent = totalPages;
+    $('page-input').max = totalPages;
+    $('thumb-page-count').textContent = totalPages;
+    $('info-pages').textContent = totalPages;
+    buildThumbnails();
+    updateRearrangeButtons();
+    showToast('Page duplicated', 'success');
+  }
+  
+  function deleteSelectedPage() {
+    if (!pdfDoc || totalPages <= 1) return;
+    var idx = selectedPageIndex;
+    if (idx < 0 || idx >= pageOrder.length) return;
+    pushRearrangeUndo();
+    pageOrder.splice(idx, 1);
+    totalPages = pageOrder.length;
+    $('total-pages-span').textContent = totalPages;
+    $('page-input').max = totalPages;
+    $('thumb-page-count').textContent = totalPages;
+    $('info-pages').textContent = totalPages;
+    if (selectedPageIndex >= totalPages) selectedPageIndex = totalPages - 1;
+    goToPage(pageOrder[selectedPageIndex] || 1);
+    buildThumbnails();
+    updateRearrangeButtons();
+    showToast('Page deleted', 'success');
+  }
+  
+  function resetPageOrder() {
+    if (!pdfDoc) return;
+    pushRearrangeUndo();
+    pageOrder = originalOrder.slice();
+    selectedPageIndex = 0;
+    goToPage(pageOrder[0] || 1);
+    buildThumbnails();
+    updateRearrangeButtons();
+    showToast('Page order reset', 'info');
+  }
+  
+  // === Drag and Drop for Thumbnails ===
+  var draggedIndex = null;
+  
+  function initDragAndDrop() {
+    var items = document.querySelectorAll('.page-thumb');
+    items.forEach(function(item) {
+      item.addEventListener('dragstart', function(e) {
+        draggedIndex = parseInt(item.dataset.index);
+        item.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', draggedIndex);
+      });
+      
+      item.addEventListener('dragend', function() {
+        item.classList.remove('dragging');
+        draggedIndex = null;
+        document.querySelectorAll('.page-thumb').forEach(function(el) {
+          el.classList.remove('drag-over');
+        });
+      });
+      
+      item.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        if (draggedIndex !== null && parseInt(item.dataset.index) !== draggedIndex) {
+          item.classList.add('drag-over');
+        }
+      });
+      
+      item.addEventListener('dragleave', function() {
+        item.classList.remove('drag-over');
+      });
+      
+      item.addEventListener('drop', function(e) {
+        e.preventDefault();
+        item.classList.remove('drag-over');
+        var fromIndex = draggedIndex;
+        var toIndex = parseInt(item.dataset.index);
+        if (fromIndex === null || fromIndex === toIndex) return;
+        
+        pushRearrangeUndo();
+        var movedPage = pageOrder[fromIndex];
+        pageOrder.splice(fromIndex, 1);
+        pageOrder.splice(toIndex, 0, movedPage);
+        
+        if (selectedPageIndex === fromIndex) {
+          selectedPageIndex = toIndex;
+        } else if (fromIndex < selectedPageIndex && toIndex >= selectedPageIndex) {
+          selectedPageIndex--;
+        } else if (fromIndex > selectedPageIndex && toIndex <= selectedPageIndex) {
+          selectedPageIndex++;
+        }
+        
+        buildThumbnails();
+        updateRearrangeButtons();
+      });
+    });
   }
   
   // === File Upload ===
@@ -978,24 +1182,26 @@
   $('fit-width').addEventListener('click', function() {
     if (!pdfDoc) return;
     var container = $('pdf-canvas-container');
-    var page = pdfDoc.getPage(currentPage);
-    page.getViewport({ scale: 1 }).then(function(viewport) {
-      zoomScale = (container.clientWidth - 40) / viewport.width;
-      zoomScale = Math.max(0.3, Math.min(zoomScale, 5));
-      $('zoom-level').textContent = Math.round(zoomScale * 100) + '%';
-      renderCurrentPage();
+    pdfDoc.getPage(currentPage).then(function(page) {
+      page.getViewport({ scale: 1 }).then(function(viewport) {
+        zoomScale = (container.clientWidth - 40) / viewport.width;
+        zoomScale = Math.max(0.3, Math.min(zoomScale, 5));
+        $('zoom-level').textContent = Math.round(zoomScale * 100) + '%';
+        renderCurrentPage();
+      });
     });
   });
   $('fit-page').addEventListener('click', function() {
     if (!pdfDoc) return;
     var container = $('pdf-canvas-container');
-    var page = pdfDoc.getPage(currentPage);
-    page.getViewport({ scale: 1 }).then(function(viewport) {
-      var scaleW = (container.clientWidth - 40) / viewport.width;
-      var scaleH = (container.clientHeight - 40) / viewport.height;
-      zoomScale = Math.max(0.3, Math.min(Math.min(scaleW, scaleH), 5));
-      $('zoom-level').textContent = Math.round(zoomScale * 100) + '%';
-      renderCurrentPage();
+    pdfDoc.getPage(currentPage).then(function(page) {
+      page.getViewport({ scale: 1 }).then(function(viewport) {
+        var scaleW = (container.clientWidth - 40) / viewport.width;
+        var scaleH = (container.clientHeight - 40) / viewport.height;
+        zoomScale = Math.max(0.3, Math.min(Math.min(scaleW, scaleH), 5));
+        $('zoom-level').textContent = Math.round(zoomScale * 100) + '%';
+        renderCurrentPage();
+      });
     });
   });
   $('rotate-btn').addEventListener('click', function() {
@@ -1019,18 +1225,89 @@
   
   // === Undo/Redo ===
   $('undo-btn').addEventListener('click', function() {
-    engine.undo();
-    renderCurrentPage();
+    if (rearrangeUndoStack.length > 0) {
+      undoRearrange();
+    } else {
+      engine.undo();
+      renderCurrentPage();
+    }
     if (window.ZyncToolOnChanged) window.ZyncToolOnChanged();
   });
   $('redo-btn').addEventListener('click', function() {
-    engine.redo();
-    renderCurrentPage();
+    if (rearrangeRedoStack.length > 0) {
+      redoRearrange();
+    } else {
+      engine.redo();
+      renderCurrentPage();
+    }
     if (window.ZyncToolOnChanged) window.ZyncToolOnChanged();
   });
   
-  window.setTool = function(t) { currentTool = t; };
-  window.getTool = function() { return currentTool; };
+  // === Rearrange Controls ===
+  $('duplicate-page-btn').addEventListener('click', duplicateSelectedPage);
+  $('delete-page-btn').addEventListener('click', deleteSelectedPage);
+  $('reset-order-btn').addEventListener('click', resetPageOrder);
+  
+  // === Export ===
+  $('download-btn').addEventListener('click', async function() {
+    if (!pdfDoc || !loadedFile) return;
+    showLoading('Exporting PDF...', 30);
+    
+    try {
+      var bytes = new Uint8Array(await loadedFile.arrayBuffer());
+      var PDFLib = window.PDFLib;
+      var srcDoc = await PDFLib.PDFDocument.load(bytes);
+      var newDoc = await PDFLib.PDFDocument.create();
+      
+      for (var i = 0; i < pageOrder.length; i++) {
+        var pageNum = pageOrder[i];
+        var srcPage = srcDoc.getPage(pageNum - 1);
+        var copiedPages = await newDoc.copyPages(srcDoc, [pageNum - 1]);
+        var newPage = copiedPages[0];
+        newDoc.addPage(newPage);
+      }
+      
+      var outputBytes = await newDoc.save();
+      var blob = new Blob([outputBytes], { type: 'application/pdf' });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = 'rearranged_' + loadedFile.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      showLoading('Export complete!', 100);
+      setTimeout(hideLoading, 400);
+      showToast('PDF downloaded successfully', 'success');
+    } catch (e) {
+      hideLoading();
+      showToast('Error exporting PDF: ' + e.message, 'error');
+    }
+  });
+  
+  $('reset-doc-btn').addEventListener('click', function() {
+    $('upload-area').classList.remove('hidden');
+    $('pdf-workbench-area').classList.add('hidden');
+    $('file-info').classList.add('hidden');
+    pdfDoc = null;
+    currentPage = 1;
+    totalPages = 0;
+    pageOrder = [];
+    originalOrder = [];
+    rearrangeUndoStack = [];
+    rearrangeRedoStack = [];
+    selectedPageIndex = 0;
+    loadedFile = null;
+    $('file-input').value = '';
+  });
+  
+  // === Tool description update ===
+  $('tool-description').textContent = 'Drag thumbnails to reorder pages, then export.';
+  
+  window.setTool = function(t) {};
+  window.getTool = function() { return 'rearrange-pages'; };
   window.getPdfDoc = function() { return pdfDoc; };
   window.setPdfDoc = function(d) { pdfDoc = d; };
   window.getCurrentPage = function() { return currentPage; };
