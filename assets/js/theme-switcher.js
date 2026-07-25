@@ -1,24 +1,24 @@
 /**
  * ZyncPDF Theme System
- * Provides dark/light mode switching with smooth transitions
- * Persists user preference in localStorage
+ * Provides theme switching with smooth transitions
+ * Persists user preference in localStorage using the unified zync-theme-v2 key
  */
 
 class ThemeManager {
     constructor() {
-        this.theme = localStorage.getItem('zyncpdf-theme') || 'dark';
+        this.themeKey = 'zync-theme-v2';
+        this.theme = localStorage.getItem(this.themeKey) || 'dark';
+        this.themes = ['dark', 'grass', 'light'];
         this.transitioning = false;
         this.init();
     }
 
     init() {
-        // Apply saved theme on load
         this.applyTheme(this.theme);
 
-        // Listen for system preference changes
         if (window.matchMedia) {
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-                if (!localStorage.getItem('zyncpdf-theme')) {
+                if (!localStorage.getItem(this.themeKey)) {
                     this.applyTheme(e.matches ? 'dark' : 'light');
                 }
             });
@@ -28,25 +28,27 @@ class ThemeManager {
     applyTheme(theme) {
         this.theme = theme;
         document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('zyncpdf-theme', theme);
+        document.documentElement.classList.add('theme-' + theme);
+        localStorage.setItem(this.themeKey, theme);
         this.updateMetaTags(theme);
     }
 
     updateMetaTags(theme) {
-        // Update meta theme-color for mobile browsers
         let metaThemeColor = document.querySelector('meta[name="theme-color"]');
         if (!metaThemeColor) {
             metaThemeColor = document.createElement('meta');
             metaThemeColor.name = 'theme-color';
             document.head.appendChild(metaThemeColor);
         }
-        metaThemeColor.content = theme === 'dark' ? '#0a0a0f' : '#ffffff';
+        const colors = { dark: '#0a0a0f', grass: '#F4F6F8', light: '#FFFFFF' };
+        metaThemeColor.content = colors[theme] || '#0a0a0f';
     }
 
     toggle() {
-        const newTheme = this.theme === 'light' ? 'dark' : 'light';
-        this.applyTheme(newTheme);
-        return newTheme;
+        const idx = this.themes.indexOf(this.theme);
+        const next = this.themes[(idx + 1) % this.themes.length];
+        this.applyTheme(next);
+        return next;
     }
 
     getTheme() {
@@ -54,5 +56,4 @@ class ThemeManager {
     }
 }
 
-// Global instance
 window.themeManager = new ThemeManager();

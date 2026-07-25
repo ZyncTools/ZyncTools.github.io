@@ -263,6 +263,14 @@
             dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
             fileInput.addEventListener('change', (e) => { handleFiles(e.target.files); fileInput.value = ''; });
         }
+        
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                if (window.ZyncTheme) window.ZyncTheme.toggle();
+                else if (window.themeManager) window.themeManager.toggle();
+            });
+        }
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

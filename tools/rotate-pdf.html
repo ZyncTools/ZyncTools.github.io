@@ -28,8 +28,8 @@
             --primary-light: #818cf8;
             --secondary: #10b981;
             --accent: #f59e0b;
-            --dark: #0f172a;
-            --light: #f8fafc;
+            --dark: var(--text-primary);
+            --light: var(--bg-secondary);
             --gray: #64748b;
             --gray-light: #e2e8f0;
             --border: #e2e8f0;
@@ -45,7 +45,7 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
             color: var(--dark);
             line-height: 1.6;
         }
@@ -57,13 +57,13 @@
         }
         
         .header {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--bg-glass);
             backdrop-filter: blur(10px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px var(--border-color);
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid var(--border-color);
         }
         
         .header .container {
@@ -110,12 +110,12 @@
         }
         
         .tool-interface {
-            background: white;
+            background: var(--bg-card);
             border-radius: 28px;
             padding: 40px;
             box-shadow: var(--card-shadow);
             margin: 48px 0;
-            border: 1px solid rgba(0,0,0,0.03);
+            border: 1px solid var(--border-color);
         }
         
         .upload-area {
@@ -204,7 +204,7 @@
         }
         
         .result-card {
-            background: white;
+            background: var(--bg-card);
             border-radius: 20px;
             padding: 24px;
             text-align: center;
@@ -239,12 +239,12 @@
         }
         
         .content-block {
-            background: white;
+            background: var(--bg-card);
             border-radius: 24px;
             padding: 32px;
             margin-bottom: 28px;
             box-shadow: var(--card-shadow);
-            border: 1px solid rgba(0,0,0,0.03);
+            border: 1px solid var(--border-color);
         }
         
         .content-block h1, .content-block h3 {
@@ -275,7 +275,7 @@
         }
         
         .related-tool-card {
-            background: white;
+            background: var(--bg-card);
             padding: 28px 20px;
             border-radius: 24px;
             text-align: center;
@@ -310,7 +310,7 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: white;
+            background: var(--bg-card);
             border-radius: 24px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             padding: 24px;
@@ -427,7 +427,7 @@
             align-items: center;
             gap: 16px;
             padding: 12px;
-            background: white;
+            background: var(--bg-card);
             border-radius: 12px;
             margin-bottom: 12px;
             border: 1px solid var(--border);
@@ -522,6 +522,10 @@
                 <a href="../pages/support.html" class="nav-link">Support Us</a>
                 <a href="../index.html#about" class="nav-link">About</a>
                 <a href="../index.html#faq" class="nav-link">FAQ</a>
+                        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-sun sun-icon"></i>
+                <i class="fas fa-moon moon-icon"></i>
+            </button>
             </nav>
         </div>
     </header>
@@ -973,6 +977,15 @@
             const answer = question.parentElement.querySelector('.faq-answer');
             answer.style.display = 'none';
         });
+    
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                if (window.ZyncTheme) window.ZyncTheme.toggle();
+                else if (window.themeManager) window.themeManager.toggle();
+            });
+        }
+
     </script>
 
 </body>

@@ -670,6 +670,14 @@
         }
         
         renderToolInterface(toolConfig);
+        
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                if (window.ZyncTheme) window.ZyncTheme.toggle();
+                else if (window.themeManager) window.themeManager.toggle();
+            });
+        }
     }
 
     if (document.readyState === 'loading') {
