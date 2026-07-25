@@ -40,6 +40,252 @@
         })();
     </script>
     <script src="assets/js/theme.js" defer></script>
+    <style>
+        /* ============================================
+           FILE VIEWER — Premium Styles
+           ============================================ */
+        .viewer-hero {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .viewer-hero-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            background: var(--accent-tint);
+            color: var(--accent-dark);
+            border: 1px solid var(--accent-tint-border);
+            flex-shrink: 0;
+            font-size: 1.5rem;
+        }
+
+        .viewer-hero h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .viewer-hero p {
+            color: var(--text-secondary);
+            margin: 4px 0 0;
+            font-size: 0.9rem;
+        }
+
+        .viewer-workbench {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 24px;
+            animation: fadeInUp 0.5s ease-out 0.1s backwards;
+        }
+
+        .viewer-main {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .viewer-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .viewer-step-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .viewer-step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-tint);
+            border: 1px solid var(--accent-tint-border);
+            color: var(--accent-dark);
+            font-size: 0.85rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .viewer-step-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .viewer-drop-zone {
+            border: 2px dashed var(--border-medium);
+            border-radius: 20px;
+            padding: 48px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--bg-surface), var(--bg-card));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .viewer-drop-zone::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, var(--accent-tint), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .viewer-drop-zone:hover,
+        .viewer-drop-zone.drag-over {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, var(--bg-surface), var(--bg-card-hover));
+            transform: scale(1.01);
+            box-shadow: 0 0 0 4px var(--accent-tint);
+        }
+
+        .viewer-drop-zone.drag-over::before {
+            opacity: 1;
+        }
+
+        .viewer-drop-zone.drag-over svg {
+            transform: translateY(-4px) scale(1.1);
+            color: var(--accent);
+        }
+
+        .viewer-drop-zone svg {
+            transition: all 0.3s ease;
+            color: var(--text-muted);
+        }
+
+        .viewer-toolbar {
+            display: flex;
+            flex-wrap: items-center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .viewer-toolbar .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border-medium);
+            background: var(--bg-surface);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .viewer-toolbar .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent-dark);
+            background: var(--accent-tint);
+        }
+
+        .viewer-container {
+            border-radius: 16px;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-card);
+            overflow: hidden;
+            min-height: 400px;
+        }
+
+        .viewer-content {
+            padding: 20px;
+            overflow: auto;
+            max-height: 70vh;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--text-primary);
+        }
+
+        .viewer-content pre {
+            background: var(--bg-surface);
+            padding: 16px;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .viewer-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 12px 0;
+        }
+
+        .sidebar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .sidebar-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .sidebar-card a {
+            color: var(--accent-dark);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .sidebar-card a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 1024px) {
+            .viewer-workbench {
+                grid-template-columns: 1fr;
+            }
+            .viewer-sidebar {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .viewer-drop-zone {
+                padding: 32px 16px;
+            }
+        }
+    </style>
 </head>
 <body class="bg-slate-950 text-gray-200 font-inter antialiased">
 
@@ -68,31 +314,28 @@
     <main class="relative z-10 py-10">
         <div class="mx-auto max-w-7xl px-6">
             <!-- Tool Header -->
-            <div class="mb-8 animate-fade-in-up">
-                <div class="flex items-center gap-4 mb-2">
-                    <div class="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xl">
-                        <i id="tool-icon" data-lucide="file-code"></i>
-                    </div>
-                    <div>
-                        <h1 id="tool-title" class="text-2xl md:text-3xl font-bold text-white tracking-tight">File Viewer</h1>
-                        <p id="tool-description" class="text-gray-400 mt-1">Upload a file to view its contents.</p>
-                    </div>
+            <div class="viewer-hero">
+                <div class="viewer-hero-icon">
+                    <i id="tool-icon" data-lucide="file-code"></i>
+                </div>
+                <div>
+                    <h1 id="tool-title">File Viewer</h1>
+                    <p id="tool-description">Upload a file to view its contents.</p>
                 </div>
             </div>
 
             <!-- Workbench -->
-            <div class="workbench animate-fade-in-up stagger-1">
-                <!-- Main Stage -->
-                <div class="workbench-main">
+            <div class="viewer-workbench">
+                <div class="viewer-main">
                     <!-- Step 1: Upload -->
                     <div class="mb-8">
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="w-6 h-6 rounded-full bg-accent/10 text-accent text-xs font-bold flex items-center justify-center border border-accent/20">1</span>
-                            <span class="text-sm font-semibold text-gray-300">Upload File</span>
+                        <div class="viewer-step-label">
+                            <span class="viewer-step-number">1</span>
+                            <span class="viewer-step-title">Upload File</span>
                         </div>
-                        <div id="drop-zone" class="drop-zone">
+                        <div id="drop-zone" class="viewer-drop-zone">
                             <div class="pointer-events-none">
-                                <svg class="w-12 h-12 mx-auto mb-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                                <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
                                 <p class="text-white font-medium mb-1">Drag & drop files here</p>
                                 <p class="text-gray-500 text-sm">or click to browse</p>
                             </div>
@@ -103,25 +346,25 @@
 
                     <!-- Step 2: View -->
                     <div class="mb-8">
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="w-6 h-6 rounded-full bg-accent/10 text-accent text-xs font-bold flex items-center justify-center border border-accent/20">2</span>
-                            <span class="text-sm font-semibold text-gray-300">Viewer</span>
+                        <div class="viewer-step-label">
+                            <span class="viewer-step-number">2</span>
+                            <span class="viewer-step-title">Viewer</span>
                         </div>
-                        <div id="viewer-toolbar" class="flex flex-wrap items-center gap-2 mb-3 hidden">
-                            <button id="toggle-tree-btn" class="btn-secondary text-xs py-2 px-3 hidden"><i data-lucide="git-branch" class="mr-1.5"></i>Tree View</button>
-                            <button id="format-btn" class="btn-secondary text-xs py-2 px-3 hidden"><i data-lucide="align-left" class="mr-1.5"></i>Beautify</button>
-                            <button id="minify-btn" class="btn-secondary text-xs py-2 px-3 hidden"><i data-lucide="minimize" class="mr-1.5"></i>Minify</button>
-                            <button id="copy-btn" class="btn-secondary text-xs py-2 px-3"><i data-lucide="copy" class="mr-1.5"></i>Copy</button>
-                            <button id="download-btn" class="btn-secondary text-xs py-2 px-3"><i data-lucide="download" class="mr-1.5"></i>Download</button>
+                        <div id="viewer-toolbar" class="viewer-toolbar hidden">
+                            <button id="toggle-tree-btn" class="hidden"><i data-lucide="git-branch" class="w-4 h-4 mr-1.5"></i>Tree View</button>
+                            <button id="format-btn" class="hidden"><i data-lucide="align-left" class="w-4 h-4 mr-1.5"></i>Beautify</button>
+                            <button id="minify-btn" class="hidden"><i data-lucide="minimize" class="w-4 h-4 mr-1.5"></i>Minify</button>
+                            <button id="copy-btn" class="btn-secondary"><i data-lucide="copy" class="w-4 h-4 mr-1.5"></i>Copy</button>
+                            <button id="download-btn" class="btn-secondary"><i data-lucide="download" class="w-4 h-4 mr-1.5"></i>Download</button>
                         </div>
-                        <div id="viewer-container" class="rounded-xl border border-white/5 bg-slate-900 overflow-hidden hidden">
-                            <div id="viewer-content" class="p-4 overflow-auto max-h-[70vh] text-sm leading-relaxed"></div>
+                        <div id="viewer-container" class="viewer-container hidden">
+                            <div id="viewer-content" class="viewer-content"></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Sidebar -->
-                <aside class="workbench-sidebar">
+                <aside class="viewer-sidebar">
                     <!-- Related Tools -->
                     <div class="sidebar-card">
                         <h3 class="sidebar-title">Related Tools</h3>
