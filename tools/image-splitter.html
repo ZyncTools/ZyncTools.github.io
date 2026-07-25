@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Splitter | ZyncTools</title>
+    <meta name="description" content="Split images into grids, horizontal or vertical strips. 100% client-side.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%236366F1'>⚡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { inter: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        slate: { 950: '#0F1115', 900: '#13151A', 850: '#1C1F26', 800: '#23262F', 700: '#2D313A' },
+                        accent: { DEFAULT: '#6366F1', light: '#818CF8', dark: '#4F46E5' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { inter: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        slate: { 950: '#0F1115', 900: '#13151A', 850: '#1C1F26', 800: '#23262F', 700: '#2D313A' },
+                        accent: { DEFAULT: '#6366F1', light: '#818CF8', dark: '#4F46E5' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script>
+        (function() {
+            var themeKey = 'zync-theme-v2';
+            var theme = 'dark';
+            try { theme = localStorage.getItem(themeKey) || 'dark'; } catch(e) {}
+            if (theme !== 'dark' && theme !== 'grass' && theme !== 'light') theme = 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.classList.add('theme-' + theme);
+            document.documentElement.style.colorScheme = theme === 'dark' ? 'dark' : 'light';
+        })();
+    </script>
+    <script src="assets/js/theme.js" defer></script>
+    <style>
+        .split-grid {
+            display: grid;
+            gap: 4px;
+            background: var(--bg-surface);
+            border-radius: 12px;
+            padding: 8px;
+        }
+        .split-tile {
+            position: relative;
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
+        }
+        .split-tile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .split-tile-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .split-tile:hover .split-tile-overlay {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-[#0B0C10] text-white">
+    <header class="border-b border-white/5 bg-[#0B0C10]">
+        <div class="mx-auto max-w-7xl px-6 h-14 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3 group">
+                <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent font-bold text-lg group-hover:bg-accent/20 transition-colors">⚡</div>
+                <span class="text-lg font-bold tracking-tight text-white">ZyncTools</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="/" class="text-sm text-gray-400 hover:text-white transition-colors">All Tools</a>
+                <button id="theme-toggle" class="text-sm text-gray-400 hover:text-white transition-colors" aria-label="Toggle theme">
+                    <i data-lucide="moon" class="w-4 h-4"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="py-10">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="mb-8">
+                <div class="flex items-center gap-4 mb-2">
+                    <div class="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xl">
+                        <i data-lucide="layout-grid" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Image Splitter</h1>
+                        <p class="text-gray-400 mt-1">Split your image into grids, horizontal strips, or vertical strips.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Upload & Preview -->
+                <div class="lg:col-span-2">
+                    <div class="mb-6">
+                        <div class="step-label mb-3">
+                            <span class="step-number">1</span>
+                            <span class="step-title">Upload Image</span>
+                        </div>
+                        <div id="drop-zone" class="drop-zone">
+                            <div class="pointer-events-none">
+                                <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <p class="text-white font-medium mb-1">Drag & drop an image here</p>
+                                <p class="text-gray-500 text-sm">or click to browse</p>
+                            </div>
+                            <input type="file" id="file-input" accept="image/*" class="hidden" />
+                        </div>
+                        <div id="preview-section" class="mt-6 hidden">
+                            <div class="preview-card">
+                                <img id="preview-image" class="preview-image" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Split Preview -->
+                    <div id="split-section" class="hidden">
+                        <div class="step-label mb-3">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Split Preview</span>
+                        </div>
+                        <div id="split-grid" class="split-grid"></div>
+                    </div>
+                </div>
+
+                <!-- Settings -->
+                <div>
+                    <div class="step-label mb-3">
+                        <span class="step-number">3</span>
+                        <span class="step-title">Settings</span>
+                    </div>
+                    <div class="tool-options-card mb-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-white mb-2">Mode</label>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button class="split-mode-btn channel-btn active" data-mode="grid">Grid</button>
+                                    <button class="split-mode-btn channel-btn" data-mode="horizontal">Horizontal</button>
+                                    <button class="split-mode-btn channel-btn" data-mode="vertical">Vertical</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-white mb-2">Rows</label>
+                                <input type="range" id="split-rows" min="1" max="10" value="2" class="w-full accent-accent" />
+                                <div class="flex justify-between text-xs text-gray-400 mt-1"><span>1</span><span id="split-rows-val">2</span><span>10</span></div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-white mb-2">Columns</label>
+                                <input type="range" id="split-cols" min="1" max="10" value="2" class="w-full accent-accent" />
+                                <div class="flex justify-between text-xs text-gray-400 mt-1"><span>1</span><span id="split-cols-val">2</span><span>10</span></div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-white mb-2">Spacing (px)</label>
+                                <input type="range" id="split-spacing" min="0" max="50" value="0" class="w-full accent-accent" />
+                                <div class="flex justify-between text-xs text-gray-400 mt-1"><span>0</span><span id="split-spacing-val">0</span><span>50</span></div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-white mb-2">Output Format</label>
+                                <select id="split-format" class="w-full bg-[#111318] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-gray-200">
+                                    <option value="png">PNG</option>
+                                    <option value="jpeg">JPEG</option>
+                                    <option value="webp">WebP</option>
+                                </select>
+                            </div>
+                            <button id="process-btn" class="process-btn w-full" disabled>
+                                <i data-lucide="scissors" class="w-4 h-4"></i>
+                                Split Image
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="results-section" class="hidden">
+                        <div class="step-label mb-3">
+                            <span class="step-number">4</span>
+                            <span class="step-title">Results</span>
+                        </div>
+                        <div id="results-list" class="space-y-3"></div>
+                        <button id="download-zip" class="btn-secondary w-full mt-4">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            Download ZIP
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-white/5 py-8">
+        <div class="mx-auto max-w-7xl px-6 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xs font-bold">⚡</div>
+                <span class="text-sm font-semibold text-white">ZyncTools</span>
+            </div>
+            <p class="text-xs text-gray-500">100% client-side. No uploads. No tracking.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="assets/js/tools/image-filters-logic.js"></script>
+    <script>
+        (function() {
+            'use strict';
+            var state = { file: null, mode: 'grid', rows: 2, cols: 2, spacing: 0, format: 'png', results: [], zipBlob: null };
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            }
+
+            var dropZone = document.getElementById('drop-zone');
+            var fileInput = document.getElementById('file-input');
+            var previewSection = document.getElementById('preview-section');
+            var previewImage = document.getElementById('preview-image');
+            var processBtn = document.getElementById('process-btn');
+
+            dropZone.addEventListener('click', function() { fileInput.click(); });
+            dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('drag-over'); });
+            dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('drag-over'); });
+            dropZone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+            });
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files.length) handleFile(e.target.files[0]);
+            });
+
+            function handleFile(file) {
+                if (!file.type.startsWith('image/')) return;
+                state.file = file;
+                previewImage.onload = function() {
+                    previewSection.classList.remove('hidden');
+                    processBtn.disabled = false;
+                    updateSplitPreview();
+                };
+                previewImage.src = URL.createObjectURL(file);
+            }
+
+            function updateSplitPreview() {
+                if (!state.file) return;
+                var img = new Image();
+                img.onload = function() {
+                    var section = document.getElementById('split-section');
+                    var grid = document.getElementById('split-grid');
+                    section.classList.remove('hidden');
+                    grid.innerHTML = '';
+                    grid.style.gridTemplateColumns = 'repeat(' + state.cols + ', 1fr)';
+
+                    var tileW = img.width / state.cols;
+                    var tileH = img.height / state.rows;
+
+                    for (let r = 0; r < state.rows; r++) {
+                        for (let c = 0; c < state.cols; c++) {
+                            var canvas = document.createElement('canvas');
+                            canvas.width = Math.ceil(tileW);
+                            canvas.height = Math.ceil(tileH);
+                            var cx = canvas.getContext('2d');
+                            cx.drawImage(img, c * tileW, r * tileH, tileW, tileH, 0, 0, canvas.width, canvas.height);
+                            var tile = document.createElement('div');
+                            tile.className = 'split-tile';
+                            tile.innerHTML = '<img src="' + canvas.toDataURL() + '" alt="" />' +
+                                '<div class="split-tile-overlay"><span class="text-white text-xs font-bold">' + (r * state.cols + c + 1) + '</span></div>';
+                            grid.appendChild(tile);
+                        }
+                    }
+                };
+                img.src = URL.createObjectURL(state.file);
+            }
+
+            // Mode buttons
+            document.querySelectorAll('.split-mode-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.split-mode-btn').forEach(function(b) { b.classList.remove('active'); });
+                    btn.classList.add('active');
+                    state.mode = btn.dataset.mode;
+                    if (state.mode === 'horizontal') { state.rows = parseInt(document.getElementById('split-rows').value); state.cols = 1; }
+                    else if (state.mode === 'vertical') { state.rows = 1; state.cols = parseInt(document.getElementById('split-cols').value); }
+                    else { state.rows = parseInt(document.getElementById('split-rows').value); state.cols = parseInt(document.getElementById('split-cols').value); }
+                    updateSplitPreview();
+                });
+            });
+
+            // Sliders
+            ['split-rows', 'split-cols', 'split-spacing'].forEach(function(id) {
+                var el = document.getElementById(id);
+                var valEl = document.getElementById(id + '-val');
+                if (el && valEl) {
+                    el.addEventListener('input', function() {
+                        valEl.textContent = el.value;
+                        if (id === 'split-rows') state.rows = parseInt(el.value);
+                        if (id === 'split-cols') state.cols = parseInt(el.value);
+                        if (id === 'split-spacing') state.spacing = parseInt(el.value);
+                        updateSplitPreview();
+                    });
+                }
+            });
+
+            document.getElementById('split-format').addEventListener('change', function() {
+                state.format = this.value;
+            });
+
+            processBtn.addEventListener('click', async function() {
+                if (!state.file) return;
+                processBtn.disabled = true;
+                processBtn.innerHTML = '<span class="animate-spin inline-block w-4 h-4 border-2 border-white/20 border-t-white rounded-full mr-2"></span>Splitting...';
+
+                try {
+                    if (!window.JSZip) throw new Error('JSZip not loaded');
+                    var zip = new JSZip();
+                    var img = await createImageBitmap(state.file);
+                    var results = [];
+                    var tileW = img.width / state.cols;
+                    var tileH = img.height / state.rows;
+
+                    for (let r = 0; r < state.rows; r++) {
+                        for (let c = 0; c < state.cols; c++) {
+                            var canvas = document.createElement('canvas');
+                            canvas.width = Math.ceil(tileW);
+                            canvas.height = Math.ceil(tileH);
+                            var cx = canvas.getContext('2d');
+                            cx.drawImage(img, c * tileW, r * tileH, tileW, tileH, 0, 0, canvas.width, canvas.height);
+                            var mime = state.format === 'jpeg' ? 'image/jpeg' : state.format === 'webp' ? 'image/webp' : 'image/png';
+                            var blob = await new Promise(function(resolve) { canvas.toBlob(resolve, mime, 0.92); });
+                            var name = state.file.name.replace(/\.[^.]+$/, '') + '-part' + (r * state.cols + c + 1) + '.' + state.format;
+                            zip.file(name, blob);
+                            results.push({ name: name, blob: blob, size: blob.size, url: URL.createObjectURL(blob) });
+                        }
+                    }
+
+                    state.zipBlob = await zip.generateAsync({ type: 'blob' });
+                    var section = document.getElementById('results-section');
+                    var list = document.getElementById('results-list');
+                    section.classList.remove('hidden');
+                    list.innerHTML = results.map(function(r) {
+                        return '<div class="result-card"><div class="result-info"><div class="result-icon"><i data-lucide="file-check" class="w-5 h-5"></i></div><div class="result-details"><div class="result-name">' + escapeHtml(r.name) + '</div><div class="result-meta">' + formatFileSize(r.size) + '</div></div></div><a href="' + r.url + '" download="' + escapeHtml(r.name) + '" class="btn-secondary"><i data-lucide="download" class="w-3 h-3 mr-1"></i>Download</a></div>';
+                    }).join('');
+                    if (window.lucide) lucide.createIcons();
+                } catch (err) {
+                    console.error(err);
+                    alert('Error: ' + err.message);
+                } finally {
+                    processBtn.disabled = false;
+                    processBtn.innerHTML = '<i data-lucide="scissors" class="w-4 h-4"></i> Split Image';
+                    if (window.lucide) lucide.createIcons();
+                }
+            });
+
+            document.getElementById('download-zip').addEventListener('click', function() {
+                if (!state.zipBlob) return;
+                var link = document.createElement('a');
+                link.download = 'split-images.zip';
+                link.href = URL.createObjectURL(state.zipBlob);
+                link.click();
+            });
+
+            var themeToggleBtn = document.getElementById('theme-toggle');
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', function() {
+                    if (window.ZyncTheme) window.ZyncTheme.toggle();
+                    else if (window.themeManager) window.themeManager.toggle();
+                });
+            }
+
+            if (window.lucide) lucide.createIcons();
+        })();
+    </script>
+</body>
+</html>

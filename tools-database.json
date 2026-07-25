@@ -107,7 +107,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-resizer",
@@ -135,7 +136,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-cropper",
@@ -162,7 +164,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-converter",
@@ -193,7 +196,8 @@
         "heic",
         "heif",
         "avif"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-rotate",
@@ -221,7 +225,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-flip",
@@ -249,7 +254,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-watermark",
@@ -277,7 +283,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "meme-generator",
@@ -405,7 +412,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-ocr",
@@ -436,7 +444,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "batch-rename-images",
@@ -468,7 +477,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-filters",
@@ -496,7 +506,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-blur",
@@ -524,7 +535,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "background-remover",
@@ -586,7 +598,8 @@
       ],
       "formats": [
         "svg"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "ico-converter",
@@ -613,7 +626,8 @@
         "png",
         "jpg",
         "jpeg"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "favicon-generator",
@@ -640,7 +654,8 @@
         "png",
         "jpg",
         "jpeg"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-joiner",
@@ -667,7 +682,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-splitter",
@@ -694,7 +710,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-pixelate",
@@ -722,7 +739,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-grayscale",
@@ -750,7 +768,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-sepia",
@@ -778,7 +797,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-brightness-contrast",
@@ -806,7 +826,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-histogram",
@@ -834,7 +855,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "duplicate-image-finder",
@@ -862,7 +884,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "base64-image-encoder",
@@ -891,7 +914,8 @@
         "png",
         "webp",
         "svg"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "json-formatter",
@@ -3378,7 +3402,8 @@
         "webp",
         "gif",
         "bmp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-compare",
@@ -3405,7 +3430,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "image-watermark-batch",
@@ -3433,7 +3459,8 @@
         "jpeg",
         "png",
         "webp"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "yaml-formatter",
@@ -8050,37 +8077,6 @@
         "jpeg",
         "png",
         "webp"
-      ]
-    },
-    {
-      "id": "images-1",
-      "name": "Image Compressor",
-      "category": "images",
-      "type": "file",
-      "icon": "fa-image",
-      "library": "",
-      "function": "images-1",
-      "seoTitle": "Image Compressor - Free Online Tool | ZyncTools",
-      "popular": false,
-      "badge": "AI",
-      "accept": ".jpg,.png,.pdf,.mp4,.mp3,.txt",
-      "outputType": "blob",
-      "tags": [
-        "image",
-        "photo",
-        "picture",
-        "graphic",
-        "visual",
-        "pic",
-        "images"
-      ],
-      "formats": [
-        "jpg",
-        "png",
-        "pdf",
-        "mp4",
-        "mp3",
-        "txt"
       ]
     },
     {

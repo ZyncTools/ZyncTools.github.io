@@ -1648,13 +1648,12 @@ footer {
     transition: opacity 0.3s ease;
 }
 
-.drop-zone:hover,
-.drop-zone.drag-over {
-    border-color: var(--accent);
-    background: linear-gradient(135deg, var(--bg-surface), var(--bg-card-hover));
-    transform: scale(1.01);
-    box-shadow: 0 0 0 4px var(--accent-tint);
-}
+        .drop-zone:hover,
+        .drop-zone.drag-over {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, var(--bg-surface), var(--bg-card-hover));
+            box-shadow: 0 0 0 4px var(--accent-tint);
+        }
 
 .drop-zone.drag-over::before {
     opacity: 1;
@@ -1988,6 +1987,52 @@ footer {
 .remove-file-btn:hover {
     color: #ef4444;
     background: rgba(239, 68, 68, 0.1);
+}
+
+/* Preview section */
+.preview-section {
+    margin-top: 16px;
+}
+
+#preview-image {
+    max-width: 100%;
+    max-height: 320px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
+}
+
+/* Empty results state */
+.empty-results {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-muted);
+}
+
+.empty-results-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    display: grid;
+    place-items: center;
+    margin: 0 auto 12px;
+    color: var(--text-muted);
+}
+
+.empty-results-icon svg { width: 24px; height: 24px; }
+
+.empty-results-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.empty-results-sub {
+    font-size: 0.85rem;
 }
 
 /* Responsive workbench */

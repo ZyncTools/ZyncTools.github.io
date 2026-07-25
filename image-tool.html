@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Tool — ZyncTools</title>
-    <meta name="description" content="Privacy-first utility tool. 100% client-side. No uploads.">
+    <meta name="description" content="Privacy-first image tool. 100% client-side. No uploads.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%236366F1'>⚡</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,11 +38,11 @@
     <script src="assets/js/theme.js" defer></script>
     <style>
         /* ============================================
-           TOOL WORKBENCH — Premium Styles
+           IMAGE TOOL WORKBENCH — Premium Styles
            ============================================ */
         .workbench {
             display: grid;
-            grid-template-columns: 1fr 300px;
+            grid-template-columns: 1fr 320px;
             gap: 24px;
             animation: fadeInUp 0.5s ease-out;
         }
@@ -137,6 +137,82 @@
         .drop-zone svg {
             transition: all 0.3s ease;
             color: var(--text-muted);
+        }
+
+        /* Image preview card */
+        .preview-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .preview-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .preview-image-container {
+            position: relative;
+            background: var(--bg-surface);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .preview-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .preview-meta-item {
+            background: var(--bg-surface);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .preview-meta-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .preview-meta-value {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-primary);
         }
 
         /* Tool options card */
@@ -478,7 +554,7 @@
                     <div id="file-input-section" class="mb-8">
                         <div class="step-label">
                             <span class="step-number">1</span>
-                            <span class="step-title">Upload Files</span>
+                            <span class="step-title">Upload Image</span>
                         </div>
                         <div id="drop-zone" class="drop-zone">
                             <div class="pointer-events-none">
@@ -494,7 +570,7 @@
                                 <span class="step-number" style="background:var(--bg-surface);border:1px solid var(--border-medium);color:var(--text-secondary);">👁</span>
                                 <span class="step-title">Preview</span>
                             </div>
-                            <div class="tool-options-card" style="overflow:hidden;padding:12px;">
+                            <div class="preview-card" style="overflow:hidden;padding:12px;">
                                 <img id="preview-image" style="max-width:100%;max-height:320px;display:block;margin:0 auto;border-radius:12px;" />
                             </div>
                         </div>
@@ -611,6 +687,7 @@
     <script src="assets/js/logic-image.js"></script>
     <script src="assets/js/tools/image-light-logic.js"></script>
     <script src="assets/js/tools/image-filters-logic.js"></script>
+    <script src="assets/js/tools/image-effects-logic.js"></script>
     <script src="assets/js/advanced-logic.js"></script>
     <script src="assets/js/ui-components.js"></script>
     <script src="assets/js/main.js"></script>
@@ -624,7 +701,9 @@
                 toolConfig: null,
                 files: [],
                 isProcessing: false,
-                options: {}
+                options: {},
+                originalImage: null,
+                processedBlob: null
             };
 
             var $ = function(sel) { return document.querySelector(sel); };
@@ -758,10 +837,27 @@
                     { id: 'suffix', type: 'text', label: 'Suffix', value: '' },
                     { id: 'start', type: 'number', label: 'Start number', value: 1, min: 0 },
                     { id: 'pad', type: 'range', label: 'Number padding', min: 1, max: 6, value: 3, step: 1 }
+                ],
+                'image-grayscale': [
+                    { id: 'intensity', type: 'range', label: 'Intensity', min: 0, max: 100, value: 100, step: 1, suffix: '%' },
+                    { id: 'preserveContrast', type: 'checkbox', label: 'Preserve contrast', value: false }
+                ],
+                'image-sepia': [
+                    { id: 'sepia', type: 'range', label: 'Sepia Strength', min: 0, max: 100, value: 80, step: 1, suffix: '%' },
+                    { id: 'temperature', type: 'range', label: 'Warmth', min: -50, max: 50, value: 10, step: 1 },
+                    { id: 'contrast', type: 'range', label: 'Contrast', min: -100, max: 100, value: 0, step: 1 },
+                    { id: 'brightness', type: 'range', label: 'Brightness', min: -100, max: 100, value: 0, step: 1 }
+                ],
+                'image-brightness-contrast': [
+                    { id: 'brightness', type: 'range', label: 'Brightness', min: -100, max: 100, value: 0, step: 1 },
+                    { id: 'contrast', type: 'range', label: 'Contrast', min: -100, max: 100, value: 0, step: 1 },
+                    { id: 'exposure', type: 'range', label: 'Exposure', min: -50, max: 50, value: 0, step: 1 },
+                    { id: 'saturation', type: 'range', label: 'Saturation', min: 0, max: 200, value: 100, step: 1, suffix: '%' },
+                    { id: 'temperature', type: 'range', label: 'Temperature', min: -50, max: 50, value: 0, step: 1 }
                 ]
             };
 
-            var TEXT_TOOLS = ['image-metadata-viewer', 'image-histogram', 'image-compare', 'base64-image-encoder', 'duplicate-image-finder'];
+            var TEXT_TOOLS = [];
 
             async function initTool() {
                 var params = new URLSearchParams(window.location.search);

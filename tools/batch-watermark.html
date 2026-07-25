@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batch Watermark Images | ZyncTools</title>
+    <meta name="description" content="Add watermarks to multiple images at once. 100% client-side.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%236366F1'>⚡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { inter: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        slate: { 950: '#0F1115', 900: '#13151A', 850: '#1C1F26', 800: '#23262F', 700: '#2D313A' },
+                        accent: { DEFAULT: '#6366F1', light: '#818CF8', dark: '#4F46E5' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script>
+        (function() {
+            var themeKey = 'zync-theme-v2';
+            var theme = 'dark';
+            try { theme = localStorage.getItem(themeKey) || 'dark'; } catch(e) {}
+            if (theme !== 'dark' && theme !== 'grass' && theme !== 'light') theme = 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.classList.add('theme-' + theme);
+            document.documentElement.style.colorScheme = theme === 'dark' ? 'dark' : 'light';
+        })();
+    </script>
+    <script src="assets/js/theme.js" defer></script>
+    <style>
+        .watermark-preview {
+            position: relative;
+            display: inline-block;
+            background: var(--bg-surface);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .watermark-preview canvas {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-[#0B0C10] text-white">
+    <header class="border-b border-white/5 bg-[#0B0C10]">
+        <div class="mx-auto max-w-7xl px-6 h-14 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3 group">
+                <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent font-bold text-lg group-hover:bg-accent/20 transition-colors">⚡</div>
+                <span class="text-lg font-bold tracking-tight text-white">ZyncTools</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="/" class="text-sm text-gray-400 hover:text-white transition-colors">All Tools</a>
+                <button id="theme-toggle" class="text-sm text-gray-400 hover:text-white transition-colors" aria-label="Toggle theme">
+                    <i data-lucide="moon" class="w-4 h-4"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="py-10">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="mb-8">
+                <div class="flex items-center gap-4 mb-2">
+                    <div class="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xl">
+                        <i data-lucide="stamp" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Batch Watermark Images</h1>
+                        <p class="text-gray-400 mt-1">Add text or image watermarks to multiple images at once.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Upload & Preview -->
+                <div class="lg:col-span-2">
+                    <div class="mb-6">
+                        <div class="step-label mb-3">
+                            <span class="step-number">1</span>
+                            <span class="step-title">Upload Images</span>
+                        </div>
+                        <div id="drop-zone" class="drop-zone">
+                            <div class="pointer-events-none">
+                                <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                                <p class="text-white font-medium mb-1">Drag & drop images here</p>
+                                <p class="text-gray-500 text-sm">or click to browse</p>
+                            </div>
+                            <input type="file" id="file-input" multiple accept="image/*" class="hidden" />
+                        </div>
+                        <div id="file-list" class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+                    </div>
+
+                    <div id="preview-section" class="hidden">
+                        <div class="step-label mb-3">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Preview</span>
+                        </div>
+                        <div class="tool-options-card">
+                            <div class="flex items-center gap-4 mb-4">
+                                <span class="text-sm text-gray-400">Previewing:</span>
+                                <select id="preview-select" class="bg-[#111318] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-gray-200"></select>
+                            </div>
+                            <div class="watermark-preview mx-auto" style="max-width:600px;">
+                                <canvas id="preview-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings -->
+                <div>
+                    <div class="step-label mb-3">
+                        <span class="step-number">3</span>
+                        <span class="step-title">Watermark Settings</span>
+                    </div>
+                    <div class="tool-options-card mb-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-white mb-2">Type</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button id="wm-type-text" class="channel-btn active">Text</button>
+                                    <button id="wm-type-image" class="channel-btn">Image</button>
+                                </div>
+                            </div>
+                            <div id="wm-text-settings">
+                                <label class="block text-sm font-semibold text-white mb-2">Text</label>
+                                <input type="text" id="wm-text" value="ZyncTools" class="w-full bg-[#111318] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-gray-200 mb-3" />
+                                <label class="block text-sm font-semibold text-white mb-2">Font Size</label>
+                                <input type="range" id="wm-fontsize" min="12" max="120" value="24" class="w-full accent-accent" />
+                                <div class="flex justify-between text-xs text-gray-400 mt-1"><span>12</span><span id="wm-fontsize-val">24</span><span>120</span></div>
+                            </div>
+                            <div id="wm-image-settings" class="hidden">
+                                <label class="block text-sm font-semibold text-white mb-2">Watermark Image URL</label>
+                                <input type="text" id="wm-image-url" placeholder="https://..." class="w-full bg-[#111318] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-gray-200" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-white mb-2">Opacity</label>
+                                <input type="range" id="wm-opacity" min="10" max="100" value="60" class="w-full accent-accent" />
+                                <div class="flex justify-between text-xs text-gray-400 mt-1"><span>10%</span><span id="wm-opacity-val">60%</span><span>100%</span></div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-white mb-2">Rotation</label>
+                                <input type="range" id="wm-rotation" min="-180" max="180" value="0" class="w-full accent-accent" />
+                                <div class="flex justify-between text-xs text-gray-400 mt-1"><span>-180°</span><span id="wm-rotation-val">0°</span><span>180°</span></div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-white mb-2">Color</label>
+                                <div class="flex gap-2">
+                                    <input type="color" id="wm-color" value="#ffffff" class="w-12 h-10 rounded-lg border border-white/10 bg-transparent cursor-pointer" />
+                                    <input type="text" id="wm-color-hex" value="#ffffff" class="flex-1 bg-[#111318] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-gray-200" />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-white mb-2">Scale</label>
+                                <input type="range" id="wm-scale" min="5" max="50" value="20" class="w-full accent-accent" />
+                                <div class="flex justify-between text-xs text-gray-400 mt-1"><span>5%</span><span id="wm-scale-val">20%</span><span>50%</span></div>
+                            </div>
+                            <button id="process-btn" class="process-btn w-full" disabled>
+                                <i data-lucide="zap" class="w-4 h-4"></i>
+                                Process All
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="results-section" class="hidden">
+                        <div class="step-label mb-3">
+                            <span class="step-number">4</span>
+                            <span class="step-title">Results</span>
+                        </div>
+                        <div id="results-list" class="space-y-3"></div>
+                        <button id="download-zip" class="btn-secondary w-full mt-4">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            Download ZIP
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-white/5 py-8">
+        <div class="mx-auto max-w-7xl px-6 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xs font-bold">⚡</div>
+                <span class="text-sm font-semibold text-white">ZyncTools</span>
+            </div>
+            <p class="text-xs text-gray-500">100% client-side. No uploads. No tracking.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="assets/js/tools/image-light-logic.js"></script>
+    <script>
+        (function() {
+            'use strict';
+            var files = [];
+            var zipBlob = null;
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            }
+
+            function formatFileSize(bytes) {
+                if (!bytes && bytes !== 0) return '0 Bytes';
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            var dropZone = document.getElementById('drop-zone');
+            var fileInput = document.getElementById('file-input');
+            var fileList = document.getElementById('file-list');
+            var processBtn = document.getElementById('process-btn');
+
+            dropZone.addEventListener('click', function() { fileInput.click(); });
+            dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('drag-over'); });
+            dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('drag-over'); });
+            dropZone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                handleFiles(e.dataTransfer.files);
+            });
+            fileInput.addEventListener('change', function(e) {
+                handleFiles(e.target.files);
+                fileInput.value = '';
+            });
+
+            function handleFiles(fileListObj) {
+                Array.from(fileListObj).forEach(function(file) {
+                    if (!file.type.startsWith('image/')) return;
+                    files.push(file);
+                    var item = document.createElement('div');
+                    item.className = 'dup-card';
+                    item.innerHTML = '<img class="dup-thumb" src="' + URL.createObjectURL(file) + '" alt="" />' +
+                        '<div class="mt-2 text-xs text-gray-400 truncate">' + escapeHtml(file.name) + '</div>' +
+                        '<div class="text-xs text-gray-500">' + formatFileSize(file.size) + '</div>' +
+                        '<button class="absolute top-2 left-2 w-6 h-6 rounded-full bg-black/50 text-white text-xs flex items-center justify-center hover:bg-red-500 transition-colors remove-btn">&times;</button>';
+                    fileList.appendChild(item);
+                    item.querySelector('.remove-btn').addEventListener('click', function() {
+                        var idx = files.indexOf(file);
+                        if (idx > -1) files.splice(idx, 1);
+                        item.remove();
+                        processBtn.disabled = files.length === 0;
+                        updatePreviewSelect();
+                    });
+                });
+                processBtn.disabled = files.length === 0;
+                updatePreviewSelect();
+            }
+
+            function updatePreviewSelect() {
+                var select = document.getElementById('preview-select');
+                select.innerHTML = files.map(function(f, i) { return '<option value="' + i + '">' + escapeHtml(f.name) + '</option>'; }).join('');
+                if (files.length > 0) {
+                    document.getElementById('preview-section').classList.remove('hidden');
+                    drawPreview();
+                }
+            }
+
+            document.getElementById('preview-select').addEventListener('change', drawPreview);
+
+            // Watermark type toggle
+            document.getElementById('wm-type-text').addEventListener('click', function() {
+                this.classList.add('active');
+                document.getElementById('wm-type-image').classList.remove('active');
+                document.getElementById('wm-text-settings').classList.remove('hidden');
+                document.getElementById('wm-image-settings').classList.add('hidden');
+                drawPreview();
+            });
+            document.getElementById('wm-type-image').addEventListener('click', function() {
+                this.classList.add('active');
+                document.getElementById('wm-type-text').classList.remove('active');
+                document.getElementById('wm-text-settings').classList.add('hidden');
+                document.getElementById('wm-image-settings').classList.remove('hidden');
+                drawPreview();
+            });
+
+            // Sliders
+            ['wm-fontsize', 'wm-opacity', 'wm-rotation', 'wm-scale'].forEach(function(id) {
+                var el = document.getElementById(id);
+                var valEl = document.getElementById(id + '-val');
+                if (el && valEl) {
+                    el.addEventListener('input', function() {
+                        var suffix = id === 'wm-rotation' ? '°' : id === 'wm-opacity' || id === 'wm-scale' ? '%' : '';
+                        valEl.textContent = el.value + suffix;
+                        drawPreview();
+                    });
+                }
+            });
+
+            document.getElementById('wm-color').addEventListener('input', function() {
+                document.getElementById('wm-color-hex').value = this.value;
+                drawPreview();
+            });
+            document.getElementById('wm-color-hex').addEventListener('input', function() {
+                if (/^#[0-9A-F]{6}$/i.test(this.value)) {
+                    document.getElementById('wm-color').value = this.value;
+                    drawPreview();
+                }
+            });
+            document.getElementById('wm-text').addEventListener('input', drawPreview);
+
+            function getOptions() {
+                return {
+                    text: document.getElementById('wm-text').value,
+                    imageUrl: document.getElementById('wm-image-url').value,
+                    fontSize: parseInt(document.getElementById('wm-fontsize').value),
+                    color: document.getElementById('wm-color').value,
+                    opacity: parseInt(document.getElementById('wm-opacity').value),
+                    rotation: parseInt(document.getElementById('wm-rotation').value),
+                    scale: parseInt(document.getElementById('wm-scale').value),
+                    x: 10,
+                    y: 10
+                };
+            }
+
+            async function drawPreview() {
+                if (!files.length) return;
+                var idx = parseInt(document.getElementById('preview-select').value) || 0;
+                var file = files[idx];
+                var canvas = document.getElementById('preview-canvas');
+                var ctx = canvas.getContext('2d');
+                var bmp = await createImageBitmap(file);
+                canvas.width = bmp.width; canvas.height = bmp.height;
+                ctx.drawImage(bmp, 0, 0);
+
+                var opts = getOptions();
+                var isText = document.getElementById('wm-type-text').classList.contains('active');
+
+                if (isText) {
+                    ctx.font = 'bold ' + opts.fontSize + 'px Inter, sans-serif';
+                    ctx.fillStyle = opts.color;
+                    ctx.globalAlpha = opts.opacity / 100;
+                    ctx.textAlign = 'left';
+                    ctx.textBaseline = 'top';
+                    var x = 20, y = 20;
+                    ctx.save();
+                    ctx.translate(x, y);
+                    ctx.rotate(opts.rotation * Math.PI / 180);
+                    ctx.fillText(opts.text, 0, 0);
+                    ctx.restore();
+                    ctx.globalAlpha = 1;
+                } else if (opts.imageUrl) {
+                    var img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    await new Promise(function(resolve, reject) { img.onload = resolve; img.onerror = reject; img.src = opts.imageUrl; });
+                    var scale = opts.scale / 100;
+                    var w = bmp.width * scale, h = bmp.height * scale;
+                    ctx.globalAlpha = opts.opacity / 100;
+                    ctx.save();
+                    ctx.translate(20, 20);
+                    ctx.rotate(opts.rotation * Math.PI / 180);
+                    ctx.drawImage(img, 0, 0, w, h);
+                    ctx.restore();
+                    ctx.globalAlpha = 1;
+                }
+            }
+
+            processBtn.addEventListener('click', async function() {
+                if (!files.length) return;
+                processBtn.disabled = true;
+                processBtn.innerHTML = '<span class="animate-spin inline-block w-4 h-4 border-2 border-white/20 border-t-white rounded-full mr-2"></span>Processing...';
+
+                try {
+                    if (!window.JSZip) throw new Error('JSZip not loaded');
+                    var zip = new JSZip();
+                    var opts = getOptions();
+                    var results = [];
+
+                    for (var i = 0; i < files.length; i++) {
+                        var bmp = await createImageBitmap(files[i]);
+                        var c = document.createElement('canvas');
+                        c.width = bmp.width; c.height = bmp.height;
+                        var cx = c.getContext('2d');
+                        cx.drawImage(bmp, 0, 0);
+
+                        var isText = document.getElementById('wm-type-text').classList.contains('active');
+                        if (isText) {
+                            cx.font = 'bold ' + opts.fontSize + 'px Inter, sans-serif';
+                            cx.fillStyle = opts.color;
+                            cx.globalAlpha = opts.opacity / 100;
+                            cx.textAlign = 'left';
+                            cx.textBaseline = 'top';
+                            cx.save();
+                            cx.translate(20, 20);
+                            cx.rotate(opts.rotation * Math.PI / 180);
+                            cx.fillText(opts.text, 0, 0);
+                            cx.restore();
+                            cx.globalAlpha = 1;
+                        } else if (opts.imageUrl) {
+                            var img = new Image();
+                            img.crossOrigin = 'anonymous';
+                            await new Promise(function(resolve, reject) { img.onload = resolve; img.onerror = reject; img.src = opts.imageUrl; });
+                            var scale = opts.scale / 100;
+                            var w = bmp.width * scale, h = bmp.height * scale;
+                            cx.globalAlpha = opts.opacity / 100;
+                            cx.save();
+                            cx.translate(20, 20);
+                            cx.rotate(opts.rotation * Math.PI / 180);
+                            cx.drawImage(img, 0, 0, w, h);
+                            cx.restore();
+                            cx.globalAlpha = 1;
+                        }
+
+                        var blob = await new Promise(function(resolve) { c.toBlob(resolve, 'image/png'); });
+                        var name = files[i].name.replace(/\.[^.]+$/, '') + '-watermarked.png';
+                        zip.file(name, blob);
+                        results.push({ name: name, blob: blob, size: blob.size, url: URL.createObjectURL(blob) });
+                    }
+
+                    zipBlob = await zip.generateAsync({ type: 'blob' });
+                    var section = document.getElementById('results-section');
+                    var list = document.getElementById('results-list');
+                    section.classList.remove('hidden');
+                    list.innerHTML = results.map(function(r) {
+                        return '<div class="result-card"><div class="result-info"><div class="result-icon"><i data-lucide="file-check" class="w-5 h-5"></i></div><div class="result-details"><div class="result-name">' + escapeHtml(r.name) + '</div><div class="result-meta">' + formatFileSize(r.size) + '</div></div></div><a href="' + r.url + '" download="' + escapeHtml(r.name) + '" class="btn-secondary"><i data-lucide="download" class="w-3 h-3 mr-1"></i>Download</a></div>';
+                    }).join('');
+                    if (window.lucide) lucide.createIcons();
+                } catch (err) {
+                    console.error(err);
+                    alert('Error: ' + err.message);
+                } finally {
+                    processBtn.disabled = false;
+                    processBtn.innerHTML = '<i data-lucide="zap" class="w-4 h-4"></i> Process All';
+                    if (window.lucide) lucide.createIcons();
+                }
+            });
+
+            document.getElementById('download-zip').addEventListener('click', function() {
+                if (!zipBlob) return;
+                var link = document.createElement('a');
+                link.download = 'watermarked-images.zip';
+                link.href = URL.createObjectURL(zipBlob);
+                link.click();
+            });
+
+            var themeToggleBtn = document.getElementById('theme-toggle');
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', function() {
+                    if (window.ZyncTheme) window.ZyncTheme.toggle();
+                    else if (window.themeManager) window.themeManager.toggle();
+                });
+            }
+
+            if (window.lucide) lucide.createIcons();
+        })();
+    </script>
+</body>
+</html>

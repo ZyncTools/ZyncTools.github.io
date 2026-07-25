@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Compare | ZyncTools</title>
+    <meta name="description" content="Compare two images side-by-side, overlay, or with a slider. 100% client-side.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%236366F1'>⚡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { inter: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        slate: { 950: '#0F1115', 900: '#13151A', 850: '#1C1F26', 800: '#23262F', 700: '#2D313A' },
+                        accent: { DEFAULT: '#6366F1', light: '#818CF8', dark: '#4F46E5' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script>
+        (function() {
+            var themeKey = 'zync-theme-v2';
+            var theme = 'dark';
+            try { theme = localStorage.getItem(themeKey) || 'dark'; } catch(e) {}
+            if (theme !== 'dark' && theme !== 'grass' && theme !== 'light') theme = 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.classList.add('theme-' + theme);
+            document.documentElement.style.colorScheme = theme === 'dark' ? 'dark' : 'light';
+        })();
+    </script>
+    <script src="assets/js/theme.js" defer></script>
+    <style>
+        .compare-container {
+            position: relative;
+            background: var(--bg-surface);
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: grab;
+            user-select: none;
+        }
+        .compare-container:active { cursor: grabbing; }
+        .compare-container img {
+            display: block;
+            max-width: 100%;
+            pointer-events: none;
+        }
+        .compare-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .compare-slider {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent);
+            cursor: ew-resize;
+            z-index: 10;
+            box-shadow: 0 0 8px var(--accent-glow);
+        }
+        .compare-slider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid white;
+            box-shadow: var(--shadow-lg);
+        }
+        .compare-slider-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .compare-label {
+            position: absolute;
+            top: 12px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+        }
+        .blink-active { animation: blink 0.5s step-end infinite; }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-[#0B0C10] text-white">
+    <header class="border-b border-white/5 bg-[#0B0C10]">
+        <div class="mx-auto max-w-7xl px-6 h-14 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3 group">
+                <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent font-bold text-lg group-hover:bg-accent/20 transition-colors">⚡</div>
+                <span class="text-lg font-bold tracking-tight text-white">ZyncTools</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="/" class="text-sm text-gray-400 hover:text-white transition-colors">All Tools</a>
+                <button id="theme-toggle" class="text-sm text-gray-400 hover:text-white transition-colors" aria-label="Toggle theme">
+                    <i data-lucide="moon" class="w-4 h-4"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="py-10">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="mb-8">
+                <div class="flex items-center gap-4 mb-2">
+                    <div class="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xl">
+                        <i data-lucide="git-compare" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Image Compare</h1>
+                        <p class="text-gray-400 mt-1">Compare two images with side-by-side, overlay, slider, or blink mode.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Section -->
+            <div id="upload-section" class="mb-8">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="step-label mb-3">
+                            <span class="step-number">1</span>
+                            <span class="step-title">First Image</span>
+                        </div>
+                        <div id="drop-zone-1" class="drop-zone">
+                            <div class="pointer-events-none">
+                                <svg class="w-10 h-10 mx-auto mb-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <p class="text-white font-medium text-sm mb-1">Drop first image here</p>
+                                <p class="text-gray-500 text-xs">or click to browse</p>
+                            </div>
+                            <input type="file" id="file-input-1" accept="image/*" class="hidden" />
+                        </div>
+                        <div id="preview-1" class="mt-4 hidden">
+                            <div class="preview-card">
+                                <img id="img-1" class="preview-image" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="step-label mb-3">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Second Image</span>
+                        </div>
+                        <div id="drop-zone-2" class="drop-zone">
+                            <div class="pointer-events-none">
+                                <svg class="w-10 h-10 mx-auto mb-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <p class="text-white font-medium text-sm mb-1">Drop second image here</p>
+                                <p class="text-gray-500 text-xs">or click to browse</p>
+                            </div>
+                            <input type="file" id="file-input-2" accept="image/*" class="hidden" />
+                        </div>
+                        <div id="preview-2" class="mt-4 hidden">
+                            <div class="preview-card">
+                                <img id="img-2" class="preview-image" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compare Mode -->
+            <div id="compare-section" class="mb-8 hidden">
+                <div class="step-label mb-3">
+                    <span class="step-number">3</span>
+                    <span class="step-title">Compare Mode</span>
+                </div>
+                <div class="tool-options-card mb-6">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <button class="compare-mode-btn active" data-mode="side-by-side">Side by Side</button>
+                        <button class="compare-mode-btn" data-mode="overlay">Overlay</button>
+                        <button class="compare-mode-btn" data-mode="slider">Slider</button>
+                        <button class="compare-mode-btn" data-mode="blink">Blink</button>
+                    </div>
+                    <div class="mt-4 flex flex-wrap gap-3">
+                        <button id="toggle-diff" class="btn-secondary">
+                            <i data-lucide="scan" class="w-4 h-4"></i>
+                            Show Difference
+                        </button>
+                        <button id="toggle-zoom" class="btn-secondary">
+                            <i data-lucide="zoom-in" class="w-4 h-4"></i>
+                            Zoom: 100%
+                        </button>
+                        <button id="download-compare" class="btn-secondary">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            Download
+                        </button>
+                    </div>
+                </div>
+
+                <div id="compare-view" class="compare-container" style="min-height:400px;">
+                    <div id="compare-content"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-white/5 py-8">
+        <div class="mx-auto max-w-7xl px-6 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xs font-bold">⚡</div>
+                <span class="text-sm font-semibold text-white">ZyncTools</span>
+            </div>
+            <p class="text-xs text-gray-500">100% client-side. No uploads. No tracking.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="assets/js/tools/image-light-logic.js"></script>
+    <script src="assets/js/tools/image-filters-logic.js"></script>
+    <script>
+        (function() {
+            'use strict';
+            var state = { img1: null, img2: null, mode: 'side-by-side', zoom: 1, showDiff: false, isPanning: false, panX: 0, panY: 0, startX: 0, startY: 0 };
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            }
+
+            function setupDropZone(zoneId, inputId, previewId, imgId, onLoad) {
+                var zone = document.getElementById(zoneId);
+                var input = document.getElementById(inputId);
+                var preview = document.getElementById(previewId);
+                var img = document.getElementById(imgId);
+                if (!zone || !input) return;
+
+                zone.addEventListener('click', function() { input.click(); });
+                zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('drag-over'); });
+                zone.addEventListener('dragleave', function() { zone.classList.remove('drag-over'); });
+                zone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    zone.classList.remove('drag-over');
+                    if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+                });
+                input.addEventListener('change', function(e) {
+                    if (e.target.files.length) handleFile(e.target.files[0]);
+                });
+
+                function handleFile(file) {
+                    if (!file.type.startsWith('image/')) return;
+                    var url = URL.createObjectURL(file);
+                    img.onload = function() { if (onLoad) onLoad(file, img); };
+                    img.src = url;
+                    if (preview) preview.classList.remove('hidden');
+                }
+            }
+
+            setupDropZone('drop-zone-1', 'file-input-1', 'preview-1', 'img-1', function(file, img) {
+                state.img1 = { file: file, img: img, width: img.naturalWidth, height: img.naturalHeight };
+                checkReady();
+            });
+            setupDropZone('drop-zone-2', 'file-input-2', 'preview-2', 'img-2', function(file, img) {
+                state.img2 = { file: file, img: img, width: img.naturalWidth, height: img.naturalHeight };
+                checkReady();
+            });
+
+            function checkReady() {
+                var section = document.getElementById('compare-section');
+                if (state.img1 && state.img2 && section) {
+                    section.classList.remove('hidden');
+                    renderCompare();
+                }
+            }
+
+            function renderCompare() {
+                var container = document.getElementById('compare-content');
+                if (!container || !state.img1 || !state.img2) return;
+
+                var w = Math.min(state.img1.width, state.img2.width);
+                var h = Math.min(state.img1.height, state.img2.height);
+
+                if (state.mode === 'side-by-side') {
+                    container.innerHTML = '<div class="grid grid-cols-2 gap-1">' +
+                        '<div class="relative"><img src="' + state.img1.img.src + '" style="width:100%;height:auto;" /><div class="compare-label left-3">Image 1</div></div>' +
+                        '<div class="relative"><img src="' + state.img2.img.src + '" style="width:100%;height:auto;" /><div class="compare-label right-3">Image 2</div></div>' +
+                        '</div>';
+                } else if (state.mode === 'overlay') {
+                    container.innerHTML = '<div class="relative inline-block">' +
+                        '<img id="overlay-base" src="' + state.img1.img.src + '" style="width:100%;height:auto;" />' +
+                        '<img id="overlay-top" src="' + state.img2.img.src + '" style="position:absolute;top:0;left:0;width:100%;height:auto;opacity:0.5;mix-blend-mode:normal;" />' +
+                        '<div class="compare-label left-3">Overlay</div>' +
+                        '</div>';
+                    var opacitySlider = document.createElement('input');
+                    opacitySlider.type = 'range'; opacitySlider.min = '0'; opacitySlider.max = '100'; opacitySlider.value = '50';
+                    opacitySlider.style.cssText = 'width:200px;accent-color:var(--accent);';
+                    opacitySlider.addEventListener('input', function() {
+                        var top = document.getElementById('overlay-top');
+                        if (top) top.style.opacity = opacitySlider.value / 100;
+                    });
+                    container.insertBefore(opacitySlider, container.firstChild);
+                } else if (state.mode === 'slider') {
+                    container.innerHTML = '<div class="relative inline-block">' +
+                        '<img src="' + state.img2.img.src + '" style="width:100%;height:auto;display:block;" />' +
+                        '<div id="slider-overlay" class="compare-overlay" style="width:50%;">' +
+                        '<img src="' + state.img1.img.src + '" style="width:' + (w * 2) + 'px;height:auto;max-width:none;" />' +
+                        '</div>' +
+                        '<div id="slider-line" class="compare-slider" style="left:50%;"></div>' +
+                        '<div class="compare-label left-3">Before</div>' +
+                        '<div class="compare-label right-3">After</div>' +
+                        '</div>';
+                    initSlider();
+                } else if (state.mode === 'blink') {
+                    container.innerHTML = '<div class="relative inline-block">' +
+                        '<img id="blink-img" src="' + state.img1.img.src + '" style="width:100%;height:auto;display:block;" />' +
+                        '<div class="compare-label left-3">Blink Compare</div>' +
+                        '</div>';
+                    startBlink();
+                }
+
+                if (state.showDiff && (state.mode === 'side-by-side' || state.mode === 'overlay')) {
+                    showDifference();
+                }
+
+                if (window.lucide) lucide.createIcons();
+            }
+
+            function initSlider() {
+                var overlay = document.getElementById('slider-overlay');
+                var line = document.getElementById('slider-line');
+                if (!overlay || !line) return;
+                var container = document.getElementById('compare-view');
+                var dragging = false;
+
+                function updateSlider(clientX) {
+                    var rect = container.getBoundingClientRect();
+                    var x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+                    var pct = (x / rect.width) * 100;
+                    overlay.style.width = pct + '%';
+                    line.style.left = pct + '%';
+                }
+
+                line.addEventListener('mousedown', function(e) { dragging = true; e.preventDefault(); });
+                line.addEventListener('touchstart', function(e) { dragging = true; });
+                document.addEventListener('mousemove', function(e) { if (dragging) updateSlider(e.clientX); });
+                document.addEventListener('touchmove', function(e) { if (dragging) updateSlider(e.touches[0].clientX); });
+                document.addEventListener('mouseup', function() { dragging = false; });
+                document.addEventListener('touchend', function() { dragging = false; });
+            }
+
+            function startBlink() {
+                var img = document.getElementById('blink-img');
+                if (!img) return;
+                var toggle = false;
+                setInterval(function() {
+                    toggle = !toggle;
+                    img.src = toggle ? state.img2.img.src : state.img1.img.src;
+                    if (state.showDiff) showDifference();
+                }, 500);
+            }
+
+            async function showDifference() {
+                if (!state.img1 || !state.img2) return;
+                var [a, b] = await Promise.all([createImageBitmap(state.img1.file), createImageBitmap(state.img2.file)]);
+                var w = Math.min(a.width, b.width), h = Math.min(a.height, b.height);
+                var ca = document.createElement('canvas'); ca.width = w; ca.height = h;
+                var cb = document.createElement('canvas'); cb.width = w; cb.height = h;
+                ca.getContext('2d').drawImage(a, 0, 0, w, h);
+                cb.getContext('2d').drawImage(b, 0, 0, w, h);
+                var da = ca.getContext('2d').getImageData(0, 0, w, h).data, db = cb.getContext('2d').getImageData(0, 0, w, h).data;
+                var cc = document.createElement('canvas'); cc.width = w; cc.height = h;
+                var cx = cc.getContext('2d');
+                var out = cx.createImageData(w, h);
+                var diff = 0;
+                for (let i = 0; i < da.length; i += 4) {
+                    var d = Math.abs(da[i] - db[i]) + Math.abs(da[i+1] - db[i+1]) + Math.abs(da[i+2] - db[i+2]);
+                    if (d > 30) diff++;
+                    out.data[i] = d; out.data[i+1] = d; out.data[i+2] = d; out.data[i+3] = 255;
+                }
+                cx.putImageData(out, 0, 0);
+                var container = document.getElementById('compare-content');
+                if (container) {
+                    var diffDiv = document.createElement('div');
+                    diffDiv.className = 'mt-4';
+                    diffDiv.innerHTML = '<div class="text-sm text-gray-400 mb-2">Difference: ' + (diff / (w * h) * 100).toFixed(2) + '% pixels differ</div>' +
+                        '<img src="' + cc.toDataURL() + '" style="max-width:100%;border-radius:12px;" />';
+                    container.appendChild(diffDiv);
+                }
+            }
+
+            // Mode buttons
+            document.querySelectorAll('.compare-mode-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.compare-mode-btn').forEach(function(b) { b.classList.remove('active'); });
+                    btn.classList.add('active');
+                    state.mode = btn.dataset.mode;
+                    renderCompare();
+                });
+            });
+
+            // Diff toggle
+            document.getElementById('toggle-diff').addEventListener('click', function() {
+                state.showDiff = !state.showDiff;
+                this.classList.toggle('active');
+                renderCompare();
+            });
+
+            // Zoom toggle
+            var zoomLevels = [0.5, 1, 1.5, 2, 3];
+            var zoomIdx = 1;
+            document.getElementById('toggle-zoom').addEventListener('click', function() {
+                zoomIdx = (zoomIdx + 1) % zoomLevels.length;
+                state.zoom = zoomLevels[zoomIdx];
+                this.innerHTML = '<i data-lucide="zoom-in" class="w-4 h-4"></i> Zoom: ' + Math.round(state.zoom * 100) + '%';
+                if (window.lucide) lucide.createIcons();
+                var imgs = document.querySelectorAll('#compare-content img');
+                imgs.forEach(function(img) { img.style.transform = 'scale(' + state.zoom + ')'; img.style.transformOrigin = 'top left'; });
+            });
+
+            // Download
+            document.getElementById('download-compare').addEventListener('click', function() {
+                if (!state.img1 || !state.img2) return;
+                var canvas = document.createElement('canvas');
+                var w = Math.max(state.img1.width, state.img2.width);
+                var h = Math.max(state.img1.height, state.img2.height);
+                canvas.width = w * 2; canvas.height = h;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(state.img1.img, 0, 0);
+                ctx.drawImage(state.img2.img, w, 0);
+                var link = document.createElement('a');
+                link.download = 'compare.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+
+            var themeToggleBtn = document.getElementById('theme-toggle');
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', function() {
+                    if (window.ZyncTheme) window.ZyncTheme.toggle();
+                    else if (window.themeManager) window.themeManager.toggle();
+                });
+            }
+
+            if (window.lucide) lucide.createIcons();
+        })();
+    </script>
+</body>
+</html>

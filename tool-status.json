@@ -72,19 +72,18 @@
       "jsFile": "image-compressor.js"
     },
     {
-      "id": "image-resizer",
-      "name": "Image Resizer",
+      "id": "image-blur",
+      "name": "Blur Image",
       "category": "image-tools",
       "type": "file",
-      "status": "coming-soon",
+      "status": "implemented",
       "outputType": "blob",
-      "accept": ".jpg,.jpeg,.png,.webp",
       "libraries": [],
       "cdns": [],
-      "popular": true,
+      "popular": false,
       "badge": "",
-      "htmlFile": null,
-      "jsFile": null
+      "htmlFile": "tool.html",
+      "jsFile": "image-filters-logic.js"
     },
     {
       "id": "image-cropper",
@@ -132,19 +131,19 @@
       "jsFile": null
     },
     {
-      "id": "image-flip",
-      "name": "Flip Image",
+      "id": "image-filters",
+      "name": "Filters / Effects",
       "category": "image-tools",
       "type": "file",
-      "status": "coming-soon",
+      "status": "implemented",
       "outputType": "blob",
       "accept": ".jpg,.jpeg,.png,.webp",
       "libraries": [],
       "cdns": [],
-      "popular": false,
+      "popular": true,
       "badge": "",
-      "htmlFile": null,
-      "jsFile": null
+      "htmlFile": "tool.html",
+      "jsFile": "image-filters-logic.js"
     },
     {
       "id": "image-watermark",
@@ -211,22 +210,22 @@
       "name": "Color Picker from Image",
       "category": "image-tools",
       "type": "file",
-      "status": "coming-soon",
+      "status": "implemented",
       "outputType": "string",
       "accept": ".jpg,.jpeg,.png,.webp",
       "libraries": [],
       "cdns": [],
       "popular": false,
       "badge": "",
-      "htmlFile": null,
-      "jsFile": null
+      "htmlFile": "tool.html",
+      "jsFile": "image-light-logic.js"
     },
     {
       "id": "image-ocr",
       "name": "Image to Text (OCR)",
       "category": "image-tools",
       "type": "file",
-      "status": "coming-soon",
+      "status": "implemented",
       "outputType": "string",
       "accept": ".jpg,.jpeg,.png,.webp",
       "libraries": [
@@ -237,15 +236,15 @@
       ],
       "popular": false,
       "badge": "",
-      "htmlFile": null,
-      "jsFile": null
+      "htmlFile": "tool.html",
+      "jsFile": "image-filters-logic.js"
     },
     {
       "id": "batch-rename-images",
       "name": "Batch Rename Images",
       "category": "image-tools",
       "type": "file",
-      "status": "coming-soon",
+      "status": "implemented",
       "outputType": "blob",
       "accept": ".jpg,.jpeg,.png,.webp",
       "libraries": [
@@ -256,23 +255,23 @@
       ],
       "popular": false,
       "badge": "",
-      "htmlFile": null,
-      "jsFile": null
+      "htmlFile": "tool.html",
+      "jsFile": "image-filters-logic.js"
     },
     {
       "id": "image-filters",
       "name": "Filters / Effects",
       "category": "image-tools",
       "type": "file",
-      "status": "coming-soon",
+      "status": "implemented",
       "outputType": "blob",
       "accept": ".jpg,.jpeg,.png,.webp",
       "libraries": [],
       "cdns": [],
       "popular": false,
       "badge": "",
-      "htmlFile": null,
-      "jsFile": null
+      "htmlFile": "tool.html",
+      "jsFile": "image-filters-logic.js"
     },
     {
       "id": "image-blur",
@@ -309,60 +308,60 @@
       "name": "SVG Optimizer",
       "category": "image-tools",
       "type": "file",
-      "status": "coming-soon",
+      "status": "implemented",
       "outputType": "blob",
       "accept": ".svg",
       "libraries": [],
       "cdns": [],
       "popular": false,
       "badge": "",
-      "htmlFile": null,
-      "jsFile": null
+      "htmlFile": "tool.html",
+      "jsFile": "image-filters-logic.js"
     },
     {
       "id": "ico-converter",
       "name": "ICO Converter",
       "category": "image-tools",
       "type": "file",
-      "status": "coming-soon",
+      "status": "implemented",
       "outputType": "blob",
       "accept": ".png,.jpg,.jpeg",
       "libraries": [],
       "cdns": [],
       "popular": false,
       "badge": "",
-      "htmlFile": null,
-      "jsFile": null
+      "htmlFile": "tool.html",
+      "jsFile": "image-filters-logic.js"
     },
     {
       "id": "favicon-generator",
       "name": "Favicon Generator",
       "category": "image-tools",
       "type": "file",
-      "status": "coming-soon",
+      "status": "implemented",
       "outputType": "blob",
       "accept": ".png,.jpg,.jpeg",
       "libraries": [],
       "cdns": [],
       "popular": false,
       "badge": "",
-      "htmlFile": null,
-      "jsFile": null
+      "htmlFile": "tool.html",
+      "jsFile": "image-filters-logic.js"
     },
     {
       "id": "image-joiner",
       "name": "Image Joiner",
       "category": "image-tools",
       "type": "file",
-      "status": "coming-soon",
+      "status": "implemented",
       "outputType": "blob",
       "accept": ".jpg,.jpeg,.png,.webp",
       "libraries": [],
       "cdns": [],
       "popular": false,
       "badge": "",
-      "htmlFile": null,
-      "jsFile": null
+      "htmlFile": "tool.html",
+      "jsFile": "image-filters-logic.js"
     },
     {
       "id": "image-splitter",

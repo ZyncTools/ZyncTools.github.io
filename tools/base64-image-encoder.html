@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 Image Encoder / Decoder | ZyncTools</title>
+    <meta name="description" content="Encode images to Base64 or decode Base64 strings to images. 100% client-side.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%236366F1'>⚡</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { inter: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        slate: { 950: '#0F1115', 900: '#13151A', 850: '#1C1F26', 800: '#23262F', 700: '#2D313A' },
+                        accent: { DEFAULT: '#6366F1', light: '#818CF8', dark: '#4F46E5' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script>
+        (function() {
+            var themeKey = 'zync-theme-v2';
+            var theme = 'dark';
+            try { theme = localStorage.getItem(themeKey) || 'dark'; } catch(e) {}
+            if (theme !== 'dark' && theme !== 'grass' && theme !== 'light') theme = 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.classList.add('theme-' + theme);
+            document.documentElement.style.colorScheme = theme === 'dark' ? 'dark' : 'light';
+        })();
+    </script>
+    <script src="assets/js/theme.js" defer></script>
+</head>
+<body class="min-h-screen bg-[#0B0C10] text-white">
+    <header class="border-b border-white/5 bg-[#0B0C10]">
+        <div class="mx-auto max-w-7xl px-6 h-14 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3 group">
+                <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent font-bold text-lg group-hover:bg-accent/20 transition-colors">⚡</div>
+                <span class="text-lg font-bold tracking-tight text-white">ZyncTools</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="/" class="text-sm text-gray-400 hover:text-white transition-colors">All Tools</a>
+                <button id="theme-toggle" class="text-sm text-gray-400 hover:text-white transition-colors" aria-label="Toggle theme">
+                    <i data-lucide="moon" class="w-4 h-4"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="py-10">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="mb-8">
+                <div class="flex items-center gap-4 mb-2">
+                    <div class="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xl">
+                        <i data-lucide="code" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Base64 Image Encoder / Decoder</h1>
+                        <p class="text-gray-400 mt-1">Convert images to Base64 strings or decode Base64 back to images.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex gap-2 mb-8">
+                <button id="tab-encode" class="channel-btn active" style="padding:10px 24px;font-size:0.9rem;">Encode</button>
+                <button id="tab-decode" class="channel-btn" style="padding:10px 24px;font-size:0.9rem;">Decode</button>
+            </div>
+
+            <!-- Encode -->
+            <div id="encode-section">
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <div>
+                        <div class="step-label mb-3">
+                            <span class="step-number">1</span>
+                            <span class="step-title">Upload Image</span>
+                        </div>
+                        <div id="drop-zone" class="drop-zone">
+                            <div class="pointer-events-none">
+                                <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <p class="text-white font-medium mb-1">Drag & drop an image here</p>
+                                <p class="text-gray-500 text-sm">or click to browse</p>
+                            </div>
+                            <input type="file" id="file-input" accept="image/*" class="hidden" />
+                        </div>
+                        <div id="preview-section" class="mt-4 hidden">
+                            <div class="preview-card">
+                                <img id="preview-image" class="preview-image" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="step-label mb-3">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Base64 Output</span>
+                        </div>
+                        <div class="tool-options-card">
+                            <textarea id="base64-output" rows="12" readonly class="w-full bg-[#111318] border border-white/10 rounded-xl p-4 text-sm text-gray-300 font-mono resize-none" placeholder="Base64 string will appear here..."></textarea>
+                            <div class="flex gap-3 mt-4">
+                                <button id="copy-base64" class="btn-secondary flex-1" disabled>
+                                    <i data-lucide="copy" class="w-4 h-4"></i> Copy
+                                </button>
+                                <button id="download-base64" class="btn-secondary flex-1" disabled>
+                                    <i data-lucide="download" class="w-4 h-4"></i> Download Text
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decode -->
+            <div id="decode-section" class="hidden">
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <div>
+                        <div class="step-label mb-3">
+                            <span class="step-number">1</span>
+                            <span class="step-title">Paste Base64 String</span>
+                        </div>
+                        <div class="tool-options-card">
+                            <textarea id="base64-input" rows="8" class="w-full bg-[#111318] border border-white/10 rounded-xl p-4 text-sm text-gray-300 font-mono resize-none" placeholder="Paste your Base64 string here (data:image/...)"></textarea>
+                            <button id="decode-btn" class="process-btn w-full mt-4" disabled>
+                                <i data-lucide="zap" class="w-4 h-4"></i> Decode Image
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="step-label mb-3">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Preview</span>
+                        </div>
+                        <div class="tool-options-card">
+                            <div id="decode-preview" class="text-center py-12 text-gray-500">
+                                <svg class="w-16 h-16 mx-auto mb-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <p>Decoded image will appear here</p>
+                            </div>
+                            <img id="decoded-image" class="preview-image hidden mx-auto" />
+                            <button id="download-decoded" class="btn-secondary w-full mt-4 hidden">
+                                <i data-lucide="download" class="w-4 h-4"></i> Download Image
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-white/5 py-8">
+        <div class="mx-auto max-w-7xl px-6 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xs font-bold">⚡</div>
+                <span class="text-sm font-semibold text-white">ZyncTools</span>
+            </div>
+            <p class="text-xs text-gray-500">100% client-side. No uploads. No tracking.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="assets/js/tools/image-filters-logic.js"></script>
+    <script>
+        (function() {
+            'use strict';
+            var state = { mode: 'encode', file: null, base64: null };
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            }
+
+            // Tabs
+            document.getElementById('tab-encode').addEventListener('click', function() {
+                this.classList.add('active');
+                document.getElementById('tab-decode').classList.remove('active');
+                document.getElementById('encode-section').classList.remove('hidden');
+                document.getElementById('decode-section').classList.add('hidden');
+                state.mode = 'encode';
+            });
+            document.getElementById('tab-decode').addEventListener('click', function() {
+                this.classList.add('active');
+                document.getElementById('tab-encode').classList.remove('hidden');
+                document.getElementById('tab-encode').classList.add('hidden');
+                document.getElementById('decode-section').classList.remove('hidden');
+                state.mode = 'decode';
+            });
+
+            // Encode
+            var dropZone = document.getElementById('drop-zone');
+            var fileInput = document.getElementById('file-input');
+            var previewSection = document.getElementById('preview-section');
+            var previewImage = document.getElementById('preview-image');
+            var base64Output = document.getElementById('base64-output');
+            var copyBtn = document.getElementById('copy-base64');
+            var downloadBtn = document.getElementById('download-base64');
+
+            dropZone.addEventListener('click', function() { fileInput.click(); });
+            dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('drag-over'); });
+            dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('drag-over'); });
+            dropZone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+            });
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files.length) handleFile(e.target.files[0]);
+            });
+
+            function handleFile(file) {
+                if (!file.type.startsWith('image/')) return;
+                state.file = file;
+                previewImage.onload = function() {
+                    previewSection.classList.remove('hidden');
+                    encodeImage();
+                };
+                previewImage.src = URL.createObjectURL(file);
+            }
+
+            function encodeImage() {
+                if (!state.file) return;
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    state.base64 = e.target.result;
+                    base64Output.value = state.base64;
+                    copyBtn.disabled = false;
+                    downloadBtn.disabled = false;
+                };
+                reader.readAsDataURL(state.file);
+            }
+
+            copyBtn.addEventListener('click', function() {
+                if (!state.base64) return;
+                navigator.clipboard.writeText(state.base64).then(function() {
+                    copyBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Copied';
+                    if (window.lucide) lucide.createIcons();
+                    setTimeout(function() {
+                        copyBtn.innerHTML = '<i data-lucide="copy" class="w-4 h-4"></i> Copy';
+                        if (window.lucide) lucide.createIcons();
+                    }, 2000);
+                });
+            });
+
+            downloadBtn.addEventListener('click', function() {
+                if (!state.base64) return;
+                var blob = new Blob([state.base64], { type: 'text/plain' });
+                var link = document.createElement('a');
+                link.download = (state.file.name.replace(/\.[^.]+$/, '') || 'image') + '-base64.txt';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+            });
+
+            // Decode
+            var base64Input = document.getElementById('base64-input');
+            var decodeBtn = document.getElementById('decode-btn');
+            var decodedImage = document.getElementById('decoded-image');
+            var decodePreview = document.getElementById('decode-preview');
+            var downloadDecoded = document.getElementById('download-decoded');
+
+            base64Input.addEventListener('input', function() {
+                decodeBtn.disabled = !base64Input.value.trim().startsWith('data:image/');
+            });
+
+            decodeBtn.addEventListener('click', function() {
+                var b64 = base64Input.value.trim();
+                if (!b64.startsWith('data:image/')) {
+                    alert('Invalid Base64 string. Must start with data:image/');
+                    return;
+                }
+                decodedImage.onload = function() {
+                    decodePreview.classList.add('hidden');
+                    decodedImage.classList.remove('hidden');
+                    downloadDecoded.classList.remove('hidden');
+                };
+                decodedImage.src = b64;
+            });
+
+            downloadDecoded.addEventListener('click', function() {
+                if (!decodedImage.src) return;
+                var link = document.createElement('a');
+                link.download = 'decoded-image.png';
+                link.href = decodedImage.src;
+                link.click();
+            });
+
+            var themeToggleBtn = document.getElementById('theme-toggle');
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', function() {
+                    if (window.ZyncTheme) window.ZyncTheme.toggle();
+                    else if (window.themeManager) window.themeManager.toggle();
+                });
+            }
+
+            if (window.lucide) lucide.createIcons();
+        })();
+    </script>
+</body>
+</html>
