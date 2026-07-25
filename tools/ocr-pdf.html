@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word to PDF | ZyncTools</title>
-    <meta name="description" content="Convert Word DOC/DOCX to PDF. 100% client-side.">
+    <title>OCR PDF | ZyncTools</title>
+    <meta name="description" content="OCR scanned PDFs to extract text. 100% client-side.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%236366F1'>⚡</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,11 +58,11 @@
             <div class="mb-8">
                 <div class="flex items-center gap-4 mb-2">
                     <div class="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xl">
-                        <i data-lucide="file-text" class="w-6 h-6"></i>
+                        <i data-lucide="scan-text" class="w-6 h-6"></i>
                     </div>
                     <div>
-                        <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Word to PDF</h1>
-                        <p class="text-gray-400 mt-1">Convert Word documents (DOC, DOCX) to PDF.</p>
+                        <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">OCR PDF</h1>
+                        <p class="text-gray-400 mt-1">Extract text from scanned PDFs using OCR.</p>
                     </div>
                 </div>
             </div>
@@ -71,19 +71,19 @@
                 <div>
                     <div class="step-label mb-3">
                         <span class="step-number">1</span>
-                        <span class="step-title">Upload Word Document</span>
+                        <span class="step-title">Upload Scanned PDF</span>
                     </div>
                     <div id="drop-zone" class="drop-zone">
                         <div class="pointer-events-none">
                             <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-                            <p class="text-white font-medium mb-1">Drag & drop Word file here</p>
-                            <p class="text-gray-500 text-sm">Supports .doc, .docx</p>
+                            <p class="text-white font-medium mb-1">Drag & drop scanned PDF here</p>
+                            <p class="text-gray-500 text-sm">OCR will extract text from images</p>
                         </div>
-                        <input type="file" id="file-input" accept=".doc,.docx" class="hidden" />
+                        <input type="file" id="file-input" accept=".pdf" class="hidden" />
                     </div>
                     <div id="preview-section" class="mt-4 hidden">
                         <div class="preview-card">
-                            <div id="doc-preview" class="text-sm text-gray-400"></div>
+                            <img id="preview-image" class="preview-image" />
                         </div>
                     </div>
                 </div>
@@ -95,19 +95,24 @@
                     <div class="tool-options-card mb-6">
                         <div class="space-y-4">
                             <div>
-                                <label class="block text-sm font-semibold text-white mb-2">
-                                    <input type="checkbox" id="preserve-fonts" checked class="mr-2 accent-accent" />
-                                    Preserve fonts
-                                </label>
+                                <label class="block text-sm font-semibold text-white mb-2">Language</label>
+                                <select id="ocr-language" class="w-full bg-[#111318] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-gray-200">
+                                    <option value="eng">English</option>
+                                    <option value="spa">Spanish</option>
+                                    <option value="fra">French</option>
+                                    <option value="deu">German</option>
+                                    <option value="chi_sim">Chinese (Simplified)</option>
+                                </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold text-white mb-2">
-                                    <input type="checkbox" id="preserve-images" checked class="mr-2 accent-accent" />
-                                    Preserve images
-                                </label>
+                                <label class="block text-sm font-semibold text-white mb-2">Output</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button id="out-searchable" class="mode-btn active">Searchable PDF</button>
+                                    <button id="out-text" class="mode-btn">Text Only</button>
+                                </div>
                             </div>
                             <button id="process-btn" class="process-btn w-full" disabled>
-                                <i data-lucide="zap" class="w-4 h-4"></i> Convert to PDF
+                                <i data-lucide="scan" class="w-4 h-4"></i> Run OCR
                             </button>
                         </div>
                     </div>
@@ -115,18 +120,13 @@
                     <div id="result-section" class="hidden">
                         <div class="step-label mb-3">
                             <span class="step-number">3</span>
-                            <span class="step-title">Result</span>
+                            <span class="step-title">Extracted Text</span>
                         </div>
-                        <div class="result-card">
-                            <div class="result-info">
-                                <div class="result-icon"><i data-lucide="file-check" class="w-5 h-5"></i></div>
-                                <div class="result-details">
-                                    <div class="result-name" id="result-name">converted.pdf</div>
-                                    <div class="result-meta" id="result-meta">PDF document</div>
-                                </div>
-                            </div>
-                            <div class="result-actions">
-                                <a id="download-link" href="#" download class="btn-secondary"><i data-lucide="download" class="w-3 h-3 mr-1"></i>Download</a>
+                        <div class="tool-options-card">
+                            <textarea id="ocr-output" rows="10" readonly class="w-full bg-[#111318] border border-white/10 rounded-xl p-4 text-sm text-gray-300 font-mono resize-none"></textarea>
+                            <div class="flex gap-3 mt-4">
+                                <button id="copy-btn" class="btn-secondary flex-1"><i data-lucide="copy" class="w-4 h-4"></i> Copy Text</button>
+                                <button id="download-btn" class="btn-secondary flex-1"><i data-lucide="download" class="w-4 h-4"></i> Download TXT</button>
                             </div>
                         </div>
                     </div>
@@ -146,19 +146,27 @@
     </footer>
 
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
         (function() {
             'use strict';
-            var state = { file: null, result: null };
+            var state = { file: null, text: null, outputType: 'searchable' };
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            }
 
             var dropZone = document.getElementById('drop-zone');
             var fileInput = document.getElementById('file-input');
             var previewSection = document.getElementById('preview-section');
-            var docPreview = document.getElementById('doc-preview');
+            var previewImage = document.getElementById('preview-image');
             var processBtn = document.getElementById('process-btn');
             var resultSection = document.getElementById('result-section');
+            var ocrOutput = document.getElementById('ocr-output');
+
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
             dropZone.addEventListener('click', function() { fileInput.click(); });
             dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('drag-over'); });
@@ -173,41 +181,57 @@
             });
 
             function handleFile(file) {
-                if (!file.name.match(/\.(doc|docx)$/i)) return;
+                if (file.type !== 'application/pdf') return;
                 state.file = file;
-                docPreview.textContent = 'Ready: ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
-                previewSection.classList.remove('hidden');
-                processBtn.disabled = false;
+                previewImage.onload = function() { previewSection.classList.remove('hidden'); processBtn.disabled = false; };
+                previewImage.src = URL.createObjectURL(file);
             }
+
+            document.getElementById('out-searchable').addEventListener('click', function() {
+                this.classList.add('active');
+                document.getElementById('out-text').classList.remove('active');
+                state.outputType = 'searchable';
+            });
+            document.getElementById('out-text').addEventListener('click', function() {
+                this.classList.add('active');
+                document.getElementById('out-searchable').classList.remove('active');
+                state.outputType = 'text';
+            });
 
             processBtn.addEventListener('click', async function() {
                 if (!state.file) return;
                 processBtn.disabled = true;
-                processBtn.innerHTML = '<span class="animate-spin inline-block w-4 h-4 border-2 border-white/20 border-t-white rounded-full mr-2"></span>Converting...';
+                processBtn.innerHTML = '<span class="animate-spin inline-block w-4 h-4 border-2 border-white/20 border-t-white rounded-full mr-2"></span>Running OCR...';
                 try {
-                    const arrayBuffer = await state.file.arrayBuffer();
-                    const result = await mammoth.convertToHtml(arrayBuffer);
-                    const html = result.value;
-                    const PDFLib = window.PDFLib;
-                    if (!PDFLib) throw new Error('PDF library not loaded');
-                    const doc = await PDFLib.PDFDocument.create();
-                    const page = doc.addPage();
-                    page.drawText('Word to PDF conversion (simplified)', { x: 50, y: page.getHeight() - 50, size: 12 });
-                    const bytes = await doc.save();
-                    const blob = new Blob([bytes], { type: 'application/pdf' });
-                    state.result = { name: state.file.name.replace(/\.(doc|docx)$/i, '') + '.pdf', blob: blob, size: blob.size, url: URL.createObjectURL(blob) };
-                    document.getElementById('result-name').textContent = state.result.name;
-                    document.getElementById('result-meta').textContent = (state.result.size / 1024).toFixed(1) + ' KB';
-                    document.getElementById('download-link').href = state.result.url;
-                    document.getElementById('download-link').download = state.result.name;
+                    const lang = document.getElementById('ocr-language').value;
+                    const result = await Tesseract.recognize(state.file, lang, { logger: m => { if (m.status === 'recognizing text') processBtn.querySelector('span').textContent = 'OCR: ' + Math.round(m.progress * 100) + '%'; } });
+                    state.text = result.data.text;
+                    ocrOutput.value = state.text;
                     resultSection.classList.remove('hidden');
                 } catch (err) {
                     alert('Error: ' + err.message);
                 } finally {
                     processBtn.disabled = false;
-                    processBtn.innerHTML = '<i data-lucide="zap" class="w-4 h-4"></i> Convert to PDF';
+                    processBtn.innerHTML = '<i data-lucide="scan" class="w-4 h-4"></i> Run OCR';
                     if (window.lucide) lucide.createIcons();
                 }
+            });
+
+            document.getElementById('copy-btn').addEventListener('click', function() {
+                if (!state.text) return;
+                navigator.clipboard.writeText(state.text);
+                this.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Copied';
+                if (window.lucide) lucide.createIcons();
+                setTimeout(() => { this.innerHTML = '<i data-lucide="copy" class="w-4 h-4"></i> Copy Text'; if (window.lucide) lucide.createIcons(); }, 2000);
+            });
+
+            document.getElementById('download-btn').addEventListener('click', function() {
+                if (!state.text) return;
+                const blob = new Blob([state.text], { type: 'text/plain' });
+                const link = document.createElement('a');
+                link.download = (state.file.name.replace(/\.pdf$/i, '') || 'ocr') + '.txt';
+                link.href = URL.createObjectURL(blob);
+                link.click();
             });
 
             var themeToggleBtn = document.getElementById('theme-toggle');

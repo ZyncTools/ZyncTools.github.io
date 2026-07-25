@@ -433,7 +433,7 @@
             '</button>';
         }
 
-        return '<a href="/' + (tool.category === 'images' ? 'image-tool' : 'tool') + '.html?id=' + esc(tool.id) + '" class="tool-card" data-tool-id="' + esc(tool.id) + '"' + popularAttr + '>' +
+        return '<a href="/' + (tool.category === 'images' ? 'image-tool' : tool.category === 'pdf' ? 'pdf-tool' : 'tool') + '.html?id=' + esc(tool.id) + '" class="tool-card" data-tool-id="' + esc(tool.id) + '"' + popularAttr + '>' +
             '<div class="tool-card-top">' +
                 '<div class="tool-card-icon"><i data-lucide="' + esc(iconName) + '"></i></div>' +
                 '<span class="tool-card-status ' + statusClass + '">' + statusLabel + '</span>' +

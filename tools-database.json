@@ -2162,7 +2162,8 @@
       ],
       "formats": [
         "pdf"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "word-to-pdf",
@@ -2191,7 +2192,8 @@
       ],
       "formats": [
         "docx"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "pdf-to-jpg",
@@ -2218,7 +2220,8 @@
       ],
       "formats": [
         "pdf"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "jpg-to-pdf",
@@ -2247,7 +2250,8 @@
         "jpg",
         "jpeg",
         "png"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "merge-pdf",
@@ -2276,7 +2280,8 @@
       ],
       "formats": [
         "pdf"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "split-pdf",
@@ -2303,7 +2308,8 @@
       ],
       "formats": [
         "pdf"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "compress-pdf",
@@ -2331,7 +2337,8 @@
       ],
       "formats": [
         "pdf"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "rotate-pdf",
@@ -2358,7 +2365,8 @@
       ],
       "formats": [
         "pdf"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "add-page-numbers",
@@ -2385,7 +2393,8 @@
       ],
       "formats": [
         "pdf"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "watermark-pdf",
@@ -2412,7 +2421,8 @@
       ],
       "formats": [
         "pdf"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "unlock-pdf",
@@ -2439,7 +2449,8 @@
       ],
       "formats": [
         "pdf"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "protect-pdf",
@@ -2466,7 +2477,8 @@
       ],
       "formats": [
         "pdf"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "html-to-pdf",
@@ -2494,7 +2506,8 @@
       "formats": [
         "html",
         "htm"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "markdown-to-pdf",
@@ -2525,7 +2538,8 @@
         "md",
         "markdown",
         "txt"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "ebook-converter",
@@ -2554,7 +2568,8 @@
         "epub",
         "mobi",
         "pdf"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "ocr-pdf",
@@ -2583,7 +2598,8 @@
       ],
       "formats": [
         "pdf"
-      ]
+      ],
+      "status": "active"
     },
     {
       "id": "sign-pdf",

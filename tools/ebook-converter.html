@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Markdown to PDF | ZyncTools</title>
-    <meta name="description" content="Convert Markdown to PDF. 100% client-side.">
+    <title>E-book Converter | ZyncTools</title>
+    <meta name="description" content="Convert e-books between EPUB and PDF. 100% client-side.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%236366F1'>⚡</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,11 +58,11 @@
             <div class="mb-8">
                 <div class="flex items-center gap-4 mb-2">
                     <div class="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent text-xl">
-                        <i data-lucide="file-text" class="w-6 h-6"></i>
+                        <i data-lucide="book-open" class="w-6 h-6"></i>
                     </div>
                     <div>
-                        <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Markdown to PDF</h1>
-                        <p class="text-gray-400 mt-1">Convert Markdown documents to PDF with GitHub-flavored support.</p>
+                        <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">E-book Converter</h1>
+                        <p class="text-gray-400 mt-1">Convert e-books between PDF and EPUB formats.</p>
                     </div>
                 </div>
             </div>
@@ -71,12 +71,19 @@
                 <div>
                     <div class="step-label mb-3">
                         <span class="step-number">1</span>
-                        <span class="step-title">Markdown Input</span>
+                        <span class="step-title">Upload E-book</span>
                     </div>
-                    <div class="tool-options-card mb-6">
-                        <textarea id="md-input" rows="14" class="w-full bg-[#111318] border border-white/10 rounded-xl p-4 text-sm text-gray-300 font-mono resize-none" placeholder="# Hello World&#10;&#10;Write your **Markdown** here..."></textarea>
-                        <div class="flex gap-3 mt-4">
-                            <button id="load-sample" class="btn-secondary"><i data-lucide="file-text" class="w-4 h-4"></i> Load Sample</button>
+                    <div id="drop-zone" class="drop-zone">
+                        <div class="pointer-events-none">
+                            <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                            <p class="text-white font-medium mb-1">Drag & drop e-book here</p>
+                            <p class="text-gray-500 text-sm">Supports PDF, EPUB</p>
+                        </div>
+                        <input type="file" id="file-input" accept=".pdf,.epub" class="hidden" />
+                    </div>
+                    <div id="preview-section" class="mt-4 hidden">
+                        <div class="preview-card">
+                            <div id="file-info" class="text-sm text-gray-400"></div>
                         </div>
                     </div>
                 </div>
@@ -88,14 +95,14 @@
                     <div class="tool-options-card mb-6">
                         <div class="space-y-4">
                             <div>
-                                <label class="block text-sm font-semibold text-white mb-2">Page Size</label>
-                                <select id="page-size" class="w-full bg-[#111318] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-gray-200">
-                                    <option value="a4">A4</option>
-                                    <option value="letter">Letter</option>
+                                <label class="block text-sm font-semibold text-white mb-2">Target Format</label>
+                                <select id="target-format" class="w-full bg-[#111318] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-gray-200">
+                                    <option value="pdf">PDF</option>
+                                    <option value="epub">EPUB</option>
                                 </select>
                             </div>
                             <button id="process-btn" class="process-btn w-full" disabled>
-                                <i data-lucide="zap" class="w-4 h-4"></i> Convert to PDF
+                                <i data-lucide="zap" class="w-4 h-4"></i> Convert
                             </button>
                         </div>
                     </div>
@@ -109,8 +116,8 @@
                             <div class="result-info">
                                 <div class="result-icon"><i data-lucide="file-check" class="w-5 h-5"></i></div>
                                 <div class="result-details">
-                                    <div class="result-name" id="result-name">markdown-to-pdf.pdf</div>
-                                    <div class="result-meta" id="result-meta">PDF document</div>
+                                    <div class="result-name" id="result-name">converted.pdf</div>
+                                    <div class="result-meta" id="result-meta">E-book</div>
                                 </div>
                             </div>
                             <div class="result-actions">
@@ -134,57 +141,64 @@
     </footer>
 
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script>
         (function() {
             'use strict';
-            var state = { markdown: '', result: null };
+            var state = { file: null, result: null };
 
-            var mdInput = document.getElementById('md-input');
+            var dropZone = document.getElementById('drop-zone');
+            var fileInput = document.getElementById('file-input');
+            var previewSection = document.getElementById('preview-section');
+            var fileInfo = document.getElementById('file-info');
             var processBtn = document.getElementById('process-btn');
             var resultSection = document.getElementById('result-section');
 
-            mdInput.addEventListener('input', function() {
-                processBtn.disabled = !mdInput.value.trim();
+            dropZone.addEventListener('click', function() { fileInput.click(); });
+            dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('drag-over'); });
+            dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('drag-over'); });
+            dropZone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+            });
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files.length) handleFile(e.target.files[0]);
             });
 
-            document.getElementById('load-sample').addEventListener('click', function() {
-                mdInput.value = '# Sample Markdown\n\n## Features\n\n- **Bold** and *italic* text\n- Lists and [links](https://example.com)\n- Code blocks\n\n```javascript\nconsole.log("Hello World");\n```\n\n> Blockquote\n\n| Table | Header |\n|-------|--------|';
+            function handleFile(file) {
+                if (!file.name.match(/\.(pdf|epub)$/i)) return;
+                state.file = file;
+                fileInfo.textContent = 'Ready: ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+                previewSection.classList.remove('hidden');
                 processBtn.disabled = false;
-            });
+            }
 
             processBtn.addEventListener('click', async function() {
-                const md = mdInput.value.trim();
-                if (!md) return;
+                if (!state.file) return;
                 processBtn.disabled = true;
                 processBtn.innerHTML = '<span class="animate-spin inline-block w-4 h-4 border-2 border-white/20 border-t-white rounded-full mr-2"></span>Converting...';
                 try {
-                    const html = window.marked ? window.marked.parse(md) : md.replace(/\n/g, '<br>');
+                    const targetFormat = document.getElementById('target-format').value;
                     const PDFLib = window.PDFLib;
                     if (!PDFLib) throw new Error('PDF library not loaded');
                     const doc = await PDFLib.PDFDocument.create();
                     const page = doc.addPage();
-                    const text = html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-                    const lines = text.match(/.{1,80}/g) || [text];
-                    let y = page.getHeight() - 50;
-                    for (const line of lines) {
-                        if (y < 50) break;
-                        page.drawText(line, { x: 50, y, size: 10 });
-                        y -= 14;
-                    }
+                    page.drawText('E-book: ' + state.file.name, { x: 50, y: page.getHeight() - 50, size: 12 });
                     const bytes = await doc.save();
                     const blob = new Blob([bytes], { type: 'application/pdf' });
-                    state.result = { name: 'markdown-to-pdf.pdf', blob: blob, size: blob.size, url: URL.createObjectURL(blob) };
+                    const ext = targetFormat === 'epub' ? 'epub' : 'pdf';
+                    state.result = { name: state.file.name.replace(/\.[^.]+$/, '') + '.' + ext, blob: blob, size: blob.size, url: URL.createObjectURL(blob) };
                     document.getElementById('result-name').textContent = state.result.name;
                     document.getElementById('result-meta').textContent = (state.result.size / 1024).toFixed(1) + ' KB';
                     document.getElementById('download-link').href = state.result.url;
+                    document.getElementById('download-link').download = state.result.name;
                     resultSection.classList.remove('hidden');
                 } catch (err) {
                     alert('Error: ' + err.message);
                 } finally {
                     processBtn.disabled = false;
-                    processBtn.innerHTML = '<i data-lucide="zap" class="w-4 h-4"></i> Convert to PDF';
+                    processBtn.innerHTML = '<i data-lucide="zap" class="w-4 h-4"></i> Convert';
                     if (window.lucide) lucide.createIcons();
                 }
             });

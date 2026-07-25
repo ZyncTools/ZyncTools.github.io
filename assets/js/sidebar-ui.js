@@ -189,7 +189,7 @@
         var statusClass = 'active';
         var statusLabel = isHistory ? 'Visited' : 'Active';
 
-        return '<a href="/' + (tool.category === 'images' ? 'image-tool' : 'tool') + '.html?id=' + esc(tool.id) + '" class="tool-card" data-tool-id="' + esc(tool.id) + '">' +
+        return '<a href="/' + (tool.category === 'images' ? 'image-tool' : tool.category === 'pdf' ? 'pdf-tool' : 'tool') + '.html?id=' + esc(tool.id) + '" class="tool-card" data-tool-id="' + esc(tool.id) + '">' +
             '<div class="tool-card-top">' +
                 '<div class="tool-card-icon"><i data-lucide="' + esc(iconName) + '"></i></div>' +
                 '<span class="tool-card-status ' + statusClass + '">' + statusLabel + '</span>' +

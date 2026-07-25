@@ -135,7 +135,11 @@ window.ZyncPdf = (function () {
             'split-pdf': { multi: false, fn: (files) => splitPdf(files[0]) },
             'rotate-pdf': { multi: false, fn: (files, ctx) => rotatePdf(files[0], (ctx && ctx.config && ctx.config.degrees) || 90) },
             'pdf-optimize': { multi: false, fn: (files) => optimizePdf(files[0]) },
-            'compress-pdf': { multi: false, fn: (files) => optimizePdf(files[0]) }
+            'compress-pdf': { multi: false, fn: (files) => optimizePdf(files[0]) },
+            'add-page-numbers': { multi: false, fn: (files) => window.ZyncBatchPdf && window.ZyncBatchPdf.H['add-page-numbers'] ? window.ZyncBatchPdf.H['add-page-numbers'](files[0]) : null },
+            'watermark-pdf': { multi: false, fn: (files, ctx) => window.ZyncBatchPdf && window.ZyncBatchPdf.H['watermark-pdf'] ? window.ZyncBatchPdf.H['watermark-pdf'](files[0], ctx && ctx.config) : null },
+            'unlock-pdf': { multi: false, fn: (files, ctx) => window.ZyncBatchPdf && window.ZyncBatchPdf.H['unlock-pdf'] ? window.ZyncBatchPdf.H['unlock-pdf'](files[0], ctx && ctx.config) : null },
+            'protect-pdf': { multi: false, fn: (files, ctx) => window.ZyncBatchPdf && window.ZyncBatchPdf.H['protect-pdf'] ? window.ZyncBatchPdf.H['protect-pdf'](files[0], ctx && ctx.config) : null }
         };
         const cfg = map[toolId];
         if (!cfg) return null;
@@ -147,7 +151,6 @@ window.ZyncPdf = (function () {
                 ctx = ctx || {};
                 if (!files || !files.length) throw new Error('Invalid input: please add a PDF first.');
                 if (ctx.setProgress) ctx.setProgress(10);
-                // Page-count preview
                 try {
                     if (!cfg.multi) {
                         const pc = await getPageCount(files[0]);
