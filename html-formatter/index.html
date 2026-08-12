@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HTML Formatter &amp; Beautifier — free, private, in your browser | ZyncTools</title>
+<meta name="description" content="Indent and tidy messy or minified HTML into readable markup. Runs entirely in your browser — no upload, no account, no limits.">
+<link rel="canonical" href="https://zynctools.github.io/html-formatter/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="HTML Formatter &amp; Beautifier — ZyncTools">
+<meta property="og:description" content="Indent and tidy messy or minified HTML into readable markup.">
+<meta property="og:url" content="https://zynctools.github.io/html-formatter/">
+<meta property="og:site_name" content="ZyncTools">
+<meta property="og:image" content="https://zynctools.github.io/assets/images/og/code.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="HTML Formatter &amp; Beautifier — ZyncTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HTML Formatter &amp; Beautifier — ZyncTools">
+<meta name="twitter:description" content="Indent and tidy messy or minified HTML into readable markup.">
+<meta name="twitter:image" content="https://zynctools.github.io/assets/images/og/code.png">
+<meta name="theme-color" content="#0B0D11">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
+<link rel="manifest" href="../site.webmanifest">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/zynctools.css">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"HTML Formatter & Beautifier","description":"Indent and tidy messy or minified HTML into readable markup.","url":"https://zynctools.github.io/html-formatter/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any browser","browserRequirements":"Requires JavaScript","image":"https://zynctools.github.io/assets/images/og/code.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Indentation","Wrap lines at","Keep existing blank lines","Max blank lines in a row","Indent inside <head> and <body>","Leave these tags untouched"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Tools","item":"https://zynctools.github.io/"},{"@type":"ListItem","position":2,"name":"Code & Data","item":"https://zynctools.github.io/#code"},{"@type":"ListItem","position":3,"name":"HTML Formatter & Beautifier","item":"https://zynctools.github.io/html-formatter/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to use HTML Formatter & Beautifier","description":"Indent and tidy messy or minified HTML into readable markup.","totalTime":"PT1M","supply":[],"tool":[],"step":[{"@type":"HowToStep","position":1,"name":"Add your input","text":"Paste or type your text into the input box. You can also load a text file from your device."},{"@type":"HowToStep","position":2,"name":"Choose your settings","text":"Adjust indentation, wrap lines at, keep existing blank lines and the other 3 settings to suit what you need."},{"@type":"HowToStep","position":3,"name":"Run the tool","text":"Press Run. Processing happens on your own device, so the time it takes depends on your machine rather than a queue."},{"@type":"HowToStep","position":4,"name":"Save the result","text":"Copy the output, or press Download to save it. Nothing is kept once you close the tab."}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are my files uploaded when I use HTML Formatter & Beautifier?","acceptedAnswer":{"@type":"Answer","text":"No. HTML Formatter & Beautifier runs entirely inside your browser. Your text is read locally, processed on your own device, and handed straight back to you. You can confirm this yourself: open your browser's developer tools, watch the Network tab, and run the tool — no request carries your data anywhere."}},{"@type":"Question","name":"Is HTML Formatter & Beautifier free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely. No account, no sign-up, no watermark on your output, and no cap on how many times you can use it. The project is open source under the AGPL licence."}},{"@type":"Question","name":"Does HTML Formatter & Beautifier work offline?","acceptedAnswer":{"@type":"Answer","text":"Mostly. The site caches itself after your first visit, so it keeps working without a connection. Tools that need a specialised library — PDF editing, OCR, QR codes, MP3 encoding — need a connection the first time you run them, then that library is cached too."}}]}</script>
+
+<script>
+(function () {
+    try {
+        var stored = localStorage.getItem('zynctools-theme');
+        var valid = stored === 'dark' || stored === 'light' || stored === 'midnight';
+        document.documentElement.setAttribute('data-theme', valid ? stored
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+    } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+})();
+</script>
+</head>
+
+<body>
+<a href="#zt-main" class="zt-skip-link">Skip to content</a>
+
+<div class="zt-shell">
+
+    <header class="zt-header">
+        <a class="zt-brand" href="../">
+            <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+            <span class="zt-brand__name">ZyncTools</span>
+        </a>
+
+        <div class="zt-search">
+            <svg class="zt-search__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input type="search" class="zt-search__input" id="zt-search" placeholder="Search other tools…"
+                   autocomplete="off" aria-label="Search tools">
+            <span class="zt-search__kbd">/</span>
+            <div class="zt-suggest" id="zt-suggest" role="listbox" aria-label="Search suggestions"></div>
+        </div>
+
+        <button class="zt-icon-btn" id="zt-theme-toggle" aria-label="Switch theme"></button>
+    </header>
+
+    <main class="zt-main" id="zt-main">
+        <div id="zt-tool-root">
+
+            <div class="zt-tool-head" id="zt-tool-head">
+                <!-- Rendered statically so the page is complete without JavaScript.
+                     zt-tool-page.js replaces this with the interactive version. -->
+                <nav class="zt-breadcrumb" aria-label="Breadcrumb">
+                    <a href="../">Tools</a>
+                    <span>/</span>
+                    <a href="../#code">Code &amp; Data</a>
+                    <span>/</span>
+                    <span>HTML Formatter &amp; Beautifier</span>
+                </nav>
+                <div class="zt-tool-head__row">
+                    <div class="zt-tool-head__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m18 16 4-4-4-4M6 8l-4 4 4 4M14.5 4l-5 16"/></svg></div>
+                    <div style="min-width:0">
+                        <div class="zt-row" style="gap:10px">
+                            <h1 class="zt-tool-head__title">HTML Formatter &amp; Beautifier</h1>
+                            <span class="zt-badge zt-badge--popular">Popular</span>
+                            
+                        </div>
+                        <p class="zt-tool-head__desc">Indent and tidy messy or minified HTML into readable markup.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="zt-work">
+                <div class="zt-work__main">
+
+                    <section class="zt-step" id="zt-input-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__num">1</span>
+                            <span class="zt-step__title" id="zt-input-title">Input</span>
+                        </div>
+                    </section>
+
+                    <section class="zt-step" id="zt-options-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__num">2</span>
+                            <span class="zt-step__title">Settings</span>
+                        </div>
+                        <div class="zt-step__body" id="zt-options"></div>
+                    </section>
+
+                    <section class="zt-step" id="zt-run-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__num">3</span>
+                            <span class="zt-step__title">Run</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-runbar" id="zt-runbar"></div>
+                            <div id="zt-error" class="zt-mt-4"></div>
+                        </div>
+                    </section>
+
+                    <section class="zt-step" id="zt-results-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__num">4</span>
+                            <span class="zt-step__title">Results</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-results" id="zt-results"></div>
+                            <p class="zt-fields--empty" id="zt-results-placeholder">
+                                Results will appear here once you run the tool.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">About HTML Formatter &amp; Beautifier</span>
+                        </div>
+                        <div class="zt-step__body zt-prose-sm">
+                            <p>Indent and tidy messy or minified HTML into readable markup. Paste or type your text into HTML Formatter &amp; Beautifier, adjust the settings, and the result appears below.</p>
+                            <p><strong>Your files stay on your device.</strong> ZyncTools has no upload step: the file is read in your browser, processed there, and handed straight back to you. There is no account, no watermark and no size cap beyond what your own device can hold.</p>
+                            <p><strong>Settings.</strong> HTML Formatter &amp; Beautifier gives you control over indentation, wrap lines at, keep existing blank lines, max blank lines in a row, indent inside &lt;head&gt; and &lt;body&gt; and leave these tags untouched.</p>
+                            <p class="zt-field__help">Also known as: html, format, beautify, indent, pretty print, tidy.</p>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">How to use HTML Formatter &amp; Beautifier</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <ol class="zt-howto">
+                                <li><strong>Add your input.</strong> Paste or type your text into the input box. You can also load a text file from your device.</li>
+                                <li><strong>Choose your settings.</strong> Adjust indentation, wrap lines at, keep existing blank lines and the other 3 settings to suit what you need.</li>
+                                <li><strong>Run the tool.</strong> Press Run. Processing happens on your own device, so the time it takes depends on your machine rather than a queue.</li>
+                                <li><strong>Save the result.</strong> Copy the output, or press Download to save it. Nothing is kept once you close the tab.</li>
+                            </ol>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Frequently asked questions</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-faq">
+                                <details>
+                                    <summary>Are my files uploaded when I use HTML Formatter &amp; Beautifier?</summary>
+                                    <div class="zt-faq__body"><p>No. HTML Formatter &amp; Beautifier runs entirely inside your browser. Your text is read locally, processed on your own device, and handed straight back to you. You can confirm this yourself: open your browser&#39;s developer tools, watch the Network tab, and run the tool — no request carries your data anywhere.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Is HTML Formatter &amp; Beautifier free?</summary>
+                                    <div class="zt-faq__body"><p>Yes, completely. No account, no sign-up, no watermark on your output, and no cap on how many times you can use it. The project is open source under the AGPL licence.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Does HTML Formatter &amp; Beautifier work offline?</summary>
+                                    <div class="zt-faq__body"><p>Mostly. The site caches itself after your first visit, so it keeps working without a connection. Tools that need a specialised library — PDF editing, OCR, QR codes, MP3 encoding — need a connection the first time you run them, then that library is cached too.</p></div>
+                                </details>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Related code &amp; data tools</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-related-grid">
+                                <a href="../json-formatter/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">JSON Formatter &amp; Validator</span>
+                                        <span class="zt-related-grid__desc">Pretty-print, validate and minify JSON with clear error positions.</span>
+                                    </span>
+                                </a>
+                                <a href="../json-path-finder/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 9-2 2 2 2M13 13l2-2-2-2"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">JSON Path Finder</span>
+                                        <span class="zt-related-grid__desc">List every path in a JSON document, or query it with a dot path.</span>
+                                    </span>
+                                </a>
+                                <a href="../yaml-json-converter/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 12a1 1 0 0 0-1 1v1a1 1 0 0 1-1 1 1 1 0 0 1 1 1v1a1 1 0 0 0 1 1M14 18a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1 1 1 0 0 1-1-1v-1a1 1 0 0 0-1-1"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">YAML ⇄ JSON Converter</span>
+                                        <span class="zt-related-grid__desc">Convert YAML to JSON and back, in either direction.</span>
+                                    </span>
+                                </a>
+                                <a href="../xml-formatter/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 12.5 8 15l2 2.5M14 12.5l2 2.5-2 2.5"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">XML Formatter</span>
+                                        <span class="zt-related-grid__desc">Pretty-print, validate or minify XML documents.</span>
+                                    </span>
+                                </a>
+                                <a href="../xml-json-converter/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">XML ⇄ JSON Converter</span>
+                                        <span class="zt-related-grid__desc">Convert XML into JSON and JSON back into XML.</span>
+                                    </span>
+                                </a>
+                                <a href="../csv-json-converter/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v18"/><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M3 15h18"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">CSV ⇄ JSON Converter</span>
+                                        <span class="zt-related-grid__desc">Convert CSV to JSON records and JSON arrays back to CSV.</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+                <aside class="zt-work__side" id="zt-side" aria-label="About this tool"></aside>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="zt-footer">
+        <div class="zt-footer__inner">
+            <div>
+                <div class="zt-brand" style="margin-bottom:8px">
+                    <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+                    <span class="zt-brand__name">ZyncTools</span>
+                </div>
+                <p class="zt-footer__copy">Private, browser-based utilities. Open source under AGPL-3.0.</p>
+            </div>
+            <nav class="zt-footer__links" aria-label="Footer">
+                <a href="../">All tools</a>
+                <a href="../pages/privacy.html">Privacy</a>
+                <a href="../pages/terms.html">Terms</a>
+                <a href="../pages/support.html">Support</a>
+                <a href="https://github.com/ZyncTools/ZyncTools.github.io" rel="noopener">GitHub</a>
+            </nav>
+        </div>
+    </footer>
+
+</div>
+
+
+<!-- Assistant -->
+<button class="zt-chat-fab" id="zt-chat-fab" aria-label="Open the assistant" aria-expanded="false" aria-controls="zt-chat">
+    <svg class="zt-chat-fab__open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/>
+    </svg>
+    <svg class="zt-chat-fab__close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12"/>
+    </svg>
+</button>
+
+<div class="zt-chat" id="zt-chat" role="dialog" aria-label="ZyncTools assistant">
+    <div class="zt-chat__head">
+        <div class="zt-chat__avatar" aria-hidden="true">Z</div>
+        <div style="flex:1;min-width:0">
+            <div class="zt-chat__title">Assistant</div>
+            <div class="zt-chat__status"><span class="zt-chat__dot"></span>Runs offline, in this tab</div>
+        </div>
+        <button class="zt-icon-btn" id="zt-chat-close" aria-label="Close assistant">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 6 6 18M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+    <div class="zt-chat__body" id="zt-chat-body"></div>
+    <div class="zt-chat__foot">
+        <input type="text" class="zt-chat__input" id="zt-chat-input"
+               placeholder="Ask about this tool…" autocomplete="off" aria-label="Message">
+        <button class="zt-chat__send" id="zt-chat-send" aria-label="Send">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/>
+                <path d="m21.854 2.147-10.94 10.939"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<script>window.__ZT_TOOL_ID__ = "html-formatter";</script>
+
+<script src="../assets/js/zt-core.js"></script>
+<script src="../assets/js/zt-icons.js"></script>
+<script src="../assets/js/zt-registry.js"></script>
+
+<!-- The full catalogue as metadata, then only the module this tool needs. -->
+<script src="../assets/js/zt-catalog.js"></script>
+<script src="../assets/js/tools/code.js"></script>
+
+<script src="../assets/js/zt-theme.js"></script>
+<script src="../assets/js/zt-tool-page.js"></script>
+<script src="../assets/js/zt-tool-search.js"></script>
+<script src="../assets/js/zt-assistant.js"></script>
+<script src="../assets/js/zt-analytics.js"></script>
+
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('../sw.js').catch(function () {});
+    });
+}
+</script>
+</body>
+</html>

@@ -541,4 +541,682 @@
         }
     });
 
+
+    /* ============================================================
+       Base32 — needed by TOTP, and useful on its own
+       ============================================================ */
+    var BASE32_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+
+    function base32Decode(input) {
+        var clean = String(input).toUpperCase().replace(/[=\s-]/g, '');
+        if (!/^[A-Z2-7]*$/.test(clean)) {
+            ZT.fail('That is not valid Base32 — it may only contain A–Z and 2–7.');
+        }
+
+        var bits = 0, value = 0;
+        var out = [];
+        for (var i = 0; i < clean.length; i++) {
+            value = (value << 5) | BASE32_ALPHABET.indexOf(clean[i]);
+            bits += 5;
+            if (bits >= 8) {
+                out.push((value >>> (bits - 8)) & 0xff);
+                bits -= 8;
+            }
+        }
+        return new Uint8Array(out);
+    }
+
+    function base32Encode(bytes) {
+        var out = '';
+        var bits = 0, value = 0;
+        for (var i = 0; i < bytes.length; i++) {
+            value = (value << 8) | bytes[i];
+            bits += 8;
+            while (bits >= 5) {
+                out += BASE32_ALPHABET[(value >>> (bits - 5)) & 31];
+                bits -= 5;
+            }
+        }
+        if (bits > 0) out += BASE32_ALPHABET[(value << (5 - bits)) & 31];
+        while (out.length % 8) out += '=';
+        return out;
+    }
+
+    define({
+        id: 'base32-encoder',
+        name: 'Base32 Encoder / Decoder',
+        category: 'security',
+        icon: 'binary',
+        description: 'Encode and decode Base32, the format used by TOTP keys and DNS records.',
+        tags: ['base32', 'encode', 'decode', 'rfc4648', 'totp', 'otp'],
+        input: 'text',
+        live: true,
+        placeholder: 'Hello, world!',
+        options: [
+            {
+                id: 'direction', type: 'radio', label: 'Direction', value: 'encode',
+                options: [{ value: 'encode', label: 'Text → Base32' }, { value: 'decode', label: 'Base32 → Text' }]
+            },
+            { id: 'padding', type: 'checkbox', label: 'Include = padding', value: true, when: function (o) { return o.direction === 'encode'; } },
+            { id: 'group', type: 'checkbox', label: 'Group in blocks of four', value: false, when: function (o) { return o.direction === 'encode'; }, help: 'How authenticator apps display a secret key.' }
+        ],
+        run: function (ctx) {
+            var text = ctx.text || '';
+            if (!text) return ZT.textResult('');
+
+            if (ctx.opt.direction === 'encode') {
+                var out = base32Encode(new TextEncoder().encode(text));
+                if (!ctx.opt.padding) out = out.replace(/=+$/, '');
+                if (ctx.opt.group) out = out.replace(/(.{4})(?=.)/g, '$1 ');
+                return ZT.textResult(out, { mono: true });
+            }
+
+            try {
+                return ZT.textResult(new TextDecoder().decode(base32Decode(text)));
+            } catch (e) {
+                if (e.userFacing) throw e;
+                ZT.fail('That Base32 string could not be decoded.');
+            }
+        }
+    });
+
+    /* ============================================================
+       TOTP — two-factor codes
+       ============================================================ */
+    define({
+        id: 'totp-generator',
+        name: 'TOTP / 2FA Code Generator',
+        category: 'security',
+        icon: 'key-round',
+        description: 'Generate the current two-factor code from a TOTP secret key.',
+        tags: ['totp', '2fa', 'otp', 'authenticator', 'two factor', 'mfa', 'google authenticator'],
+        input: 'none',
+        popular: true,
+        options: [
+            { id: 'secret', type: 'text', label: 'Secret key', value: '', placeholder: 'JBSWY3DPEHPK3PXP', mono: true, help: 'The Base32 key an app shows you when you set up 2FA.' },
+            { id: 'digits', type: 'select', label: 'Code length', value: '6',
+              options: [{ value: '6', label: '6 digits' }, { value: '7', label: '7 digits' }, { value: '8', label: '8 digits' }] },
+            { id: 'period', type: 'select', label: 'Refresh interval', value: '30',
+              options: [{ value: '30', label: '30 seconds' }, { value: '60', label: '60 seconds' }] },
+            { id: 'algorithm', type: 'select', label: 'Algorithm', value: 'SHA-1',
+              options: [
+                  { value: 'SHA-1', label: 'SHA-1 — the default everywhere' },
+                  { value: 'SHA-256', label: 'SHA-256' },
+                  { value: 'SHA-512', label: 'SHA-512' }
+              ] },
+            { id: 'show-next', type: 'checkbox', label: 'Also show the next code', value: true },
+            { id: 'note', type: 'note', text: 'Your secret is used in this tab and never sent anywhere. That said, a TOTP secret is a long-lived credential — for an account you care about, keep it in a real authenticator app rather than pasting it into any website, including this one. This tool is best for testing and recovery.' }
+        ],
+        run: async function (ctx) {
+            var o = ctx.opt;
+            if (!String(o.secret).trim()) {
+                return ZT.dataResult(
+                    [{ label: 'Waiting for input', value: 'Paste a Base32 secret key above.' }],
+                    { title: 'TOTP code' }
+                );
+            }
+
+            var key = base32Decode(o.secret);
+            if (!key.length) ZT.fail('That secret decoded to nothing — check you copied all of it.');
+
+            var period = parseInt(o.period, 10);
+            var digits = parseInt(o.digits, 10);
+            var counter = Math.floor(Date.now() / 1000 / period);
+
+            var current = await hotp(key, counter, digits, o.algorithm);
+            var next = await hotp(key, counter + 1, digits, o.algorithm);
+            var secondsLeft = period - Math.floor(Date.now() / 1000) % period;
+
+            var rows = [
+                { label: 'Current code', value: current },
+                { label: 'Valid for', value: secondsLeft + ' more second' + (secondsLeft === 1 ? '' : 's') }
+            ];
+            if (o.showNext) rows.push({ label: 'Next code', value: next });
+            rows.push({ label: 'Algorithm', value: o.algorithm + ' · ' + digits + ' digits · ' + period + 's' });
+
+            return ZT.dataResult(rows, { title: 'Two-factor code', columns: 2, mono: true });
+        }
+    });
+
+    /** RFC 4226 HMAC-based one-time password. */
+    async function hotp(keyBytes, counter, digits, algorithm) {
+        var buffer = new ArrayBuffer(8);
+        var view = new DataView(buffer);
+        // The counter is a 64-bit big-endian integer.
+        view.setUint32(0, Math.floor(counter / 4294967296), false);
+        view.setUint32(4, counter >>> 0, false);
+
+        var key = await crypto.subtle.importKey(
+            'raw', keyBytes, { name: 'HMAC', hash: algorithm }, false, ['sign']
+        );
+        var mac = new Uint8Array(await crypto.subtle.sign('HMAC', key, buffer));
+
+        // Dynamic truncation: the low nibble of the last byte picks the offset.
+        var offset = mac[mac.length - 1] & 0x0f;
+        var code = ((mac[offset] & 0x7f) << 24)
+                 | ((mac[offset + 1] & 0xff) << 16)
+                 | ((mac[offset + 2] & 0xff) << 8)
+                 | (mac[offset + 3] & 0xff);
+
+        return String(code % Math.pow(10, digits)).padStart(digits, '0');
+    }
+
+    /* ============================================================
+       bcrypt
+       ============================================================ */
+    ZT.CDN.bcrypt = 'https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js';
+
+    define({
+        id: 'bcrypt-generator',
+        name: 'Bcrypt Hash Generator & Verifier',
+        category: 'security',
+        icon: 'lock',
+        description: 'Hash a password with bcrypt, or check a password against an existing hash.',
+        tags: ['bcrypt', 'hash', 'password', 'verify', 'salt', 'laravel', 'php'],
+        input: 'none',
+        popular: true,
+        heavy: true,
+        options: [
+            {
+                id: 'mode', type: 'radio', label: 'Action', value: 'hash',
+                options: [{ value: 'hash', label: 'Hash a password' }, { value: 'verify', label: 'Verify against a hash' }]
+            },
+            { id: 'password', type: 'text', label: 'Password', value: '' },
+            { id: 'hash', type: 'text', label: 'Existing hash', value: '', mono: true, placeholder: '$2a$10$...', when: function (o) { return o.mode === 'verify'; } },
+            { id: 'rounds', type: 'select', label: 'Cost factor', value: '10',
+              options: [
+                  { value: '8', label: '8 — fast' },
+                  { value: '10', label: '10 — common default' },
+                  { value: '12', label: '12 — recommended today' },
+                  { value: '14', label: '14 — slow and strong' }
+              ],
+              when: function (o) { return o.mode === 'hash'; },
+              help: 'Each step doubles the work. 12 takes about a quarter of a second, which is the point — it slows an attacker down too.' },
+            { id: 'note', type: 'note', text: 'Everything runs in this tab. Never paste a real production password hash into a website you do not control — including this one. Use it for development and for understanding what a hash contains.' }
+        ],
+        run: async function (ctx) {
+            var o = ctx.opt;
+            if (!o.password) {
+                return ZT.dataResult([{ label: 'Waiting for input', value: 'Enter a password above.' }], { title: 'Bcrypt' });
+            }
+
+            ctx.progress(0.2, 'Loading bcrypt');
+            var bcrypt = await ZT.requireLib(
+                function () { return window.bcrypt || (window.dcodeIO && window.dcodeIO.bcrypt); },
+                ZT.CDN.bcrypt
+            );
+
+            if (o.mode === 'verify') {
+                if (!o.hash) ZT.fail('Paste the hash you want to check against.');
+                ctx.progress(0.6, 'Verifying');
+                var matches;
+                try {
+                    matches = bcrypt.compareSync(o.password, o.hash.trim());
+                } catch (e) {
+                    ZT.fail('That does not look like a bcrypt hash. It should start with $2a$, $2b$ or $2y$.');
+                }
+                ctx.progress(1);
+
+                return ZT.dataResult([
+                    { label: 'Result', value: matches ? 'MATCH — the password is correct' : 'NO MATCH' },
+                    { label: 'Hash', value: o.hash.trim() },
+                    { label: 'Cost factor', value: (o.hash.split('$')[2] || 'unknown') }
+                ], { title: 'Verification', columns: 1, mono: true });
+            }
+
+            var rounds = parseInt(o.rounds, 10);
+            ctx.progress(0.4, 'Hashing at cost ' + rounds + ' — this is meant to be slow');
+
+            var started = performance.now();
+            var hash = bcrypt.hashSync(o.password, rounds);
+            var elapsed = performance.now() - started;
+            ctx.progress(1);
+
+            return ZT.dataResult([
+                { label: 'Hash', value: hash },
+                { label: 'Algorithm', value: hash.slice(0, 4) + '  (bcrypt)' },
+                { label: 'Cost factor', value: String(rounds) },
+                { label: 'Salt', value: hash.slice(7, 29) },
+                { label: 'Time taken', value: Math.round(elapsed) + ' ms' },
+                { label: 'Note', value: 'Bcrypt salts automatically, so hashing the same password again gives a different result. That is correct and expected.' }
+            ], { title: 'Bcrypt hash', columns: 1, mono: true });
+        }
+    });
+
+    /* ============================================================
+       htpasswd
+       ============================================================ */
+    define({
+        id: 'htpasswd-generator',
+        name: 'htpasswd Generator',
+        category: 'security',
+        icon: 'file-lock',
+        description: 'Create Apache or nginx .htpasswd entries for basic authentication.',
+        tags: ['htpasswd', 'apache', 'nginx', 'basic auth', 'password', 'server'],
+        input: 'none',
+        options: [
+            { id: 'username', type: 'text', label: 'Username', value: '' },
+            { id: 'password', type: 'text', label: 'Password', value: '' },
+            {
+                id: 'algorithm', type: 'select', label: 'Hash format', value: 'bcrypt',
+                options: [
+                    { value: 'bcrypt', label: 'bcrypt — recommended' },
+                    { value: 'sha1', label: 'SHA-1 — legacy, widely supported' },
+                    { value: 'md5-apr1', label: 'MD5 (apr1) — Apache legacy' }
+                ]
+            },
+            { id: 'rounds', type: 'select', label: 'Bcrypt cost', value: '10',
+              options: [{ value: '8', label: '8' }, { value: '10', label: '10' }, { value: '12', label: '12' }],
+              when: function (o) { return o.algorithm === 'bcrypt'; } },
+            { id: 'note', type: 'note', text: 'Generated in this tab and never transmitted. Basic authentication sends credentials on every request, so only use it behind HTTPS.' }
+        ],
+        run: async function (ctx) {
+            var o = ctx.opt;
+            if (!o.username || !o.password) {
+                return ZT.dataResult([{ label: 'Waiting for input', value: 'Enter a username and password above.' }], { title: 'htpasswd' });
+            }
+            if (/:/.test(o.username)) ZT.fail('A username cannot contain a colon — that is the field separator.');
+
+            var line;
+            if (o.algorithm === 'bcrypt') {
+                var bcrypt = await ZT.requireLib(
+                    function () { return window.bcrypt || (window.dcodeIO && window.dcodeIO.bcrypt); },
+                    ZT.CDN.bcrypt
+                );
+                // Apache expects the $2y$ prefix; bcryptjs emits $2a$.
+                line = o.username + ':' + bcrypt.hashSync(o.password, parseInt(o.rounds, 10)).replace(/^\$2a\$/, '$2y$');
+            } else if (o.algorithm === 'sha1') {
+                var digest = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(o.password));
+                var bytes = new Uint8Array(digest);
+                var binary = '';
+                for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+                line = o.username + ':{SHA}' + btoa(binary);
+            } else {
+                ZT.fail('The Apache MD5 (apr1) format is not implemented — it needs a non-standard MD5 variant. Use bcrypt, which every current Apache and nginx supports.');
+            }
+
+            return [
+                ZT.textResult(line, { mono: true, title: '.htpasswd line' }),
+                ZT.dataResult([
+                    { label: 'Apache', value: 'AuthType Basic / AuthUserFile /path/to/.htpasswd / Require valid-user' },
+                    { label: 'nginx', value: 'auth_basic "Restricted"; auth_basic_user_file /path/to/.htpasswd;' },
+                    { label: 'Adding more users', value: 'Put each user on their own line in the same file.' }
+                ], { title: 'Server configuration', columns: 1 })
+            ];
+        }
+    });
+
+    /* ============================================================
+       JWT signing
+       ============================================================ */
+    define({
+        id: 'jwt-encoder',
+        name: 'JWT Encoder / Signer',
+        category: 'security',
+        icon: 'key',
+        description: 'Build and sign a JSON Web Token with HMAC.',
+        tags: ['jwt', 'sign', 'encode', 'token', 'hs256', 'auth', 'bearer'],
+        input: 'none',
+        options: [
+            { id: 'payload', type: 'textarea', label: 'Payload claims', rows: 7, mono: true,
+              value: '{\n  "sub": "1234567890",\n  "name": "Ada Lovelace",\n  "admin": true\n}' },
+            { id: 'secret', type: 'text', label: 'Signing secret', value: '', placeholder: 'your HMAC secret' },
+            {
+                id: 'algorithm', type: 'select', label: 'Algorithm', value: 'HS256',
+                options: [
+                    { value: 'HS256', label: 'HS256 — HMAC SHA-256' },
+                    { value: 'HS384', label: 'HS384 — HMAC SHA-384' },
+                    { value: 'HS512', label: 'HS512 — HMAC SHA-512' }
+                ]
+            },
+            { id: 'add-iat', type: 'checkbox', label: 'Add issued-at (iat)', value: true },
+            { id: 'add-exp', type: 'checkbox', label: 'Add an expiry (exp)', value: true },
+            { id: 'expires-in', type: 'number', label: 'Expires in', suffix: 'minutes', value: 60, min: 1, max: 525600, when: function (o) { return o.addExp; } },
+            { id: 'note', type: 'note', text: 'Only HMAC algorithms are offered. RS256 and friends need a private key, and pasting a production private key into a web page is not something this tool should encourage.' }
+        ],
+        run: async function (ctx) {
+            var o = ctx.opt;
+            if (!o.secret) {
+                return ZT.dataResult([{ label: 'Waiting for input', value: 'Enter a signing secret above.' }], { title: 'JWT' });
+            }
+
+            var claims;
+            try {
+                claims = JSON.parse(o.payload);
+            } catch (e) {
+                ZT.fail('The payload is not valid JSON: ' + e.message);
+            }
+
+            var now = Math.floor(Date.now() / 1000);
+            if (o.addIat) claims.iat = now;
+            if (o.addExp) claims.exp = now + o.expiresIn * 60;
+
+            var header = { alg: o.algorithm, typ: 'JWT' };
+            var hash = { HS256: 'SHA-256', HS384: 'SHA-384', HS512: 'SHA-512' }[o.algorithm];
+
+            function b64url(text) {
+                return ZT.utf8ToBase64(text).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+            }
+
+            var signingInput = b64url(JSON.stringify(header)) + '.' + b64url(JSON.stringify(claims));
+
+            var key = await crypto.subtle.importKey(
+                'raw', new TextEncoder().encode(o.secret),
+                { name: 'HMAC', hash: hash }, false, ['sign']
+            );
+            var signature = new Uint8Array(await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(signingInput)));
+
+            var binary = '';
+            for (var i = 0; i < signature.length; i++) binary += String.fromCharCode(signature[i]);
+            var encodedSignature = btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+            var token = signingInput + '.' + encodedSignature;
+
+            return [
+                ZT.textResult(token, { mono: true, title: 'Signed token' }),
+                ZT.dataResult([
+                    { label: 'Algorithm', value: o.algorithm },
+                    { label: 'Issued at', value: o.addIat ? new Date(claims.iat * 1000).toLocaleString() : 'not set' },
+                    { label: 'Expires', value: o.addExp ? new Date(claims.exp * 1000).toLocaleString() : 'never' },
+                    { label: 'Length', value: token.length + ' characters' },
+                    { label: 'Authorization header', value: 'Bearer ' + token.slice(0, 32) + '…' }
+                ], { title: 'Token details', columns: 2 })
+            ];
+        }
+    });
+
+    /* ============================================================
+       Key pairs
+       ============================================================ */
+    define({
+        id: 'keypair-generator',
+        name: 'RSA & ECDSA Key Pair Generator',
+        category: 'security',
+        icon: 'key-round',
+        description: 'Generate a public and private key pair in PEM format.',
+        tags: ['rsa', 'ecdsa', 'keypair', 'public key', 'private key', 'pem', 'ssl', 'crypto'],
+        input: 'none',
+        heavy: true,
+        options: [
+            {
+                id: 'type', type: 'select', label: 'Key type', value: 'RSA-2048',
+                options: [
+                    { value: 'RSA-2048', label: 'RSA 2048 — common default' },
+                    { value: 'RSA-4096', label: 'RSA 4096 — stronger, slower' },
+                    { value: 'EC-P256', label: 'ECDSA P-256 — small and fast' },
+                    { value: 'EC-P384', label: 'ECDSA P-384' }
+                ]
+            },
+            {
+                id: 'usage', type: 'select', label: 'Intended use', value: 'sign',
+                options: [
+                    { value: 'sign', label: 'Signing and verification' },
+                    { value: 'encrypt', label: 'Encryption and decryption' }
+                ],
+                when: function (o) { return /^RSA/.test(o.type); }
+            },
+            { id: 'note', type: 'note', text: 'Keys are generated by your browser\'s own crypto engine and never leave this tab. Even so: for anything protecting real systems, generate keys on the machine that will use them with ssh-keygen or openssl. A key that has been through a web page is a key you cannot fully vouch for.' }
+        ],
+        run: async function (ctx) {
+            var o = ctx.opt;
+            ctx.progress(0.2, 'Generating — this can take a few seconds for RSA');
+
+            var algorithm, usages;
+            if (/^RSA/.test(o.type)) {
+                var modulusLength = o.type === 'RSA-4096' ? 4096 : 2048;
+                if (o.usage === 'encrypt') {
+                    algorithm = { name: 'RSA-OAEP', modulusLength: modulusLength, publicExponent: new Uint8Array([1, 0, 1]), hash: 'SHA-256' };
+                    usages = ['encrypt', 'decrypt'];
+                } else {
+                    algorithm = { name: 'RSASSA-PKCS1-v1_5', modulusLength: modulusLength, publicExponent: new Uint8Array([1, 0, 1]), hash: 'SHA-256' };
+                    usages = ['sign', 'verify'];
+                }
+            } else {
+                algorithm = { name: 'ECDSA', namedCurve: o.type === 'EC-P384' ? 'P-384' : 'P-256' };
+                usages = ['sign', 'verify'];
+            }
+
+            var pair;
+            try {
+                pair = await crypto.subtle.generateKey(algorithm, true, usages);
+            } catch (e) {
+                ZT.fail('Your browser could not generate that key type: ' + e.message);
+            }
+
+            ctx.progress(0.8, 'Exporting');
+            var publicKey = await crypto.subtle.exportKey('spki', pair.publicKey);
+            var privateKey = await crypto.subtle.exportKey('pkcs8', pair.privateKey);
+            ctx.progress(1);
+
+            var publicPem = toPem(publicKey, 'PUBLIC KEY');
+            var privatePem = toPem(privateKey, 'PRIVATE KEY');
+
+            return [
+                ZT.textResult(publicPem, { mono: true, title: 'Public key (share this)' }),
+                ZT.textResult(privatePem, { mono: true, title: 'Private key (keep this secret)' }),
+                ZT.fileResult(new Blob([publicPem], { type: 'application/x-pem-file' }), 'public-key.pem'),
+                ZT.fileResult(new Blob([privatePem], { type: 'application/x-pem-file' }), 'private-key.pem'),
+                ZT.dataResult([
+                    { label: 'Type', value: o.type },
+                    { label: 'Usage', value: usages.join(' / ') },
+                    { label: 'Public key size', value: ZT.formatBytes(publicKey.byteLength) },
+                    { label: 'Private key size', value: ZT.formatBytes(privateKey.byteLength) }
+                ], { title: 'Details', columns: 2 })
+            ];
+        }
+    });
+
+    /** Wrap a DER key as PEM: base64 in 64-character lines with a header. */
+    function toPem(buffer, label) {
+        var bytes = new Uint8Array(buffer);
+        var binary = '';
+        for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+        var body = btoa(binary).replace(/(.{64})/g, '$1\n').trim();
+        return '-----BEGIN ' + label + '-----\n' + body + '\n-----END ' + label + '-----';
+    }
+
+    /* ============================================================
+       Hash identifier
+       ============================================================ */
+    define({
+        id: 'hash-identifier',
+        name: 'Hash Identifier',
+        category: 'security',
+        icon: 'fingerprint',
+        description: 'Work out which algorithm produced a hash from its shape.',
+        tags: ['hash', 'identify', 'md5', 'sha', 'bcrypt', 'detect', 'what hash'],
+        input: 'text',
+        live: true,
+        placeholder: '5d41402abc4b2a76b9719d911017c592',
+        options: [
+            { id: 'show-all', type: 'checkbox', label: 'Show every possible match, not just the likely one', value: false }
+        ],
+        run: function (ctx) {
+            var hash = String(ctx.text || '').trim();
+            if (!hash) return ZT.dataResult([{ label: 'Waiting for input', value: 'Paste a hash to identify it.' }], { title: 'Hash identifier' });
+
+            /* Prefixed formats are unambiguous, so check them before falling
+               back to guessing from length. */
+            var PREFIXED = [
+                [/^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/, 'bcrypt', 'Very likely'],
+                [/^\$argon2(id|i|d)\$/, 'Argon2', 'Certain'],
+                [/^\$6\$/, 'SHA-512 crypt (Linux shadow)', 'Certain'],
+                [/^\$5\$/, 'SHA-256 crypt (Linux shadow)', 'Certain'],
+                [/^\$1\$/, 'MD5 crypt', 'Certain'],
+                [/^\$apr1\$/, 'Apache MD5 (apr1)', 'Certain'],
+                [/^\{SHA\}/, 'SHA-1 (htpasswd / LDAP)', 'Certain'],
+                [/^\{SSHA\}/, 'Salted SHA-1 (LDAP)', 'Certain'],
+                [/^pbkdf2[_:]/i, 'PBKDF2', 'Certain'],
+                [/^[a-f0-9]{32}:[a-f0-9]+$/i, 'MD5 with a salt', 'Likely']
+            ];
+
+            for (var i = 0; i < PREFIXED.length; i++) {
+                if (PREFIXED[i][0].test(hash)) {
+                    var rows = [
+                        { label: 'Algorithm', value: PREFIXED[i][1] },
+                        { label: 'Confidence', value: PREFIXED[i][2] },
+                        { label: 'Length', value: hash.length + ' characters' }
+                    ];
+                    if (/^\$2[aby]\$/.test(hash)) {
+                        rows.push({ label: 'Cost factor', value: hash.split('$')[2] });
+                        rows.push({ label: 'Salt', value: hash.slice(7, 29) });
+                    }
+                    return ZT.dataResult(rows, { title: 'Identified', columns: 2, mono: true });
+                }
+            }
+
+            var isHex = /^[a-f0-9]+$/i.test(hash);
+            var isBase64 = /^[A-Za-z0-9+/]+=*$/.test(hash);
+
+            var BY_LENGTH = {
+                8: ['CRC-32', 'Adler-32'],
+                16: ['MySQL 3.x', 'DES'],
+                32: ['MD5', 'MD4', 'NTLM', 'RIPEMD-128'],
+                40: ['SHA-1', 'RIPEMD-160', 'MySQL 4.1+ (without the leading *)'],
+                56: ['SHA-224'],
+                64: ['SHA-256', 'SHA3-256', 'BLAKE2s', 'RIPEMD-256'],
+                96: ['SHA-384'],
+                128: ['SHA-512', 'SHA3-512', 'BLAKE2b', 'Whirlpool']
+            };
+
+            if (isHex && BY_LENGTH[hash.length]) {
+                var candidates = BY_LENGTH[hash.length];
+                var out = [
+                    { label: 'Most likely', value: candidates[0] },
+                    { label: 'Length', value: hash.length + ' hex characters (' + (hash.length * 4) + ' bits)' },
+                    { label: 'Confidence', value: candidates.length > 1 ? 'Length matches several algorithms' : 'Length is distinctive' }
+                ];
+                if (candidates.length > 1) {
+                    out.push({ label: 'Also possible', value: candidates.slice(1).join(', ') });
+                }
+                out.push({
+                    label: 'Worth knowing',
+                    value: 'Hashes of the same length are indistinguishable by inspection — MD5 and NTLM are both 32 hex characters. Only context tells you which it is.'
+                });
+                return ZT.dataResult(out, { title: 'Identified by length', columns: 1 });
+            }
+
+            if (isBase64) {
+                var bytes = Math.floor(hash.replace(/=+$/, '').length * 3 / 4);
+                return ZT.dataResult([
+                    { label: 'Encoding', value: 'Base64' },
+                    { label: 'Decoded size', value: bytes + ' bytes (' + bytes * 8 + ' bits)' },
+                    { label: 'Most likely', value: bytes === 16 ? 'MD5' : bytes === 20 ? 'SHA-1' : bytes === 32 ? 'SHA-256' : bytes === 64 ? 'SHA-512' : 'unclear' }
+                ], { title: 'Base64-encoded hash', columns: 2 });
+            }
+
+            return ZT.dataResult([
+                { label: 'Result', value: 'Not recognised as a common hash format.' },
+                { label: 'Length', value: hash.length + ' characters' },
+                { label: 'Character set', value: isHex ? 'hexadecimal' : 'mixed' }
+            ], { title: 'Unidentified', columns: 2 });
+        }
+    });
+
+    /* ============================================================
+       Credit card validation (Luhn)
+       ============================================================ */
+    define({
+        id: 'credit-card-validator',
+        name: 'Card Number Validator & Test Numbers',
+        category: 'security',
+        icon: 'file-check',
+        description: 'Check a card number with the Luhn algorithm and generate valid test numbers.',
+        tags: ['credit card', 'luhn', 'validate', 'test card', 'checkout', 'stripe', 'payment'],
+        input: 'none',
+        options: [
+            {
+                id: 'mode', type: 'radio', label: 'Action', value: 'validate',
+                options: [{ value: 'validate', label: 'Validate a number' }, { value: 'generate', label: 'Generate test numbers' }]
+            },
+            { id: 'number', type: 'text', label: 'Card number', value: '', mono: true, placeholder: '4242 4242 4242 4242', when: function (o) { return o.mode === 'validate'; } },
+            {
+                id: 'brand', type: 'select', label: 'Card brand', value: 'visa',
+                options: [
+                    { value: 'visa', label: 'Visa' }, { value: 'mastercard', label: 'Mastercard' },
+                    { value: 'amex', label: 'American Express' }, { value: 'discover', label: 'Discover' }
+                ],
+                when: function (o) { return o.mode === 'generate'; }
+            },
+            { id: 'count', type: 'number', label: 'How many', value: 5, min: 1, max: 100, when: function (o) { return o.mode === 'generate'; } },
+            { id: 'note', type: 'note', text: 'These are structurally valid numbers for testing checkout forms. They are not real accounts, no bank will authorise them, and Luhn validity says nothing about whether a card exists or has funds.' }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+
+            if (o.mode === 'generate') {
+                var PREFIXES = {
+                    visa: { prefixes: ['4'], length: 16 },
+                    mastercard: { prefixes: ['51', '52', '53', '54', '55'], length: 16 },
+                    amex: { prefixes: ['34', '37'], length: 15 },
+                    discover: { prefixes: ['6011', '65'], length: 16 }
+                }[o.brand];
+
+                var numbers = [];
+                for (var i = 0; i < o.count; i++) {
+                    var prefix = PREFIXES.prefixes[Math.floor(Math.random() * PREFIXES.prefixes.length)];
+                    var digits = prefix;
+                    while (digits.length < PREFIXES.length - 1) digits += Math.floor(Math.random() * 10);
+                    numbers.push(digits + luhnCheckDigit(digits));
+                }
+
+                return ZT.textResult(numbers.join('\n'), {
+                    mono: true,
+                    note: o.count + ' Luhn-valid ' + o.brand + ' test numbers'
+                });
+            }
+
+            var raw = String(o.number).replace(/[\s-]/g, '');
+            if (!raw) {
+                return ZT.dataResult([{ label: 'Waiting for input', value: 'Enter a card number above.' }], { title: 'Card validator' });
+            }
+            if (!/^\d+$/.test(raw)) ZT.fail('A card number should contain digits only.');
+
+            var brand = detectBrand(raw);
+            var valid = luhnCheck(raw);
+
+            return ZT.dataResult([
+                { label: 'Luhn check', value: valid ? 'PASS — the checksum is valid' : 'FAIL — the checksum does not match' },
+                { label: 'Brand', value: brand },
+                { label: 'Length', value: raw.length + ' digits' },
+                { label: 'Formatted', value: raw.replace(/(\d{4})(?=\d)/g, '$1 ') },
+                { label: 'What this means', value: 'The Luhn checksum catches typos. It cannot tell you whether the card exists, is active or has funds — only the issuer knows that.' }
+            ], { title: 'Validation', columns: 1, mono: true });
+        }
+    });
+
+    /** Luhn: double every second digit from the right, sum, check mod 10. */
+    function luhnCheck(number) {
+        var sum = 0;
+        var alternate = false;
+        for (var i = number.length - 1; i >= 0; i--) {
+            var digit = parseInt(number[i], 10);
+            if (alternate) {
+                digit *= 2;
+                if (digit > 9) digit -= 9;
+            }
+            sum += digit;
+            alternate = !alternate;
+        }
+        return sum % 10 === 0;
+    }
+
+    function luhnCheckDigit(partial) {
+        for (var d = 0; d < 10; d++) {
+            if (luhnCheck(partial + d)) return String(d);
+        }
+        return '0';
+    }
+
+    function detectBrand(number) {
+        if (/^4/.test(number)) return 'Visa';
+        if (/^(5[1-5]|2[2-7])/.test(number)) return 'Mastercard';
+        if (/^3[47]/.test(number)) return 'American Express';
+        if (/^(6011|65|64[4-9])/.test(number)) return 'Discover';
+        if (/^3(0[0-5]|[68])/.test(number)) return 'Diners Club';
+        if (/^35/.test(number)) return 'JCB';
+        if (/^62/.test(number)) return 'UnionPay';
+        return 'Unrecognised';
+    }
+
 })();

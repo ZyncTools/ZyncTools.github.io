@@ -126,7 +126,14 @@ async function fixtures(page) {
 const EXACT_TEXT = {
   "xml-json-converter": "<root><item id=\"1\">Hello</item><item id=\"2\">World</item></root>",
   "yaml-json-converter": "name: ZyncTools\ntags:\n  - fast\n  - private\ncount: 42",
-  "csv-json-converter": "name,role,city\nAda,admin,London\nGrace,dev,New York"
+  "csv-json-converter": "name,role,city\nAda,admin,London\nGrace,dev,New York",
+  // These match /json/ below but default to converting the *other* way round.
+  "toml-json-converter": "title = \"ZyncTools\"\n\n[owner]\nname = \"Ada\"\nactive = true",
+  "env-json-converter": "DATABASE_URL=postgres://localhost/app\nDEBUG=true\nPORT=3000",
+  "svg-to-css": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"10\"/></svg>",
+  "gpa-calculator": "Mathematics | A | 4\nPhysics | B+ | 3\nHistory | A- | 3\nChemistry | B | 4",
+  "cron-parser": "30 2 * * 1-5",
+  "number-to-words": "1234.56"
 };
 function sampleText(tool) {
   const id = tool.id;
@@ -183,6 +190,7 @@ function filesFor(tool) {
   if (/image/.test(a)) {
     if (tool.id === 'image-diff') return ['png', 'png2'];
     if (tool.id === 'image-joiner') return ['png', 'png2'];
+    if (tool.id === 'gif-maker') return ['png', 'png2'];
     return ['png'];
   }
   if (a === '*/*' || !a) return ['txt'];
@@ -243,6 +251,18 @@ for (const tool of list) {
           }, want);
           await page.waitForTimeout(120);
         }
+      }
+
+      // Tools that cannot run headlessly: they need real hardware or a drawn
+      // gesture. The page, options and layout checks above still apply to them.
+      const NEEDS_DEVICE = {
+        'screen-recorder': 'needs screen-capture permission and a user gesture',
+        'audio-recorder': 'needs a real microphone',
+        'signature-generator': 'needs a signature drawn on the canvas'
+      };
+      if (NEEDS_DEVICE[tool.id]) {
+        row.status = 'skip';
+        row.notes.push(NEEDS_DEVICE[tool.id]);
       }
 
       // Some tools legitimately refuse to run without a secret or URL.

@@ -493,4 +493,275 @@
         return parts.slice(0, 3).join(', ') || '0 seconds';
     }
 
+
+    /* ============================================================
+       Cron parser
+       ============================================================ */
+    define({
+        id: 'cron-parser',
+        name: 'Cron Expression Parser',
+        category: 'datetime',
+        icon: 'calendar-clock',
+        description: 'Explain what a cron expression means and when it will next run.',
+        tags: ['cron', 'crontab', 'parse', 'explain', 'schedule', 'next run', 'when'],
+        input: 'text',
+        live: true,
+        popular: true,
+        placeholder: '30 2 * * 1-5',
+        options: [
+            { id: 'occurrences', type: 'number', label: 'Show the next', suffix: 'run times', value: 8, min: 1, max: 50 },
+            { id: 'timezone', type: 'text', label: 'Time zone', value: '', placeholder: 'leave empty for your local zone' }
+        ],
+        run: function (ctx) {
+            var expression = String(ctx.text || '').trim();
+            if (!expression) {
+                return ZT.dataResult([{ label: 'Waiting for input', value: 'Paste a cron expression such as  0 9 * * 1-5' }], { title: 'Cron parser' });
+            }
+
+            var ALIASES = {
+                '@yearly': '0 0 1 1 *', '@annually': '0 0 1 1 *', '@monthly': '0 0 1 * *',
+                '@weekly': '0 0 * * 0', '@daily': '0 0 * * *', '@midnight': '0 0 * * *',
+                '@hourly': '0 * * * *'
+            };
+            if (ALIASES[expression.toLowerCase()]) expression = ALIASES[expression.toLowerCase()];
+
+            var fields = expression.split(/\s+/);
+            if (fields.length === 6) fields = fields.slice(0, 5); // ignore a seconds field
+            if (fields.length !== 5) {
+                ZT.fail('A cron expression needs five fields: minute, hour, day of month, month, day of week. Got ' + fields.length + '.');
+            }
+
+            var RANGES = [[0, 59], [0, 23], [1, 31], [1, 12], [0, 6]];
+            var NAMES = ['minute', 'hour', 'day of month', 'month', 'day of week'];
+            var MONTHS = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July',
+                'August', 'September', 'October', 'November', 'December'];
+            var DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+            var MONTH_ALIASES = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };
+            var DAY_ALIASES = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 };
+
+            // Expand each field into the explicit set of values it matches.
+            var sets = fields.map(function (field, i) {
+                var lower = field.toLowerCase();
+                if (i === 3) Object.keys(MONTH_ALIASES).forEach(function (k) { lower = lower.replace(new RegExp(k, 'g'), MONTH_ALIASES[k]); });
+                if (i === 4) Object.keys(DAY_ALIASES).forEach(function (k) { lower = lower.replace(new RegExp(k, 'g'), DAY_ALIASES[k]); });
+
+                var min = RANGES[i][0], max = RANGES[i][1];
+                var values = [];
+
+                lower.split(',').forEach(function (part) {
+                    var step = 1;
+                    var stepMatch = part.match(/^(.+)\/(\d+)$/);
+                    if (stepMatch) { part = stepMatch[1]; step = parseInt(stepMatch[2], 10); }
+
+                    var from = min, to = max;
+                    if (part !== '*') {
+                        var range = part.match(/^(\d+)-(\d+)$/);
+                        if (range) { from = +range[1]; to = +range[2]; }
+                        else if (/^\d+$/.test(part)) { from = to = +part; }
+                        else ZT.fail('The ' + NAMES[i] + ' field ("' + field + '") is not valid cron syntax.');
+                    }
+
+                    if (from < min || to > max) {
+                        ZT.fail('The ' + NAMES[i] + ' field must be between ' + min + ' and ' + max + '.');
+                    }
+                    for (var v = from; v <= to; v += step) values.push(i === 4 ? v % 7 : v);
+                });
+
+                return values.filter(function (v, idx, arr) { return arr.indexOf(v) === idx; }).sort(function (a, b) { return a - b; });
+            });
+
+            function describe(i) {
+                var field = fields[i];
+                var values = sets[i];
+                if (field === '*') return 'every ' + NAMES[i];
+                if (i === 3) return values.map(function (v) { return MONTHS[v]; }).join(', ');
+                if (i === 4) return values.map(function (v) { return DAYS[v]; }).join(', ');
+                if (values.length > 12) return values.length + ' values';
+                return values.join(', ');
+            }
+
+            // Walk forward minute by minute to find the next matching times.
+            var zone = ctx.opt.timezone.trim();
+            var cursor = new Date();
+            cursor.setSeconds(0, 0);
+            cursor.setMinutes(cursor.getMinutes() + 1);
+
+            var upcoming = [];
+            var guard = 0;
+            var limit = 60 * 24 * 366 * 5; // five years of minutes
+
+            while (upcoming.length < ctx.opt.occurrences && guard++ < limit) {
+                var dayMatches = fields[2] === '*' && fields[4] === '*'
+                    ? true
+                    // Cron ORs day-of-month and day-of-week when both are restricted.
+                    : (fields[2] === '*' ? sets[4].indexOf(cursor.getDay()) !== -1
+                        : fields[4] === '*' ? sets[2].indexOf(cursor.getDate()) !== -1
+                        : sets[2].indexOf(cursor.getDate()) !== -1 || sets[4].indexOf(cursor.getDay()) !== -1);
+
+                if (sets[0].indexOf(cursor.getMinutes()) !== -1 &&
+                    sets[1].indexOf(cursor.getHours()) !== -1 &&
+                    sets[3].indexOf(cursor.getMonth() + 1) !== -1 &&
+                    dayMatches) {
+                    upcoming.push(new Date(cursor));
+                }
+                cursor.setMinutes(cursor.getMinutes() + 1);
+            }
+
+            function format(date) {
+                try {
+                    return new Intl.DateTimeFormat('en-GB', {
+                        timeZone: zone || undefined,
+                        weekday: 'short', day: '2-digit', month: 'short', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit', hour12: false
+                    }).format(date);
+                } catch (e) {
+                    ZT.fail('"' + zone + '" is not a time zone I recognise. Use an IANA name like Europe/London.');
+                }
+            }
+
+            // A plain-English summary of the whole expression.
+            var summary;
+            if (fields.join(' ') === '* * * * *') summary = 'Every minute.';
+            else {
+                var timePart = fields[0] === '*' ? 'every minute'
+                    : fields[1] === '*' ? 'at minute ' + describe(0) + ' of every hour'
+                    : 'at ' + sets[1].map(function (h) {
+                        return sets[0].map(function (m) {
+                            return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+                        }).join(', ');
+                    }).join(', ');
+
+                var dayPart = fields[4] !== '*' ? ' on ' + describe(4)
+                    : fields[2] !== '*' ? ' on day ' + describe(2) + ' of the month'
+                    : ' every day';
+
+                var monthPart = fields[3] !== '*' ? ' in ' + describe(3) : '';
+                summary = 'Runs ' + timePart + dayPart + monthPart + '.';
+            }
+
+            var interval = upcoming.length > 1
+                ? ZT.formatDuration((upcoming[1] - upcoming[0]) / 1000)
+                : '—';
+
+            return [
+                ZT.dataResult([
+                    { label: 'Expression', value: fields.join(' ') },
+                    { label: 'In plain English', value: summary },
+                    { label: 'Next run', value: upcoming.length ? format(upcoming[0]) : 'never within the next five years' },
+                    { label: 'Gap between runs', value: interval },
+                    { label: 'Runs per day', value: fields[2] === '*' && fields[4] === '*' ? String(sets[0].length * sets[1].length) : 'varies' }
+                ], { title: 'Summary', columns: 1 }),
+                ZT.dataResult(NAMES.map(function (name, i) {
+                    return { label: name, value: fields[i] + '   →   ' + describe(i) };
+                }), { title: 'Field by field', columns: 1, mono: true }),
+                ZT.dataResult(upcoming.map(function (d, i) {
+                    return { label: 'Run ' + (i + 1), value: format(d) };
+                }), { title: 'Next ' + upcoming.length + ' run times', columns: 2, mono: true })
+            ];
+        }
+    });
+
+    /* ============================================================
+       Countdown
+       ============================================================ */
+    define({
+        id: 'countdown-timer',
+        name: 'Countdown Timer',
+        category: 'datetime',
+        icon: 'timer',
+        description: 'Count down to a date and see exactly how long is left.',
+        tags: ['countdown', 'timer', 'days until', 'deadline', 'event', 'new year', 'how long'],
+        input: 'none',
+        options: [
+            { id: 'target-date', type: 'date', label: 'Target date', value: '' },
+            { id: 'target-time', type: 'time', label: 'Target time', value: '00:00' },
+            { id: 'label', type: 'text', label: 'What are you counting down to', value: '', placeholder: 'e.g. Launch day' },
+            { id: 'live', type: 'checkbox', label: 'Update every second', value: true },
+            { id: 'show-working-days', type: 'checkbox', label: 'Also count working days', value: true }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+            if (!o.targetDate) {
+                return ZT.dataResult([{ label: 'Waiting for input', value: 'Pick a target date above.' }], { title: 'Countdown' });
+            }
+
+            var target = new Date(o.targetDate + 'T' + (o.targetTime || '00:00'));
+            if (isNaN(target.getTime())) ZT.fail('That date and time could not be understood.');
+
+            var display = ZT.el('div', { class: 'zt-countdown' });
+
+            function units(ms) {
+                var past = ms < 0;
+                var total = Math.abs(ms) / 1000;
+                return {
+                    past: past,
+                    days: Math.floor(total / 86400),
+                    hours: Math.floor(total / 3600) % 24,
+                    minutes: Math.floor(total / 60) % 60,
+                    seconds: Math.floor(total) % 60
+                };
+            }
+
+            function render() {
+                var u = units(target - Date.now());
+                display.innerHTML = '';
+
+                [['Days', u.days], ['Hours', u.hours], ['Minutes', u.minutes], ['Seconds', u.seconds]]
+                    .forEach(function (pair) {
+                        display.appendChild(ZT.el('div', { class: 'zt-countdown__unit' }, [
+                            ZT.el('div', { class: 'zt-countdown__value', text: String(pair[1]).padStart(2, '0') }),
+                            ZT.el('div', { class: 'zt-countdown__label', text: pair[0] })
+                        ]));
+                    });
+
+                if (u.past) {
+                    display.appendChild(ZT.el('div', {
+                        class: 'zt-countdown__note',
+                        text: (o.label || 'That date') + ' has already passed.'
+                    }));
+                }
+            }
+
+            render();
+
+            if (o.live) {
+                var interval = setInterval(function () {
+                    // Stop once the element is no longer on the page.
+                    if (!display.isConnected) { clearInterval(interval); return; }
+                    render();
+                }, 1000);
+            }
+
+            var msLeft = target - Date.now();
+            var daysLeft = Math.ceil(Math.abs(msLeft) / 86400000);
+
+            var rows = [
+                { label: o.label || 'Target', value: target.toLocaleString() },
+                { label: msLeft >= 0 ? 'Time remaining' : 'Time since', value: ZT.formatDuration(Math.abs(msLeft) / 1000) },
+                { label: 'Total days', value: ZT.formatNumber(daysLeft) },
+                { label: 'Total hours', value: ZT.formatNumber(Math.ceil(Math.abs(msLeft) / 3600000)) },
+                { label: 'Total weeks', value: (Math.abs(msLeft) / 604800000).toFixed(1) }
+            ];
+
+            if (o.showWorkingDays) {
+                var working = 0;
+                var cursor = new Date(Math.min(Date.now(), target.getTime()));
+                var end = Math.max(Date.now(), target.getTime());
+                var guard = 0;
+                while (cursor.getTime() < end && guard++ < 40000) {
+                    var day = cursor.getDay();
+                    if (day !== 0 && day !== 6) working++;
+                    cursor.setDate(cursor.getDate() + 1);
+                }
+                rows.push({ label: 'Working days (Mon–Fri)', value: ZT.formatNumber(working) });
+            }
+
+            return [
+                ZT.nodeResult(display, { title: o.label || 'Countdown' }),
+                ZT.dataResult(rows, { title: 'Details', columns: 2 })
+            ];
+        }
+    });
+
 })();

@@ -1110,4 +1110,654 @@
         }
     });
 
+
+    /* ============================================================
+       Character counter
+       ============================================================ */
+    define({
+        id: 'character-counter',
+        name: 'Character Counter',
+        category: 'text',
+        icon: 'type',
+        description: 'Count characters against the limits of every major platform, live.',
+        tags: ['character counter', 'character count', 'twitter', 'sms', 'meta description', 'limit', 'length'],
+        input: 'text',
+        live: true,
+        popular: true,
+        placeholder: 'Start typing and the counts update as you go…',
+        options: [
+            { id: 'count-spaces', type: 'checkbox', label: 'Count spaces', value: true },
+            { id: 'show-limits', type: 'checkbox', label: 'Show platform limits', value: true },
+            { id: 'custom-limit', type: 'number', label: 'Your own limit', value: 0, min: 0, max: 100000, help: '0 hides it.' }
+        ],
+        run: function (ctx) {
+            var text = ctx.text || '';
+            var counted = ctx.opt.countSpaces ? text : text.replace(/\s/g, '');
+
+            // Count by code point so emoji and accents count as one character,
+            // which is what a human means and what most platforms measure.
+            var characters = Array.from(counted).length;
+            var withoutSpaces = Array.from(text.replace(/\s/g, '')).length;
+            var words = (text.trim().match(/[^\s]+/g) || []).length;
+
+            var results = [
+                ZT.dataResult([
+                    { label: 'Characters', value: ZT.formatNumber(characters) },
+                    { label: 'Characters without spaces', value: ZT.formatNumber(withoutSpaces) },
+                    { label: 'Words', value: ZT.formatNumber(words) },
+                    { label: 'Lines', value: ZT.formatNumber(text ? text.split(/\r?\n/).length : 0) },
+                    { label: 'Bytes (UTF-8)', value: ZT.formatNumber(new TextEncoder().encode(text).length) },
+                    { label: 'SMS segments', value: smsSegments(text) }
+                ], { title: 'Counts', columns: 2 })
+            ];
+
+            if (ctx.opt.showLimits) {
+                var LIMITS = [
+                    ['X / Twitter post', 280], ['Bluesky post', 300], ['SMS (single message)', 160],
+                    ['Meta description', 160], ['Page title', 60], ['Instagram caption', 2200],
+                    ['LinkedIn post', 3000], ['Facebook post', 63206], ['YouTube title', 100],
+                    ['YouTube description', 5000], ['Reddit title', 300]
+                ];
+                if (ctx.opt.customLimit > 0) LIMITS.unshift(['Your limit', ctx.opt.customLimit]);
+
+                results.push(ZT.dataResult(LIMITS.map(function (l) {
+                    var remaining = l[1] - characters;
+                    return {
+                        label: l[0] + '  (' + ZT.formatNumber(l[1]) + ')',
+                        value: remaining >= 0
+                            ? ZT.formatNumber(remaining) + ' left'
+                            : ZT.formatNumber(-remaining) + ' over'
+                    };
+                }), { title: 'Against platform limits', columns: 2 }));
+            }
+
+            return results;
+        }
+    });
+
+    /** GSM-7 fits 160 per segment, Unicode drops to 70 — and 153/67 when split. */
+    function smsSegments(text) {
+        if (!text) return '0';
+        var GSM = /^[A-Za-z0-9@£$¥èéùìòÇØøÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !"#¤%&'()*+,\-./:;<=>?¡ÄÖÑÜ§¿äöñüà\n\r^{}\\[~\]|€]*$/;
+        var unicode = !GSM.test(text);
+        var length = Array.from(text).length;
+        var single = unicode ? 70 : 160;
+        var multi = unicode ? 67 : 153;
+
+        if (length <= single) return '1  (' + (unicode ? 'Unicode' : 'GSM-7') + ')';
+        return Math.ceil(length / multi) + '  (' + (unicode ? 'Unicode' : 'GSM-7') + ', split)';
+    }
+
+    /* ============================================================
+       Readability
+       ============================================================ */
+    define({
+        id: 'readability-score',
+        name: 'Readability Score Checker',
+        category: 'text',
+        icon: 'file-text',
+        description: 'Score how easy your writing is to read with Flesch, Gunning Fog and more.',
+        tags: ['readability', 'flesch', 'kincaid', 'grade level', 'reading ease', 'seo', 'writing'],
+        input: 'text',
+        live: true,
+        popular: true,
+        placeholder: 'Paste the text you want to assess…',
+        options: [
+            { id: 'target', type: 'select', label: 'Writing for', value: 'general',
+              options: [
+                  { value: 'general', label: 'A general audience' },
+                  { value: 'academic', label: 'An academic or technical audience' },
+                  { value: 'children', label: 'Children' }
+              ] },
+            { id: 'show-hardest', type: 'checkbox', label: 'Show the hardest sentences', value: true }
+        ],
+        run: function (ctx) {
+            var text = String(ctx.text || '').trim();
+            if (text.split(/\s+/).length < 20) {
+                return ZT.dataResult([{ label: 'Waiting for input', value: 'Paste at least 20 words — these formulas are meaningless on a fragment.' }], { title: 'Readability' });
+            }
+
+            var sentences = text.split(/[.!?…]+(?=\s|$)/).map(function (s) { return s.trim(); }).filter(function (s) { return s.split(/\s+/).length > 1; });
+            var words = text.match(/[\p{L}\p{N}'-]+/gu) || [];
+            var syllables = words.reduce(function (sum, w) { return sum + countSyllables(w); }, 0);
+            var complexWords = words.filter(function (w) { return countSyllables(w) >= 3; });
+
+            var sentenceCount = Math.max(1, sentences.length);
+            var wordCount = words.length;
+            var wordsPerSentence = wordCount / sentenceCount;
+            var syllablesPerWord = syllables / wordCount;
+
+            // Flesch Reading Ease: higher is easier, 0–100.
+            var flesch = 206.835 - 1.015 * wordsPerSentence - 84.6 * syllablesPerWord;
+            // Flesch-Kincaid Grade: US school grade needed.
+            var fkGrade = 0.39 * wordsPerSentence + 11.8 * syllablesPerWord - 15.59;
+            // Gunning Fog: years of education needed.
+            var fog = 0.4 * (wordsPerSentence + 100 * (complexWords.length / wordCount));
+            // SMOG, designed for health material.
+            var smog = 1.043 * Math.sqrt(complexWords.length * (30 / sentenceCount)) + 3.1291;
+            // Automated Readability Index, from characters rather than syllables.
+            var characters = words.join('').length;
+            var ari = 4.71 * (characters / wordCount) + 0.5 * wordsPerSentence - 21.43;
+
+            var band, advice;
+            if (flesch >= 90) { band = 'Very easy — around age 11'; advice = 'Simple enough for almost anyone.'; }
+            else if (flesch >= 80) { band = 'Easy — around age 12'; advice = 'Conversational and widely accessible.'; }
+            else if (flesch >= 70) { band = 'Fairly easy — around age 13'; advice = 'A comfortable level for most web writing.'; }
+            else if (flesch >= 60) { band = 'Standard — ages 13 to 15'; advice = 'This is the sweet spot for general audiences.'; }
+            else if (flesch >= 50) { band = 'Fairly difficult — ages 15 to 18'; advice = 'Fine for an engaged reader; heavy for casual browsing.'; }
+            else if (flesch >= 30) { band = 'Difficult — university level'; advice = 'Shorten sentences and prefer shorter words where you can.'; }
+            else { band = 'Very difficult — graduate level'; advice = 'Most readers will struggle. Break up long sentences first — that helps more than vocabulary.'; }
+
+            var targetRange = { general: [60, 80], academic: [30, 60], children: [80, 100] }[ctx.opt.target];
+            var onTarget = flesch >= targetRange[0] && flesch <= targetRange[1];
+
+            var tone = onTarget ? 'good' : (Math.abs(flesch - (targetRange[0] + targetRange[1]) / 2) > 30 ? 'bad' : 'warn');
+            var meter = ZT.el('div', { class: 'zt-meter-wrap' }, [
+                ZT.el('div', { class: 'zt-meter__label' }, [
+                    ZT.el('strong', { text: Math.round(flesch) + ' — ' + band }),
+                    ZT.el('span', { text: 'target for this audience: ' + targetRange[0] + '–' + targetRange[1] })
+                ]),
+                ZT.el('div', { class: 'zt-meter zt-meter--' + tone },
+                    ZT.el('div', { class: 'zt-meter__bar', style: { width: ZT.clamp(flesch, 0, 100) + '%' } }))
+            ]);
+
+            var results = [
+                ZT.nodeResult(meter, { title: 'Reading ease' }),
+                ZT.dataResult([
+                    { label: 'Flesch Reading Ease', value: flesch.toFixed(1) + '  /100' },
+                    { label: 'Flesch-Kincaid Grade', value: 'grade ' + Math.max(0, fkGrade).toFixed(1) },
+                    { label: 'Gunning Fog Index', value: fog.toFixed(1) + ' years of education' },
+                    { label: 'SMOG Index', value: 'grade ' + smog.toFixed(1) },
+                    { label: 'Automated Readability', value: 'grade ' + Math.max(0, ari).toFixed(1) },
+                    { label: 'Verdict', value: onTarget ? 'On target for your audience' : 'Outside the target range' }
+                ], { title: 'Scores', columns: 2 }),
+                ZT.dataResult([
+                    { label: 'Words', value: ZT.formatNumber(wordCount) },
+                    { label: 'Sentences', value: ZT.formatNumber(sentenceCount) },
+                    { label: 'Average sentence length', value: wordsPerSentence.toFixed(1) + ' words' },
+                    { label: 'Words of 3+ syllables', value: complexWords.length + '  (' + (complexWords.length / wordCount * 100).toFixed(1) + '%)' },
+                    { label: 'Advice', value: advice }
+                ], { title: 'Statistics', columns: 2 })
+            ];
+
+            if (ctx.opt.showHardest) {
+                var ranked = sentences.map(function (s) {
+                    var w = s.match(/[\p{L}\p{N}'-]+/gu) || [];
+                    return { text: s, words: w.length };
+                }).sort(function (a, b) { return b.words - a.words; }).slice(0, 5);
+
+                results.push(ZT.dataResult(ranked.map(function (s) {
+                    return { label: s.words + ' words', value: s.text.length > 180 ? s.text.slice(0, 180) + '…' : s.text };
+                }), { title: 'Longest sentences — usually the first thing to fix', columns: 1 }));
+            }
+
+            return results;
+        }
+    });
+
+    /** Approximate English syllable count. Good enough for these formulas. */
+    function countSyllables(word) {
+        var w = String(word).toLowerCase().replace(/[^a-z]/g, '');
+        if (!w) return 0;
+        if (w.length <= 3) return 1;
+
+        w = w.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+        w = w.replace(/^y/, '');
+        var groups = w.match(/[aeiouy]{1,2}/g);
+        return Math.max(1, groups ? groups.length : 1);
+    }
+
+    /* ============================================================
+       Number to words
+       ============================================================ */
+    define({
+        id: 'number-to-words',
+        name: 'Number to Words Converter',
+        category: 'text',
+        icon: 'type',
+        description: 'Spell out numbers in words, including currency for cheques and invoices.',
+        tags: ['number to words', 'spell out', 'cheque', 'check', 'currency', 'amount in words'],
+        input: 'text',
+        live: true,
+        placeholder: '1234.56',
+        options: [
+            {
+                id: 'style', type: 'select', label: 'Format', value: 'plain',
+                options: [
+                    { value: 'plain', label: 'Plain words' },
+                    { value: 'currency', label: 'Currency (for cheques)' },
+                    { value: 'ordinal', label: 'Ordinal — first, second, third' }
+                ]
+            },
+            { id: 'currency-name', type: 'text', label: 'Currency name', value: 'pounds', when: function (o) { return o.style === 'currency'; } },
+            { id: 'cents-name', type: 'text', label: 'Fractional unit', value: 'pence', when: function (o) { return o.style === 'currency'; } },
+            {
+                id: 'case', type: 'select', label: 'Capitalisation', value: 'sentence',
+                options: [
+                    { value: 'sentence', label: 'Sentence case' }, { value: 'lower', label: 'lowercase' },
+                    { value: 'upper', label: 'UPPERCASE' }, { value: 'title', label: 'Title Case' }
+                ]
+            },
+            { id: 'use-and', type: 'checkbox', label: 'Use "and" before the tens', value: true, help: 'British usage: one hundred and one. American usage omits it.' },
+            { id: 'per-line', type: 'checkbox', label: 'Convert one number per line', value: false }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+            var input = String(ctx.text || '').trim();
+            if (!input) return ZT.textResult('');
+
+            function convert(raw) {
+                var cleaned = String(raw).replace(/[,\s£$€]/g, '');
+                var value = parseFloat(cleaned);
+                if (isNaN(value)) ZT.fail('"' + raw + '" is not a number.');
+
+                var out;
+                if (o.style === 'ordinal') {
+                    if (!Number.isInteger(value)) ZT.fail('Ordinals need a whole number.');
+                    out = toOrdinalWords(value, o.useAnd);
+                } else if (o.style === 'currency') {
+                    var whole = Math.floor(Math.abs(value));
+                    var fraction = Math.round((Math.abs(value) - whole) * 100);
+                    out = numberToWords(whole, o.useAnd) + ' ' + o.currencyName;
+                    if (fraction > 0) out += ' and ' + numberToWords(fraction, o.useAnd) + ' ' + o.centsName;
+                    out += ' only';
+                    if (value < 0) out = 'minus ' + out;
+                } else {
+                    out = numberToWords(value, o.useAnd);
+                }
+
+                switch (o.case) {
+                    case 'upper': return out.toUpperCase();
+                    case 'title': return out.replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+                    case 'lower': return out;
+                    default: return out.charAt(0).toUpperCase() + out.slice(1);
+                }
+            }
+
+            if (o.perLine) {
+                var lines = input.split(/\r?\n/).filter(function (l) { return l.trim(); });
+                return ZT.textResult(lines.map(function (l) { return l.trim() + '  =  ' + convert(l); }).join('\n'));
+            }
+
+            return ZT.dataResult([
+                { label: 'Number', value: input },
+                { label: 'In words', value: convert(input) }
+            ], { title: 'Result', columns: 1 });
+        }
+    });
+
+    var ONES = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+        'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+    var TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+    var SCALES = [[1e12, 'trillion'], [1e9, 'billion'], [1e6, 'million'], [1000, 'thousand']];
+
+    function numberToWords(value, useAnd) {
+        if (!isFinite(value)) return 'not a number';
+        if (value < 0) return 'minus ' + numberToWords(-value, useAnd);
+
+        var whole = Math.floor(value);
+        var decimals = String(value).split('.')[1];
+
+        var words = wholeToWords(whole, useAnd);
+        if (decimals) {
+            words += ' point ' + Array.from(decimals).map(function (d) { return ONES[+d]; }).join(' ');
+        }
+        return words;
+    }
+
+    function wholeToWords(n, useAnd) {
+        if (n < 20) return ONES[n];
+        if (n < 100) {
+            return TENS[Math.floor(n / 10)] + (n % 10 ? '-' + ONES[n % 10] : '');
+        }
+        if (n < 1000) {
+            var rest = n % 100;
+            return ONES[Math.floor(n / 100)] + ' hundred' + (rest ? (useAnd ? ' and ' : ' ') + wholeToWords(rest, useAnd) : '');
+        }
+        for (var i = 0; i < SCALES.length; i++) {
+            if (n >= SCALES[i][0]) {
+                var count = Math.floor(n / SCALES[i][0]);
+                var remainder = n % SCALES[i][0];
+                var text = wholeToWords(count, useAnd) + ' ' + SCALES[i][1];
+                if (remainder) {
+                    // "and" only reads correctly before a value under 100.
+                    text += (remainder < 100 && useAnd ? ' and ' : ' ') + wholeToWords(remainder, useAnd);
+                }
+                return text;
+            }
+        }
+        return String(n);
+    }
+
+    function toOrdinalWords(n, useAnd) {
+        var IRREGULAR = {
+            one: 'first', two: 'second', three: 'third', five: 'fifth', eight: 'eighth',
+            nine: 'ninth', twelve: 'twelfth'
+        };
+        var words = wholeToWords(n, useAnd);
+        var parts = words.split(/([\s-])/);
+        var lastIndex = parts.length - 1;
+        var last = parts[lastIndex];
+
+        if (IRREGULAR[last]) parts[lastIndex] = IRREGULAR[last];
+        else if (/y$/.test(last)) parts[lastIndex] = last.replace(/y$/, 'ieth');
+        else parts[lastIndex] = last + 'th';
+
+        return parts.join('');
+    }
+
+    /* ============================================================
+       Bionic reading
+       ============================================================ */
+    define({
+        id: 'bionic-reading-converter',
+        name: 'Bionic Reading Converter',
+        category: 'text',
+        icon: 'align-left',
+        description: 'Bold the leading letters of each word to guide the eye while reading.',
+        tags: ['bionic reading', 'speed reading', 'focus', 'adhd', 'accessibility', 'bold'],
+        input: 'text',
+        live: true,
+        placeholder: 'Paste the text you want to convert…',
+        options: [
+            { id: 'intensity', type: 'range', label: 'How much of each word to bold', value: 50, min: 20, max: 80, step: 5, suffix: '%' },
+            { id: 'skip-short', type: 'checkbox', label: 'Leave very short words alone', value: true },
+            { id: 'min-length', type: 'number', label: 'Shortest word to convert', value: 4, min: 2, max: 10, when: function (o) { return o.skipShort; } },
+            {
+                id: 'output', type: 'select', label: 'Output', value: 'html',
+                options: [
+                    { value: 'html', label: 'HTML with <b> tags' },
+                    { value: 'markdown', label: 'Markdown with **bold**' },
+                    { value: 'unicode', label: 'Unicode bold — pastes anywhere' }
+                ]
+            },
+            { id: 'preview', type: 'checkbox', label: 'Show a rendered preview', value: true }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+            var text = String(ctx.text || '');
+            if (!text.trim()) return ZT.textResult('');
+
+            function boldPart(word) {
+                var letters = word.match(/^[\p{L}\p{N}]+/u);
+                if (!letters) return word;
+                var core = letters[0];
+                if (o.skipShort && core.length < o.minLength) return word;
+
+                var cut = Math.max(1, Math.round(core.length * o.intensity / 100));
+                var head = word.slice(0, cut);
+                var tail = word.slice(cut);
+
+                if (o.output === 'markdown') return '**' + head + '**' + tail;
+                if (o.output === 'unicode') return toUnicodeBold(head) + tail;
+                return '<b>' + head + '</b>' + tail;
+            }
+
+            var converted = text.replace(/\S+/g, boldPart);
+            var results = [ZT.textResult(converted, { lang: o.output === 'html' ? 'html' : 'text' })];
+
+            if (o.preview) {
+                var previewHtml = o.output === 'html'
+                    ? converted
+                    : ZT.esc(converted).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+                var node = ZT.el('div', {
+                    style: { fontSize: '16px', lineHeight: '1.8', whiteSpace: 'pre-wrap', maxWidth: '70ch' }
+                });
+                node.innerHTML = previewHtml.replace(/\n/g, '<br>');
+                results.push(ZT.nodeResult(node, { title: 'Preview' }));
+            }
+
+            results.push(ZT.dataResult([
+                { label: 'How it works', value: 'Bolding the first part of a word is meant to give the eye a fixation point so it can skip ahead. Some readers find it genuinely helpful; controlled studies have not shown a consistent speed gain. Judge it on whether it helps you.' }
+            ], { title: 'Worth knowing', columns: 1 }));
+
+            return results;
+        }
+    });
+
+    /** Map ASCII letters to the Unicode mathematical bold block. */
+    function toUnicodeBold(text) {
+        return Array.from(text).map(function (ch) {
+            var code = ch.codePointAt(0);
+            if (code >= 65 && code <= 90) return String.fromCodePoint(0x1D400 + code - 65);
+            if (code >= 97 && code <= 122) return String.fromCodePoint(0x1D41A + code - 97);
+            if (code >= 48 && code <= 57) return String.fromCodePoint(0x1D7CE + code - 48);
+            return ch;
+        }).join('');
+    }
+
+    /* ============================================================
+       NATO phonetic
+       ============================================================ */
+    define({
+        id: 'nato-phonetic-converter',
+        name: 'NATO Phonetic Alphabet Converter',
+        category: 'text',
+        icon: 'radio',
+        description: 'Spell text using the NATO phonetic alphabet — Alpha, Bravo, Charlie.',
+        tags: ['nato', 'phonetic', 'alphabet', 'spelling', 'alpha bravo charlie', 'radio', 'call'],
+        input: 'text',
+        live: true,
+        placeholder: 'AB-1234',
+        options: [
+            {
+                id: 'direction', type: 'radio', label: 'Direction', value: 'to-phonetic',
+                options: [{ value: 'to-phonetic', label: 'Text → phonetic' }, { value: 'from-phonetic', label: 'Phonetic → text' }]
+            },
+            {
+                id: 'separator', type: 'select', label: 'Separate with', value: 'space',
+                options: [
+                    { value: 'space', label: 'Space' }, { value: 'dash', label: 'Dash' },
+                    { value: 'newline', label: 'New line' }, { value: 'comma', label: 'Comma' }
+                ],
+                when: function (o) { return o.direction === 'to-phonetic'; }
+            },
+            { id: 'spell-digits', type: 'checkbox', label: 'Spell out digits too', value: true },
+            { id: 'uppercase', type: 'checkbox', label: 'Uppercase output', value: false }
+        ],
+        run: function (ctx) {
+            var NATO = {
+                a: 'Alpha', b: 'Bravo', c: 'Charlie', d: 'Delta', e: 'Echo', f: 'Foxtrot', g: 'Golf',
+                h: 'Hotel', i: 'India', j: 'Juliett', k: 'Kilo', l: 'Lima', m: 'Mike', n: 'November',
+                o: 'Oscar', p: 'Papa', q: 'Quebec', r: 'Romeo', s: 'Sierra', t: 'Tango', u: 'Uniform',
+                v: 'Victor', w: 'Whiskey', x: 'X-ray', y: 'Yankee', z: 'Zulu'
+            };
+            var DIGITS = {
+                '0': 'Zero', '1': 'One', '2': 'Two', '3': 'Three', '4': 'Four',
+                '5': 'Five', '6': 'Six', '7': 'Seven', '8': 'Eight', '9': 'Nine'
+            };
+            var PUNCTUATION = { '-': 'Dash', '.': 'Stop', ' ': '(space)', '/': 'Slash', '@': 'At' };
+
+            var o = ctx.opt;
+            var text = String(ctx.text || '');
+            if (!text) return ZT.textResult('');
+
+            if (o.direction === 'from-phonetic') {
+                var reverse = {};
+                Object.keys(NATO).forEach(function (k) { reverse[NATO[k].toLowerCase()] = k; });
+                Object.keys(DIGITS).forEach(function (k) { reverse[DIGITS[k].toLowerCase()] = k; });
+
+                var decoded = text.split(/[\s,\-\n]+/).filter(Boolean).map(function (word) {
+                    var key = word.toLowerCase().replace(/[^a-z-]/g, '');
+                    return reverse[key] !== undefined ? reverse[key] : '';
+                }).join('');
+
+                return ZT.textResult(o.uppercase ? decoded.toUpperCase() : decoded);
+            }
+
+            var separators = { space: ' ', dash: ' - ', newline: '\n', comma: ', ' };
+            var out = Array.from(text).map(function (ch) {
+                var lower = ch.toLowerCase();
+                if (NATO[lower]) return NATO[lower];
+                if (o.spellDigits && DIGITS[ch]) return DIGITS[ch];
+                if (PUNCTUATION[ch]) return PUNCTUATION[ch];
+                return ch;
+            }).filter(function (v) { return v.trim(); }).join(separators[o.separator]);
+
+            if (o.uppercase) out = out.toUpperCase();
+
+            return [
+                ZT.textResult(out),
+                ZT.dataResult(Array.from(text).slice(0, 40).map(function (ch) {
+                    var lower = ch.toLowerCase();
+                    return { label: ch, value: NATO[lower] || DIGITS[ch] || PUNCTUATION[ch] || ch };
+                }), { title: 'Letter by letter', columns: 3, mono: true })
+            ];
+        }
+    });
+
+
+    /* ============================================================
+       Emoji search
+       ============================================================ */
+    define({
+        id: 'emoji-search',
+        name: 'Emoji Search & Copy',
+        category: 'text',
+        icon: 'smile',
+        description: 'Find an emoji by name or feeling and copy it with one click.',
+        tags: ['emoji', 'copy paste', 'search', 'smiley', 'symbols', 'unicode', 'icons'],
+        input: 'text',
+        live: true,
+        popular: true,
+        placeholder: 'Search: happy, fire, rocket, heart, food…',
+        options: [
+            {
+                id: 'category', type: 'select', label: 'Category', value: 'all',
+                options: [
+                    { value: 'all', label: 'All' }, { value: 'faces', label: 'Faces & emotion' },
+                    { value: 'people', label: 'People & gestures' }, { value: 'nature', label: 'Animals & nature' },
+                    { value: 'food', label: 'Food & drink' }, { value: 'travel', label: 'Travel & places' },
+                    { value: 'objects', label: 'Objects' }, { value: 'symbols', label: 'Symbols' }
+                ]
+            },
+            { id: 'show-codes', type: 'checkbox', label: 'Show the Unicode code point', value: false }
+        ],
+        run: function (ctx) {
+            var EMOJI = [
+                ['😀', 'grinning face happy smile', 'faces'], ['😃', 'smiley happy joy', 'faces'],
+                ['😄', 'smile happy laugh', 'faces'], ['😁', 'grin beaming happy', 'faces'],
+                ['😆', 'laughing satisfied happy', 'faces'], ['😅', 'sweat smile relief nervous', 'faces'],
+                ['🤣', 'rofl rolling laughing lol', 'faces'], ['😂', 'joy tears laughing crying lol', 'faces'],
+                ['🙂', 'slight smile happy', 'faces'], ['😉', 'wink flirt', 'faces'],
+                ['😊', 'blush smile shy happy', 'faces'], ['😍', 'heart eyes love adore', 'faces'],
+                ['🥰', 'smiling hearts love affection', 'faces'], ['😘', 'kiss blowing love', 'faces'],
+                ['😎', 'sunglasses cool', 'faces'], ['🤩', 'star struck excited amazed', 'faces'],
+                ['🥳', 'partying celebrate party birthday', 'faces'], ['😏', 'smirk smug', 'faces'],
+                ['😐', 'neutral face blank', 'faces'], ['😑', 'expressionless annoyed', 'faces'],
+                ['🙄', 'eye roll annoyed exasperated', 'faces'], ['😴', 'sleeping tired sleep zzz', 'faces'],
+                ['🤔', 'thinking hmm consider', 'faces'], ['🤨', 'raised eyebrow skeptical suspicious', 'faces'],
+                ['😬', 'grimace awkward nervous', 'faces'], ['😱', 'scream shocked fear', 'faces'],
+                ['😢', 'cry sad tear', 'faces'], ['😭', 'sob crying loudly sad', 'faces'],
+                ['😤', 'triumph frustrated steam angry', 'faces'], ['😡', 'angry rage mad', 'faces'],
+                ['🤯', 'mind blown exploding head shocked', 'faces'], ['😳', 'flushed embarrassed surprised', 'faces'],
+                ['🥺', 'pleading puppy eyes begging', 'faces'], ['😇', 'innocent halo angel', 'faces'],
+                ['🤗', 'hug hugging friendly', 'faces'], ['🤫', 'shush quiet secret', 'faces'],
+                ['🫠', 'melting overwhelmed', 'faces'], ['💀', 'skull dead dying laughing', 'faces'],
+
+                ['👍', 'thumbs up approve yes good like', 'people'], ['👎', 'thumbs down disapprove no bad', 'people'],
+                ['👏', 'clap applause bravo', 'people'], ['🙏', 'pray thanks please folded hands', 'people'],
+                ['🤝', 'handshake deal agreement', 'people'], ['👋', 'wave hello goodbye hi', 'people'],
+                ['✌️', 'peace victory', 'people'], ['🤞', 'fingers crossed luck hope', 'people'],
+                ['👌', 'ok perfect good', 'people'], ['💪', 'muscle strong flex', 'people'],
+                ['🫶', 'heart hands love', 'people'], ['🤷', 'shrug dunno whatever', 'people'],
+                ['🤦', 'facepalm frustrated disbelief', 'people'], ['👀', 'eyes looking watching', 'people'],
+                ['🧠', 'brain smart mind', 'people'], ['👶', 'baby infant', 'people'],
+
+                ['🔥', 'fire hot lit flame trending', 'nature'], ['⭐', 'star favourite', 'nature'],
+                ['🌟', 'glowing star sparkle', 'nature'], ['✨', 'sparkles magic shine new', 'nature'],
+                ['⚡', 'lightning bolt fast power energy', 'nature'], ['🌈', 'rainbow pride colourful', 'nature'],
+                ['☀️', 'sun sunny bright', 'nature'], ['🌙', 'moon night crescent', 'nature'],
+                ['☁️', 'cloud cloudy weather', 'nature'], ['🌧️', 'rain raining weather', 'nature'],
+                ['❄️', 'snowflake cold winter snow', 'nature'], ['🌊', 'wave ocean sea water', 'nature'],
+                ['🌱', 'seedling plant growth new', 'nature'], ['🌳', 'tree nature forest', 'nature'],
+                ['🌸', 'blossom flower spring cherry', 'nature'], ['🍀', 'four leaf clover luck', 'nature'],
+                ['🐶', 'dog puppy pet', 'nature'], ['🐱', 'cat kitten pet', 'nature'],
+                ['🦊', 'fox', 'nature'], ['🐻', 'bear', 'nature'], ['🐼', 'panda', 'nature'],
+                ['🦁', 'lion', 'nature'], ['🐧', 'penguin', 'nature'], ['🦄', 'unicorn magic', 'nature'],
+                ['🐝', 'bee honey', 'nature'], ['🦋', 'butterfly', 'nature'],
+
+                ['🍕', 'pizza food italian', 'food'], ['🍔', 'burger hamburger food', 'food'],
+                ['🍟', 'fries chips food', 'food'], ['🌮', 'taco mexican food', 'food'],
+                ['🍣', 'sushi japanese food', 'food'], ['🍜', 'noodles ramen soup', 'food'],
+                ['🍎', 'apple fruit', 'food'], ['🍌', 'banana fruit', 'food'],
+                ['🍓', 'strawberry fruit', 'food'], ['🥑', 'avocado', 'food'],
+                ['🍰', 'cake dessert slice', 'food'], ['🎂', 'birthday cake celebration', 'food'],
+                ['🍪', 'cookie biscuit', 'food'], ['🍫', 'chocolate', 'food'],
+                ['☕', 'coffee tea hot drink', 'food'], ['🍺', 'beer drink pub', 'food'],
+                ['🍷', 'wine drink', 'food'], ['🥂', 'cheers celebrate toast', 'food'],
+                ['🧋', 'bubble tea boba', 'food'], ['🍿', 'popcorn cinema film', 'food'],
+
+                ['🚀', 'rocket launch space fast startup', 'travel'], ['✈️', 'plane flight travel', 'travel'],
+                ['🚗', 'car drive vehicle', 'travel'], ['🚲', 'bicycle bike cycling', 'travel'],
+                ['🏠', 'house home', 'travel'], ['🏢', 'office building work', 'travel'],
+                ['🌍', 'earth globe world europe africa', 'travel'], ['🗺️', 'map world', 'travel'],
+                ['🏖️', 'beach holiday vacation', 'travel'], ['⛰️', 'mountain hiking', 'travel'],
+                ['🎢', 'rollercoaster theme park', 'travel'], ['🚦', 'traffic light signal', 'travel'],
+
+                ['💻', 'laptop computer work code', 'objects'], ['🖥️', 'desktop computer monitor', 'objects'],
+                ['📱', 'phone mobile smartphone', 'objects'], ['⌨️', 'keyboard typing', 'objects'],
+                ['🖱️', 'mouse computer', 'objects'], ['🔒', 'lock locked secure private', 'objects'],
+                ['🔓', 'unlock open unlocked', 'objects'], ['🔑', 'key password access', 'objects'],
+                ['📁', 'folder directory files', 'objects'], ['📄', 'document page file', 'objects'],
+                ['📊', 'chart graph analytics data', 'objects'], ['📈', 'chart increasing growth up', 'objects'],
+                ['📉', 'chart decreasing loss down', 'objects'], ['📌', 'pin pinned important', 'objects'],
+                ['📎', 'paperclip attachment', 'objects'], ['✏️', 'pencil write edit', 'objects'],
+                ['📝', 'memo note writing', 'objects'], ['🔍', 'search magnifying glass find', 'objects'],
+                ['💡', 'idea lightbulb tip', 'objects'], ['🔔', 'bell notification alert', 'objects'],
+                ['🎁', 'gift present', 'objects'], ['💰', 'money bag cash', 'objects'],
+                ['💳', 'credit card payment', 'objects'], ['⚙️', 'gear settings config', 'objects'],
+                ['🔧', 'wrench tool fix', 'objects'], ['🧰', 'toolbox tools', 'objects'],
+                ['🎧', 'headphones music audio', 'objects'], ['📷', 'camera photo', 'objects'],
+                ['🎬', 'clapper film movie video', 'objects'], ['🕐', 'clock time hour', 'objects'],
+                ['⏰', 'alarm clock time wake', 'objects'], ['🏆', 'trophy win award first', 'objects'],
+                ['🎯', 'target dart goal bullseye', 'objects'], ['🧪', 'test tube science experiment', 'objects'],
+
+                ['❤️', 'red heart love', 'symbols'], ['💙', 'blue heart', 'symbols'],
+                ['💚', 'green heart', 'symbols'], ['💜', 'purple heart', 'symbols'],
+                ['🖤', 'black heart', 'symbols'], ['🧡', 'orange heart', 'symbols'],
+                ['💔', 'broken heart sad breakup', 'symbols'], ['💯', 'hundred perfect score full', 'symbols'],
+                ['✅', 'check tick done complete yes', 'symbols'], ['❌', 'cross x no wrong error', 'symbols'],
+                ['⚠️', 'warning caution alert', 'symbols'], ['❓', 'question mark', 'symbols'],
+                ['❗', 'exclamation important', 'symbols'], ['➕', 'plus add', 'symbols'],
+                ['➖', 'minus subtract', 'symbols'], ['♻️', 'recycle sustainable', 'symbols'],
+                ['🔁', 'repeat loop', 'symbols'], ['🔀', 'shuffle random', 'symbols'],
+                ['▶️', 'play start', 'symbols'], ['⏸️', 'pause', 'symbols'],
+                ['🆕', 'new', 'symbols'], ['🆓', 'free', 'symbols'],
+                ['💤', 'sleep zzz tired', 'symbols'], ['🎉', 'party popper celebrate congrats', 'symbols'],
+                ['🎊', 'confetti celebrate', 'symbols'], ['🏳️‍🌈', 'pride rainbow flag lgbtq', 'symbols']
+            ];
+
+            var query = String(ctx.text || '').trim().toLowerCase();
+            var matches = EMOJI.filter(function (e) {
+                if (ctx.opt.category !== 'all' && e[2] !== ctx.opt.category) return false;
+                if (!query) return true;
+                return e[1].indexOf(query) !== -1;
+            });
+
+            if (!matches.length) {
+                return ZT.dataResult([{ label: 'No match', value: 'Nothing found for "' + query + '". Try a feeling, an object or a category.' }], { title: 'Emoji search' });
+            }
+
+            var grid = ZT.el('div', { class: 'zt-emoji-grid' });
+            matches.forEach(function (e) {
+                grid.appendChild(ZT.el('button', {
+                    class: 'zt-emoji', type: 'button',
+                    title: e[1] + ' — click to copy',
+                    'data-copy': e[0]
+                }, [
+                    ZT.el('span', { class: 'zt-emoji__char', text: e[0] }),
+                    ctx.opt.showCodes
+                        ? ZT.el('span', { class: 'zt-emoji__code', text: 'U+' + e[0].codePointAt(0).toString(16).toUpperCase() })
+                        : null
+                ].filter(Boolean)));
+            });
+
+            return [
+                ZT.nodeResult(grid, { title: matches.length + ' emoji — click any to copy' }),
+                ZT.textResult(matches.map(function (e) { return e[0]; }).join(' '), { title: 'All of them together' })
+            ];
+        }
+    });
+
 })();

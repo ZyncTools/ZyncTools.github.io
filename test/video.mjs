@@ -32,6 +32,9 @@ const MAKE_VIDEO = `
   osc.frequency.value = 440;
   const dest = ac.createMediaStreamDestination();
   osc.connect(gain); gain.connect(dest);
+  // An AudioContext can start suspended; without this the oscillator is
+  // silent and "extract audio" finds a zero-length track.
+  if (ac.state !== 'running') await ac.resume();
   osc.start();
   dest.stream.getAudioTracks().forEach(t => stream.addTrack(t));
 
@@ -40,11 +43,15 @@ const MAKE_VIDEO = `
   rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
 
   const done = new Promise(r => { rec.onstop = r; });
-  rec.start();
+  // A timeslice flushes chunks as we go rather than one blob at stop.
+  rec.start(250);
 
   const start = performance.now();
   await new Promise(resolve => {
-    function frame() {
+    // setInterval rather than requestAnimationFrame: rAF is throttled when the
+    // machine is loaded, which starved the recording when this ran straight
+    // after the 180-page smoke pass.
+    const timer = setInterval(() => {
       const t = (performance.now() - start) / 1000;
       x.fillStyle = '#0b0d11'; x.fillRect(0, 0, 320, 240);
       x.fillStyle = \`hsl(\${(t * 90) % 360},80%,55%)\`;
@@ -54,18 +61,19 @@ const MAKE_VIDEO = `
       x.fillStyle = '#fff';
       x.font = 'bold 22px sans-serif';
       x.fillText(t.toFixed(2) + 's', 12, 30);
-      if (t < 2.2) requestAnimationFrame(frame); else resolve();
-    }
-    frame();
+      if (t >= 2.2) { clearInterval(timer); resolve(); }
+    }, 40);
   });
 
+  // Let the last timeslice land before tearing the recorder down.
+  await new Promise(r => setTimeout(r, 300));
   rec.stop();
   await done;
   osc.stop(); ac.close();
 
   const blob = new Blob(chunks, { type: 'video/webm' });
   window.__VID = new File([blob], 'clip.webm', { type: 'video/webm' });
-  return { size: blob.size, type: blob.type };
+  return { size: blob.size, type: blob.type, chunks: chunks.length };
 })()
 `;
 
@@ -82,6 +90,13 @@ for (const id of TOOLS) {
     await page.goto(`${BASE}/${id}/`, { waitUntil: 'networkidle', timeout: 25000 });
 
     const info = await page.evaluate(MAKE_VIDEO);
+    // A truncated fixture would show up as a confusing tool failure, so name it.
+    if (info.size < 20000) {
+      console.log(`FAIL ${id.padEnd(26)} fixture too small: ${info.size} bytes in ${info.chunks} chunks`);
+      failures++;
+      await page.close();
+      continue;
+    }
 
     await page.evaluate(() => {
       const dt = new DataTransfer();

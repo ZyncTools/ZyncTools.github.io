@@ -8,6 +8,23 @@
     var ZT = window.ZT;
     var define = ZT.registry.define;
 
+    /* Shared output options. Defined here rather than imported so this module
+       stands alone — each page loads only the modules it needs. */
+    var FORMAT_OPTION = {
+        id: 'format', type: 'select', label: 'Output format', value: 'png',
+        options: [
+            { value: 'png', label: 'PNG — lossless, keeps transparency' },
+            { value: 'jpeg', label: 'JPEG — smaller for photos' },
+            { value: 'webp', label: 'WebP — small and modern' }
+        ]
+    };
+
+    var QUALITY_OPTION = {
+        id: 'quality', type: 'range', label: 'Quality', value: 92, min: 10, max: 100, step: 1, suffix: '%',
+        when: function (o) { return o.format !== 'png'; }
+    };
+
+
     /* ============================================================
        QR code
        ============================================================ */
@@ -722,6 +739,626 @@
                     new Blob([out], { type: 'text/plain;charset=utf-8' }),
                     'test-data.' + (o.format === 'ndjson' ? 'ndjson' : o.format)
                 )
+            ];
+        }
+    });
+
+
+    /* ============================================================
+       Avatar / identicon
+       ============================================================ */
+    define({
+        id: 'avatar-generator',
+        name: 'Avatar & Identicon Generator',
+        category: 'generate',
+        icon: 'smile',
+        description: 'Generate a unique deterministic avatar from any name or email.',
+        tags: ['avatar', 'identicon', 'gravatar', 'profile picture', 'placeholder', 'initials'],
+        input: 'none',
+        options: [
+            { id: 'seed', type: 'text', label: 'Name or email', value: 'ada@example.com', help: 'The same text always produces the same avatar.' },
+            {
+                id: 'style', type: 'select', label: 'Style', value: 'identicon',
+                options: [
+                    { value: 'identicon', label: 'Identicon — symmetric blocks' },
+                    { value: 'initials', label: 'Initials on a colour' },
+                    { value: 'rings', label: 'Concentric rings' },
+                    { value: 'bauhaus', label: 'Bauhaus shapes' }
+                ]
+            },
+            { id: 'size', type: 'range', label: 'Size', value: 256, min: 64, max: 1024, step: 32, suffix: 'px' },
+            { id: 'grid', type: 'range', label: 'Grid density', value: 5, min: 3, max: 9, step: 2, suffix: '×', when: function (o) { return o.style === 'identicon'; } },
+            { id: 'rounded', type: 'checkbox', label: 'Round the corners', value: true },
+            { id: 'circle', type: 'checkbox', label: 'Crop to a circle', value: false },
+            { id: 'count', type: 'number', label: 'Generate variations', value: 1, min: 1, max: 24, help: 'More than one appends a number to the seed, so you get a related set.' }
+        ],
+        run: async function (ctx) {
+            var o = ctx.opt;
+            if (!String(o.seed).trim()) ZT.fail('Enter a name or email to generate from.');
+
+            var results = [];
+            for (var n = 0; n < o.count; n++) {
+                var seed = o.count > 1 ? o.seed + '-' + (n + 1) : o.seed;
+                var canvas = drawAvatar(seed, o);
+                var blob = await ZT.encodeCanvas(canvas, 'png');
+                results.push(ZT.fileResult(blob, 'avatar-' + ZT.slugify(seed).slice(0, 40) + '.png', {
+                    previewBlob: blob,
+                    note: o.size + '×' + o.size + '  ·  seed "' + seed + '"'
+                }));
+            }
+            return results;
+        }
+    });
+
+    /** A small deterministic hash — same input, same avatar, every time. */
+    function seedHash(text) {
+        var h = 2166136261;
+        for (var i = 0; i < text.length; i++) {
+            h ^= text.charCodeAt(i);
+            h = Math.imul(h, 16777619);
+        }
+        return h >>> 0;
+    }
+
+    function drawAvatar(seed, o) {
+        var hash = seedHash(seed);
+        var size = o.size;
+        var canvas = ZT.makeCanvas(size, size);
+        var c2d = canvas.getContext('2d');
+
+        // Derive a pleasant colour pair from the hash rather than picking randomly.
+        var hue = hash % 360;
+        var primary = ZT.color.hslToRgb(hue, 62, 52);
+        var secondary = ZT.color.hslToRgb((hue + 40) % 360, 58, 62);
+        var primaryHex = ZT.color.toHex(primary[0], primary[1], primary[2]);
+        var secondaryHex = ZT.color.toHex(secondary[0], secondary[1], secondary[2]);
+        var backdrop = ZT.color.hslToRgb(hue, 30, 94);
+
+        c2d.fillStyle = ZT.color.toHex(backdrop[0], backdrop[1], backdrop[2]);
+        c2d.fillRect(0, 0, size, size);
+
+        if (o.style === 'initials') {
+            var grad = c2d.createLinearGradient(0, 0, size, size);
+            grad.addColorStop(0, primaryHex);
+            grad.addColorStop(1, secondaryHex);
+            c2d.fillStyle = grad;
+            c2d.fillRect(0, 0, size, size);
+
+            var words = String(seed).replace(/@.*$/, '').split(/[\s._-]+/).filter(Boolean);
+            var initials = (words.length > 1
+                ? words[0][0] + words[1][0]
+                : (words[0] || '?').slice(0, 2)).toUpperCase();
+
+            c2d.fillStyle = '#ffffff';
+            c2d.font = 'bold ' + Math.round(size * 0.4) + 'px system-ui, sans-serif';
+            c2d.textAlign = 'center';
+            c2d.textBaseline = 'middle';
+            c2d.fillText(initials, size / 2, size / 2 + size * 0.02);
+        } else if (o.style === 'rings') {
+            var rings = 4 + (hash % 4);
+            for (var r = rings; r > 0; r--) {
+                c2d.fillStyle = r % 2 === 0 ? primaryHex : secondaryHex;
+                c2d.beginPath();
+                c2d.arc(size / 2, size / 2, size / 2 * (r / rings), 0, Math.PI * 2);
+                c2d.fill();
+            }
+        } else if (o.style === 'bauhaus') {
+            var shapes = 4;
+            for (var s = 0; s < shapes; s++) {
+                var bits = (hash >> (s * 5)) & 31;
+                c2d.fillStyle = s % 2 === 0 ? primaryHex : secondaryHex;
+                var cell = size / 2;
+                var cx = (s % 2) * cell;
+                var cy = Math.floor(s / 2) * cell;
+
+                if (bits % 3 === 0) {
+                    c2d.fillRect(cx, cy, cell, cell);
+                } else if (bits % 3 === 1) {
+                    c2d.beginPath();
+                    c2d.arc(cx + cell / 2, cy + cell / 2, cell / 2, 0, Math.PI * 2);
+                    c2d.fill();
+                } else {
+                    c2d.beginPath();
+                    c2d.moveTo(cx, cy + cell);
+                    c2d.lineTo(cx + cell, cy + cell);
+                    c2d.lineTo(cx + (bits % 2 ? 0 : cell), cy);
+                    c2d.closePath();
+                    c2d.fill();
+                }
+            }
+        } else {
+            // Identicon: fill the left half from hash bits and mirror it.
+            var grid = o.grid;
+            var cellSize = size / grid;
+            var half = Math.ceil(grid / 2);
+
+            for (var x = 0; x < half; x++) {
+                for (var y = 0; y < grid; y++) {
+                    var bit = (hash >> ((x * grid + y) % 31)) & 1;
+                    if (!bit) continue;
+                    c2d.fillStyle = (x + y) % 3 === 0 ? secondaryHex : primaryHex;
+                    c2d.fillRect(x * cellSize, y * cellSize, Math.ceil(cellSize), Math.ceil(cellSize));
+                    c2d.fillRect((grid - 1 - x) * cellSize, y * cellSize, Math.ceil(cellSize), Math.ceil(cellSize));
+                }
+            }
+        }
+
+        if (o.circle || o.rounded) {
+            var masked = ZT.makeCanvas(size, size);
+            var mctx = masked.getContext('2d');
+            mctx.save();
+            if (o.circle) {
+                mctx.beginPath();
+                mctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+                mctx.clip();
+            } else {
+                ZT.roundedRect(mctx, 0, 0, size, size, size * 0.18);
+                mctx.clip();
+            }
+            mctx.drawImage(canvas, 0, 0);
+            mctx.restore();
+            return masked;
+        }
+
+        return canvas;
+    }
+
+    /* ============================================================
+       Open Graph image
+       ============================================================ */
+    define({
+        id: 'og-image-generator',
+        name: 'Social Share Image Generator',
+        category: 'generate',
+        icon: 'image-plus',
+        description: 'Create a 1200×630 Open Graph card for links shared on social media.',
+        tags: ['og image', 'open graph', 'social', 'twitter card', 'share', 'thumbnail', 'banner'],
+        input: 'none',
+        popular: true,
+        options: [
+            { id: 'title', type: 'text', label: 'Headline', value: 'How to ship faster' },
+            { id: 'subtitle', type: 'textarea', label: 'Supporting line', value: 'A practical guide for small teams', rows: 2 },
+            { id: 'badge', type: 'text', label: 'Small label', value: '', placeholder: 'e.g. GUIDE, or your site name' },
+            {
+                id: 'theme', type: 'select', label: 'Theme', value: 'dark',
+                options: [
+                    { value: 'dark', label: 'Dark' }, { value: 'light', label: 'Light' },
+                    { value: 'gradient', label: 'Gradient' }, { value: 'custom', label: 'Custom colours' }
+                ]
+            },
+            { id: 'bg-color', type: 'color', label: 'Background', value: '#0B0D11', when: function (o) { return o.theme === 'custom'; } },
+            { id: 'text-color', type: 'color', label: 'Text', value: '#FFFFFF', when: function (o) { return o.theme === 'custom'; } },
+            { id: 'accent', type: 'color', label: 'Accent', value: '#4F8DF7' },
+            {
+                id: 'align', type: 'select', label: 'Alignment', value: 'left',
+                options: [{ value: 'left', label: 'Left' }, { value: 'center', label: 'Centre' }]
+            },
+            { id: 'logo', type: 'file', label: 'Logo (optional)', accept: 'image/*' },
+            {
+                id: 'size', type: 'select', label: 'Dimensions', value: '1200x630',
+                options: [
+                    { value: '1200x630', label: '1200×630 — Open Graph / Twitter' },
+                    { value: '1200x628', label: '1200×628 — LinkedIn' },
+                    { value: '1080x1080', label: '1080×1080 — Instagram square' },
+                    { value: '1920x1080', label: '1920×1080 — presentation' }
+                ]
+            },
+            Object.assign({}, FORMAT_OPTION, { value: 'png' }), QUALITY_OPTION
+        ],
+        run: async function (ctx) {
+            var o = ctx.opt;
+            var dims = o.size.split('x').map(Number);
+            var W = dims[0], H = dims[1];
+
+            var canvas = ZT.makeCanvas(W, H);
+            var c2d = canvas.getContext('2d');
+
+            var background, textColour, mutedColour;
+            if (o.theme === 'light') {
+                background = '#FFFFFF'; textColour = '#0B0D11'; mutedColour = '#5A6478';
+            } else if (o.theme === 'custom') {
+                background = o.bgColor; textColour = o.textColor;
+                var rgbT = ZT.color.parse(o.textColor) || [255, 255, 255];
+                mutedColour = 'rgba(' + rgbT[0] + ',' + rgbT[1] + ',' + rgbT[2] + ',0.62)';
+            } else {
+                background = '#0B0D11'; textColour = '#FFFFFF'; mutedColour = '#A3ACBD';
+            }
+
+            c2d.fillStyle = background;
+            c2d.fillRect(0, 0, W, H);
+
+            if (o.theme === 'gradient') {
+                var grad = c2d.createLinearGradient(0, 0, W, H);
+                grad.addColorStop(0, o.accent);
+                var second = ZT.color.parse(o.accent) || [79, 141, 247];
+                var shifted = ZT.color.rgbToHsl(second[0], second[1], second[2]);
+                var pair = ZT.color.hslToRgb((shifted[0] + 55) % 360, shifted[1], shifted[2]);
+                grad.addColorStop(1, ZT.color.toHex(pair[0], pair[1], pair[2]));
+                c2d.fillStyle = grad;
+                c2d.fillRect(0, 0, W, H);
+                textColour = '#FFFFFF';
+                mutedColour = 'rgba(255,255,255,0.78)';
+            } else {
+                // A soft glow keeps a flat card from looking empty.
+                var glow = c2d.createRadialGradient(W * 0.85, -H * 0.25, 0, W * 0.85, -H * 0.25, W * 0.75);
+                var accentRgb = ZT.color.parse(o.accent) || [79, 141, 247];
+                glow.addColorStop(0, 'rgba(' + accentRgb.slice(0, 3).join(',') + ',0.30)');
+                glow.addColorStop(1, 'rgba(' + accentRgb.slice(0, 3).join(',') + ',0)');
+                c2d.fillStyle = glow;
+                c2d.fillRect(0, 0, W, H);
+            }
+
+            var margin = Math.round(W * 0.075);
+            var centred = o.align === 'center';
+            c2d.textAlign = centred ? 'center' : 'left';
+            var anchorX = centred ? W / 2 : margin;
+            var cursorY = margin;
+
+            if (o.logo) {
+                var logo = await ZT.loadImage(o.logo);
+                var logoSize = ZT.imageSize(logo);
+                var logoH = Math.round(H * 0.075);
+                var logoW = Math.round(logoSize.width * (logoH / logoSize.height));
+                c2d.drawImage(logo, centred ? (W - logoW) / 2 : margin, cursorY, logoW, logoH);
+                cursorY += logoH + Math.round(H * 0.04);
+            }
+
+            if (String(o.badge).trim()) {
+                var badgeSize = Math.round(H * 0.038);
+                c2d.font = '600 ' + badgeSize + 'px system-ui, sans-serif';
+                c2d.fillStyle = o.accent;
+                c2d.fillText(o.badge.toUpperCase(), anchorX, cursorY + badgeSize);
+                cursorY += badgeSize + Math.round(H * 0.035);
+            }
+
+            // Fit the headline to the card by shrinking until it wraps into 3 lines.
+            var titleSize = Math.round(H * 0.115);
+            var maxWidth = W - margin * 2;
+            var lines;
+            do {
+                c2d.font = '800 ' + titleSize + 'px system-ui, sans-serif';
+                lines = wrapCanvasText(c2d, o.title || '', maxWidth);
+                if (lines.length <= 3) break;
+                titleSize -= 4;
+            } while (titleSize > H * 0.05);
+
+            c2d.fillStyle = textColour;
+            var titleLineHeight = titleSize * 1.12;
+            var blockHeight = lines.length * titleLineHeight;
+            var startY = Math.max(cursorY, (H - blockHeight) / 2 - (o.subtitle ? H * 0.05 : 0));
+
+            lines.forEach(function (line, i) {
+                c2d.fillText(line, anchorX, startY + i * titleLineHeight + titleSize * 0.85);
+            });
+
+            if (String(o.subtitle).trim()) {
+                var subSize = Math.round(H * 0.045);
+                c2d.font = '400 ' + subSize + 'px system-ui, sans-serif';
+                c2d.fillStyle = mutedColour;
+                var subLines = wrapCanvasText(c2d, o.subtitle, maxWidth).slice(0, 2);
+                subLines.forEach(function (line, i) {
+                    c2d.fillText(line, anchorX, startY + blockHeight + subSize * 1.4 + i * subSize * 1.35);
+                });
+            }
+
+            // Accent rule along the bottom edge ties the card together.
+            c2d.fillStyle = o.accent;
+            c2d.fillRect(0, H - Math.round(H * 0.014), W, Math.round(H * 0.014));
+
+            if (o.format === 'jpeg') canvas = ZT.flattenAlpha(canvas, background);
+            var blob = await ZT.encodeCanvas(canvas, o.format, o.format === 'png' ? undefined : o.quality / 100);
+
+            return [
+                ZT.fileResult(blob, 'social-card.' + (o.format === 'jpeg' ? 'jpg' : o.format), {
+                    previewBlob: blob, note: W + '×' + H + '  ·  ' + ZT.formatBytes(blob.size)
+                }),
+                ZT.textResult(
+                    '<meta property="og:image" content="https://your-site.com/social-card.png">\n' +
+                    '<meta property="og:image:width" content="' + W + '">\n' +
+                    '<meta property="og:image:height" content="' + H + '">\n' +
+                    '<meta name="twitter:card" content="summary_large_image">\n' +
+                    '<meta name="twitter:image" content="https://your-site.com/social-card.png">',
+                    { lang: 'html', title: 'Meta tags to go with it' }
+                )
+            ];
+        }
+    });
+
+    /** Greedy word wrap against the canvas context's current font. */
+    function wrapCanvasText(c2d, text, maxWidth) {
+        var words = String(text).split(/\s+/).filter(Boolean);
+        if (!words.length) return [''];
+
+        var lines = [];
+        var current = words[0];
+        for (var i = 1; i < words.length; i++) {
+            var candidate = current + ' ' + words[i];
+            if (c2d.measureText(candidate).width <= maxWidth) current = candidate;
+            else { lines.push(current); current = words[i]; }
+        }
+        lines.push(current);
+        return lines;
+    }
+
+    /* ============================================================
+       Signature generator
+       ============================================================ */
+    define({
+        id: 'signature-generator',
+        name: 'Signature Generator',
+        category: 'generate',
+        icon: 'pen-tool',
+        description: 'Draw or type a signature and save it as a transparent PNG.',
+        tags: ['signature', 'sign', 'handwriting', 'transparent', 'png', 'esign'],
+        input: 'none',
+        options: [
+            {
+                id: 'source', type: 'radio', label: 'Create it by', value: 'draw',
+                options: [{ value: 'draw', label: 'Drawing' }, { value: 'type', label: 'Typing' }]
+            },
+            { id: 'signature', type: 'signature', label: 'Draw your signature', when: function (o) { return o.source === 'draw'; } },
+            { id: 'text', type: 'text', label: 'Your name', value: 'Ada Lovelace', when: function (o) { return o.source === 'type'; } },
+            {
+                id: 'font', type: 'select', label: 'Handwriting style', value: 'cursive',
+                options: [
+                    { value: 'cursive', label: 'Cursive' },
+                    { value: 'serif', label: 'Formal serif' },
+                    { value: 'sans-serif', label: 'Clean sans-serif' }
+                ],
+                when: function (o) { return o.source === 'type'; }
+            },
+            { id: 'color', type: 'color', label: 'Ink colour', value: '#111827' },
+            { id: 'size', type: 'range', label: 'Output width', value: 600, min: 200, max: 2000, step: 50, suffix: 'px' },
+            { id: 'transparent', type: 'checkbox', label: 'Transparent background', value: true },
+            { id: 'background', type: 'color', label: 'Background colour', value: '#FFFFFF', when: function (o) { return !o.transparent; } },
+            { id: 'note', type: 'note', text: 'A signature image is a picture, not a cryptographic signature — it proves nothing about who made it, exactly like signing a printed page. For a legally binding e-signature use a service that records identity and intent.' }
+        ],
+        run: async function (ctx) {
+            var o = ctx.opt;
+            var source;
+
+            if (o.source === 'draw') {
+                if (!o.signature) ZT.fail('Draw your signature in the box above first.');
+                var bitmap = await ZT.loadImage(o.signature);
+                source = ZT.drawToCanvas(bitmap);
+            } else {
+                if (!String(o.text).trim()) ZT.fail('Type the name you want to sign with.');
+                source = renderSignatureText(o.text, o.font, o.color);
+            }
+
+            // Scale to the requested width, keeping the aspect ratio.
+            var scale = o.size / source.width;
+            var canvas = ZT.makeCanvas(o.size, Math.round(source.height * scale));
+            var c2d = canvas.getContext('2d');
+
+            if (!o.transparent) {
+                c2d.fillStyle = o.background;
+                c2d.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            c2d.imageSmoothingQuality = 'high';
+            c2d.drawImage(source, 0, 0, canvas.width, canvas.height);
+
+            // Recolour drawn ink, which is captured in a fixed dark tone.
+            if (o.source === 'draw' && o.color.toLowerCase() !== '#111827') {
+                var rgb = ZT.color.parse(o.color) || [17, 24, 39];
+                ZT.mapPixels(canvas, function (r, g, b, a, i, data) {
+                    if (a < 8) return;
+                    data[i] = rgb[0]; data[i + 1] = rgb[1]; data[i + 2] = rgb[2];
+                });
+            }
+
+            var blob = await ZT.encodeCanvas(canvas, 'png');
+            return ZT.fileResult(blob, 'signature.png', {
+                previewBlob: blob,
+                note: canvas.width + '×' + canvas.height + (o.transparent ? '  ·  transparent PNG' : '')
+            });
+        }
+    });
+
+    function renderSignatureText(text, family, colour) {
+        var FONTS = {
+            cursive: '"Segoe Script", "Brush Script MT", "Snell Roundhand", cursive',
+            serif: 'Georgia, "Times New Roman", serif',
+            'sans-serif': '"Segoe UI", Helvetica, Arial, sans-serif'
+        };
+
+        var fontSize = 140;
+        var font = (family === 'cursive' ? 'italic ' : '') + fontSize + 'px ' + (FONTS[family] || FONTS.cursive);
+
+        var measure = ZT.makeCanvas(10, 10).getContext('2d');
+        measure.font = font;
+        var width = Math.ceil(measure.measureText(text).width) + 60;
+
+        var canvas = ZT.makeCanvas(width, Math.round(fontSize * 1.7));
+        var c2d = canvas.getContext('2d');
+        c2d.font = font;
+        c2d.fillStyle = colour;
+        c2d.textBaseline = 'middle';
+        c2d.fillText(text, 30, canvas.height / 2);
+        return canvas;
+    }
+
+    /* ============================================================
+       Invoice
+       ============================================================ */
+    define({
+        id: 'invoice-generator',
+        name: 'Invoice Generator',
+        category: 'generate',
+        icon: 'file-text',
+        description: 'Fill in a form and download a clean PDF invoice.',
+        tags: ['invoice', 'bill', 'receipt', 'pdf', 'freelance', 'accounting', 'template'],
+        input: 'none',
+        popular: true,
+        options: [
+            { id: 'invoice-number', type: 'text', label: 'Invoice number', value: 'INV-001' },
+            { id: 'date', type: 'date', label: 'Invoice date', value: '' },
+            { id: 'due-date', type: 'date', label: 'Due date', value: '' },
+
+            { id: 'from', type: 'textarea', label: 'From (you)', rows: 4, value: 'Your Name\n1 Example Street\nLondon, EC1A 1BB\nyou@example.com' },
+            { id: 'to', type: 'textarea', label: 'Bill to (client)', rows: 4, value: 'Client Ltd\n2 Sample Road\nManchester, M1 2AB' },
+
+            { id: 'items', type: 'textarea', label: 'Line items', rows: 6,
+              value: 'Design work | 10 | 75\nDevelopment | 24 | 85\nHosting setup | 1 | 150',
+              help: 'One per line:  description | quantity | unit price' },
+
+            { id: 'currency', type: 'select', label: 'Currency', value: 'GBP',
+              options: [
+                  { value: 'GBP', label: 'GBP  £' }, { value: 'USD', label: 'USD  $' },
+                  { value: 'EUR', label: 'EUR  €' }, { value: 'INR', label: 'INR  ₹' },
+                  { value: 'AUD', label: 'AUD  $' }, { value: 'CAD', label: 'CAD  $' }
+              ] },
+            { id: 'tax-rate', type: 'number', label: 'Tax rate', suffix: '%', value: 20, min: 0, max: 100, step: 0.1 },
+            { id: 'tax-label', type: 'text', label: 'Tax name', value: 'VAT' },
+            { id: 'discount', type: 'number', label: 'Discount', suffix: '%', value: 0, min: 0, max: 100, step: 0.1 },
+            { id: 'notes', type: 'textarea', label: 'Notes / payment terms', rows: 3, value: 'Payment due within 30 days.\nBank: 00-00-00  ·  Account: 12345678' },
+            { id: 'accent', type: 'color', label: 'Accent colour', value: '#4F8DF7' }
+        ],
+        run: async function (ctx) {
+            var o = ctx.opt;
+            var PDFLib = await ZT.libs.pdfLib();
+
+            var SYMBOLS = { GBP: 'GBP ', USD: '$', EUR: 'EUR ', INR: 'INR ', AUD: 'A$', CAD: 'C$' };
+            var symbol = SYMBOLS[o.currency] || '';
+
+            var items = String(o.items).split(/\r?\n/).filter(function (l) { return l.trim(); }).map(function (line, i) {
+                var parts = line.split('|').map(function (p) { return p.trim(); });
+                var quantity = parseFloat(parts[1]);
+                var price = parseFloat(parts[2]);
+                if (!parts[0]) ZT.fail('Line ' + (i + 1) + ' has no description.');
+                if (isNaN(quantity) || isNaN(price)) {
+                    ZT.fail('Line ' + (i + 1) + ' needs a quantity and a price:  description | quantity | price');
+                }
+                return { description: parts[0], quantity: quantity, price: price, total: quantity * price };
+            });
+
+            if (!items.length) ZT.fail('Add at least one line item.');
+
+            var subtotal = items.reduce(function (sum, i) { return sum + i.total; }, 0);
+            var discountAmount = subtotal * (o.discount / 100);
+            var taxable = subtotal - discountAmount;
+            var taxAmount = taxable * (o.taxRate / 100);
+            var total = taxable + taxAmount;
+
+            function money(n) {
+                return symbol + n.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+            var doc = await PDFLib.PDFDocument.create();
+            var page = doc.addPage([595.28, 841.89]);
+            var regular = await doc.embedFont(PDFLib.StandardFonts.Helvetica);
+            var bold = await doc.embedFont(PDFLib.StandardFonts.HelveticaBold);
+
+            var accent = ZT.color.parse(o.accent) || [79, 141, 247];
+            var accentColor = PDFLib.rgb(accent[0] / 255, accent[1] / 255, accent[2] / 255);
+            var ink = PDFLib.rgb(0.09, 0.11, 0.14);
+            var muted = PDFLib.rgb(0.42, 0.45, 0.5);
+
+            var margin = 50;
+            var width = 595.28;
+            var y = 780;
+
+            function sanitise(s) {
+                return String(s).replace(/[^\x00-\xFF]/g, '?');
+            }
+
+            page.drawRectangle({ x: 0, y: 818, width: width, height: 24, color: accentColor });
+
+            page.drawText('INVOICE', { x: margin, y: y, size: 30, font: bold, color: ink });
+            page.drawText(sanitise(o.invoiceNumber), { x: margin, y: y - 22, size: 11, font: regular, color: muted });
+
+            var today = new Date().toISOString().slice(0, 10);
+            var dateText = 'Date: ' + (o.date || today);
+            var dueText = o.dueDate ? 'Due: ' + o.dueDate : '';
+            page.drawText(dateText, { x: width - margin - regular.widthOfTextAtSize(dateText, 10), y: y + 8, size: 10, font: regular, color: muted });
+            if (dueText) {
+                page.drawText(dueText, { x: width - margin - regular.widthOfTextAtSize(dueText, 10), y: y - 6, size: 10, font: regular, color: muted });
+            }
+
+            y -= 60;
+
+            function block(label, body, x) {
+                page.drawText(label, { x: x, y: y, size: 8, font: bold, color: muted });
+                var lines = String(body).split(/\r?\n/).filter(Boolean);
+                lines.forEach(function (line, i) {
+                    page.drawText(sanitise(line), { x: x, y: y - 15 - i * 13, size: 10, font: i === 0 ? bold : regular, color: ink });
+                });
+                return lines.length;
+            }
+
+            var fromLines = block('FROM', o.from, margin);
+            var toLines = block('BILL TO', o.to, width / 2 + 10);
+            y -= 20 + Math.max(fromLines, toLines) * 13 + 30;
+
+            // Table header
+            page.drawRectangle({ x: margin, y: y - 4, width: width - margin * 2, height: 22, color: PDFLib.rgb(0.96, 0.97, 0.98) });
+            page.drawText('DESCRIPTION', { x: margin + 8, y: y + 3, size: 8, font: bold, color: muted });
+            page.drawText('QTY', { x: 330, y: y + 3, size: 8, font: bold, color: muted });
+            page.drawText('PRICE', { x: 390, y: y + 3, size: 8, font: bold, color: muted });
+            page.drawText('AMOUNT', { x: width - margin - 60, y: y + 3, size: 8, font: bold, color: muted });
+            y -= 26;
+
+            items.forEach(function (item) {
+                if (y < 160) {
+                    page = doc.addPage([595.28, 841.89]);
+                    y = 780;
+                }
+                page.drawText(sanitise(item.description).slice(0, 48), { x: margin + 8, y: y, size: 10, font: regular, color: ink });
+                page.drawText(String(item.quantity), { x: 330, y: y, size: 10, font: regular, color: ink });
+                page.drawText(money(item.price), { x: 390, y: y, size: 10, font: regular, color: ink });
+                var amount = money(item.total);
+                page.drawText(amount, { x: width - margin - regular.widthOfTextAtSize(amount, 10), y: y, size: 10, font: regular, color: ink });
+                y -= 18;
+            });
+
+            y -= 10;
+            page.drawLine({ start: { x: 330, y: y }, end: { x: width - margin, y: y }, thickness: 0.7, color: PDFLib.rgb(0.85, 0.87, 0.9) });
+            y -= 18;
+
+            function totalRow(label, amount, emphasis) {
+                var font = emphasis ? bold : regular;
+                var size = emphasis ? 13 : 10;
+                page.drawText(label, { x: 390, y: y, size: size, font: font, color: emphasis ? ink : muted });
+                var text = money(amount);
+                page.drawText(text, {
+                    x: width - margin - font.widthOfTextAtSize(text, size),
+                    y: y, size: size, font: font, color: emphasis ? accentColor : ink
+                });
+                y -= emphasis ? 24 : 16;
+            }
+
+            totalRow('Subtotal', subtotal);
+            if (o.discount > 0) totalRow('Discount ' + o.discount + '%', -discountAmount);
+            if (o.taxRate > 0) totalRow(sanitise(o.taxLabel) + ' ' + o.taxRate + '%', taxAmount);
+            y -= 4;
+            totalRow('TOTAL', total, true);
+
+            if (String(o.notes).trim()) {
+                y -= 20;
+                page.drawText('NOTES', { x: margin, y: y, size: 8, font: bold, color: muted });
+                y -= 14;
+                String(o.notes).split(/\r?\n/).forEach(function (line) {
+                    page.drawText(sanitise(line), { x: margin, y: y, size: 9, font: regular, color: muted });
+                    y -= 12;
+                });
+            }
+
+            doc.setTitle('Invoice ' + o.invoiceNumber);
+            doc.setProducer('ZyncTools');
+            var bytes = await doc.save();
+
+            return [
+                ZT.dataResult([
+                    { label: 'Subtotal', value: money(subtotal) },
+                    { label: 'Discount', value: o.discount > 0 ? '-' + money(discountAmount) : '—' },
+                    { label: o.taxLabel + ' ' + o.taxRate + '%', value: money(taxAmount) },
+                    { label: 'Total due', value: money(total) },
+                    { label: 'Line items', value: String(items.length) }
+                ], { title: 'Invoice summary', columns: 2 }),
+                ZT.fileResult(new Blob([bytes], { type: 'application/pdf' }),
+                    ZT.slugify(o.invoiceNumber || 'invoice') + '.pdf',
+                    { note: ZT.formatBytes(bytes.length) })
             ];
         }
     });

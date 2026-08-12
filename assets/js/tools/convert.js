@@ -485,4 +485,117 @@
         }
     });
 
+
+    /* ============================================================
+       Unicode inspector
+       ============================================================ */
+    define({
+        id: 'unicode-inspector',
+        name: 'Unicode Character Inspector',
+        category: 'convert',
+        icon: 'search-code',
+        description: 'Break text into code points and find invisible or look-alike characters.',
+        tags: ['unicode', 'character', 'code point', 'utf-8', 'invisible', 'homoglyph', 'inspect', 'emoji'],
+        input: 'text',
+        live: true,
+        placeholder: 'Paste text here — including anything that is behaving oddly.',
+        options: [
+            { id: 'max', type: 'number', label: 'Show at most', suffix: 'characters', value: 100, min: 10, max: 1000 },
+            { id: 'flag-invisible', type: 'checkbox', label: 'Flag invisible and control characters', value: true },
+            { id: 'flag-homoglyph', type: 'checkbox', label: 'Flag look-alike characters', value: true, help: 'Cyrillic а and Latin a are different characters that look identical — a common source of broken searches and phishing domains.' },
+            {
+                id: 'format', type: 'select', label: 'Escape format', value: 'js',
+                options: [
+                    { value: 'js', label: 'JavaScript  \\u0041' },
+                    { value: 'html', label: 'HTML  &#65;' },
+                    { value: 'css', label: 'CSS  \\0041' },
+                    { value: 'python', label: 'Python  \\u0041' }
+                ]
+            }
+        ],
+        run: function (ctx) {
+            var text = String(ctx.text || '');
+            if (!text) {
+                return ZT.dataResult([{ label: 'Waiting for input', value: 'Paste some text to inspect it.' }], { title: 'Unicode inspector' });
+            }
+
+            var INVISIBLE = {
+                0x00A0: 'no-break space', 0x00AD: 'soft hyphen', 0x200B: 'zero-width space',
+                0x200C: 'zero-width non-joiner', 0x200D: 'zero-width joiner', 0x200E: 'left-to-right mark',
+                0x200F: 'right-to-left mark', 0x2028: 'line separator', 0x2029: 'paragraph separator',
+                0x202F: 'narrow no-break space', 0x2060: 'word joiner', 0xFEFF: 'byte-order mark',
+                0x180E: 'Mongolian vowel separator', 0x3000: 'ideographic space'
+            };
+
+            var HOMOGLYPHS = {
+                0x0430: 'Cyrillic а — looks like Latin a', 0x0435: 'Cyrillic е — looks like Latin e',
+                0x043E: 'Cyrillic о — looks like Latin o', 0x0440: 'Cyrillic р — looks like Latin p',
+                0x0441: 'Cyrillic с — looks like Latin c', 0x0445: 'Cyrillic х — looks like Latin x',
+                0x0456: 'Cyrillic і — looks like Latin i', 0x03BF: 'Greek ο — looks like Latin o',
+                0x0391: 'Greek Α — looks like Latin A', 0x2212: 'minus sign — looks like a hyphen',
+                0x2013: 'en dash — looks like a hyphen', 0x2014: 'em dash — looks like a hyphen',
+                0x2018: 'left single quote', 0x2019: 'right single quote — often mistaken for an apostrophe',
+                0x201C: 'left double quote', 0x201D: 'right double quote'
+            };
+
+            var characters = Array.from(text);
+            var problems = [];
+
+            var rows = characters.slice(0, ctx.opt.max).map(function (ch, index) {
+                var code = ch.codePointAt(0);
+                var hex = code.toString(16).toUpperCase().padStart(4, '0');
+
+                var escaped;
+                switch (ctx.opt.format) {
+                    case 'html': escaped = '&#' + code + ';'; break;
+                    case 'css': escaped = '\\' + hex; break;
+                    default: escaped = code > 0xFFFF ? '\\u{' + hex + '}' : '\\u' + hex;
+                }
+
+                var label = ch;
+                var notes = [];
+
+                if (INVISIBLE[code]) {
+                    label = '(invisible)';
+                    notes.push(INVISIBLE[code]);
+                    if (ctx.opt.flagInvisible) problems.push({ index: index, code: code, note: INVISIBLE[code] });
+                } else if (code < 32 || code === 127) {
+                    label = '(control)';
+                    notes.push('control character');
+                    if (ctx.opt.flagInvisible) problems.push({ index: index, code: code, note: 'control character' });
+                } else if (HOMOGLYPHS[code]) {
+                    notes.push(HOMOGLYPHS[code]);
+                    if (ctx.opt.flagHomoglyph) problems.push({ index: index, code: code, note: HOMOGLYPHS[code] });
+                }
+
+                return {
+                    label: index + ':  ' + label,
+                    value: 'U+' + hex + '   ' + escaped + (notes.length ? '   ·   ' + notes.join(', ') : '')
+                };
+            });
+
+            var results = [];
+
+            if (problems.length) {
+                results.push(ZT.dataResult(problems.slice(0, 30).map(function (p) {
+                    return { label: 'Position ' + p.index + '  ·  U+' + p.code.toString(16).toUpperCase().padStart(4, '0'), value: p.note };
+                }), { title: problems.length + ' character' + (problems.length === 1 ? '' : 's') + ' worth a second look', columns: 1 }));
+            }
+
+            results.push(ZT.dataResult([
+                { label: 'Characters', value: ZT.formatNumber(characters.length) },
+                { label: 'UTF-16 length', value: ZT.formatNumber(text.length) + (text.length !== characters.length ? '  (surrogate pairs present)' : '') },
+                { label: 'UTF-8 bytes', value: ZT.formatNumber(new TextEncoder().encode(text).length) },
+                { label: 'Unusual characters', value: String(problems.length) }
+            ], { title: 'Summary', columns: 2 }));
+
+            results.push(ZT.dataResult(rows, {
+                title: 'Character by character' + (characters.length > ctx.opt.max ? '  (first ' + ctx.opt.max + ')' : ''),
+                columns: 2, mono: true
+            }));
+
+            return results;
+        }
+    });
+
 })();

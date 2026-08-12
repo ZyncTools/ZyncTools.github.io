@@ -655,4 +655,635 @@
         }
     });
 
+
+    /* ============================================================
+       Loan / EMI
+       ============================================================ */
+    define({
+        id: 'loan-calculator',
+        name: 'Loan & EMI Calculator',
+        category: 'math',
+        icon: 'percent',
+        description: 'Work out monthly repayments, total interest and an amortisation schedule.',
+        tags: ['loan', 'emi', 'mortgage', 'repayment', 'interest', 'amortisation', 'finance', 'car loan'],
+        input: 'none',
+        popular: true,
+        options: [
+            { id: 'amount', type: 'number', label: 'Loan amount', value: 250000, min: 1, step: 'any' },
+            { id: 'rate', type: 'number', label: 'Annual interest rate', suffix: '%', value: 5.5, min: 0, max: 100, step: 0.01 },
+            { id: 'years', type: 'number', label: 'Term', suffix: 'years', value: 25, min: 0, max: 50 },
+            { id: 'months', type: 'number', label: 'plus', suffix: 'months', value: 0, min: 0, max: 11 },
+            { id: 'extra', type: 'number', label: 'Extra payment each month', value: 0, min: 0, step: 'any', help: 'Overpaying reduces both the term and the total interest, often dramatically.' },
+            { id: 'currency', type: 'text', label: 'Currency symbol', value: '£', maxlength: 4 },
+            { id: 'show-schedule', type: 'checkbox', label: 'Show a yearly breakdown', value: true }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+            var principal = Number(o.amount);
+            var totalMonths = o.years * 12 + o.months;
+
+            if (!(principal > 0)) ZT.fail('Enter a loan amount greater than zero.');
+            if (totalMonths < 1) ZT.fail('The term must be at least one month.');
+
+            var monthlyRate = o.rate / 100 / 12;
+
+            /* Standard amortisation formula. At 0% it degenerates, so that
+               case is just the principal split evenly. */
+            var payment = monthlyRate === 0
+                ? principal / totalMonths
+                : principal * monthlyRate * Math.pow(1 + monthlyRate, totalMonths) /
+                  (Math.pow(1 + monthlyRate, totalMonths) - 1);
+
+            function money(n) {
+                return o.currency + Math.abs(n).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+            // Walk the schedule so extra payments are reflected properly.
+            var balance = principal;
+            var totalInterest = 0;
+            var month = 0;
+            var yearly = [];
+            var yearInterest = 0, yearPrincipal = 0;
+            var actualPayment = payment + Number(o.extra || 0);
+
+            while (balance > 0.005 && month < 1200) {
+                month++;
+                var interest = balance * monthlyRate;
+                var towardsPrincipal = Math.min(actualPayment - interest, balance);
+
+                if (towardsPrincipal <= 0) {
+                    ZT.fail('At this interest rate the monthly payment never covers the interest, so the loan would never be repaid. Increase the payment or lower the rate.');
+                }
+
+                balance -= towardsPrincipal;
+                totalInterest += interest;
+                yearInterest += interest;
+                yearPrincipal += towardsPrincipal;
+
+                if (month % 12 === 0 || balance <= 0.005) {
+                    yearly.push({
+                        year: Math.ceil(month / 12),
+                        interest: yearInterest,
+                        principal: yearPrincipal,
+                        balance: Math.max(0, balance)
+                    });
+                    yearInterest = 0; yearPrincipal = 0;
+                }
+            }
+
+            var rows = [
+                { label: 'Monthly payment', value: money(payment) },
+                { label: 'Total repaid', value: money(principal + totalInterest) },
+                { label: 'Total interest', value: money(totalInterest) },
+                { label: 'Interest as % of loan', value: (totalInterest / principal * 100).toFixed(1) + '%' },
+                { label: 'Term', value: Math.floor(month / 12) + ' years ' + (month % 12) + ' months' }
+            ];
+
+            if (o.extra > 0) {
+                var baseInterest = payment * totalMonths - principal;
+                rows.push({ label: 'With the extra payment you pay', value: money(actualPayment) + ' a month' });
+                rows.push({ label: 'Months saved', value: (totalMonths - month) + ' of ' + totalMonths });
+                rows.push({ label: 'Interest saved', value: money(baseInterest - totalInterest) });
+            }
+
+            var results = [ZT.dataResult(rows, { title: 'Repayment', columns: 2 })];
+
+            if (o.showSchedule) {
+                results.push(ZT.dataResult(yearly.map(function (y) {
+                    return {
+                        label: 'Year ' + y.year,
+                        value: 'interest ' + money(y.interest) + '   ·   principal ' + money(y.principal) + '   ·   balance ' + money(y.balance)
+                    };
+                }), { title: 'Yearly breakdown', columns: 1, mono: true }));
+            }
+
+            return results;
+        }
+    });
+
+    /* ============================================================
+       Compound interest
+       ============================================================ */
+    define({
+        id: 'compound-interest-calculator',
+        name: 'Compound Interest Calculator',
+        category: 'math',
+        icon: 'percent',
+        description: 'See how savings or investments grow with regular contributions.',
+        tags: ['compound interest', 'savings', 'investment', 'growth', 'finance', 'retirement'],
+        input: 'none',
+        options: [
+            { id: 'principal', type: 'number', label: 'Starting amount', value: 10000, min: 0, step: 'any' },
+            { id: 'contribution', type: 'number', label: 'Added each period', value: 200, min: 0, step: 'any' },
+            {
+                id: 'frequency', type: 'select', label: 'Contribution frequency', value: 'monthly',
+                options: [
+                    { value: 'monthly', label: 'Monthly' }, { value: 'quarterly', label: 'Quarterly' },
+                    { value: 'yearly', label: 'Yearly' }, { value: 'none', label: 'No regular contributions' }
+                ]
+            },
+            { id: 'rate', type: 'number', label: 'Annual return', suffix: '%', value: 7, min: -50, max: 100, step: 0.01 },
+            { id: 'years', type: 'number', label: 'Years', value: 20, min: 1, max: 100 },
+            {
+                id: 'compounding', type: 'select', label: 'Compounded', value: '12',
+                options: [
+                    { value: '1', label: 'Yearly' }, { value: '4', label: 'Quarterly' },
+                    { value: '12', label: 'Monthly' }, { value: '365', label: 'Daily' }
+                ]
+            },
+            { id: 'inflation', type: 'number', label: 'Adjust for inflation', suffix: '%', value: 0, min: 0, max: 30, step: 0.1, help: 'Shows what the final figure is worth in today\'s money.' },
+            { id: 'currency', type: 'text', label: 'Currency symbol', value: '£', maxlength: 4 }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+            var n = parseInt(o.compounding, 10);
+            var rate = o.rate / 100;
+
+            var perYear = { monthly: 12, quarterly: 4, yearly: 1, none: 0 }[o.frequency];
+            var contribution = perYear ? Number(o.contribution) : 0;
+
+            function money(v) {
+                return o.currency + v.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+            // Step period by period so contributions compound correctly.
+            var periodsPerYear = Math.max(n, perYear || 1);
+            var totalPeriods = o.years * periodsPerYear;
+            var periodRate = Math.pow(1 + rate / n, n / periodsPerYear) - 1;
+            var contributionEvery = perYear ? periodsPerYear / perYear : 0;
+
+            var balance = Number(o.principal);
+            var contributed = 0;
+            var yearly = [];
+
+            for (var p = 1; p <= totalPeriods; p++) {
+                balance *= (1 + periodRate);
+                if (contributionEvery && p % Math.round(contributionEvery) === 0) {
+                    balance += contribution;
+                    contributed += contribution;
+                }
+                if (p % periodsPerYear === 0) {
+                    yearly.push({ year: p / periodsPerYear, balance: balance, contributed: contributed });
+                }
+            }
+
+            var totalIn = Number(o.principal) + contributed;
+            var interest = balance - totalIn;
+            var real = o.inflation > 0 ? balance / Math.pow(1 + o.inflation / 100, o.years) : null;
+
+            var rows = [
+                { label: 'Final balance', value: money(balance) },
+                { label: 'You put in', value: money(totalIn) },
+                { label: 'Interest earned', value: money(interest) },
+                { label: 'Growth', value: totalIn > 0 ? ((balance / totalIn - 1) * 100).toFixed(1) + '%' : '—' },
+                { label: 'Interest as share of total', value: (interest / balance * 100).toFixed(1) + '%' }
+            ];
+            if (real !== null) {
+                rows.push({ label: "In today's money", value: money(real) });
+                rows.push({ label: 'Lost to inflation', value: money(balance - real) });
+            }
+
+            return [
+                ZT.dataResult(rows, { title: 'After ' + o.years + ' years', columns: 2 }),
+                ZT.dataResult(yearly.filter(function (y, i) {
+                    // Keep the list readable on long horizons.
+                    return yearly.length <= 20 || y.year % Math.ceil(yearly.length / 20) === 0 || i === yearly.length - 1;
+                }).map(function (y) {
+                    return { label: 'Year ' + y.year, value: money(y.balance) };
+                }), { title: 'Growth over time', columns: 2, mono: true })
+            ];
+        }
+    });
+
+    /* ============================================================
+       BMI
+       ============================================================ */
+    define({
+        id: 'bmi-calculator',
+        name: 'BMI Calculator',
+        category: 'math',
+        icon: 'calculator',
+        description: 'Calculate body mass index in metric or imperial units.',
+        tags: ['bmi', 'body mass index', 'weight', 'health', 'fitness', 'calculator'],
+        input: 'none',
+        popular: true,
+        options: [
+            {
+                id: 'units', type: 'radio', label: 'Units', value: 'metric',
+                options: [
+                    { value: 'metric', label: 'Metric (kg, cm)' },
+                    { value: 'imperial', label: 'Imperial (lb, ft/in)' }
+                ]
+            },
+            { id: 'weight-kg', type: 'number', label: 'Weight', suffix: 'kg', value: 70, min: 1, max: 500, step: 0.1, when: function (o) { return o.units === 'metric'; } },
+            { id: 'height-cm', type: 'number', label: 'Height', suffix: 'cm', value: 175, min: 50, max: 260, step: 0.5, when: function (o) { return o.units === 'metric'; } },
+            { id: 'weight-lb', type: 'number', label: 'Weight', suffix: 'lb', value: 154, min: 1, max: 1100, step: 0.1, when: function (o) { return o.units === 'imperial'; } },
+            { id: 'height-ft', type: 'number', label: 'Height', suffix: 'ft', value: 5, min: 1, max: 8, when: function (o) { return o.units === 'imperial'; } },
+            { id: 'height-in', type: 'number', label: 'and', suffix: 'in', value: 9, min: 0, max: 11, step: 0.5, when: function (o) { return o.units === 'imperial'; } },
+            { id: 'age', type: 'number', label: 'Age (optional)', suffix: 'years', value: 0, min: 0, max: 120 },
+            { id: 'note', type: 'note', text: 'BMI is a rough population-level screen, not a diagnosis. It takes no account of muscle mass, build or body composition, which is why very athletic people often read as "overweight". Treat it as one number among many, and talk to a clinician about anything that matters.' }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+            var kg, metres;
+
+            if (o.units === 'imperial') {
+                kg = o.weightLb * 0.45359237;
+                metres = (o.heightFt * 12 + o.heightIn) * 0.0254;
+            } else {
+                kg = o.weightKg;
+                metres = o.heightCm / 100;
+            }
+
+            if (!(metres > 0) || !(kg > 0)) ZT.fail('Enter a height and weight greater than zero.');
+
+            var bmi = kg / (metres * metres);
+
+            var category, guidance;
+            if (bmi < 16) { category = 'Severely underweight'; guidance = 'Well below the healthy range — worth discussing with a doctor.'; }
+            else if (bmi < 18.5) { category = 'Underweight'; guidance = 'Below the range usually considered healthy for adults.'; }
+            else if (bmi < 25) { category = 'Healthy weight'; guidance = 'Within the range usually considered healthy for adults.'; }
+            else if (bmi < 30) { category = 'Overweight'; guidance = 'Above the usual healthy range, though build and muscle mass matter.'; }
+            else if (bmi < 35) { category = 'Obese (class I)'; guidance = 'Worth discussing with a clinician.'; }
+            else if (bmi < 40) { category = 'Obese (class II)'; guidance = 'Worth discussing with a clinician.'; }
+            else { category = 'Obese (class III)'; guidance = 'Worth discussing with a clinician.'; }
+
+            // The healthy-weight span for this height, which is more actionable than the index.
+            var lowerKg = 18.5 * metres * metres;
+            var upperKg = 24.9 * metres * metres;
+
+            function weight(k) {
+                return o.units === 'imperial'
+                    ? (k / 0.45359237).toFixed(1) + ' lb'
+                    : k.toFixed(1) + ' kg';
+            }
+
+            var tone = bmi >= 18.5 && bmi < 25 ? 'good' : (bmi < 16 || bmi >= 35 ? 'bad' : 'warn');
+            var meter = ZT.el('div', { class: 'zt-meter-wrap' }, [
+                ZT.el('div', { class: 'zt-meter__label' }, [
+                    ZT.el('strong', { text: bmi.toFixed(1) + '  —  ' + category }),
+                    ZT.el('span', { text: 'healthy range is 18.5 to 24.9' })
+                ]),
+                ZT.el('div', { class: 'zt-meter zt-meter--' + tone },
+                    ZT.el('div', { class: 'zt-meter__bar', style: { width: Math.min(100, bmi / 40 * 100) + '%' } }))
+            ]);
+
+            var rows = [
+                { label: 'BMI', value: bmi.toFixed(1) },
+                { label: 'Category', value: category },
+                { label: 'Healthy weight for your height', value: weight(lowerKg) + ' to ' + weight(upperKg) },
+                { label: 'Guidance', value: guidance }
+            ];
+
+            if (bmi >= 25) {
+                rows.push({ label: 'To reach the healthy range', value: 'about ' + weight(kg - upperKg) + ' less' });
+            } else if (bmi < 18.5) {
+                rows.push({ label: 'To reach the healthy range', value: 'about ' + weight(lowerKg - kg) + ' more' });
+            }
+
+            if (o.age > 0 && o.age < 20) {
+                rows.push({ label: 'Important', value: 'For anyone under 20, adult BMI categories do not apply — growth charts and percentiles are used instead. Ignore the category above.' });
+            }
+
+            return [
+                ZT.nodeResult(meter, { title: 'Result' }),
+                ZT.dataResult(rows, { title: 'Details', columns: 2 })
+            ];
+        }
+    });
+
+    /* ============================================================
+       Discount
+       ============================================================ */
+    define({
+        id: 'discount-calculator',
+        name: 'Discount & Sale Price Calculator',
+        category: 'math',
+        icon: 'percent',
+        description: 'Work out sale prices, savings, stacked discounts and tax.',
+        tags: ['discount', 'sale', 'percent off', 'savings', 'price', 'shopping', 'markdown'],
+        input: 'none',
+        popular: true,
+        options: [
+            { id: 'price', type: 'number', label: 'Original price', value: 100, min: 0, step: 'any' },
+            {
+                id: 'mode', type: 'select', label: 'Work out', value: 'percent-off',
+                options: [
+                    { value: 'percent-off', label: 'Price after a % discount' },
+                    { value: 'amount-off', label: 'Price after a fixed discount' },
+                    { value: 'find-percent', label: 'What % discount was applied' },
+                    { value: 'reverse', label: 'Original price from the sale price' }
+                ]
+            },
+            { id: 'percent', type: 'number', label: 'Discount', suffix: '%', value: 25, min: 0, max: 100, step: 0.1, when: function (o) { return o.mode === 'percent-off' || o.mode === 'reverse'; } },
+            { id: 'amount', type: 'number', label: 'Discount amount', value: 20, min: 0, step: 'any', when: function (o) { return o.mode === 'amount-off'; } },
+            { id: 'sale-price', type: 'number', label: 'Sale price', value: 75, min: 0, step: 'any', when: function (o) { return o.mode === 'find-percent' || o.mode === 'reverse'; } },
+            { id: 'second-discount', type: 'number', label: 'Second discount applied after', suffix: '%', value: 0, min: 0, max: 100, step: 0.1, when: function (o) { return o.mode === 'percent-off'; }, help: 'Stacked discounts multiply — 20% then 10% is 28% off, not 30%.' },
+            { id: 'tax', type: 'number', label: 'Tax added at checkout', suffix: '%', value: 0, min: 0, max: 100, step: 0.1 },
+            { id: 'currency', type: 'text', label: 'Currency symbol', value: '£', maxlength: 4 }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+            function money(v) {
+                return o.currency + v.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+            var rows = [];
+            var finalPrice, saved, effectivePercent;
+
+            if (o.mode === 'find-percent') {
+                if (!(o.price > 0)) ZT.fail('Enter an original price greater than zero.');
+                saved = o.price - o.salePrice;
+                effectivePercent = saved / o.price * 100;
+                finalPrice = o.salePrice;
+                rows.push({ label: 'Discount applied', value: effectivePercent.toFixed(2) + '%' });
+                rows.push({ label: 'You save', value: money(saved) });
+            } else if (o.mode === 'reverse') {
+                if (o.percent >= 100) ZT.fail('A 100% discount leaves no original price to work back to.');
+                var original = o.salePrice / (1 - o.percent / 100);
+                finalPrice = o.salePrice;
+                saved = original - o.salePrice;
+                rows.push({ label: 'Original price', value: money(original) });
+                rows.push({ label: 'Discount was', value: money(saved) });
+            } else if (o.mode === 'amount-off') {
+                finalPrice = Math.max(0, o.price - o.amount);
+                saved = o.price - finalPrice;
+                effectivePercent = o.price > 0 ? saved / o.price * 100 : 0;
+                rows.push({ label: 'Sale price', value: money(finalPrice) });
+                rows.push({ label: 'Equivalent discount', value: effectivePercent.toFixed(2) + '%' });
+            } else {
+                var afterFirst = o.price * (1 - o.percent / 100);
+                finalPrice = o.secondDiscount > 0 ? afterFirst * (1 - o.secondDiscount / 100) : afterFirst;
+                saved = o.price - finalPrice;
+                effectivePercent = o.price > 0 ? saved / o.price * 100 : 0;
+
+                rows.push({ label: 'Sale price', value: money(finalPrice) });
+                rows.push({ label: 'You save', value: money(saved) });
+
+                if (o.secondDiscount > 0) {
+                    rows.push({ label: 'After the first discount', value: money(afterFirst) });
+                    rows.push({
+                        label: 'Combined discount',
+                        value: effectivePercent.toFixed(2) + '%  —  not ' + (o.percent + o.secondDiscount) + '%, because the second is taken off the already-reduced price'
+                    });
+                }
+            }
+
+            if (o.tax > 0) {
+                var withTax = finalPrice * (1 + o.tax / 100);
+                rows.push({ label: 'Tax at ' + o.tax + '%', value: money(withTax - finalPrice) });
+                rows.push({ label: 'Total at checkout', value: money(withTax) });
+            }
+
+            return ZT.dataResult(rows, { title: 'Result', columns: 2 });
+        }
+    });
+
+    /* ============================================================
+       GPA
+       ============================================================ */
+    define({
+        id: 'gpa-calculator',
+        name: 'GPA Calculator',
+        category: 'math',
+        icon: 'calculator',
+        description: 'Calculate a weighted grade point average from your courses.',
+        tags: ['gpa', 'grade', 'average', 'university', 'college', 'school', 'cgpa'],
+        input: 'text',
+        inputLabel: 'Courses',
+        placeholder: 'Mathematics | A | 4\nPhysics | B+ | 3\nHistory | A- | 3\nChemistry | B | 4',
+        options: [
+            {
+                id: 'scale', type: 'select', label: 'Grading scale', value: 'us-4',
+                options: [
+                    { value: 'us-4', label: 'US 4.0 with +/-' },
+                    { value: 'us-4-plain', label: 'US 4.0 without +/-' },
+                    { value: 'percent', label: 'Percentages (0–100)' },
+                    { value: 'india-10', label: 'India 10-point CGPA' }
+                ]
+            },
+            { id: 'note', type: 'note', text: 'One course per line:  name | grade | credits. Credits are optional — leave them out and every course counts equally.' },
+            { id: 'previous-gpa', type: 'number', label: 'Previous GPA', value: 0, min: 0, max: 10, step: 0.01, help: 'Leave at 0 to ignore. Use it to work out a cumulative GPA.' },
+            { id: 'previous-credits', type: 'number', label: 'Previous credits', value: 0, min: 0, max: 500, when: function (o) { return o.previousGpa > 0; } }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+            var lines = String(ctx.text || '').split(/\r?\n/).filter(function (l) { return l.trim(); });
+            if (!lines.length) {
+                return ZT.dataResult([{ label: 'Waiting for input', value: 'Add your courses, one per line.' }], { title: 'GPA' });
+            }
+
+            var US_PLUS_MINUS = {
+                'A+': 4.0, 'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+                'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'D-': 0.7, 'F': 0.0
+            };
+            var US_PLAIN = { 'A': 4.0, 'B': 3.0, 'C': 2.0, 'D': 1.0, 'F': 0.0 };
+
+            function toPoints(grade) {
+                var g = String(grade).trim().toUpperCase();
+
+                if (o.scale === 'percent' || o.scale === 'india-10') {
+                    var n = parseFloat(g);
+                    if (isNaN(n)) ZT.fail('"' + grade + '" is not a number — this scale expects numeric grades.');
+                    if (o.scale === 'india-10') return Math.min(10, n);
+                    // Convert a percentage to the 4.0 scale.
+                    if (n >= 93) return 4.0;
+                    if (n >= 90) return 3.7;
+                    if (n >= 87) return 3.3;
+                    if (n >= 83) return 3.0;
+                    if (n >= 80) return 2.7;
+                    if (n >= 77) return 2.3;
+                    if (n >= 73) return 2.0;
+                    if (n >= 70) return 1.7;
+                    if (n >= 67) return 1.3;
+                    if (n >= 63) return 1.0;
+                    if (n >= 60) return 0.7;
+                    return 0;
+                }
+
+                var table = o.scale === 'us-4-plain' ? US_PLAIN : US_PLUS_MINUS;
+                if (table[g] === undefined) {
+                    ZT.fail('"' + grade + '" is not a grade on this scale. Expected one of: ' + Object.keys(table).join(', '));
+                }
+                return table[g];
+            }
+
+            var courses = lines.map(function (line, i) {
+                var parts = line.split('|').map(function (p) { return p.trim(); });
+                if (parts.length < 2) ZT.fail('Line ' + (i + 1) + ' needs at least a name and a grade, separated by |');
+                var credits = parts[2] ? parseFloat(parts[2]) : 1;
+                if (isNaN(credits) || credits <= 0) ZT.fail('Line ' + (i + 1) + ' has invalid credits.');
+                return { name: parts[0], grade: parts[1], points: toPoints(parts[1]), credits: credits };
+            });
+
+            var totalCredits = courses.reduce(function (s, c) { return s + c.credits; }, 0);
+            var weighted = courses.reduce(function (s, c) { return s + c.points * c.credits; }, 0);
+            var gpa = weighted / totalCredits;
+
+            var max = o.scale === 'india-10' ? 10 : 4;
+            var rows = [
+                { label: 'GPA', value: gpa.toFixed(2) + ' / ' + max.toFixed(1) },
+                { label: 'Courses', value: String(courses.length) },
+                { label: 'Total credits', value: String(totalCredits) },
+                { label: 'Quality points', value: weighted.toFixed(2) }
+            ];
+
+            if (o.previousGpa > 0 && o.previousCredits > 0) {
+                var cumulative = (weighted + o.previousGpa * o.previousCredits) / (totalCredits + o.previousCredits);
+                rows.push({ label: 'Cumulative GPA', value: cumulative.toFixed(2) + ' / ' + max.toFixed(1) });
+                rows.push({ label: 'Total credits overall', value: String(totalCredits + o.previousCredits) });
+            }
+
+            return [
+                ZT.dataResult(rows, { title: 'Result', columns: 2 }),
+                ZT.dataResult(courses.map(function (c) {
+                    return { label: c.name, value: c.grade + '  ·  ' + c.points.toFixed(1) + ' points  ·  ' + c.credits + ' credits' };
+                }), { title: 'Courses', columns: 1, mono: true })
+            ];
+        }
+    });
+
+    /* ============================================================
+       Fractions
+       ============================================================ */
+    define({
+        id: 'fraction-calculator',
+        name: 'Fraction Calculator & Converter',
+        category: 'math',
+        icon: 'percent',
+        description: 'Add, subtract, multiply and divide fractions, or convert to and from decimals.',
+        tags: ['fraction', 'decimal', 'convert', 'simplify', 'mixed number', 'ratio'],
+        input: 'none',
+        options: [
+            {
+                id: 'mode', type: 'select', label: 'Mode', value: 'arithmetic',
+                options: [
+                    { value: 'arithmetic', label: 'Calculate with two fractions' },
+                    { value: 'to-decimal', label: 'Fraction → decimal' },
+                    { value: 'from-decimal', label: 'Decimal → fraction' },
+                    { value: 'simplify', label: 'Simplify a fraction' }
+                ]
+            },
+            { id: 'fraction-a', type: 'text', label: 'First fraction', value: '3/4', when: function (o) { return o.mode !== 'from-decimal'; }, help: 'Write it as 3/4, or as a mixed number like 1 1/2.' },
+            {
+                id: 'operation', type: 'select', label: 'Operation', value: 'add',
+                options: [
+                    { value: 'add', label: 'Add  +' }, { value: 'subtract', label: 'Subtract  −' },
+                    { value: 'multiply', label: 'Multiply  ×' }, { value: 'divide', label: 'Divide  ÷' }
+                ],
+                when: function (o) { return o.mode === 'arithmetic'; }
+            },
+            { id: 'fraction-b', type: 'text', label: 'Second fraction', value: '1/6', when: function (o) { return o.mode === 'arithmetic'; } },
+            { id: 'decimal', type: 'number', label: 'Decimal', value: 0.375, step: 'any', when: function (o) { return o.mode === 'from-decimal'; } },
+            { id: 'max-denominator', type: 'number', label: 'Largest denominator to try', value: 1000, min: 2, max: 1000000, when: function (o) { return o.mode === 'from-decimal'; } },
+            { id: 'mixed', type: 'checkbox', label: 'Show improper results as mixed numbers', value: true }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+
+            function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
+
+            function parse(text) {
+                var s = String(text).trim();
+                // Mixed number: "1 1/2"
+                var mixed = s.match(/^(-?\d+)\s+(\d+)\s*\/\s*(\d+)$/);
+                if (mixed) {
+                    var whole = parseInt(mixed[1], 10);
+                    var num = parseInt(mixed[2], 10);
+                    var den = parseInt(mixed[3], 10);
+                    if (!den) ZT.fail('A fraction cannot have a denominator of zero.');
+                    var sign = whole < 0 ? -1 : 1;
+                    return { n: sign * (Math.abs(whole) * den + num), d: den };
+                }
+                var simple = s.match(/^(-?\d+)\s*\/\s*(-?\d+)$/);
+                if (simple) {
+                    if (!parseInt(simple[2], 10)) ZT.fail('A fraction cannot have a denominator of zero.');
+                    return { n: parseInt(simple[1], 10), d: parseInt(simple[2], 10) };
+                }
+                if (/^-?\d+$/.test(s)) return { n: parseInt(s, 10), d: 1 };
+                ZT.fail('"' + text + '" is not a fraction. Write it as 3/4, 1 1/2 or a whole number.');
+            }
+
+            function simplify(f) {
+                var divisor = gcd(f.n, f.d) || 1;
+                var n = f.n / divisor;
+                var d = f.d / divisor;
+                if (d < 0) { n = -n; d = -d; }
+                return { n: n, d: d };
+            }
+
+            function format(f) {
+                var s = simplify(f);
+                if (s.d === 1) return String(s.n);
+                if (o.mixed && Math.abs(s.n) > s.d) {
+                    var whole = Math.trunc(s.n / s.d);
+                    var remainder = Math.abs(s.n % s.d);
+                    return whole + ' ' + remainder + '/' + s.d;
+                }
+                return s.n + '/' + s.d;
+            }
+
+            if (o.mode === 'from-decimal') {
+                var value = Number(o.decimal);
+                if (!isFinite(value)) ZT.fail('Enter a number.');
+
+                // Stern-Brocot search for the closest fraction within the limit.
+                var bestN = Math.round(value), bestD = 1;
+                var bestError = Math.abs(value - bestN);
+                for (var d = 1; d <= o.maxDenominator; d++) {
+                    var n = Math.round(value * d);
+                    var error = Math.abs(value - n / d);
+                    if (error < bestError - 1e-12) { bestN = n; bestD = d; bestError = error; }
+                    if (bestError < 1e-12) break;
+                }
+                var f = simplify({ n: bestN, d: bestD });
+
+                return ZT.dataResult([
+                    { label: 'Fraction', value: format(f) },
+                    { label: 'Exact form', value: f.n + '/' + f.d },
+                    { label: 'Decimal value', value: (f.n / f.d).toString() },
+                    { label: 'Difference', value: bestError === 0 ? 'exact' : bestError.toExponential(3) },
+                    { label: 'Percentage', value: (value * 100).toFixed(4).replace(/\.?0+$/, '') + '%' }
+                ], { title: 'Result', columns: 2, mono: true });
+            }
+
+            var a = parse(o.fractionA);
+
+            if (o.mode === 'to-decimal' || o.mode === 'simplify') {
+                var s = simplify(a);
+                var decimal = s.n / s.d;
+                return ZT.dataResult([
+                    { label: 'Simplified', value: format(s) },
+                    { label: 'Improper form', value: s.n + '/' + s.d },
+                    { label: 'Decimal', value: String(decimal) },
+                    { label: 'Percentage', value: (decimal * 100).toFixed(4).replace(/\.?0+$/, '') + '%' },
+                    { label: 'Was already simplified', value: (a.n === s.n && a.d === s.d) ? 'yes' : 'no' }
+                ], { title: 'Result', columns: 2, mono: true });
+            }
+
+            var b = parse(o.fractionB);
+            var result;
+            switch (o.operation) {
+                case 'subtract': result = { n: a.n * b.d - b.n * a.d, d: a.d * b.d }; break;
+                case 'multiply': result = { n: a.n * b.n, d: a.d * b.d }; break;
+                case 'divide':
+                    if (b.n === 0) ZT.fail('You cannot divide by zero.');
+                    result = { n: a.n * b.d, d: a.d * b.n };
+                    break;
+                default: result = { n: a.n * b.d + b.n * a.d, d: a.d * b.d };
+            }
+
+            var SYMBOLS = { add: '+', subtract: '−', multiply: '×', divide: '÷' };
+            var simplified = simplify(result);
+
+            return ZT.dataResult([
+                { label: 'Expression', value: format(a) + '  ' + SYMBOLS[o.operation] + '  ' + format(b) },
+                { label: 'Result', value: format(simplified) },
+                { label: 'Improper form', value: simplified.n + '/' + simplified.d },
+                { label: 'Decimal', value: String(simplified.n / simplified.d) },
+                { label: 'Before simplifying', value: result.n + '/' + result.d }
+            ], { title: 'Result', columns: 2, mono: true });
+        }
+    });
+
 })();

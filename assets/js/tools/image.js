@@ -938,7 +938,7 @@
 
                 if (o.radius > 0) {
                     cctx.save();
-                    roundedRectPath(cctx, left, top, size.width, size.height, o.radius);
+                    ZT.roundedRect(cctx, left, top, size.width, size.height, o.radius);
                     cctx.clip();
                 }
                 cctx.drawImage(bitmap, left, top);
@@ -956,16 +956,6 @@
 
     function unequalSides(o) { return !o.equalSides; }
 
-    function roundedRectPath(cctx, x, y, w, h, r) {
-        var radius = Math.min(r, w / 2, h / 2);
-        cctx.beginPath();
-        cctx.moveTo(x + radius, y);
-        cctx.arcTo(x + w, y, x + w, y + h, radius);
-        cctx.arcTo(x + w, y + h, x, y + h, radius);
-        cctx.arcTo(x, y + h, x, y, radius);
-        cctx.arcTo(x, y, x + w, y, radius);
-        cctx.closePath();
-    }
 
     /* ============================================================
        Join / collage
@@ -1194,12 +1184,12 @@
                 if (!o.transparent) {
                     cctx.fillStyle = o.background;
                     if (o.rounded > 0) {
-                        roundedRectPath(cctx, 0, 0, px, px, px * o.rounded / 100);
+                        ZT.roundedRect(cctx, 0, 0, px, px, px * o.rounded / 100);
                         cctx.fill();
                     } else cctx.fillRect(0, 0, px, px);
                 }
                 if (o.rounded > 0) {
-                    roundedRectPath(cctx, 0, 0, px, px, px * o.rounded / 100);
+                    ZT.roundedRect(cctx, 0, 0, px, px, px * o.rounded / 100);
                     cctx.clip();
                 }
 
@@ -2085,5 +2075,147 @@
         out.getContext('2d').putImageData(sharp, 0, 0);
         return out;
     }
+
+    /* ============================================================
+       Screenshot beautifier
+       ============================================================ */
+    define({
+        id: 'screenshot-beautifier',
+        name: 'Screenshot Beautifier',
+        category: 'image',
+        icon: 'image-plus',
+        description: 'Put a screenshot on a gradient backdrop with rounded corners and a shadow.',
+        tags: ['screenshot', 'beautify', 'mockup', 'gradient', 'shadow', 'social', 'twitter'],
+        input: 'files',
+        accept: 'image/*',
+        popular: true,
+        options: [
+            {
+                id: 'background', type: 'select', label: 'Backdrop', value: 'gradient-blue',
+                options: [
+                    { value: 'gradient-blue', label: 'Blue gradient' },
+                    { value: 'gradient-sunset', label: 'Sunset gradient' },
+                    { value: 'gradient-mint', label: 'Mint gradient' },
+                    { value: 'gradient-violet', label: 'Violet gradient' },
+                    { value: 'gradient-dark', label: 'Dark gradient' },
+                    { value: 'solid', label: 'Solid colour' },
+                    { value: 'transparent', label: 'Transparent' }
+                ]
+            },
+            { id: 'solid-color', type: 'color', label: 'Backdrop colour', value: '#4F8DF7', when: function (o) { return o.background === 'solid'; } },
+            { id: 'padding', type: 'range', label: 'Padding', value: 8, min: 0, max: 25, step: 1, suffix: '% of width' },
+            { id: 'radius', type: 'range', label: 'Corner radius', value: 12, min: 0, max: 60, step: 1, suffix: 'px' },
+            { id: 'shadow', type: 'range', label: 'Shadow strength', value: 40, min: 0, max: 100, step: 5, suffix: '%' },
+            { id: 'window-bar', type: 'checkbox', label: 'Add a browser window bar', value: false },
+            { id: 'bar-style', type: 'select', label: 'Window style', value: 'mac',
+              options: [{ value: 'mac', label: 'macOS' }, { value: 'plain', label: 'Plain' }],
+              when: function (o) { return o.windowBar; } },
+            {
+                id: 'ratio', type: 'select', label: 'Output shape', value: 'auto',
+                options: [
+                    { value: 'auto', label: 'Match the screenshot' },
+                    { value: '16:9', label: '16:9 — presentation' },
+                    { value: '1:1', label: '1:1 — square' },
+                    { value: '4:3', label: '4:3' },
+                    { value: '1200x630', label: '1200×630 — social card' }
+                ]
+            },
+            Object.assign({}, FORMAT_OPTION, { value: 'png' }), QUALITY_OPTION
+        ],
+        run: function (ctx) {
+            var GRADIENTS = {
+                'gradient-blue': ['#4F8DF7', '#7C5CFF'],
+                'gradient-sunset': ['#F97316', '#EC4899'],
+                'gradient-mint': ['#10B981', '#06B6D4'],
+                'gradient-violet': ['#8B5CF6', '#EC4899'],
+                'gradient-dark': ['#1E293B', '#0B0D11']
+            };
+            var o = ctx.opt;
+
+            return processEach(ctx, async function (bitmap, file) {
+                var size = ZT.imageSize(bitmap);
+                var barHeight = o.windowBar ? Math.max(24, Math.round(size.width * 0.035)) : 0;
+                var pad = Math.round(size.width * o.padding / 100);
+
+                var innerW = size.width;
+                var innerH = size.height + barHeight;
+                var canvasW = innerW + pad * 2;
+                var canvasH = innerH + pad * 2;
+
+                // Force a shape by growing the canvas, never by cropping the shot.
+                if (o.ratio !== 'auto') {
+                    var target;
+                    if (o.ratio === '1200x630') target = 1200 / 630;
+                    else {
+                        var parts = o.ratio.split(':').map(Number);
+                        target = parts[0] / parts[1];
+                    }
+                    if (canvasW / canvasH > target) canvasH = Math.round(canvasW / target);
+                    else canvasW = Math.round(canvasH * target);
+                }
+
+                var canvas = ZT.makeCanvas(canvasW, canvasH);
+                var c2d = canvas.getContext('2d');
+
+                if (o.background === 'solid') {
+                    c2d.fillStyle = o.solidColor;
+                    c2d.fillRect(0, 0, canvasW, canvasH);
+                } else if (o.background !== 'transparent') {
+                    var stops = GRADIENTS[o.background] || GRADIENTS['gradient-blue'];
+                    var grad = c2d.createLinearGradient(0, 0, canvasW, canvasH);
+                    grad.addColorStop(0, stops[0]);
+                    grad.addColorStop(1, stops[1]);
+                    c2d.fillStyle = grad;
+                    c2d.fillRect(0, 0, canvasW, canvasH);
+                }
+
+                var x = Math.round((canvasW - innerW) / 2);
+                var y = Math.round((canvasH - innerH) / 2);
+
+                if (o.shadow > 0) {
+                    c2d.save();
+                    c2d.shadowColor = 'rgba(0, 0, 0, ' + (o.shadow / 100 * 0.55).toFixed(2) + ')';
+                    c2d.shadowBlur = Math.round(size.width * 0.05);
+                    c2d.shadowOffsetY = Math.round(size.width * 0.015);
+                    c2d.fillStyle = '#ffffff';
+                    ZT.roundedRect(c2d, x, y, innerW, innerH, o.radius);
+                    c2d.fill();
+                    c2d.restore();
+                }
+
+                c2d.save();
+                ZT.roundedRect(c2d, x, y, innerW, innerH, o.radius);
+                c2d.clip();
+
+                if (o.windowBar) {
+                    c2d.fillStyle = o.barStyle === 'mac' ? '#E8E8ED' : '#F3F4F6';
+                    c2d.fillRect(x, y, innerW, barHeight);
+
+                    if (o.barStyle === 'mac') {
+                        var dotRadius = barHeight * 0.17;
+                        ['#FF5F57', '#FEBC2E', '#28C840'].forEach(function (colour, i) {
+                            c2d.fillStyle = colour;
+                            c2d.beginPath();
+                            c2d.arc(x + barHeight * 0.6 + i * dotRadius * 3.2, y + barHeight / 2, dotRadius, 0, Math.PI * 2);
+                            c2d.fill();
+                        });
+                    }
+                }
+
+                c2d.drawImage(bitmap, x, y + barHeight, innerW, size.height);
+                c2d.restore();
+
+                var format = o.background === 'transparent' ? 'png' : o.format;
+                if (format === 'jpeg') canvas = ZT.flattenAlpha(canvas, '#ffffff');
+
+                var blob = await ZT.encodeCanvas(canvas, format, format === 'png' ? undefined : o.quality / 100);
+                return ZT.fileResult(blob, ZT.outName(file.name, 'beautified', format === 'jpeg' ? 'jpg' : format), {
+                    previewBlob: blob,
+                    note: canvasW + '×' + canvasH + '  ·  ' + ZT.formatBytes(blob.size)
+                });
+            }, { zipName: 'beautified-screenshots' });
+        }
+    });
+
 
 })();

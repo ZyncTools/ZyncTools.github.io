@@ -766,4 +766,709 @@
         }
     });
 
+
+    /* ============================================================
+       CSS unit converter
+       ============================================================ */
+    define({
+        id: 'css-unit-converter',
+        name: 'CSS Unit Converter',
+        category: 'design',
+        icon: 'ruler',
+        description: 'Convert between px, rem, em, pt, %, vw and vh.',
+        tags: ['css', 'px', 'rem', 'em', 'pt', 'unit', 'convert', 'responsive'],
+        input: 'none',
+        popular: true,
+        options: [
+            { id: 'value', type: 'number', label: 'Value', value: 16, step: 'any' },
+            {
+                id: 'from', type: 'select', label: 'From', value: 'px',
+                options: [
+                    { value: 'px', label: 'px — pixels' }, { value: 'rem', label: 'rem — root em' },
+                    { value: 'em', label: 'em — parent-relative' }, { value: 'pt', label: 'pt — points' },
+                    { value: 'percent', label: '% — percent' }, { value: 'vw', label: 'vw — viewport width' },
+                    { value: 'vh', label: 'vh — viewport height' }
+                ]
+            },
+            { id: 'root-size', type: 'number', label: 'Root font size', suffix: 'px', value: 16, min: 1, max: 100, help: 'The browser default is 16px. rem is measured against this.' },
+            { id: 'parent-size', type: 'number', label: 'Parent font size', suffix: 'px', value: 16, min: 1, max: 200, help: 'Only affects em and %.' },
+            { id: 'viewport-width', type: 'number', label: 'Viewport width', suffix: 'px', value: 1440, min: 200, max: 5000 },
+            { id: 'viewport-height', type: 'number', label: 'Viewport height', suffix: 'px', value: 900, min: 200, max: 5000 },
+            { id: 'precision', type: 'number', label: 'Decimal places', value: 4, min: 0, max: 8 }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+            var value = Number(o.value);
+            if (!isFinite(value)) ZT.fail('Enter a number to convert.');
+
+            // Normalise everything through pixels.
+            var px;
+            switch (o.from) {
+                case 'rem': px = value * o.rootSize; break;
+                case 'em': px = value * o.parentSize; break;
+                case 'pt': px = value * 96 / 72; break;
+                case 'percent': px = value / 100 * o.parentSize; break;
+                case 'vw': px = value / 100 * o.viewportWidth; break;
+                case 'vh': px = value / 100 * o.viewportHeight; break;
+                default: px = value;
+            }
+
+            function fmt(n) {
+                var fixed = n.toFixed(o.precision);
+                return fixed.indexOf('.') !== -1 ? fixed.replace(/\.?0+$/, '') : fixed;
+            }
+
+            return [
+                ZT.dataResult([
+                    { label: 'px', value: fmt(px) + 'px' },
+                    { label: 'rem', value: fmt(px / o.rootSize) + 'rem' },
+                    { label: 'em', value: fmt(px / o.parentSize) + 'em' },
+                    { label: 'pt', value: fmt(px * 72 / 96) + 'pt' },
+                    { label: '%', value: fmt(px / o.parentSize * 100) + '%' },
+                    { label: 'vw', value: fmt(px / o.viewportWidth * 100) + 'vw' },
+                    { label: 'vh', value: fmt(px / o.viewportHeight * 100) + 'vh' }
+                ], { title: value + (o.from === 'percent' ? '%' : o.from) + ' equals', columns: 2, mono: true }),
+                ZT.dataResult([
+                    { label: 'Which should I use?', value: 'rem for font sizes and spacing — it scales when a reader changes their browser font size, which px does not. Use px for borders and anything that should stay hairline-thin.' }
+                ], { title: 'Guidance', columns: 1 })
+            ];
+        }
+    });
+
+    /* ============================================================
+       Content-Security-Policy builder
+       ============================================================ */
+    define({
+        id: 'csp-generator',
+        name: 'Content Security Policy Generator',
+        category: 'design',
+        icon: 'shield',
+        description: 'Build a Content-Security-Policy header with sensible defaults.',
+        tags: ['csp', 'content security policy', 'header', 'security', 'xss', 'nginx', 'apache'],
+        input: 'none',
+        options: [
+            {
+                id: 'preset', type: 'select', label: 'Start from', value: 'strict',
+                options: [
+                    { value: 'strict', label: 'Strict — same origin only' },
+                    { value: 'moderate', label: 'Moderate — allow common CDNs' },
+                    { value: 'report-only', label: 'Report only — observe without blocking' },
+                    { value: 'custom', label: 'Custom' }
+                ]
+            },
+            { id: 'self-only', type: 'checkbox', label: "Default to 'self'", value: true, when: presetIsCustom2 },
+            { id: 'script-src', type: 'text', label: 'Extra script sources', value: '', placeholder: 'https://cdn.jsdelivr.net' },
+            { id: 'style-src', type: 'text', label: 'Extra style sources', value: '', placeholder: 'https://fonts.googleapis.com' },
+            { id: 'font-src', type: 'text', label: 'Extra font sources', value: '', placeholder: 'https://fonts.gstatic.com' },
+            { id: 'img-src', type: 'text', label: 'Extra image sources', value: '', placeholder: 'data: https:' },
+            { id: 'connect-src', type: 'text', label: 'Extra connect sources', value: '', placeholder: 'https://api.example.com' },
+            { id: 'allow-inline-style', type: 'checkbox', label: "Allow inline styles ('unsafe-inline')", value: false, help: 'Often needed in practice, but it weakens the policy against injected CSS.' },
+            { id: 'allow-inline-script', type: 'checkbox', label: "Allow inline scripts ('unsafe-inline')", value: false, help: 'This defeats most of the XSS protection CSP provides. Prefer a nonce or a hash.' },
+            { id: 'frame-ancestors', type: 'checkbox', label: "Block framing (clickjacking protection)", value: true },
+            { id: 'upgrade-insecure', type: 'checkbox', label: 'Upgrade insecure requests to HTTPS', value: true },
+            { id: 'report-uri', type: 'text', label: 'Report violations to', value: '', placeholder: 'https://example.com/csp-report' },
+            {
+                id: 'format', type: 'select', label: 'Output as', value: 'header',
+                options: [
+                    { value: 'header', label: 'Raw header value' },
+                    { value: 'meta', label: 'HTML meta tag' },
+                    { value: 'nginx', label: 'nginx config' },
+                    { value: 'apache', label: 'Apache config' },
+                    { value: 'netlify', label: 'Netlify _headers' }
+                ]
+            }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+
+            function sources(base, extra) {
+                var list = base.slice();
+                String(extra || '').split(/\s+/).filter(Boolean).forEach(function (s) { list.push(s); });
+                return list;
+            }
+
+            var directives = [];
+            var cdnDefaults = o.preset === 'moderate'
+                ? ['https://cdn.jsdelivr.net', 'https://unpkg.com']
+                : [];
+
+            directives.push(['default-src', ["'self'"]]);
+
+            var script = sources(["'self'"].concat(cdnDefaults), o.scriptSrc);
+            if (o.allowInlineScript) script.push("'unsafe-inline'");
+            directives.push(['script-src', script]);
+
+            var style = sources(["'self'"].concat(o.preset === 'moderate' ? ['https://fonts.googleapis.com'] : []), o.styleSrc);
+            if (o.allowInlineStyle) style.push("'unsafe-inline'");
+            directives.push(['style-src', style]);
+
+            directives.push(['img-src', sources(["'self'", 'data:'], o.imgSrc)]);
+            directives.push(['font-src', sources(["'self'"].concat(o.preset === 'moderate' ? ['https://fonts.gstatic.com'] : []), o.fontSrc)]);
+            directives.push(['connect-src', sources(["'self'"], o.connectSrc)]);
+            directives.push(['object-src', ["'none'"]]);
+            directives.push(['base-uri', ["'self'"]]);
+            directives.push(['form-action', ["'self'"]]);
+
+            if (o.frameAncestors) directives.push(['frame-ancestors', ["'none'"]]);
+            if (o.upgradeInsecure) directives.push(['upgrade-insecure-requests', []]);
+            if (o.reportUri) directives.push(['report-uri', [o.reportUri]]);
+
+            var policy = directives.map(function (d) {
+                return d[1].length ? d[0] + ' ' + d[1].join(' ') : d[0];
+            }).join('; ');
+
+            var headerName = o.preset === 'report-only'
+                ? 'Content-Security-Policy-Report-Only'
+                : 'Content-Security-Policy';
+
+            var output;
+            switch (o.format) {
+                case 'meta':
+                    output = '<meta http-equiv="' + headerName + '" content="' + policy + '">';
+                    break;
+                case 'nginx':
+                    output = 'add_header ' + headerName + ' "' + policy.replace(/"/g, '\\"') + '" always;';
+                    break;
+                case 'apache':
+                    output = 'Header always set ' + headerName + ' "' + policy.replace(/"/g, '\\"') + '"';
+                    break;
+                case 'netlify':
+                    output = '/*\n  ' + headerName + ': ' + policy;
+                    break;
+                default:
+                    output = headerName + ': ' + policy;
+            }
+
+            var warnings = [];
+            if (o.allowInlineScript) {
+                warnings.push({ label: 'Warning', value: "'unsafe-inline' on script-src removes most of what CSP protects against. If you can, move inline scripts to files or use a nonce." });
+            }
+            if (o.preset === 'report-only') {
+                warnings.push({ label: 'Report-only mode', value: 'Nothing is blocked — violations are only reported. Run this way first to find what would break, then switch to the enforcing header.' });
+            }
+
+            return [
+                ZT.textResult(output, { mono: true, lang: o.format === 'meta' ? 'html' : 'text', title: 'Policy' }),
+                ZT.dataResult(directives.map(function (d) {
+                    return { label: d[0], value: d[1].join(' ') || '(enabled)' };
+                }).concat(warnings), { title: 'Directives', columns: 1, mono: true })
+            ];
+        }
+    });
+
+    function presetIsCustom2(o) { return o.preset === 'custom'; }
+
+    /* ============================================================
+       Media query generator
+       ============================================================ */
+    define({
+        id: 'media-query-generator',
+        name: 'Media Query Generator',
+        category: 'design',
+        icon: 'monitor',
+        description: 'Generate responsive breakpoints for common device sizes and frameworks.',
+        tags: ['media query', 'responsive', 'breakpoint', 'css', 'mobile', 'tailwind', 'bootstrap'],
+        input: 'none',
+        options: [
+            {
+                id: 'framework', type: 'select', label: 'Breakpoint set', value: 'tailwind',
+                options: [
+                    { value: 'tailwind', label: 'Tailwind CSS' },
+                    { value: 'bootstrap', label: 'Bootstrap 5' },
+                    { value: 'material', label: 'Material Design' },
+                    { value: 'devices', label: 'Common devices' },
+                    { value: 'custom', label: 'Custom breakpoints' }
+                ]
+            },
+            { id: 'custom-breakpoints', type: 'text', label: 'Custom breakpoints', value: '480, 768, 1024, 1280', when: function (o) { return o.framework === 'custom'; }, help: 'Comma-separated widths in pixels.' },
+            {
+                id: 'approach', type: 'radio', label: 'Approach', value: 'mobile-first',
+                options: [
+                    { value: 'mobile-first', label: 'Mobile first (min-width)' },
+                    { value: 'desktop-first', label: 'Desktop first (max-width)' }
+                ]
+            },
+            { id: 'use-rem', type: 'checkbox', label: 'Express breakpoints in rem', value: false, help: 'Breakpoints in rem respond to the reader\'s browser font size, which px ignores.' },
+            { id: 'include-orientation', type: 'checkbox', label: 'Include orientation queries', value: false },
+            { id: 'include-motion', type: 'checkbox', label: 'Include prefers-reduced-motion', value: true },
+            { id: 'include-scheme', type: 'checkbox', label: 'Include prefers-color-scheme', value: true },
+            {
+                id: 'syntax', type: 'select', label: 'Output', value: 'css',
+                options: [
+                    { value: 'css', label: 'Plain CSS' },
+                    { value: 'scss', label: 'SCSS mixins' },
+                    { value: 'variables', label: 'CSS custom properties' }
+                ]
+            }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+
+            var SETS = {
+                tailwind: [['sm', 640], ['md', 768], ['lg', 1024], ['xl', 1280], ['2xl', 1536]],
+                bootstrap: [['sm', 576], ['md', 768], ['lg', 992], ['xl', 1200], ['xxl', 1400]],
+                material: [['small', 600], ['medium', 905], ['expanded', 1240], ['large', 1440]],
+                devices: [['phone', 480], ['tablet', 768], ['laptop', 1024], ['desktop', 1440], ['wide', 1920]]
+            };
+
+            var breakpoints = o.framework === 'custom'
+                ? String(o.customBreakpoints).split(',').map(function (v, i) {
+                    return ['bp' + (i + 1), parseInt(v.trim(), 10)];
+                }).filter(function (b) { return b[1] > 0; })
+                : SETS[o.framework];
+
+            if (!breakpoints || !breakpoints.length) ZT.fail('Enter at least one valid breakpoint.');
+
+            function size(px) {
+                return o.useRem ? (px / 16) + 'rem' : px + 'px';
+            }
+
+            var lines = [];
+
+            if (o.syntax === 'variables') {
+                lines.push(':root {');
+                breakpoints.forEach(function (b) { lines.push('  --breakpoint-' + b[0] + ': ' + size(b[1]) + ';'); });
+                lines.push('}');
+                lines.push('');
+                lines.push('/* Custom properties cannot be used inside a media query condition,');
+                lines.push('   so these are for reading in JavaScript, not for @media itself. */');
+            } else if (o.syntax === 'scss') {
+                breakpoints.forEach(function (b) {
+                    var condition = o.approach === 'mobile-first'
+                        ? '(min-width: ' + size(b[1]) + ')'
+                        : '(max-width: ' + size(b[1] - 0.02) + ')';
+                    lines.push('@mixin ' + b[0] + ' {');
+                    lines.push('  @media ' + condition + ' {');
+                    lines.push('    @content;');
+                    lines.push('  }');
+                    lines.push('}');
+                    lines.push('');
+                });
+                lines.push('// Usage:');
+                lines.push('// .card { padding: 1rem; @include ' + breakpoints[0][0] + ' { padding: 2rem; } }');
+            } else {
+                if (o.approach === 'mobile-first') {
+                    lines.push('/* Mobile first: base styles apply everywhere, then widen. */');
+                    lines.push('');
+                }
+                var ordered = o.approach === 'mobile-first' ? breakpoints : breakpoints.slice().reverse();
+                ordered.forEach(function (b) {
+                    var condition = o.approach === 'mobile-first'
+                        ? '(min-width: ' + size(b[1]) + ')'
+                        : '(max-width: ' + size(b[1] - 0.02) + ')';
+                    lines.push('/* ' + b[0] + ' — ' + b[1] + 'px and ' + (o.approach === 'mobile-first' ? 'up' : 'down') + ' */');
+                    lines.push('@media ' + condition + ' {');
+                    lines.push('  ');
+                    lines.push('}');
+                    lines.push('');
+                });
+            }
+
+            if (o.includeOrientation) {
+                lines.push('@media (orientation: landscape) {', '  ', '}', '');
+                lines.push('@media (orientation: portrait) {', '  ', '}', '');
+            }
+            if (o.includeMotion) {
+                lines.push('/* Respect a reader who has asked for less movement. */');
+                lines.push('@media (prefers-reduced-motion: reduce) {');
+                lines.push('  *, *::before, *::after {');
+                lines.push('    animation-duration: 0.01ms !important;');
+                lines.push('    transition-duration: 0.01ms !important;');
+                lines.push('  }');
+                lines.push('}', '');
+            }
+            if (o.includeScheme) {
+                lines.push('@media (prefers-color-scheme: dark) {', '  ', '}', '');
+            }
+
+            return [
+                ZT.textResult(lines.join('\n').trim(), { lang: 'css' }),
+                ZT.dataResult(breakpoints.map(function (b) {
+                    return { label: b[0], value: b[1] + 'px' + (o.useRem ? '  (' + (b[1] / 16) + 'rem)' : '') };
+                }), { title: 'Breakpoints', columns: 2, mono: true })
+            ];
+        }
+    });
+
+    /* ============================================================
+       CSS specificity
+       ============================================================ */
+    define({
+        id: 'css-specificity-calculator',
+        name: 'CSS Specificity Calculator',
+        category: 'design',
+        icon: 'layers',
+        description: 'Score CSS selectors and see which one wins a conflict.',
+        tags: ['css', 'specificity', 'selector', 'cascade', 'override', 'important'],
+        input: 'text',
+        live: true,
+        inputLabel: 'Selectors — one per line',
+        placeholder: '#header .nav a:hover\n.nav a\na\nbody .nav a.active',
+        options: [
+            { id: 'explain', type: 'checkbox', label: 'Explain how each score is made up', value: true },
+            { id: 'sort', type: 'checkbox', label: 'Sort by specificity, strongest first', value: true }
+        ],
+        run: function (ctx) {
+            var selectors = String(ctx.text || '').split(/\r?\n/)
+                .map(function (s) { return s.trim(); })
+                .filter(Boolean);
+
+            if (!selectors.length) {
+                return ZT.dataResult([{ label: 'Waiting for input', value: 'Enter one or more CSS selectors, one per line.' }], { title: 'Specificity' });
+            }
+
+            var scored = selectors.map(function (selector) {
+                return Object.assign({ selector: selector }, specificity(selector));
+            });
+
+            var display = ctx.opt.sort
+                ? scored.slice().sort(function (a, b) { return b.score - a.score; })
+                : scored;
+
+            var rows = display.map(function (s) {
+                var value = s.a + ', ' + s.b + ', ' + s.c;
+                if (ctx.opt.explain) {
+                    var parts = [];
+                    if (s.a) parts.push(s.a + ' ID' + (s.a > 1 ? 's' : ''));
+                    if (s.b) parts.push(s.b + ' class/attribute/pseudo-class' + (s.b > 1 ? 'es' : ''));
+                    if (s.c) parts.push(s.c + ' element' + (s.c > 1 ? 's' : ''));
+                    if (s.important) parts.push('!important');
+                    value += '   —   ' + (parts.join(', ') || 'nothing that counts');
+                }
+                return { label: s.selector, value: value };
+            });
+
+            var winner = scored.slice().sort(function (a, b) {
+                if (a.important !== b.important) return a.important ? -1 : 1;
+                return b.score - a.score;
+            })[0];
+
+            var results = [ZT.dataResult(rows, { title: 'Specificity (IDs, classes, elements)', columns: 1, mono: true })];
+
+            if (scored.length > 1) {
+                var tied = scored.filter(function (s) { return s.score === winner.score && s.important === winner.important; });
+                results.push(ZT.dataResult([
+                    { label: 'Wins', value: winner.selector },
+                    {
+                        label: 'Why',
+                        value: tied.length > 1
+                            ? 'Several selectors tie at ' + winner.a + ',' + winner.b + ',' + winner.c + '. When specificity ties, whichever appears last in the stylesheet wins.'
+                            : (winner.important ? 'It uses !important, which beats specificity entirely.' : 'It has the highest specificity.')
+                    }
+                ], { title: 'Result', columns: 1 }));
+            }
+
+            return results;
+        }
+    });
+
+    /**
+     * Count a selector's specificity as (IDs, classes, elements).
+     * Strings and comments are stripped first so their contents cannot
+     * be mistaken for selector syntax.
+     */
+    function specificity(selector) {
+        var important = /!important/i.test(selector);
+        var s = selector
+            .replace(/!important/gi, '')
+            .replace(/\/\*[\s\S]*?\*\//g, '')
+            .replace(/"[^"]*"|'[^']*'/g, '""');
+
+        // :not(), :is() and :has() take their specificity from their argument.
+        var inner = '';
+        s = s.replace(/:(?:not|is|has|matches)\(([^)]*)\)/gi, function (_, arg) {
+            inner += ' ' + arg;
+            return ' ';
+        });
+        // :where() contributes nothing, by design.
+        s = s.replace(/:where\([^)]*\)/gi, ' ');
+
+        var combined = s + ' ' + inner;
+
+        var ids = (combined.match(/#[\w-]+/g) || []).length;
+        var classes = (combined.match(/\.[\w-]+/g) || []).length
+            + (combined.match(/\[[^\]]+\]/g) || []).length
+            + (combined.match(/(?<!:):(?!:)(?!not|is|has|where|matches)[\w-]+/gi) || []).length;
+        var elements = (combined.match(/(?:^|[\s>+~(])([a-z][\w-]*)/gi) || []).length
+            + (combined.match(/::[\w-]+/g) || []).length;
+
+        return {
+            a: ids, b: classes, c: elements,
+            important: important,
+            score: ids * 10000 + classes * 100 + elements + (important ? 1000000 : 0)
+        };
+    }
+
+    /* ============================================================
+       SVG to CSS
+       ============================================================ */
+    define({
+        id: 'svg-to-css',
+        name: 'SVG to CSS Background',
+        category: 'design',
+        icon: 'file-code',
+        description: 'Turn an SVG into an inline data URI for CSS, HTML or a mask.',
+        tags: ['svg', 'css', 'data uri', 'background', 'inline', 'base64', 'icon'],
+        input: 'text',
+        live: true,
+        placeholder: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>',
+        options: [
+            {
+                id: 'encoding', type: 'select', label: 'Encoding', value: 'url',
+                options: [
+                    { value: 'url', label: 'URL-encoded — smaller and readable' },
+                    { value: 'base64', label: 'Base64 — bulletproof but ~30% bigger' }
+                ]
+            },
+            {
+                id: 'output', type: 'select', label: 'Output as', value: 'background',
+                options: [
+                    { value: 'background', label: 'CSS background-image' },
+                    { value: 'mask', label: 'CSS mask-image (recolourable)' },
+                    { value: 'content', label: 'CSS content property' },
+                    { value: 'img', label: 'HTML img tag' },
+                    { value: 'raw', label: 'Raw data URI' }
+                ]
+            },
+            { id: 'minify', type: 'checkbox', label: 'Minify the SVG first', value: true },
+            { id: 'fill', type: 'color', label: 'Force a fill colour', value: '#000000' },
+            { id: 'apply-fill', type: 'checkbox', label: 'Apply that fill colour', value: false }
+        ],
+        run: function (ctx) {
+            var svg = String(ctx.text || '').trim();
+            if (!svg) return ZT.textResult('');
+            if (!/<svg[\s>]/i.test(svg)) ZT.fail('That does not look like SVG markup — it should start with an <svg> tag.');
+
+            var original = svg.length;
+
+            if (ctx.opt.minify) {
+                svg = svg
+                    .replace(/<!--[\s\S]*?-->/g, '')
+                    .replace(/<\?xml[^>]*\?>/g, '')
+                    .replace(/<!DOCTYPE[^>]*>/gi, '')
+                    .replace(/\s+/g, ' ')
+                    .replace(/>\s+</g, '><')
+                    .trim();
+            }
+
+            // A data URI needs the namespace even if the source omitted it.
+            if (!/xmlns=/.test(svg)) {
+                svg = svg.replace(/<svg/i, '<svg xmlns="http://www.w3.org/2000/svg"');
+            }
+
+            if (ctx.opt.applyFill) {
+                svg = svg.replace(/fill="[^"]*"/g, '').replace(/<svg/i, '<svg fill="' + ctx.opt.fill + '"');
+            }
+
+            var uri;
+            if (ctx.opt.encoding === 'base64') {
+                uri = 'data:image/svg+xml;base64,' + ZT.utf8ToBase64(svg);
+            } else {
+                // Encode only what actually breaks inside a CSS url().
+                uri = 'data:image/svg+xml,' + svg
+                    .replace(/%/g, '%25')
+                    .replace(/</g, '%3C').replace(/>/g, '%3E')
+                    .replace(/#/g, '%23')
+                    .replace(/"/g, "'")
+                    .replace(/\{/g, '%7B').replace(/\}/g, '%7D')
+                    .replace(/\|/g, '%7C')
+                    .replace(/\^/g, '%5E')
+                    .replace(/\[/g, '%5B').replace(/\]/g, '%5D')
+                    .replace(/`/g, '%60');
+            }
+
+            var output;
+            switch (ctx.opt.output) {
+                case 'mask':
+                    output = '-webkit-mask-image: url("' + uri + '");\n' +
+                             'mask-image: url("' + uri + '");\n' +
+                             '-webkit-mask-repeat: no-repeat;\nmask-repeat: no-repeat;\n' +
+                             'background-color: currentColor;  /* the mask takes its colour from here */';
+                    break;
+                case 'content':
+                    output = 'content: url("' + uri + '");';
+                    break;
+                case 'img':
+                    output = '<img src="' + uri + '" alt="">';
+                    break;
+                case 'raw':
+                    output = uri;
+                    break;
+                default:
+                    output = 'background-image: url("' + uri + '");\n' +
+                             'background-repeat: no-repeat;\nbackground-size: contain;';
+            }
+
+            return [
+                ZT.textResult(output, { lang: ctx.opt.output === 'img' ? 'html' : 'css' }),
+                ZT.dataResult([
+                    { label: 'Original SVG', value: ZT.formatBytes(original) },
+                    { label: 'Data URI', value: ZT.formatBytes(uri.length) },
+                    { label: 'Encoding', value: ctx.opt.encoding === 'base64' ? 'Base64' : 'URL-encoded' },
+                    { label: 'Tip', value: ctx.opt.output === 'mask' ? 'A mask takes its colour from background-color, so one file can be recoloured with CSS.' : 'URL encoding stays readable and is usually smaller than Base64 for SVG.' }
+                ], { title: 'Details', columns: 2 })
+            ];
+        }
+    });
+
+    /* ============================================================
+       Neumorphism
+       ============================================================ */
+    define({
+        id: 'neumorphism-generator',
+        name: 'Neumorphism Generator',
+        category: 'design',
+        icon: 'squircle',
+        description: 'Create soft extruded and inset shadow effects.',
+        tags: ['neumorphism', 'soft ui', 'css', 'shadow', 'skeuomorphic', 'inset'],
+        input: 'none',
+        options: [
+            { id: 'background', type: 'color', label: 'Background colour', value: '#E0E5EC', help: 'Neumorphism needs the element and its background to be the same colour — that is what makes it look moulded.' },
+            { id: 'size', type: 'range', label: 'Element size', value: 200, min: 80, max: 400, step: 10, suffix: 'px' },
+            { id: 'radius', type: 'range', label: 'Corner radius', value: 32, min: 0, max: 200, step: 1, suffix: 'px' },
+            { id: 'distance', type: 'range', label: 'Shadow distance', value: 12, min: 1, max: 60, step: 1, suffix: 'px' },
+            { id: 'blur', type: 'range', label: 'Blur', value: 24, min: 0, max: 120, step: 1, suffix: 'px' },
+            { id: 'intensity', type: 'range', label: 'Intensity', value: 15, min: 1, max: 50, step: 1, suffix: '%' },
+            {
+                id: 'style', type: 'radio', label: 'Style', value: 'raised',
+                options: [
+                    { value: 'raised', label: 'Raised' },
+                    { value: 'pressed', label: 'Pressed (inset)' },
+                    { value: 'flat', label: 'Flat' }
+                ]
+            },
+            {
+                id: 'light-source', type: 'select', label: 'Light comes from', value: 'top-left',
+                options: [
+                    { value: 'top-left', label: 'Top left' }, { value: 'top-right', label: 'Top right' },
+                    { value: 'bottom-left', label: 'Bottom left' }, { value: 'bottom-right', label: 'Bottom right' }
+                ]
+            }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+            var rgb = ZT.color.parse(o.background) || [224, 229, 236];
+
+            // Light and dark are the same hue shifted by the intensity.
+            var factor = o.intensity / 100;
+            var light = rgb.slice(0, 3).map(function (c) { return Math.min(255, Math.round(c + c * factor)); });
+            var dark = rgb.slice(0, 3).map(function (c) { return Math.max(0, Math.round(c - c * factor)); });
+
+            var signX = /left/.test(o.lightSource) ? 1 : -1;
+            var signY = /top/.test(o.lightSource) ? 1 : -1;
+            var dx = o.distance * signX;
+            var dy = o.distance * signY;
+
+            var lightRgb = 'rgb(' + light.join(', ') + ')';
+            var darkRgb = 'rgb(' + dark.join(', ') + ')';
+
+            var shadow;
+            if (o.style === 'flat') {
+                shadow = 'none';
+            } else if (o.style === 'pressed') {
+                shadow = 'inset ' + dx + 'px ' + dy + 'px ' + o.blur + 'px ' + darkRgb + ',\n              inset ' +
+                    (-dx) + 'px ' + (-dy) + 'px ' + o.blur + 'px ' + lightRgb;
+            } else {
+                shadow = dx + 'px ' + dy + 'px ' + o.blur + 'px ' + darkRgb + ',\n              ' +
+                    (-dx) + 'px ' + (-dy) + 'px ' + o.blur + 'px ' + lightRgb;
+            }
+
+            var css = '.neumorphic {\n' +
+                '  border-radius: ' + o.radius + 'px;\n' +
+                '  background: ' + o.background + ';\n' +
+                '  box-shadow: ' + shadow + ';\n' +
+                '}';
+
+            var stage = ZT.el('div', { class: 'zt-css-preview zt-css-preview--center' });
+            stage.style.background = o.background;
+            var box = ZT.el('div', {});
+            Object.assign(box.style, {
+                width: o.size + 'px',
+                height: o.size + 'px',
+                borderRadius: o.radius + 'px',
+                background: o.background,
+                boxShadow: shadow.replace(/\n\s+/g, ' ')
+            });
+            stage.appendChild(box);
+
+            return [
+                ZT.nodeResult(stage, { title: 'Preview' }),
+                ZT.textResult(css, { lang: 'css', title: 'CSS' }),
+                ZT.dataResult([
+                    { label: 'Accessibility note', value: 'Neumorphic controls have very low contrast against their background, which makes them hard to see for many people and can fail WCAG. Use it decoratively, and keep a clear focus style on anything interactive.' }
+                ], { title: 'Worth knowing', columns: 1 })
+            ];
+        }
+    });
+
+    /* ============================================================
+       CSS filter playground
+       ============================================================ */
+    define({
+        id: 'css-filter-generator',
+        name: 'CSS Filter Generator',
+        category: 'design',
+        icon: 'sliders-horizontal',
+        description: 'Build CSS filter and backdrop-filter chains with a live preview.',
+        tags: ['css', 'filter', 'blur', 'brightness', 'contrast', 'grayscale', 'backdrop'],
+        input: 'none',
+        options: [
+            { id: 'blur', type: 'range', label: 'Blur', value: 0, min: 0, max: 20, step: 0.5, suffix: 'px' },
+            { id: 'brightness', type: 'range', label: 'Brightness', value: 100, min: 0, max: 200, step: 1, suffix: '%' },
+            { id: 'contrast', type: 'range', label: 'Contrast', value: 100, min: 0, max: 200, step: 1, suffix: '%' },
+            { id: 'saturate', type: 'range', label: 'Saturation', value: 100, min: 0, max: 300, step: 1, suffix: '%' },
+            { id: 'grayscale', type: 'range', label: 'Greyscale', value: 0, min: 0, max: 100, step: 1, suffix: '%' },
+            { id: 'sepia', type: 'range', label: 'Sepia', value: 0, min: 0, max: 100, step: 1, suffix: '%' },
+            { id: 'hue-rotate', type: 'range', label: 'Hue rotate', value: 0, min: 0, max: 360, step: 1, suffix: 'deg' },
+            { id: 'invert', type: 'range', label: 'Invert', value: 0, min: 0, max: 100, step: 1, suffix: '%' },
+            { id: 'opacity', type: 'range', label: 'Opacity', value: 100, min: 0, max: 100, step: 1, suffix: '%' },
+            { id: 'drop-shadow', type: 'checkbox', label: 'Add a drop shadow', value: false },
+            { id: 'shadow-color', type: 'color', label: 'Shadow colour', value: '#000000', when: function (o) { return o.dropShadow; } },
+            { id: 'backdrop', type: 'checkbox', label: 'Use backdrop-filter instead', value: false, help: 'Filters what is behind the element rather than the element itself.' }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+            var parts = [];
+
+            if (o.blur) parts.push('blur(' + o.blur + 'px)');
+            if (o.brightness !== 100) parts.push('brightness(' + o.brightness + '%)');
+            if (o.contrast !== 100) parts.push('contrast(' + o.contrast + '%)');
+            if (o.saturate !== 100) parts.push('saturate(' + o.saturate + '%)');
+            if (o.grayscale) parts.push('grayscale(' + o.grayscale + '%)');
+            if (o.sepia) parts.push('sepia(' + o.sepia + '%)');
+            if (o.hueRotate) parts.push('hue-rotate(' + o.hueRotate + 'deg)');
+            if (o.invert) parts.push('invert(' + o.invert + '%)');
+            if (o.opacity !== 100) parts.push('opacity(' + o.opacity + '%)');
+            if (o.dropShadow) parts.push('drop-shadow(0 4px 8px ' + o.shadowColor + ')');
+
+            var value = parts.length ? parts.join(' ') : 'none';
+            var property = o.backdrop ? 'backdrop-filter' : 'filter';
+
+            var css = (o.backdrop ? '-webkit-backdrop-filter: ' + value + ';\n' : '') +
+                property + ': ' + value + ';';
+
+            var stage = ZT.el('div', { class: 'zt-glass-stage' });
+            stage.style.background =
+                'radial-gradient(circle at 25% 30%, #4F8DF7 0%, transparent 45%),' +
+                'radial-gradient(circle at 75% 65%, #EC4899 0%, transparent 42%),' +
+                'radial-gradient(circle at 55% 20%, #F59E0B 0%, transparent 38%), #1E293B';
+
+            var target = ZT.el('div', { class: 'zt-glass-card', text: o.backdrop ? 'Backdrop filtered' : 'Filtered' });
+            if (o.backdrop) {
+                target.style.backdropFilter = value;
+                target.style.webkitBackdropFilter = value;
+                target.style.background = 'rgba(255,255,255,0.08)';
+            } else {
+                target.style.filter = value;
+                target.style.background = 'linear-gradient(135deg, #4F8DF7, #EC4899)';
+            }
+            stage.appendChild(target);
+
+            return [
+                ZT.nodeResult(stage, { title: 'Preview' }),
+                ZT.textResult(css, { lang: 'css', title: 'CSS' })
+            ];
+        }
+    });
+
 })();

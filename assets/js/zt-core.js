@@ -355,6 +355,22 @@
         return canvas;
     }
 
+    /**
+     * Trace a rounded rectangle onto a 2D context. Used by any tool that
+     * clips or fills a card shape, which is several across image and
+     * generator modules.
+     */
+    function roundedRect(c2d, x, y, w, h, r) {
+        var radius = Math.min(r, w / 2, h / 2);
+        c2d.beginPath();
+        c2d.moveTo(x + radius, y);
+        c2d.arcTo(x + w, y, x + w, y + h, radius);
+        c2d.arcTo(x + w, y + h, x, y + h, radius);
+        c2d.arcTo(x, y + h, x, y, radius);
+        c2d.arcTo(x, y, x + w, y, radius);
+        c2d.closePath();
+    }
+
     /* ============================================================
        COLOUR
        ============================================================
@@ -506,22 +522,40 @@
        ============================================================ */
     var scriptCache = {};
 
-    function loadScript(src) {
-        if (scriptCache[src]) return scriptCache[src];
-        scriptCache[src] = new Promise(function (resolve, reject) {
-            var existing = $$('script').find(function (s) { return s.src === src; });
-            if (existing && existing.dataset.ztLoaded === '1') return resolve();
-
+    function injectScript(src) {
+        return new Promise(function (resolve, reject) {
             var s = document.createElement('script');
             s.src = src;
             s.async = true;
             s.onload = function () { s.dataset.ztLoaded = '1'; resolve(); };
             s.onerror = function () {
-                delete scriptCache[src];
-                reject(new Error('Could not load a required library. Check your connection and retry.'));
+                s.remove();
+                reject(new Error('script load failed: ' + src));
             };
             document.head.appendChild(s);
         });
+    }
+
+    function loadScript(src) {
+        if (scriptCache[src]) return scriptCache[src];
+        scriptCache[src] = (async function () {
+            var existing = $$('script').find(function (s) { return s.src === src; });
+            if (existing && existing.dataset.ztLoaded === '1') return;
+
+            // One retry: a CDN blip or a moment of flaky signal should not turn
+            // into a dead tool. A genuinely missing library still fails.
+            try {
+                await injectScript(src);
+            } catch (first) {
+                await new Promise(function (r) { setTimeout(r, 600); });
+                try {
+                    await injectScript(src);
+                } catch (second) {
+                    delete scriptCache[src];
+                    throw new Error('Could not load a required library. Check your connection and retry.');
+                }
+            }
+        })();
         return scriptCache[src];
     }
 
@@ -715,6 +749,7 @@
         loadScript: loadScript, requireLib: requireLib, CDN: CDN, libs: libs, zipFiles: zipFiles,
         fileResult: fileResult, textResult: textResult, dataResult: dataResult, nodeResult: nodeResult,
         ToolError: ToolError, fail: fail, toast: toast, debounce: debounce,
+        roundedRect: roundedRect,
         color: color,
         bytesToHex: bytesToHex, utf8ToBase64: utf8ToBase64, base64ToUtf8: base64ToUtf8
     };

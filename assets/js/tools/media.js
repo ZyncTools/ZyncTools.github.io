@@ -809,6 +809,36 @@
        Video: frame extraction
        ============================================================ */
 
+    /**
+     * WebM files written by MediaRecorder — including the ones this site's own
+     * screen and video recorders produce — carry no duration in their header,
+     * so video.duration reads Infinity. Seeking past the end forces the browser
+     * to scan for the real length; then we rewind.
+     */
+    function resolveDuration(video) {
+        return new Promise(function (resolve) {
+            if (isFinite(video.duration) && video.duration > 0) return resolve();
+
+            var settled = false;
+            function finish() {
+                if (settled) return;
+                settled = true;
+                clearTimeout(timer);
+                video.removeEventListener('durationchange', onChange);
+                video.currentTime = 0;
+                resolve();
+            }
+            function onChange() {
+                if (isFinite(video.duration) && video.duration > 0) finish();
+            }
+
+            // Give up rather than hang: the caller reports an unreadable duration.
+            var timer = setTimeout(finish, 5000);
+            video.addEventListener('durationchange', onChange);
+            video.currentTime = 1e101;
+        });
+    }
+
     /** Load a video element and wait for its metadata. */
     function loadVideo(file) {
         return new Promise(function (resolve, reject) {
@@ -818,7 +848,11 @@
             video.muted = true;
             video.playsInline = true;
 
-            video.onloadedmetadata = function () { resolve({ video: video, url: url }); };
+            video.onloadedmetadata = function () {
+                resolveDuration(video).then(function () {
+                    resolve({ video: video, url: url });
+                });
+            };
             video.onerror = function () {
                 URL.revokeObjectURL(url);
                 reject(ZT.ToolError('"' + file.name + '" could not be played by this browser. MP4 (H.264) and WebM are the most reliable formats.'));
@@ -1145,5 +1179,483 @@
         var rw = w / g, rh = h / g;
         return (rw > 40 || rh > 40) ? (w / h).toFixed(2) + ':1' : rw + ':' + rh;
     }
+
+
+    /* ============================================================
+       Screen recorder
+       ============================================================ */
+    define({
+        id: 'screen-recorder',
+        name: 'Screen Recorder',
+        category: 'media',
+        icon: 'monitor',
+        description: 'Record your screen, a window or a browser tab and save it as a video.',
+        tags: ['screen recorder', 'record screen', 'capture', 'screencast', 'video', 'demo'],
+        input: 'none',
+        popular: true,
+        options: [
+            {
+                id: 'source', type: 'select', label: 'Record', value: 'prompt',
+                options: [{ value: 'prompt', label: 'Let me choose when recording starts' }],
+                help: 'Your browser asks which screen, window or tab to share — this page never sees the list.'
+            },
+            { id: 'audio', type: 'checkbox', label: 'Record system audio', value: false, help: 'Only works when sharing a tab or a whole screen, and only in Chrome and Edge.' },
+            { id: 'microphone', type: 'checkbox', label: 'Record microphone', value: false },
+            {
+                id: 'quality', type: 'select', label: 'Quality', value: '2500000',
+                options: [
+                    { value: '1000000', label: 'Low — 1 Mbps, small files' },
+                    { value: '2500000', label: 'Medium — 2.5 Mbps' },
+                    { value: '5000000', label: 'High — 5 Mbps' },
+                    { value: '8000000', label: 'Very high — 8 Mbps' }
+                ]
+            },
+            { id: 'max-duration', type: 'number', label: 'Stop automatically after', suffix: 'seconds', value: 300, min: 5, max: 3600, help: 'A safety limit. You can always stop earlier.' },
+            { id: 'note', type: 'note', text: 'The recording is held in this tab and written to a file on your device. It is never uploaded. Press Run to start, then use the Stop button that appears — or your browser\'s own "Stop sharing" bar.' }
+        ],
+        run: async function (ctx) {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+                ZT.fail('This browser cannot capture the screen. Chrome, Edge and Firefox on desktop support it; mobile browsers generally do not.');
+            }
+
+            var o = ctx.opt;
+            var stream;
+            try {
+                stream = await navigator.mediaDevices.getDisplayMedia({
+                    video: { frameRate: 30 },
+                    audio: o.audio
+                });
+            } catch (err) {
+                if (err.name === 'NotAllowedError') ZT.fail('Screen sharing was cancelled or blocked.');
+                ZT.fail('Could not start screen capture: ' + err.message);
+            }
+
+            // Mix the microphone in as a second track if asked for.
+            if (o.microphone) {
+                try {
+                    var mic = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mic.getAudioTracks().forEach(function (track) { stream.addTrack(track); });
+                } catch (err) {
+                    ZT.toast('Continuing without the microphone — permission was refused.', 'error');
+                }
+            }
+
+            var mimeType = ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm']
+                .filter(function (t) { return MediaRecorder.isTypeSupported(t); })[0] || 'video/webm';
+
+            var recorder = new MediaRecorder(stream, {
+                mimeType: mimeType,
+                videoBitsPerSecond: parseInt(o.quality, 10)
+            });
+
+            var chunks = [];
+            recorder.ondataavailable = function (e) { if (e.data.size) chunks.push(e.data); };
+
+            var startedAt = Date.now();
+            var stopButton = ZT.el('button', {
+                class: 'zt-btn zt-btn--danger zt-btn--lg',
+                type: 'button',
+                text: 'Stop recording'
+            });
+            var timer = ZT.el('span', { class: 'zt-field__help', text: 'Recording…' });
+            var panel = ZT.el('div', { class: 'zt-row' }, [stopButton, timer]);
+
+            ctx.progress(null, 'Recording — press Stop when you are done');
+            ZT.toast('Recording started.', 'success');
+
+            var done = new Promise(function (resolve) {
+                recorder.onstop = resolve;
+                stopButton.addEventListener('click', function () {
+                    if (recorder.state !== 'inactive') recorder.stop();
+                });
+                // The browser's own "Stop sharing" bar ends the track directly.
+                stream.getVideoTracks()[0].addEventListener('ended', function () {
+                    if (recorder.state !== 'inactive') recorder.stop();
+                });
+                setTimeout(function () {
+                    if (recorder.state !== 'inactive') recorder.stop();
+                }, o.maxDuration * 1000);
+            });
+
+            var tick = setInterval(function () {
+                timer.textContent = 'Recording — ' + ZT.formatDuration((Date.now() - startedAt) / 1000);
+            }, 500);
+
+            recorder.start(1000);
+
+            // Show the stop control while the recording runs.
+            var host = ZT.$('#zt-results');
+            if (host) {
+                host.innerHTML = '';
+                host.appendChild(ZT.el('div', { class: 'zt-result' }, [
+                    ZT.el('div', { class: 'zt-result__head' }, [ZT.el('span', { class: 'zt-result__title', text: 'Recording in progress' })]),
+                    ZT.el('div', { class: 'zt-result__body' }, panel)
+                ]));
+            }
+
+            await done;
+            clearInterval(tick);
+            stream.getTracks().forEach(function (track) { track.stop(); });
+
+            var blob = new Blob(chunks, { type: mimeType });
+            var seconds = (Date.now() - startedAt) / 1000;
+            ctx.progress(1);
+
+            if (!blob.size) ZT.fail('Nothing was recorded. The capture may have been stopped before it began.');
+
+            return [
+                ZT.dataResult([
+                    { label: 'Length', value: ZT.formatDuration(seconds) },
+                    { label: 'Size', value: ZT.formatBytes(blob.size) },
+                    { label: 'Format', value: 'WebM' },
+                    { label: 'Average bitrate', value: ZT.formatBytes(blob.size / seconds) + '/s' }
+                ], { title: 'Recording', columns: 2 }),
+                ZT.fileResult(blob, 'screen-recording-' + new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-') + '.webm', {
+                    previewKind: 'video',
+                    note: ZT.formatDuration(seconds) + ' · ' + ZT.formatBytes(blob.size)
+                })
+            ];
+        }
+    });
+
+    /* ============================================================
+       Audio recorder
+       ============================================================ */
+    define({
+        id: 'audio-recorder',
+        name: 'Voice & Audio Recorder',
+        category: 'media',
+        icon: 'mic',
+        description: 'Record from your microphone and save it as MP3 or WAV.',
+        tags: ['audio recorder', 'voice recorder', 'record', 'microphone', 'mp3', 'dictation'],
+        input: 'none',
+        popular: true,
+        options: [
+            FORMAT_OPTION, BITRATE_OPTION,
+            { id: 'max-duration', type: 'number', label: 'Stop automatically after', suffix: 'seconds', value: 300, min: 5, max: 3600 },
+            { id: 'echo-cancellation', type: 'checkbox', label: 'Echo cancellation', value: true },
+            { id: 'noise-suppression', type: 'checkbox', label: 'Noise suppression', value: true },
+            { id: 'normalise', type: 'checkbox', label: 'Normalise the volume afterwards', value: true },
+            { id: 'note', type: 'note', text: 'Audio is captured and encoded in this tab, then written to a file on your device. Nothing is uploaded and no recording is kept once you close the page.' }
+        ],
+        run: async function (ctx) {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                ZT.fail('This browser cannot access a microphone.');
+            }
+
+            var o = ctx.opt;
+            var stream;
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        echoCancellation: o.echoCancellation,
+                        noiseSuppression: o.noiseSuppression
+                    }
+                });
+            } catch (err) {
+                if (err.name === 'NotAllowedError') ZT.fail('Microphone access was refused.');
+                if (err.name === 'NotFoundError') ZT.fail('No microphone was found on this device.');
+                ZT.fail('Could not open the microphone: ' + err.message);
+            }
+
+            var recorder = new MediaRecorder(stream);
+            var chunks = [];
+            recorder.ondataavailable = function (e) { if (e.data.size) chunks.push(e.data); };
+
+            var startedAt = Date.now();
+            var level = ZT.el('div', { class: 'zt-meter zt-meter--good' }, ZT.el('div', { class: 'zt-meter__bar', style: { width: '0%' } }));
+            var timer = ZT.el('span', { class: 'zt-field__help', text: 'Recording…' });
+            var stopButton = ZT.el('button', { class: 'zt-btn zt-btn--danger zt-btn--lg', type: 'button', text: 'Stop recording' });
+
+            // A live level meter, so the user can see the mic is actually working.
+            var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            var meterContext = new AudioContextClass();
+            var analyser = meterContext.createAnalyser();
+            analyser.fftSize = 512;
+            meterContext.createMediaStreamSource(stream).connect(analyser);
+            var samples = new Uint8Array(analyser.frequencyBinCount);
+
+            var running = true;
+            (function paint() {
+                if (!running) return;
+                analyser.getByteFrequencyData(samples);
+                var sum = 0;
+                for (var i = 0; i < samples.length; i++) sum += samples[i];
+                var average = sum / samples.length / 255;
+                level.firstChild.style.width = Math.min(100, average * 220) + '%';
+                requestAnimationFrame(paint);
+            })();
+
+            var host = ZT.$('#zt-results');
+            if (host) {
+                host.innerHTML = '';
+                host.appendChild(ZT.el('div', { class: 'zt-result' }, [
+                    ZT.el('div', { class: 'zt-result__head' }, [ZT.el('span', { class: 'zt-result__title', text: 'Recording' })]),
+                    ZT.el('div', { class: 'zt-result__body' }, [
+                        level,
+                        ZT.el('div', { class: 'zt-row', style: { marginTop: '14px' } }, [stopButton, timer])
+                    ])
+                ]));
+            }
+
+            ctx.progress(null, 'Recording — press Stop when you are done');
+
+            var done = new Promise(function (resolve) {
+                recorder.onstop = resolve;
+                stopButton.addEventListener('click', function () {
+                    if (recorder.state !== 'inactive') recorder.stop();
+                });
+                setTimeout(function () {
+                    if (recorder.state !== 'inactive') recorder.stop();
+                }, o.maxDuration * 1000);
+            });
+
+            var tick = setInterval(function () {
+                timer.textContent = ZT.formatDuration((Date.now() - startedAt) / 1000);
+            }, 500);
+
+            recorder.start();
+            await done;
+
+            running = false;
+            clearInterval(tick);
+            stream.getTracks().forEach(function (t) { t.stop(); });
+            if (meterContext.close) meterContext.close();
+
+            var raw = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
+            if (!raw.size) ZT.fail('Nothing was recorded.');
+
+            ctx.progress(0.4, 'Decoding');
+            var buffer = await decodeAudio(new File([raw], 'recording.webm', { type: raw.type }));
+            if (o.normalise) normaliseBuffer(buffer);
+
+            ctx.progress(0.6, 'Encoding to ' + o.format.toUpperCase());
+            var blob = await exportAudio(buffer, o.format, parseInt(o.bitrate, 10), function (p) {
+                ctx.progress(0.6 + p * 0.4);
+            });
+            ctx.progress(1);
+
+            return [
+                ZT.dataResult([
+                    { label: 'Length', value: ZT.formatDuration(buffer.duration) },
+                    { label: 'Sample rate', value: ZT.formatNumber(buffer.sampleRate) + ' Hz' },
+                    { label: 'Channels', value: buffer.numberOfChannels === 1 ? 'Mono' : 'Stereo' },
+                    { label: 'Size', value: ZT.formatBytes(blob.size) }
+                ], { title: 'Recording', columns: 2 }),
+                ZT.fileResult(blob, 'recording-' + new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-') + '.' + o.format, {
+                    previewBlob: blob, previewKind: 'audio',
+                    note: ZT.formatDuration(buffer.duration) + ' · ' + ZT.formatBytes(blob.size)
+                })
+            ];
+        }
+    });
+
+    /* ============================================================
+       Text to speech
+       ============================================================ */
+    define({
+        id: 'text-to-speech',
+        name: 'Text to Speech',
+        category: 'media',
+        icon: 'audio-waveform',
+        description: 'Read text aloud using the voices installed on your device.',
+        tags: ['text to speech', 'tts', 'read aloud', 'voice', 'speech', 'accessibility', 'proofread'],
+        input: 'text',
+        placeholder: 'Type or paste the text you want read aloud…',
+        options: [
+            { id: 'voice', type: 'select', label: 'Voice', value: 'default', options: [{ value: 'default', label: 'System default' }] },
+            { id: 'rate', type: 'range', label: 'Speed', value: 1, min: 0.5, max: 2, step: 0.05, suffix: '×' },
+            { id: 'pitch', type: 'range', label: 'Pitch', value: 1, min: 0, max: 2, step: 0.1 },
+            { id: 'volume', type: 'range', label: 'Volume', value: 100, min: 0, max: 100, step: 5, suffix: '%' },
+            { id: 'note', type: 'note', text: 'Speech is produced by your operating system, so the available voices are the ones installed on your device and nothing is sent anywhere. Browsers do not expose the generated audio to the page, so there is no way to offer a download — for a file, record the output with the Voice Recorder while it plays.' }
+        ],
+        // The voice list is only available after the browser has loaded it.
+        refreshOptions: function (opt, schema) {
+            if (!window.speechSynthesis) return opt;
+            var voices = window.speechSynthesis.getVoices();
+            var field = schema.filter(function (o) { return o.id === 'voice'; })[0];
+            if (field && voices.length) {
+                field.options = [{ value: 'default', label: 'System default' }].concat(
+                    voices.map(function (v) {
+                        return { value: v.voiceURI, label: v.name + '  (' + v.lang + ')' + (v.localService ? '' : ' — network') };
+                    })
+                );
+            }
+            return opt;
+        },
+        run: function (ctx) {
+            if (!window.speechSynthesis) {
+                ZT.fail('This browser does not support speech synthesis.');
+            }
+
+            var text = String(ctx.text || '').trim();
+            if (!text) {
+                return ZT.dataResult([{ label: 'Waiting for input', value: 'Type some text above.' }], { title: 'Text to speech' });
+            }
+
+            var o = ctx.opt;
+            var synth = window.speechSynthesis;
+            synth.cancel();
+
+            var utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = o.rate;
+            utterance.pitch = o.pitch;
+            utterance.volume = o.volume / 100;
+
+            if (o.voice !== 'default') {
+                var match = synth.getVoices().filter(function (v) { return v.voiceURI === o.voice; })[0];
+                if (match) utterance.voice = match;
+            }
+
+            var status = ZT.el('span', { class: 'zt-field__help', text: 'Speaking…' });
+
+            var pause = ZT.el('button', { class: 'zt-btn zt-btn--outline', type: 'button', text: 'Pause' });
+            pause.addEventListener('click', function () {
+                if (synth.paused) { synth.resume(); pause.textContent = 'Pause'; }
+                else { synth.pause(); pause.textContent = 'Resume'; }
+            });
+
+            var stop = ZT.el('button', { class: 'zt-btn zt-btn--danger', type: 'button', text: 'Stop' });
+            stop.addEventListener('click', function () {
+                synth.cancel();
+                status.textContent = 'Stopped.';
+            });
+
+            utterance.onend = function () { status.textContent = 'Finished.'; };
+            utterance.onerror = function () { status.textContent = 'Playback failed.'; };
+
+            synth.speak(utterance);
+
+            var words = text.split(/\s+/).length;
+            var panel = ZT.el('div', {}, [
+                ZT.el('div', { class: 'zt-row' }, [pause, stop, status])
+            ]);
+
+            return [
+                ZT.nodeResult(panel, { title: 'Playback' }),
+                ZT.dataResult([
+                    { label: 'Words', value: ZT.formatNumber(words) },
+                    { label: 'Estimated length', value: ZT.formatDuration(words / (150 * o.rate) * 60) },
+                    { label: 'Voice', value: utterance.voice ? utterance.voice.name : 'system default' },
+                    { label: 'Saving a file', value: 'Browsers keep synthesised speech out of reach of the page, so it cannot be downloaded here. Run the Voice Recorder alongside this to capture it.' }
+                ], { title: 'Details', columns: 2 })
+            ];
+        }
+    });
+
+    /* ============================================================
+       GIF maker
+       ============================================================ */
+    define({
+        id: 'gif-maker',
+        name: 'GIF Maker',
+        category: 'media',
+        icon: 'film',
+        description: 'Turn a set of images into an animated GIF.',
+        tags: ['gif', 'animated gif', 'maker', 'images to gif', 'animation', 'slideshow'],
+        input: 'files',
+        accept: 'image/*',
+        popular: true,
+        heavy: true,
+        maxFiles: 200,
+        options: [
+            { id: 'fps', type: 'range', label: 'Frame rate', value: 5, min: 1, max: 30, step: 1, suffix: 'fps' },
+            { id: 'width', type: 'number', label: 'Output width', suffix: 'px', value: 480, min: 40, max: 1600, help: 'Height follows the first image. Width is the biggest lever on file size.' },
+            {
+                id: 'quality', type: 'select', label: 'Colour quality', value: '10',
+                options: [
+                    { value: '1', label: 'Best — slowest, largest' },
+                    { value: '10', label: 'Balanced' },
+                    { value: '20', label: 'Fast — smallest' }
+                ]
+            },
+            { id: 'loop', type: 'checkbox', label: 'Loop forever', value: true },
+            { id: 'reverse', type: 'checkbox', label: 'Reverse the order', value: false },
+            { id: 'boomerang', type: 'checkbox', label: 'Play forwards then backwards', value: false },
+            {
+                id: 'order', type: 'select', label: 'Frame order', value: 'name-asc',
+                options: [
+                    { value: 'name-asc', label: 'File name (A → Z)' },
+                    { value: 'as-listed', label: 'The order files are listed' },
+                    { value: 'name-desc', label: 'File name (Z → A)' }
+                ]
+            },
+            { id: 'background', type: 'color', label: 'Background for transparency', value: '#FFFFFF' }
+        ],
+        run: async function (ctx) {
+            var o = ctx.opt;
+            if (ctx.files.length < 2) ZT.fail('Add at least two images to animate.');
+
+            ctx.progress(0.02, 'Loading the encoder');
+            await ZT.loadScript(ZT.CDN.gifJs);
+            if (!window.GIF) ZT.fail('The GIF encoder could not be loaded. Check your connection and retry.');
+
+            var files = ctx.files.slice();
+            if (o.order === 'name-asc') files.sort(function (a, b) { return a.name.localeCompare(b.name, undefined, { numeric: true }); });
+            else if (o.order === 'name-desc') files.sort(function (a, b) { return b.name.localeCompare(a.name, undefined, { numeric: true }); });
+            if (o.reverse) files.reverse();
+
+            var first = await ZT.loadImage(files[0]);
+            var firstSize = ZT.imageSize(first);
+            var width = o.width;
+            var height = Math.round(firstSize.height * (width / firstSize.width));
+
+            var workerResponse = await fetch(ZT.CDN.gifWorker);
+            var workerUrl = URL.createObjectURL(await workerResponse.blob());
+
+            var gif = new window.GIF({
+                workers: 2,
+                quality: parseInt(o.quality, 10),
+                width: width,
+                height: height,
+                workerScript: workerUrl,
+                repeat: o.loop ? 0 : -1
+            });
+
+            var canvas = ZT.makeCanvas(width, height);
+            var c2d = canvas.getContext('2d');
+            var delay = Math.round(1000 / o.fps);
+
+            var order = files.slice();
+            if (o.boomerang) {
+                // Skip the endpoints on the way back so they do not stutter.
+                order = order.concat(files.slice(1, -1).reverse());
+            }
+
+            for (var i = 0; i < order.length; i++) {
+                if (ctx.signal && ctx.signal.aborted) ZT.fail('Cancelled.');
+                ctx.progress(0.05 + (i / order.length) * 0.55, 'Frame ' + (i + 1) + ' of ' + order.length);
+
+                var bitmap = await ZT.loadImage(order[i]);
+                var size = ZT.imageSize(bitmap);
+
+                c2d.fillStyle = o.background;
+                c2d.fillRect(0, 0, width, height);
+
+                // Fit each frame inside the canvas so mixed sizes still line up.
+                var fit = ZT.fitInside(size.width, size.height, width, height);
+                c2d.drawImage(bitmap, (width - fit.width) / 2, (height - fit.height) / 2, fit.width, fit.height);
+
+                gif.addFrame(c2d, { copy: true, delay: delay });
+                if (bitmap.close) bitmap.close();
+            }
+
+            ctx.progress(0.62, 'Encoding GIF');
+            var blob = await new Promise(function (resolve, reject) {
+                gif.on('progress', function (p) { ctx.progress(0.62 + p * 0.36, 'Encoding GIF'); });
+                gif.on('finished', resolve);
+                gif.on('abort', function () { reject(ZT.ToolError('GIF encoding was aborted.')); });
+                gif.render();
+            });
+
+            URL.revokeObjectURL(workerUrl);
+            ctx.progress(1);
+
+            return ZT.fileResult(blob, 'animation.gif', {
+                previewBlob: blob,
+                note: width + '×' + height + ' · ' + order.length + ' frames · ' + o.fps + ' fps · ' + ZT.formatBytes(blob.size)
+            });
+        }
+    });
 
 })();
