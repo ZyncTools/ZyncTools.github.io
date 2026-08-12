@@ -74,7 +74,9 @@
        ============================================================ */
     var VALID_OPTION_TYPES = [
         'range', 'number', 'select', 'checkbox', 'text', 'textarea',
-        'color', 'radio', 'file', 'date', 'datetime-local', 'time', 'note'
+        'color', 'radio', 'file', 'date', 'datetime-local', 'time', 'note',
+        // A pad the user draws on; its value is a PNG data URL.
+        'signature'
     ];
 
     function validate(def) {
@@ -103,12 +105,50 @@
         });
     }
 
+    /**
+     * Register catalogue metadata without any implementation.
+     *
+     * The homepage, search and the assistant only ever need a tool's name,
+     * description, tags and icon — not its option schema or its run(). Those
+     * are 566 KB across twelve modules, so loading them to render a grid of
+     * cards was most of the page weight for none of the benefit.
+     *
+     * `build-pages.js` writes these stubs into assets/js/zt-catalog.js. A page
+     * then loads only the module it actually needs, and define() below
+     * upgrades the matching stub in place.
+     */
+    function defineMeta(list) {
+        (list || []).forEach(function (meta) {
+            if (byId[meta.id]) return; // a full definition already won
+
+            var stub = Object.assign({
+                tags: [], icon: 'wrench', options: [], accept: '',
+                maxFiles: 1, live: false, popular: false, heavy: false,
+                input: 'files'
+            }, meta);
+
+            stub.isStub = true;
+            stub.searchText = [
+                stub.name, stub.description, stub.tags.join(' '), stub.category,
+                stub.id.replace(/-/g, ' ')
+            ].join(' ').toLowerCase();
+
+            byId[stub.id] = stub;
+            order.push(stub.id);
+        });
+    }
+
     function define(def) {
+        // A stub from the catalogue is expected to be replaced, not a clash.
+        var existing = byId[def && def.id];
+        if (existing && existing.isStub) delete byId[def.id];
+
         try {
             validate(def);
         } catch (err) {
             // Never let one bad definition take down the whole catalogue.
             console.error('[ZyncTools registry]', err.message);
+            if (existing) byId[def.id] = existing; // keep the stub rather than losing the tool
             return null;
         }
 
@@ -131,7 +171,8 @@
         ].join(' ').toLowerCase();
 
         byId[tool.id] = tool;
-        order.push(tool.id);
+        // A stub already holds this tool's slot, so keep the catalogue order.
+        if (!existing) order.push(tool.id);
         return tool;
     }
 
@@ -291,9 +332,36 @@
         });
     }
 
+    /**
+     * Load the module that implements `id`, if only its metadata is present.
+     * Generated pages already include the right module, so this is the path
+     * for tool.html — the fallback route, which cannot know in advance which
+     * tool it will be asked for.
+     */
+    function ensureLoaded(id) {
+        var tool = byId[id];
+        if (!tool) return Promise.resolve(null);
+        if (!tool.isStub) return Promise.resolve(tool);
+
+        if (!tool.module) {
+            return Promise.reject(new Error('No module recorded for "' + id + '".'));
+        }
+
+        return ZT.loadScript(ZT.url('assets/js/tools/' + tool.module + '.js'))
+            .then(function () {
+                var loaded = byId[id];
+                if (!loaded || loaded.isStub) {
+                    throw new Error('"' + id + '" was not defined by its module.');
+                }
+                return loaded;
+            });
+    }
+
     ZT.registry = {
         define: define,
+        defineMeta: defineMeta,
         defineEach: defineEach,
+        ensureLoaded: ensureLoaded,
         get: get,
         all: all,
         categories: categories,

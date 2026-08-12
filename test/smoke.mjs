@@ -169,6 +169,7 @@ function sampleText(tool) {
 /* Which fixture a file tool should receive. */
 function filesFor(tool) {
   const a = tool.accept || '';
+  if (/docx/.test(a)) return 'skip:docx';
   if (/pdf/.test(a)) {
     if (tool.id === 'merge-pdf') return ['pdf', 'pdf2'];
     if (/ocr/.test(tool.id)) return ['pdf'];
@@ -230,7 +231,8 @@ for (const tool of list) {
         await page.dispatchEvent('#zt-text-input', 'input');
       } else if (tool.input === 'file' || tool.input === 'files') {
         const want = filesFor(tool);
-        if (!want) { row.status = 'skip'; row.notes.push('needs a real video file'); }
+        if (want === 'skip:docx') { row.status = 'skip'; row.notes.push('needs a real .docx file'); }
+        else if (!want) { row.status = 'skip'; row.notes.push('needs a real video file'); }
         else {
           await page.evaluate(keys => {
             const dt = new DataTransfer();
@@ -258,15 +260,26 @@ for (const tool of list) {
         'image-watermark': {},
         'schema-markup-generator': { name: 'Example article', description: 'Example description', url: 'https://example.com/a' },
         'sitemap-generator': {},
-        'qr-code-generator': {}
+        'qr-code-generator': {},
+        'pdf-redact': { 'whole-pages': '1' },
+        'sign-pdf': { source: 'type', text: 'Ada Lovelace' }
       };
       const fills = REQUIRED[tool.id];
       if (fills && Object.keys(fills).length) {
         for (const [optId, value] of Object.entries(fills)) {
           await page.evaluate(([optId, value]) => {
+            // Radio groups are rendered as a named set, not a single element.
+            const radio = document.querySelector(
+              'input[type=radio][name="zt-radio-' + optId + '"][value="' + value + '"]');
+            if (radio) {
+              radio.checked = true;
+              radio.dispatchEvent(new Event('change', { bubbles: true }));
+              return;
+            }
             const node = document.querySelector('#zt-opt-' + optId);
             if (!node) return;
-            node.value = value;
+            if (node.type === 'checkbox') node.checked = !!value;
+            else node.value = value;
             node.dispatchEvent(new Event('input', { bubbles: true }));
             node.dispatchEvent(new Event('change', { bubbles: true }));
           }, [optId, value]);

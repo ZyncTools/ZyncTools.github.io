@@ -155,8 +155,13 @@ let pass = 0, fail = 0;
 
 for (const [id, opts, input, assertion] of CASES) {
   const out = await page.evaluate(async ([id, opts, input, assertionSrc, findSrc]) => {
-    const tool = ZT.registry.get(id);
+    // The page now ships metadata only, so pull in the tool's module first.
+    let tool = ZT.registry.get(id);
     if (!tool) return { error: 'tool not registered' };
+    if (tool.isStub) {
+      try { tool = await ZT.registry.ensureLoaded(id); }
+      catch (e) { return { error: 'could not load module: ' + e.message }; }
+    }
 
     const ctx = {
       files: [],

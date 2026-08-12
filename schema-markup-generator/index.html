@@ -12,9 +12,14 @@
 <meta property="og:description" content="Build JSON-LD structured data for articles, products, FAQs and more.">
 <meta property="og:url" content="https://zynctools.github.io/schema-markup-generator/">
 <meta property="og:site_name" content="ZyncTools">
+<meta property="og:image" content="https://zynctools.github.io/assets/images/og/seo.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Schema Markup Generator — ZyncTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Schema Markup Generator — ZyncTools">
 <meta name="twitter:description" content="Build JSON-LD structured data for articles, products, FAQs and more.">
+<meta name="twitter:image" content="https://zynctools.github.io/assets/images/og/seo.png">
 <meta name="theme-color" content="#0B0D11">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
@@ -25,8 +30,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/zynctools.css">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Schema Markup Generator","description":"Build JSON-LD structured data for articles, products, FAQs and more.","url":"https://zynctools.github.io/schema-markup-generator/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any browser","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Schema type","Name / headline","Description","URL","Image URL","Author name","Publisher name","Date published","Date modified","Price","Currency code","Availability"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Schema Markup Generator","description":"Build JSON-LD structured data for articles, products, FAQs and more.","url":"https://zynctools.github.io/schema-markup-generator/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any browser","browserRequirements":"Requires JavaScript","image":"https://zynctools.github.io/assets/images/og/seo.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Schema type","Name / headline","Description","URL","Image URL","Author name","Publisher name","Date published","Date modified","Price","Currency code","Availability"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Tools","item":"https://zynctools.github.io/"},{"@type":"ListItem","position":2,"name":"SEO & Web","item":"https://zynctools.github.io/#seo"},{"@type":"ListItem","position":3,"name":"Schema Markup Generator","item":"https://zynctools.github.io/schema-markup-generator/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to use Schema Markup Generator","description":"Build JSON-LD structured data for articles, products, FAQs and more.","totalTime":"PT1M","supply":[],"tool":[],"step":[{"@type":"HowToStep","position":1,"name":"Open the tool","text":"Open Schema Markup Generator. There is nothing to upload — it works from the settings alone."},{"@type":"HowToStep","position":2,"name":"Choose your settings","text":"Adjust schema type, name / headline, description and the other 26 settings to suit what you need."},{"@type":"HowToStep","position":3,"name":"Generate","text":"Press Generate. The result appears immediately and updates whenever you change a setting."},{"@type":"HowToStep","position":4,"name":"Save the result","text":"Copy the output, or press Download to save it. Nothing is kept once you close the tab."}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are my files uploaded when I use Schema Markup Generator?","acceptedAnswer":{"@type":"Answer","text":"No. Schema Markup Generator runs entirely inside your browser. Your file is read locally, processed on your own device, and handed straight back to you. You can confirm this yourself: open your browser's developer tools, watch the Network tab, and run the tool — no request carries your data anywhere."}},{"@type":"Question","name":"Is Schema Markup Generator free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely. No account, no sign-up, no watermark on your output, and no cap on how many times you can use it. The project is open source under the AGPL licence."}},{"@type":"Question","name":"Does Schema Markup Generator work offline?","acceptedAnswer":{"@type":"Answer","text":"Mostly. The site caches itself after your first visit, so it keeps working without a connection. Tools that need a specialised library — PDF editing, OCR, QR codes, MP3 encoding — need a connection the first time you run them, then that library is cached too."}}]}</script>
 
 <script>
 (function () {
@@ -147,6 +154,94 @@
                         </div>
                     </section>
 
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">How to use Schema Markup Generator</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <ol class="zt-howto">
+                                <li><strong>Open the tool.</strong> Open Schema Markup Generator. There is nothing to upload — it works from the settings alone.</li>
+                                <li><strong>Choose your settings.</strong> Adjust schema type, name / headline, description and the other 26 settings to suit what you need.</li>
+                                <li><strong>Generate.</strong> Press Generate. The result appears immediately and updates whenever you change a setting.</li>
+                                <li><strong>Save the result.</strong> Copy the output, or press Download to save it. Nothing is kept once you close the tab.</li>
+                            </ol>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Frequently asked questions</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-faq">
+                                <details>
+                                    <summary>Are my files uploaded when I use Schema Markup Generator?</summary>
+                                    <div class="zt-faq__body"><p>No. Schema Markup Generator runs entirely inside your browser. Your file is read locally, processed on your own device, and handed straight back to you. You can confirm this yourself: open your browser&#39;s developer tools, watch the Network tab, and run the tool — no request carries your data anywhere.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Is Schema Markup Generator free?</summary>
+                                    <div class="zt-faq__body"><p>Yes, completely. No account, no sign-up, no watermark on your output, and no cap on how many times you can use it. The project is open source under the AGPL licence.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Does Schema Markup Generator work offline?</summary>
+                                    <div class="zt-faq__body"><p>Mostly. The site caches itself after your first visit, so it keeps working without a connection. Tools that need a specialised library — PDF editing, OCR, QR codes, MP3 encoding — need a connection the first time you run them, then that library is cached too.</p></div>
+                                </details>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Related seo &amp; web tools</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-related-grid">
+                                <a href="../meta-tag-generator/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m15 5 6.3 6.3a2.4 2.4 0 0 1 0 3.4L17 19"/><path d="M9.586 5.586A2 2 0 0 0 8.172 5H3a1 1 0 0 0-1 1v5.172a2 2 0 0 0 .586 1.414L8.29 18.29a2.426 2.426 0 0 0 3.42 0l3.58-3.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="6.5" cy="9.5" r=".5" fill="currentColor"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Meta Tag Generator</span>
+                                        <span class="zt-related-grid__desc">Generate title, description, Open Graph and Twitter Card tags at once.</span>
+                                    </span>
+                                </a>
+                                <a href="../robots-txt-generator/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">robots.txt Generator</span>
+                                        <span class="zt-related-grid__desc">Build a robots.txt file with crawl rules and a sitemap reference.</span>
+                                    </span>
+                                </a>
+                                <a href="../sitemap-generator/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3M12 12V8"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">XML Sitemap Generator</span>
+                                        <span class="zt-related-grid__desc">Turn a list of URLs into a valid XML sitemap with priorities.</span>
+                                    </span>
+                                </a>
+                                <a href="../keyword-density-checker/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16h8M7 11h12M7 6h3"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Keyword Density Checker</span>
+                                        <span class="zt-related-grid__desc">Analyse word and phrase frequency to spot thin or over-optimised copy.</span>
+                                    </span>
+                                </a>
+                                <a href="../utm-builder/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">UTM Campaign Builder</span>
+                                        <span class="zt-related-grid__desc">Build tagged campaign URLs that analytics tools can attribute.</span>
+                                    </span>
+                                </a>
+                                <a href="../html-heading-analyzer/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 12h12M6 20V4M18 20V4"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">HTML Heading Analyser</span>
+                                        <span class="zt-related-grid__desc">Check heading hierarchy, link counts and image alt text in HTML.</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
                 </div>
 
                 <aside class="zt-work__side" id="zt-side" aria-label="About this tool"></aside>
@@ -176,14 +271,6 @@
 
 </div>
 
-<nav class="zt-visually-hidden" aria-label="Related tools">
-    <a href="../meta-tag-generator/">Meta Tag Generator</a>
-    <a href="../robots-txt-generator/">robots.txt Generator</a>
-    <a href="../sitemap-generator/">XML Sitemap Generator</a>
-    <a href="../keyword-density-checker/">Keyword Density Checker</a>
-    <a href="../utm-builder/">UTM Campaign Builder</a>
-    <a href="../html-heading-analyzer/">HTML Heading Analyser</a>
-</nav>
 
 <!-- Assistant -->
 <button class="zt-chat-fab" id="zt-chat-fab" aria-label="Open the assistant" aria-expanded="false" aria-controls="zt-chat">
@@ -231,18 +318,9 @@
 <script src="../assets/js/zt-icons.js"></script>
 <script src="../assets/js/zt-registry.js"></script>
 
-<script src="../assets/js/tools/image.js"></script>
-<script src="../assets/js/tools/pdf.js"></script>
-<script src="../assets/js/tools/media.js"></script>
-<script src="../assets/js/tools/text.js"></script>
-<script src="../assets/js/tools/code.js"></script>
-<script src="../assets/js/tools/convert.js"></script>
-<script src="../assets/js/tools/design.js"></script>
-<script src="../assets/js/tools/security.js"></script>
-<script src="../assets/js/tools/generate.js"></script>
+<!-- The full catalogue as metadata, then only the module this tool needs. -->
+<script src="../assets/js/zt-catalog.js"></script>
 <script src="../assets/js/tools/seo.js"></script>
-<script src="../assets/js/tools/datetime.js"></script>
-<script src="../assets/js/tools/math.js"></script>
 
 <script src="../assets/js/zt-theme.js"></script>
 <script src="../assets/js/zt-tool-page.js"></script>

@@ -12,9 +12,14 @@
 <meta property="og:description" content="Encrypt and decrypt text with AES-256-GCM and a passphrase.">
 <meta property="og:url" content="https://zynctools.github.io/text-encryptor/">
 <meta property="og:site_name" content="ZyncTools">
+<meta property="og:image" content="https://zynctools.github.io/assets/images/og/security.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Text Encryptor — ZyncTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Text Encryptor — ZyncTools">
 <meta name="twitter:description" content="Encrypt and decrypt text with AES-256-GCM and a passphrase.">
+<meta name="twitter:image" content="https://zynctools.github.io/assets/images/og/security.png">
 <meta name="theme-color" content="#0B0D11">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
@@ -25,8 +30,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/zynctools.css">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Text Encryptor","description":"Encrypt and decrypt text with AES-256-GCM and a passphrase.","url":"https://zynctools.github.io/text-encryptor/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any browser","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Action","Passphrase","Key strengthening"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Text Encryptor","description":"Encrypt and decrypt text with AES-256-GCM and a passphrase.","url":"https://zynctools.github.io/text-encryptor/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any browser","browserRequirements":"Requires JavaScript","image":"https://zynctools.github.io/assets/images/og/security.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Action","Passphrase","Key strengthening"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Tools","item":"https://zynctools.github.io/"},{"@type":"ListItem","position":2,"name":"Security","item":"https://zynctools.github.io/#security"},{"@type":"ListItem","position":3,"name":"Text Encryptor","item":"https://zynctools.github.io/text-encryptor/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to use Text Encryptor","description":"Encrypt and decrypt text with AES-256-GCM and a passphrase.","totalTime":"PT1M","supply":[],"tool":[],"step":[{"@type":"HowToStep","position":1,"name":"Add your input","text":"Paste or type your text into the input box. You can also load a text file from your device."},{"@type":"HowToStep","position":2,"name":"Choose your settings","text":"Adjust action, passphrase, key strengthening to suit what you need."},{"@type":"HowToStep","position":3,"name":"Run the tool","text":"Press Run. Processing happens on your own device, so the time it takes depends on your machine rather than a queue."},{"@type":"HowToStep","position":4,"name":"Save the result","text":"Copy the output, or press Download to save it. Nothing is kept once you close the tab."}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How strong is the encryption?","acceptedAnswer":{"@type":"Answer","text":"AES-256-GCM with a key derived from your passphrase using PBKDF2 at up to 600,000 rounds. That is the same primitive used by password managers. Its strength depends almost entirely on your passphrase being long and unguessable."}},{"@type":"Question","name":"Are my files uploaded when I use Text Encryptor?","acceptedAnswer":{"@type":"Answer","text":"No. Text Encryptor runs entirely inside your browser. Your text is read locally, processed on your own device, and handed straight back to you. You can confirm this yourself: open your browser's developer tools, watch the Network tab, and run the tool — no request carries your data anywhere."}},{"@type":"Question","name":"Is Text Encryptor free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely. No account, no sign-up, no watermark on your output, and no cap on how many times you can use it. The project is open source under the AGPL licence."}},{"@type":"Question","name":"Does Text Encryptor work offline?","acceptedAnswer":{"@type":"Answer","text":"Mostly. The site caches itself after your first visit, so it keeps working without a connection. Tools that need a specialised library — PDF editing, OCR, QR codes, MP3 encoding — need a connection the first time you run them, then that library is cached too."}}]}</script>
 
 <script>
 (function () {
@@ -147,6 +154,91 @@
                         </div>
                     </section>
 
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">How to use Text Encryptor</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <ol class="zt-howto">
+                                <li><strong>Add your input.</strong> Paste or type your text into the input box. You can also load a text file from your device.</li>
+                                <li><strong>Choose your settings.</strong> Adjust action, passphrase, key strengthening to suit what you need.</li>
+                                <li><strong>Run the tool.</strong> Press Run. Processing happens on your own device, so the time it takes depends on your machine rather than a queue.</li>
+                                <li><strong>Save the result.</strong> Copy the output, or press Download to save it. Nothing is kept once you close the tab.</li>
+                            </ol>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Frequently asked questions</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-faq">
+                                <details>
+                                    <summary>How strong is the encryption?</summary>
+                                    <div class="zt-faq__body"><p>AES-256-GCM with a key derived from your passphrase using PBKDF2 at up to 600,000 rounds. That is the same primitive used by password managers. Its strength depends almost entirely on your passphrase being long and unguessable.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Are my files uploaded when I use Text Encryptor?</summary>
+                                    <div class="zt-faq__body"><p>No. Text Encryptor runs entirely inside your browser. Your text is read locally, processed on your own device, and handed straight back to you. You can confirm this yourself: open your browser&#39;s developer tools, watch the Network tab, and run the tool — no request carries your data anywhere.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Is Text Encryptor free?</summary>
+                                    <div class="zt-faq__body"><p>Yes, completely. No account, no sign-up, no watermark on your output, and no cap on how many times you can use it. The project is open source under the AGPL licence.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Does Text Encryptor work offline?</summary>
+                                    <div class="zt-faq__body"><p>Mostly. The site caches itself after your first visit, so it keeps working without a connection. Tools that need a specialised library — PDF editing, OCR, QR codes, MP3 encoding — need a connection the first time you run them, then that library is cached too.</p></div>
+                                </details>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Related security tools</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-related-grid">
+                                <a href="../hash-generator/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4M14 13.12c0 2.38 0 6.38-1 8.88M17.29 21.02c.12-.6.43-2.3.5-3.02M2 12a10 10 0 0 1 18-6M2 16h.01M21.8 16c.2-2 .131-5.354 0-6M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2M8.65 22c.21-.66.45-1.32.57-2M9 6.8a6 6 0 0 1 9 5.2v2"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Hash Generator</span>
+                                        <span class="zt-related-grid__desc">Generate MD5, SHA-1, SHA-256, SHA-384 and SHA-512 hashes of text.</span>
+                                    </span>
+                                </a>
+                                <a href="../file-hash-generator/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">File Checksum Generator</span>
+                                        <span class="zt-related-grid__desc">Compute file checksums and verify a download against a known hash.</span>
+                                    </span>
+                                </a>
+                                <a href="../hmac-generator/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">HMAC Generator</span>
+                                        <span class="zt-related-grid__desc">Sign a message with a secret key using HMAC.</span>
+                                    </span>
+                                </a>
+                                <a href="../password-strength-checker/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Password Strength Checker</span>
+                                        <span class="zt-related-grid__desc">Estimate how long a password would take to crack, entirely offline.</span>
+                                    </span>
+                                </a>
+                                <a href="../file-encryptor/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><rect width="8" height="5" x="8" y="13" rx="1"/><path d="M10 13v-1a2 2 0 1 1 4 0v1"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">File Encryptor</span>
+                                        <span class="zt-related-grid__desc">Encrypt any file with AES-256 and a passphrase, then decrypt it later.</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
                 </div>
 
                 <aside class="zt-work__side" id="zt-side" aria-label="About this tool"></aside>
@@ -176,13 +268,6 @@
 
 </div>
 
-<nav class="zt-visually-hidden" aria-label="Related tools">
-    <a href="../hash-generator/">Hash Generator</a>
-    <a href="../file-hash-generator/">File Checksum Generator</a>
-    <a href="../hmac-generator/">HMAC Generator</a>
-    <a href="../password-strength-checker/">Password Strength Checker</a>
-    <a href="../file-encryptor/">File Encryptor</a>
-</nav>
 
 <!-- Assistant -->
 <button class="zt-chat-fab" id="zt-chat-fab" aria-label="Open the assistant" aria-expanded="false" aria-controls="zt-chat">
@@ -230,18 +315,9 @@
 <script src="../assets/js/zt-icons.js"></script>
 <script src="../assets/js/zt-registry.js"></script>
 
-<script src="../assets/js/tools/image.js"></script>
-<script src="../assets/js/tools/pdf.js"></script>
-<script src="../assets/js/tools/media.js"></script>
-<script src="../assets/js/tools/text.js"></script>
-<script src="../assets/js/tools/code.js"></script>
-<script src="../assets/js/tools/convert.js"></script>
-<script src="../assets/js/tools/design.js"></script>
+<!-- The full catalogue as metadata, then only the module this tool needs. -->
+<script src="../assets/js/zt-catalog.js"></script>
 <script src="../assets/js/tools/security.js"></script>
-<script src="../assets/js/tools/generate.js"></script>
-<script src="../assets/js/tools/seo.js"></script>
-<script src="../assets/js/tools/datetime.js"></script>
-<script src="../assets/js/tools/math.js"></script>
 
 <script src="../assets/js/zt-theme.js"></script>
 <script src="../assets/js/zt-tool-page.js"></script>

@@ -1799,4 +1799,291 @@
         }
     });
 
+
+    /* ============================================================
+       Background remover (colour-based)
+       ============================================================ */
+    define({
+        id: 'background-remover',
+        name: 'Background Remover',
+        category: 'image',
+        icon: 'eraser',
+        description: 'Remove a plain or uniform background and save a transparent PNG.',
+        tags: ['background', 'remove background', 'transparent', 'cutout', 'product photo', 'png'],
+        input: 'files',
+        accept: IMAGE_ACCEPT,
+        popular: true,
+        options: [
+            {
+                id: 'mode', type: 'radio', label: 'Pick the background by', value: 'corners',
+                options: [
+                    { value: 'corners', label: 'Sampling the corners' },
+                    { value: 'color', label: 'A colour I choose' }
+                ]
+            },
+            { id: 'target', type: 'color', label: 'Background colour', value: '#FFFFFF', when: function (o) { return o.mode === 'color'; } },
+            { id: 'tolerance', type: 'range', label: 'Tolerance', value: 12, min: 1, max: 80, step: 1, suffix: '%', help: 'How different from the background a pixel may be and still be removed. Raise it for photos with shadows or gradients.' },
+            { id: 'feather', type: 'range', label: 'Edge softness', value: 2, min: 0, max: 10, step: 1, suffix: 'px', help: 'Softens the cut so edges do not look jagged.' },
+            { id: 'contiguous', type: 'checkbox', label: 'Only remove background connected to the edges', value: true, help: 'Keeps matching colours inside the subject — the white of an eye, for example.' },
+            { id: 'despeckle', type: 'checkbox', label: 'Clean up stray leftover pixels', value: true },
+            { id: 'note', type: 'note', text: 'This works by colour, so it excels at product shots, logos, scanned signatures and anything on a plain backdrop. It is not an AI cut-out and will struggle with a busy background behind hair or fur.' }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+            return processEach(ctx, async function (bitmap, file) {
+                var size = ZT.imageSize(bitmap);
+                var canvas = ZT.drawToCanvas(bitmap);
+                var c2d = canvas.getContext('2d');
+                var img = c2d.getImageData(0, 0, size.width, size.height);
+                var data = img.data;
+                var w = size.width, h = size.height;
+
+                // Establish the background colour.
+                var bg;
+                if (o.mode === 'color') {
+                    var parsed = ZT.color.parse(o.target);
+                    if (!parsed) ZT.fail('That background colour is not valid.');
+                    bg = [parsed[0], parsed[1], parsed[2]];
+                } else {
+                    bg = averageCorners(data, w, h);
+                }
+
+                // Tolerance is a percentage of the maximum possible RGB distance.
+                var maxDistance = Math.sqrt(3 * 255 * 255);
+                var cutoff = maxDistance * (o.tolerance / 100);
+
+                function isBackground(index) {
+                    var dr = data[index] - bg[0];
+                    var dg = data[index + 1] - bg[1];
+                    var db = data[index + 2] - bg[2];
+                    return Math.sqrt(dr * dr + dg * dg + db * db) <= cutoff;
+                }
+
+                var remove = new Uint8Array(w * h);
+
+                if (o.contiguous) {
+                    // Flood fill inward from every edge pixel, so a matching
+                    // colour enclosed by the subject is left alone.
+                    var queue = [];
+                    for (var x = 0; x < w; x++) { queue.push(x); queue.push((h - 1) * w + x); }
+                    for (var y = 0; y < h; y++) { queue.push(y * w); queue.push(y * w + w - 1); }
+
+                    var visited = new Uint8Array(w * h);
+                    while (queue.length) {
+                        var p = queue.pop();
+                        if (visited[p]) continue;
+                        visited[p] = 1;
+                        if (!isBackground(p * 4)) continue;
+                        remove[p] = 1;
+
+                        var px = p % w, py = (p / w) | 0;
+                        if (px > 0) queue.push(p - 1);
+                        if (px < w - 1) queue.push(p + 1);
+                        if (py > 0) queue.push(p - w);
+                        if (py < h - 1) queue.push(p + w);
+                    }
+                } else {
+                    for (var i = 0; i < w * h; i++) {
+                        if (isBackground(i * 4)) remove[i] = 1;
+                    }
+                }
+
+                if (o.despeckle) removeSpecks(remove, w, h);
+
+                // Apply, with a soft edge so the cut does not look cut out.
+                for (i = 0; i < w * h; i++) {
+                    if (!remove[i]) continue;
+                    data[i * 4 + 3] = 0;
+                }
+
+                if (o.feather > 0) featherAlpha(data, remove, w, h, o.feather);
+
+                c2d.putImageData(img, 0, 0);
+
+                var removed = 0;
+                for (i = 0; i < remove.length; i++) if (remove[i]) removed++;
+
+                // Transparency means PNG; JPEG would flatten it straight back.
+                var blob = await ZT.encodeCanvas(canvas, 'png');
+                return ZT.fileResult(blob, ZT.outName(file.name, 'no-bg', 'png'), {
+                    previewBlob: blob,
+                    note: Math.round(removed / (w * h) * 100) + '% of the image removed  ·  ' + ZT.formatBytes(blob.size)
+                });
+            }, { zipName: 'background-removed' });
+        }
+    });
+
+    /** Average the four corners — on a plain backdrop they are the background. */
+    function averageCorners(data, w, h) {
+        var patch = Math.max(2, Math.floor(Math.min(w, h) * 0.02));
+        var r = 0, g = 0, b = 0, n = 0;
+
+        function sample(x0, y0) {
+            for (var y = y0; y < y0 + patch && y < h; y++) {
+                for (var x = x0; x < x0 + patch && x < w; x++) {
+                    var i = (y * w + x) * 4;
+                    r += data[i]; g += data[i + 1]; b += data[i + 2]; n++;
+                }
+            }
+        }
+
+        sample(0, 0);
+        sample(w - patch, 0);
+        sample(0, h - patch);
+        sample(w - patch, h - patch);
+
+        return [Math.round(r / n), Math.round(g / n), Math.round(b / n)];
+    }
+
+    /** Drop isolated flags that survive as confetti over the subject. */
+    function removeSpecks(mask, w, h) {
+        var copy = mask.slice();
+        for (var y = 1; y < h - 1; y++) {
+            for (var x = 1; x < w - 1; x++) {
+                var i = y * w + x;
+                var neighbours = copy[i - 1] + copy[i + 1] + copy[i - w] + copy[i + w];
+                if (copy[i] && neighbours <= 1) mask[i] = 0;
+                else if (!copy[i] && neighbours >= 4) mask[i] = 1;
+            }
+        }
+    }
+
+    /** Ramp alpha near the cut so edges read as soft rather than aliased. */
+    function featherAlpha(data, mask, w, h, radius) {
+        for (var y = 0; y < h; y++) {
+            for (var x = 0; x < w; x++) {
+                var i = y * w + x;
+                if (mask[i]) continue;
+
+                // Distance to the nearest removed pixel, capped at the radius.
+                var nearest = radius + 1;
+                for (var dy = -radius; dy <= radius && nearest > 0; dy++) {
+                    var yy = y + dy;
+                    if (yy < 0 || yy >= h) continue;
+                    for (var dx = -radius; dx <= radius; dx++) {
+                        var xx = x + dx;
+                        if (xx < 0 || xx >= w) continue;
+                        if (!mask[yy * w + xx]) continue;
+                        var d = Math.sqrt(dx * dx + dy * dy);
+                        if (d < nearest) nearest = d;
+                    }
+                }
+                if (nearest <= radius) {
+                    data[i * 4 + 3] = Math.round(255 * (nearest / (radius + 1)));
+                }
+            }
+        }
+    }
+
+    /* ============================================================
+       Upscaler
+       ============================================================ */
+    define({
+        id: 'image-upscaler',
+        name: 'Image Upscaler',
+        category: 'image',
+        icon: 'maximize-2',
+        description: 'Enlarge an image with smooth resampling and edge sharpening.',
+        tags: ['upscale', 'enlarge', 'resize up', 'bigger', 'resolution', 'sharpen'],
+        input: 'files',
+        accept: IMAGE_ACCEPT,
+        options: [
+            {
+                id: 'scale', type: 'select', label: 'Enlarge by', value: '2',
+                options: [
+                    { value: '1.5', label: '1.5×' }, { value: '2', label: '2×' },
+                    { value: '3', label: '3×' }, { value: '4', label: '4×' },
+                    { value: 'custom', label: 'A specific width…' }
+                ]
+            },
+            { id: 'target-width', type: 'number', label: 'Target width', suffix: 'px', value: 2000, min: 16, max: 12000, when: function (o) { return o.scale === 'custom'; } },
+            { id: 'sharpen', type: 'range', label: 'Sharpening', value: 35, min: 0, max: 100, step: 5, suffix: '%', help: 'Enlarging softens detail; this restores apparent crispness at the edges.' },
+            { id: 'denoise', type: 'checkbox', label: 'Smooth compression noise first', value: false, help: 'Helps with small JPEGs, which magnify their own artefacts when enlarged.' },
+            FORMAT_OPTION, QUALITY_OPTION,
+            { id: 'note', type: 'note', text: 'This resamples in careful steps rather than inventing detail — it is not an AI super-resolution model. Expect a clean, smooth enlargement, not new information that was never in the original.' }
+        ],
+        run: function (ctx) {
+            var o = ctx.opt;
+            return processEach(ctx, async function (bitmap, file) {
+                var size = ZT.imageSize(bitmap);
+                var targetW = o.scale === 'custom'
+                    ? o.targetWidth
+                    : Math.round(size.width * parseFloat(o.scale));
+                var targetH = Math.round(size.height * (targetW / size.width));
+
+                if (targetW * targetH > 60e6) {
+                    ZT.fail('That would produce a ' + Math.round(targetW * targetH / 1e6) + ' megapixel image. Choose a smaller scale.');
+                }
+
+                var source = ZT.drawToCanvas(bitmap);
+                if (o.denoise) source = blurCanvas(source, 0.6);
+
+                /* Enlarging in repeated small steps beats one big jump: each
+                   pass interpolates from an already-smooth image, so ringing
+                   and blockiness do not compound. */
+                var canvas = source;
+                var currentW = size.width, currentH = size.height;
+                while (currentW < targetW) {
+                    var nextW = Math.min(targetW, Math.round(currentW * 1.6));
+                    var nextH = Math.round(nextW * (size.height / size.width));
+                    var step = ZT.makeCanvas(nextW, nextH);
+                    var sctx = step.getContext('2d');
+                    sctx.imageSmoothingEnabled = true;
+                    sctx.imageSmoothingQuality = 'high';
+                    sctx.drawImage(canvas, 0, 0, nextW, nextH);
+                    canvas = step;
+                    currentW = nextW; currentH = nextH;
+                }
+
+                if (currentW !== targetW || currentH !== targetH) {
+                    var exact = ZT.makeCanvas(targetW, targetH);
+                    var ectx = exact.getContext('2d');
+                    ectx.imageSmoothingQuality = 'high';
+                    ectx.drawImage(canvas, 0, 0, targetW, targetH);
+                    canvas = exact;
+                }
+
+                if (o.sharpen > 0) canvas = unsharpMask(canvas, o.sharpen / 100);
+
+                if (o.format === 'jpeg') canvas = ZT.flattenAlpha(canvas, '#ffffff');
+                var blob = await ZT.encodeCanvas(canvas, o.format, o.format === 'png' ? undefined : o.quality / 100);
+
+                return ZT.fileResult(blob, ZT.outName(file.name, 'upscaled', o.format === 'jpeg' ? 'jpg' : o.format), {
+                    previewBlob: blob,
+                    note: size.width + '×' + size.height + ' → ' + targetW + '×' + targetH + '  ·  ' + ZT.formatBytes(blob.size)
+                });
+            }, { zipName: 'upscaled-images' });
+        }
+    });
+
+    function blurCanvas(canvas, radius) {
+        var out = ZT.makeCanvas(canvas.width, canvas.height);
+        var c2d = out.getContext('2d');
+        c2d.filter = 'blur(' + radius + 'px)';
+        c2d.drawImage(canvas, 0, 0);
+        return out;
+    }
+
+    /**
+     * Unsharp mask: subtract a blurred copy from the original to lift edge
+     * contrast. The standard way to make a resampled image look crisp again.
+     */
+    function unsharpMask(canvas, amount) {
+        var w = canvas.width, h = canvas.height;
+        var sharp = canvas.getContext('2d').getImageData(0, 0, w, h);
+        var blurred = blurCanvas(canvas, 1).getContext('2d').getImageData(0, 0, w, h);
+
+        var a = sharp.data, b = blurred.data;
+        for (var i = 0; i < a.length; i += 4) {
+            for (var c = 0; c < 3; c++) {
+                var detail = a[i + c] - b[i + c];
+                a[i + c] = ZT.clamp(a[i + c] + detail * amount * 1.6, 0, 255);
+            }
+        }
+
+        var out = ZT.makeCanvas(w, h);
+        out.getContext('2d').putImageData(sharp, 0, 0);
+        return out;
+    }
+
 })();

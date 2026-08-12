@@ -12,9 +12,14 @@
 <meta property="og:description" content="Cut a section out of an audio file, with optional fades.">
 <meta property="og:url" content="https://zynctools.github.io/audio-trimmer/">
 <meta property="og:site_name" content="ZyncTools">
+<meta property="og:image" content="https://zynctools.github.io/assets/images/og/media.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Audio Trimmer &amp; Cutter — ZyncTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Audio Trimmer &amp; Cutter — ZyncTools">
 <meta name="twitter:description" content="Cut a section out of an audio file, with optional fades.">
+<meta name="twitter:image" content="https://zynctools.github.io/assets/images/og/media.png">
 <meta name="theme-color" content="#0B0D11">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
@@ -25,8 +30,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/zynctools.css">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Audio Trimmer & Cutter","description":"Cut a section out of an audio file, with optional fades.","url":"https://zynctools.github.io/audio-trimmer/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any browser","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Start at","End at","Action","Fade in","Fade out","Output format","MP3 bitrate"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Audio Trimmer & Cutter","description":"Cut a section out of an audio file, with optional fades.","url":"https://zynctools.github.io/audio-trimmer/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any browser","browserRequirements":"Requires JavaScript","image":"https://zynctools.github.io/assets/images/og/media.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Start at","End at","Action","Fade in","Fade out","Output format","MP3 bitrate"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Tools","item":"https://zynctools.github.io/"},{"@type":"ListItem","position":2,"name":"Audio & Video","item":"https://zynctools.github.io/#media"},{"@type":"ListItem","position":3,"name":"Audio Trimmer & Cutter","item":"https://zynctools.github.io/audio-trimmer/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to use Audio Trimmer & Cutter","description":"Cut a section out of an audio file, with optional fades.","totalTime":"PT1M","supply":[],"tool":[],"step":[{"@type":"HowToStep","position":1,"name":"Add your input","text":"Drop your file onto the upload area, or click it to browse. The file is read in your browser and never uploaded."},{"@type":"HowToStep","position":2,"name":"Choose your settings","text":"Adjust start at, end at, action and the other 4 settings to suit what you need."},{"@type":"HowToStep","position":3,"name":"Run the tool","text":"Press Run. Processing happens on your own device, so the time it takes depends on your machine rather than a queue."},{"@type":"HowToStep","position":4,"name":"Save the result","text":"Copy the output, or press Download to save it. Nothing is kept once you close the tab."}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are my files uploaded when I use Audio Trimmer & Cutter?","acceptedAnswer":{"@type":"Answer","text":"No. Audio Trimmer & Cutter runs entirely inside your browser. Your file is read locally, processed on your own device, and handed straight back to you. You can confirm this yourself: open your browser's developer tools, watch the Network tab, and run the tool — no request carries your data anywhere."}},{"@type":"Question","name":"Is Audio Trimmer & Cutter free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely. No account, no sign-up, no watermark on your output, and no cap on how many times you can use it. The project is open source under the AGPL licence."}},{"@type":"Question","name":"Is there a file size limit?","acceptedAnswer":{"@type":"Answer","text":"There is no server limit, because nothing is uploaded. The practical ceiling is your device's memory — on a modern laptop, files up to a few hundred megabytes are comfortable, while phones handle less. If a tab becomes unresponsive, the file was too large for the memory available."}},{"@type":"Question","name":"Why does this take a while?","acceptedAnswer":{"@type":"Answer","text":"The work happens on your device rather than a server, so speed depends on your own processor. That is the trade for never uploading anything. Larger files and higher quality settings take proportionally longer."}},{"@type":"Question","name":"Does Audio Trimmer & Cutter work offline?","acceptedAnswer":{"@type":"Answer","text":"Mostly. The site caches itself after your first visit, so it keeps working without a connection. Tools that need a specialised library — PDF editing, OCR, QR codes, MP3 encoding — need a connection the first time you run them, then that library is cached too."}}]}</script>
 
 <script>
 (function () {
@@ -148,6 +155,102 @@
                         </div>
                     </section>
 
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">How to use Audio Trimmer &amp; Cutter</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <ol class="zt-howto">
+                                <li><strong>Add your input.</strong> Drop your file onto the upload area, or click it to browse. The file is read in your browser and never uploaded.</li>
+                                <li><strong>Choose your settings.</strong> Adjust start at, end at, action and the other 4 settings to suit what you need.</li>
+                                <li><strong>Run the tool.</strong> Press Run. Processing happens on your own device, so the time it takes depends on your machine rather than a queue.</li>
+                                <li><strong>Save the result.</strong> Copy the output, or press Download to save it. Nothing is kept once you close the tab.</li>
+                            </ol>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Frequently asked questions</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-faq">
+                                <details>
+                                    <summary>Are my files uploaded when I use Audio Trimmer &amp; Cutter?</summary>
+                                    <div class="zt-faq__body"><p>No. Audio Trimmer &amp; Cutter runs entirely inside your browser. Your file is read locally, processed on your own device, and handed straight back to you. You can confirm this yourself: open your browser&#39;s developer tools, watch the Network tab, and run the tool — no request carries your data anywhere.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Is Audio Trimmer &amp; Cutter free?</summary>
+                                    <div class="zt-faq__body"><p>Yes, completely. No account, no sign-up, no watermark on your output, and no cap on how many times you can use it. The project is open source under the AGPL licence.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Is there a file size limit?</summary>
+                                    <div class="zt-faq__body"><p>There is no server limit, because nothing is uploaded. The practical ceiling is your device&#39;s memory — on a modern laptop, files up to a few hundred megabytes are comfortable, while phones handle less. If a tab becomes unresponsive, the file was too large for the memory available.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Why does this take a while?</summary>
+                                    <div class="zt-faq__body"><p>The work happens on your device rather than a server, so speed depends on your own processor. That is the trade for never uploading anything. Larger files and higher quality settings take proportionally longer.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Does Audio Trimmer &amp; Cutter work offline?</summary>
+                                    <div class="zt-faq__body"><p>Mostly. The site caches itself after your first visit, so it keeps working without a connection. Tools that need a specialised library — PDF editing, OCR, QR codes, MP3 encoding — need a connection the first time you run them, then that library is cached too.</p></div>
+                                </details>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Related audio &amp; video tools</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-related-grid">
+                                <a href="../audio-converter/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Audio Converter</span>
+                                        <span class="zt-related-grid__desc">Convert audio between formats, change sample rate and channels.</span>
+                                    </span>
+                                </a>
+                                <a href="../audio-merger/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="8" height="8" x="2" y="2" rx="2"/><path d="M14 2c1.1 0 2 .9 2 2v4c0 1.1-.9 2-2 2M20 2c1.1 0 2 .9 2 2v4c0 1.1-.9 2-2 2M10 18H5c-1.7 0-3-1.3-3-3v-1"/><polyline points="7 21 10 18 7 15"/><rect width="8" height="8" x="14" y="14" rx="2"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Audio Merger</span>
+                                        <span class="zt-related-grid__desc">Join several audio files end to end, with optional crossfades.</span>
+                                    </span>
+                                </a>
+                                <a href="../audio-effects/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 5H3M21 5h-7M6 5v-.5M6 5v.5M14 12H3M21 12h-3M18 12v-.5M18 12v.5M8 19H3M21 19h-9M10 19v-.5M10 19v.5"/><circle cx="6" cy="5" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="10" cy="19" r="2"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Audio Speed, Pitch &amp; Volume</span>
+                                        <span class="zt-related-grid__desc">Change playback speed, adjust volume, reverse audio or trim silence.</span>
+                                    </span>
+                                </a>
+                                <a href="../audio-waveform/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 13a2 2 0 0 0 2-2V7a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0V4a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0v-4a2 2 0 0 1 2-2"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Audio Waveform Image</span>
+                                        <span class="zt-related-grid__desc">Render an audio file as a waveform graphic for thumbnails and posts.</span>
+                                    </span>
+                                </a>
+                                <a href="../extract-audio-from-video/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 2H6a2 2 0 0 0-2 2v6"/><path d="M14 2v4a2 2 0 0 0 2 2h4v12a2 2 0 0 1-2 2H9"/><circle cx="4" cy="16" r="2"/><path d="M6 16v-4l4-1v4"/><circle cx="8" cy="15" r="2"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Extract Audio from Video</span>
+                                        <span class="zt-related-grid__desc">Pull the soundtrack out of a video and save it as MP3 or WAV.</span>
+                                    </span>
+                                </a>
+                                <a href="../video-frame-extractor/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18M17 3v18M3 7.5h4M17 7.5h4M3 12h18M3 16.5h4M17 16.5h4"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Video Frame Extractor</span>
+                                        <span class="zt-related-grid__desc">Grab still frames from a video at set intervals or one exact moment.</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
                 </div>
 
                 <aside class="zt-work__side" id="zt-side" aria-label="About this tool"></aside>
@@ -177,14 +280,6 @@
 
 </div>
 
-<nav class="zt-visually-hidden" aria-label="Related tools">
-    <a href="../audio-converter/">Audio Converter</a>
-    <a href="../audio-merger/">Audio Merger</a>
-    <a href="../audio-effects/">Audio Speed, Pitch &amp; Volume</a>
-    <a href="../audio-waveform/">Audio Waveform Image</a>
-    <a href="../extract-audio-from-video/">Extract Audio from Video</a>
-    <a href="../video-frame-extractor/">Video Frame Extractor</a>
-</nav>
 
 <!-- Assistant -->
 <button class="zt-chat-fab" id="zt-chat-fab" aria-label="Open the assistant" aria-expanded="false" aria-controls="zt-chat">
@@ -232,18 +327,9 @@
 <script src="../assets/js/zt-icons.js"></script>
 <script src="../assets/js/zt-registry.js"></script>
 
-<script src="../assets/js/tools/image.js"></script>
-<script src="../assets/js/tools/pdf.js"></script>
+<!-- The full catalogue as metadata, then only the module this tool needs. -->
+<script src="../assets/js/zt-catalog.js"></script>
 <script src="../assets/js/tools/media.js"></script>
-<script src="../assets/js/tools/text.js"></script>
-<script src="../assets/js/tools/code.js"></script>
-<script src="../assets/js/tools/convert.js"></script>
-<script src="../assets/js/tools/design.js"></script>
-<script src="../assets/js/tools/security.js"></script>
-<script src="../assets/js/tools/generate.js"></script>
-<script src="../assets/js/tools/seo.js"></script>
-<script src="../assets/js/tools/datetime.js"></script>
-<script src="../assets/js/tools/math.js"></script>
 
 <script src="../assets/js/zt-theme.js"></script>
 <script src="../assets/js/zt-tool-page.js"></script>

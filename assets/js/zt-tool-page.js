@@ -143,6 +143,10 @@
         var host = $('#zt-tool-head');
         if (!host) return;
 
+        // Generated pages already render this header statically so crawlers
+        // and no-JS visitors see it. Replace it rather than appending a second.
+        host.innerHTML = '';
+
         var category = ZT.registry.category(tool.category);
 
         host.appendChild(el('nav', { class: 'zt-breadcrumb', 'aria-label': 'Breadcrumb' }, [
@@ -660,6 +664,82 @@
                 return wrapField(option, textarea);
             }
 
+            case 'signature': {
+                /* A pad the visitor draws on with mouse, finger or stylus.
+                   Its value is a trimmed PNG data URL, so a tool can treat it
+                   exactly like any other image. */
+                var pad = el('canvas', { class: 'zt-signature__pad', width: 900, height: 300 });
+                var padCtx = pad.getContext('2d');
+                var drawing = false;
+                var hasInk = false;
+                var lastPoint = null;
+
+                padCtx.lineWidth = 3.5;
+                padCtx.lineCap = 'round';
+                padCtx.lineJoin = 'round';
+                padCtx.strokeStyle = '#111827';
+
+                function pointFrom(event) {
+                    var rect = pad.getBoundingClientRect();
+                    var touch = event.touches ? event.touches[0] : event;
+                    return {
+                        x: (touch.clientX - rect.left) * (pad.width / rect.width),
+                        y: (touch.clientY - rect.top) * (pad.height / rect.height)
+                    };
+                }
+
+                function start(event) {
+                    event.preventDefault();
+                    drawing = true;
+                    lastPoint = pointFrom(event);
+                }
+
+                function move(event) {
+                    if (!drawing) return;
+                    event.preventDefault();
+                    var point = pointFrom(event);
+                    padCtx.beginPath();
+                    padCtx.moveTo(lastPoint.x, lastPoint.y);
+                    padCtx.lineTo(point.x, point.y);
+                    padCtx.stroke();
+                    lastPoint = point;
+                    hasInk = true;
+                }
+
+                function end() {
+                    if (!drawing) return;
+                    drawing = false;
+                    commit(hasInk ? trimSignature(pad) : '', false);
+                    hint.textContent = hasInk ? 'Signature captured.' : 'Draw your signature above.';
+                }
+
+                pad.addEventListener('mousedown', start);
+                pad.addEventListener('mousemove', move);
+                window.addEventListener('mouseup', end);
+                pad.addEventListener('touchstart', start, { passive: false });
+                pad.addEventListener('touchmove', move, { passive: false });
+                pad.addEventListener('touchend', end);
+
+                var hint = el('span', { class: 'zt-field__help', text: 'Draw your signature above.' });
+
+                var clear = el('button', {
+                    class: 'zt-btn zt-btn--ghost zt-btn--sm', type: 'button',
+                    onclick: function () {
+                        padCtx.clearRect(0, 0, pad.width, pad.height);
+                        hasInk = false;
+                        commit('', false);
+                        hint.textContent = 'Draw your signature above.';
+                    }
+                }, [iconNode('eraser'), 'Clear']);
+
+                var wrap = el('div', { class: 'zt-signature' }, [
+                    pad,
+                    el('div', { class: 'zt-row', style: { justifyContent: 'space-between' } }, [hint, clear])
+                ]);
+
+                return wrapField(option, wrap);
+            }
+
             case 'file': {
                 var fileInput = el('input', {
                     type: 'file', class: 'zt-input', accept: option.accept || '', id: fieldId(option),
@@ -692,6 +772,42 @@
     }
 
     function fieldId(option) { return 'zt-opt-' + option.id; }
+
+    /**
+     * Crop a signature canvas to its ink and return a PNG data URL.
+     * Without trimming, the stamped signature carries a large transparent
+     * margin and lands in the wrong place on the page.
+     */
+    function trimSignature(canvas) {
+        var ctx2d = canvas.getContext('2d');
+        var data = ctx2d.getImageData(0, 0, canvas.width, canvas.height).data;
+
+        var minX = canvas.width, minY = canvas.height, maxX = 0, maxY = 0;
+        var found = false;
+
+        for (var y = 0; y < canvas.height; y++) {
+            for (var x = 0; x < canvas.width; x++) {
+                if (data[(y * canvas.width + x) * 4 + 3] > 8) {
+                    found = true;
+                    if (x < minX) minX = x;
+                    if (x > maxX) maxX = x;
+                    if (y < minY) minY = y;
+                    if (y > maxY) maxY = y;
+                }
+            }
+        }
+        if (!found) return '';
+
+        var pad = 8;
+        minX = Math.max(0, minX - pad);
+        minY = Math.max(0, minY - pad);
+        maxX = Math.min(canvas.width - 1, maxX + pad);
+        maxY = Math.min(canvas.height - 1, maxY + pad);
+
+        var out = ZT.makeCanvas(maxX - minX + 1, maxY - minY + 1);
+        out.getContext('2d').drawImage(canvas, minX, minY, out.width, out.height, 0, 0, out.width, out.height);
+        return out.toDataURL('image/png');
+    }
 
     function formatRange(value, option) {
         var suffix = option.suffix ? ' ' + option.suffix : '';

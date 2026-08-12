@@ -1,6 +1,6 @@
 # ZyncTools
 
-**124 file and developer utilities that run entirely in your browser.**
+**130 file and developer utilities that run entirely in your browser.**
 
 No uploads. No accounts. No server. Your files are read with the File API,
 processed in JavaScript and WebAssembly, and handed back to you — all on your
@@ -48,7 +48,7 @@ assets/js/
   zt-analytics.js           Optional page-view counting, off until configured
 
   tools/
-    image.js      19 tools   pdf.js      15 tools   media.js     9 tools
+    image.js      21 tools   pdf.js      19 tools   media.js     9 tools
     text.js       19 tools   code.js     14 tools   convert.js   8 tools
     design.js     10 tools   security.js  6 tools   generate.js  5 tools
     seo.js         8 tools   datetime.js  5 tools   math.js      6 tools
@@ -59,7 +59,7 @@ sw.js                       Service worker — offline support
 
 test/
   run.mjs                   Serves the site and runs every suite
-  smoke.mjs                 Loads all 124 tools, feeds each one input, asserts output
+  smoke.mjs                 Loads every tool, feeds each one input, asserts output
   correctness.mjs           50 known-input/known-output assertions
   video.mjs                 Video tools against a browser-recorded clip
 ```

@@ -10,7 +10,11 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="ZyncTools">
 <meta property="og:description" content="A private, browser-based utility. Your files never leave your device.">
+<meta property="og:image" content="https://zynctools.github.io/assets/images/og/default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://zynctools.github.io/assets/images/og/default.png">
 <meta name="twitter:title" content="ZyncTools">
 <meta name="twitter:description" content="A private, browser-based utility. Your files never leave your device.">
 <meta name="theme-color" content="#0B0D11">
@@ -185,19 +189,10 @@
 <script src="assets/js/zt-icons.js"></script>
 <script src="assets/js/zt-registry.js"></script>
 
-<!-- Tool definitions -->
-<script src="assets/js/tools/image.js"></script>
-<script src="assets/js/tools/pdf.js"></script>
-<script src="assets/js/tools/media.js"></script>
-<script src="assets/js/tools/text.js"></script>
-<script src="assets/js/tools/code.js"></script>
-<script src="assets/js/tools/convert.js"></script>
-<script src="assets/js/tools/design.js"></script>
-<script src="assets/js/tools/security.js"></script>
-<script src="assets/js/tools/generate.js"></script>
-<script src="assets/js/tools/seo.js"></script>
-<script src="assets/js/tools/datetime.js"></script>
-<script src="assets/js/tools/math.js"></script>
+<!-- Catalogue metadata. The one module needed is fetched below, once the
+     requested tool is known — this page is the fallback route and could
+     be asked for any of them. -->
+<script src="assets/js/zt-catalog.js"></script>
 
 <script>
 /* The assistant answers "how does this tool work?" from this. */
@@ -209,7 +204,27 @@
 
 <!-- App -->
 <script src="assets/js/zt-theme.js"></script>
-<script src="assets/js/zt-tool-page.js"></script>
+<script>
+/* Fetch the implementation for the requested tool, then load the controller.
+   Generated pages at /<tool-id>/ include their module directly; this route
+   has to resolve it at runtime. */
+(function () {
+    var id = new URLSearchParams(location.search).get('id')
+          || new URLSearchParams(location.search).get('tool') || '';
+
+    function loadController() {
+        var s = document.createElement('script');
+        s.src = 'assets/js/zt-tool-page.js';
+        document.head.appendChild(s);
+    }
+
+    if (!id || !window.ZT.registry.get(id)) {
+        loadController();   // renders the "no such tool" state
+        return;
+    }
+    window.ZT.registry.ensureLoaded(id).then(loadController, loadController);
+})();
+</script>
 <script src="assets/js/zt-tool-search.js"></script>
 <script src="assets/js/zt-assistant.js"></script>
 <script src="assets/js/zt-analytics.js"></script>

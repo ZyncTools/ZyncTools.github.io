@@ -70,19 +70,41 @@ function loadRegistry(root) {
         ...TOOL_MODULES.map((m) => `assets/js/tools/${m}.js`)
     ];
 
+    /* Track which module defines which tool. Pages load only the module they
+       need, so the build has to know the mapping — and reading it from an
+       actual load is the only way it cannot drift from the source. */
+    const owner = Object.create(null);
+
     for (const file of files) {
         const source = fs.readFileSync(path.join(root, file), 'utf8');
+        const before = sandbox.ZT && sandbox.ZT.registry
+            ? new Set(sandbox.ZT.registry.all().map((t) => t.id))
+            : new Set();
+
         try {
             vm.runInContext(source, context, { filename: file });
         } catch (err) {
             throw new Error(`Could not load ${file}: ${err.message}`);
+        }
+
+        const moduleName = path.basename(file, '.js');
+        if (file.startsWith('assets/js/tools/') && sandbox.ZT.registry) {
+            sandbox.ZT.registry.all().forEach((t) => {
+                if (!before.has(t.id)) owner[t.id] = moduleName;
+            });
         }
     }
 
     if (!sandbox.ZT || !sandbox.ZT.registry) {
         throw new Error('The registry did not initialise.');
     }
-    return sandbox.ZT.registry;
+
+    const missing = sandbox.ZT.registry.all().filter((t) => !owner[t.id]);
+    if (missing.length) {
+        throw new Error(`No owning module found for: ${missing.map((t) => t.id).join(', ')}`);
+    }
+
+    return { registry: sandbox.ZT.registry, owner };
 }
 
 module.exports = { loadRegistry, TOOL_MODULES };

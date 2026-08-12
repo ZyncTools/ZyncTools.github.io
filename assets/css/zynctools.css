@@ -1099,8 +1099,9 @@ h1, h2, h3, h4 { line-height: 1.25; font-weight: 700; letter-spacing: -0.015em; 
     transform: translateY(-1px) rotate(45deg);
 }
 
-.zt-check__text { font-size: var(--text-sm); line-height: 1.45; }
-.zt-check__help { font-size: var(--text-xs); color: var(--fg-subtle); margin-top: 2px; }
+.zt-check__text { display: block; font-size: var(--text-sm); line-height: 1.45; }
+/* Must be block, or the help text runs on from the end of the label. */
+.zt-check__help { display: block; font-size: var(--text-xs); color: var(--fg-subtle); margin-top: 3px; line-height: 1.5; }
 
 /* --- Radio group --- */
 .zt-radios { display: flex; flex-direction: column; gap: var(--sp-2); }
@@ -1654,6 +1655,100 @@ h1, h2, h3, h4 { line-height: 1.25; font-weight: 700; letter-spacing: -0.015em; 
 .zt-prose-sm p + p { margin-top: var(--sp-3); }
 .zt-prose-sm strong { color: var(--fg); }
 
+/* --- How-to steps on generated pages --- */
+.zt-howto {
+    margin: 0;
+    padding-left: var(--sp-5);
+    counter-reset: zt-step;
+}
+.zt-howto li {
+    color: var(--fg-muted);
+    font-size: var(--text-sm);
+    line-height: 1.7;
+    margin-bottom: var(--sp-3);
+    max-width: 68ch;
+}
+.zt-howto li strong { color: var(--fg); }
+
+/* --- FAQ accordion --- */
+.zt-faq {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+.zt-faq details { border-bottom: 1px solid var(--border); }
+.zt-faq details:last-child { border-bottom: 0; }
+.zt-faq summary {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    align-items: center;
+    padding: var(--sp-3) var(--sp-4);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    background: var(--bg-elevated);
+}
+.zt-faq summary::-webkit-details-marker { display: none; }
+.zt-faq summary::after {
+    content: '+';
+    color: var(--fg-subtle);
+    font-size: 1.15em;
+    line-height: 1;
+    flex-shrink: 0;
+}
+.zt-faq details[open] summary::after { content: '\2212'; }
+.zt-faq summary:hover { background: var(--bg-hover); }
+.zt-faq__body { padding: 0 var(--sp-4) var(--sp-4); }
+.zt-faq__body p {
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    line-height: 1.7;
+    max-width: 68ch;
+}
+
+/* --- Related tools grid (visible, not a hidden link block) --- */
+.zt-related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+    gap: var(--sp-2);
+}
+.zt-related-grid a {
+    display: flex;
+    gap: var(--sp-3);
+    align-items: flex-start;
+    padding: var(--sp-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-elevated);
+    color: var(--fg);
+    transition: border-color var(--fast) var(--ease), transform var(--fast) var(--ease);
+}
+.zt-related-grid a:hover {
+    text-decoration: none;
+    border-color: var(--accent-border);
+    transform: translateY(-2px);
+}
+.zt-related-grid__icon {
+    display: grid;
+    place-items: center;
+    width: 30px; height: 30px;
+    border-radius: var(--radius-sm);
+    background: var(--accent-tint);
+    color: var(--accent);
+    flex-shrink: 0;
+}
+.zt-related-grid__icon svg { width: 15px; height: 15px; }
+.zt-related-grid__name { display: block; font-size: var(--text-sm); font-weight: 600; }
+.zt-related-grid__desc {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+    line-height: 1.5;
+    margin-top: 2px;
+}
+
 /* -------------------------------------------------------------------------
    12. SIDE PANELS (about / related / privacy)
    ------------------------------------------------------------------------- */
@@ -2092,3 +2187,19 @@ h1, h2, h3, h4 { line-height: 1.25; font-weight: 700; letter-spacing: -0.015em; 
     body { background: #fff; color: #000; }
     .zt-result { break-inside: avoid; border-color: #ccc; }
 }
+
+/* --- Signature pad --- */
+.zt-signature { display: flex; flex-direction: column; gap: var(--sp-2); }
+.zt-signature__pad {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 1;
+    border: 2px dashed var(--border-strong);
+    border-radius: var(--radius);
+    /* A light pad regardless of theme: a signature is ink on paper, and the
+       captured PNG is dark strokes on transparency either way. */
+    background: #FFFFFF;
+    cursor: crosshair;
+    touch-action: none;
+}
+.zt-signature__pad:hover { border-color: var(--accent); }

@@ -353,100 +353,10 @@
 
     /* ============================================================
        Colour
+       ------------------------------------------------------------
+       The colour maths lives in zt-core.js as ZT.color, because five
+       modules need it and only one of them loads on any given page.
        ============================================================ */
-    function parseColor(input) {
-        var s = String(input || '').trim().toLowerCase();
-        if (!s) return null;
-
-        var m;
-        if ((m = s.match(/^#?([0-9a-f]{3})$/))) {
-            return [parseInt(m[1][0] + m[1][0], 16), parseInt(m[1][1] + m[1][1], 16), parseInt(m[1][2] + m[1][2], 16), 1];
-        }
-        if ((m = s.match(/^#?([0-9a-f]{4})$/))) {
-            return [parseInt(m[1][0] + m[1][0], 16), parseInt(m[1][1] + m[1][1], 16), parseInt(m[1][2] + m[1][2], 16),
-                parseInt(m[1][3] + m[1][3], 16) / 255];
-        }
-        if ((m = s.match(/^#?([0-9a-f]{6})$/))) {
-            return [parseInt(m[1].slice(0, 2), 16), parseInt(m[1].slice(2, 4), 16), parseInt(m[1].slice(4, 6), 16), 1];
-        }
-        if ((m = s.match(/^#?([0-9a-f]{8})$/))) {
-            return [parseInt(m[1].slice(0, 2), 16), parseInt(m[1].slice(2, 4), 16), parseInt(m[1].slice(4, 6), 16),
-                parseInt(m[1].slice(6, 8), 16) / 255];
-        }
-        if ((m = s.match(/^rgba?\(([^)]+)\)$/))) {
-            var p = m[1].split(/[,\s/]+/).filter(Boolean).map(parseFloat);
-            if (p.length >= 3) return [ZT.clamp(p[0], 0, 255), ZT.clamp(p[1], 0, 255), ZT.clamp(p[2], 0, 255), p[3] === undefined ? 1 : p[3]];
-        }
-        if ((m = s.match(/^hsla?\(([^)]+)\)$/))) {
-            var q = m[1].split(/[,\s/]+/).filter(Boolean);
-            var rgb = hslToRgb(parseFloat(q[0]), parseFloat(q[1]), parseFloat(q[2]));
-            return [rgb[0], rgb[1], rgb[2], q[3] === undefined ? 1 : parseFloat(q[3])];
-        }
-
-        // Named colours — let the browser resolve them.
-        var probe = document.createElement('canvas').getContext('2d');
-        probe.fillStyle = '#000';
-        probe.fillStyle = s;
-        var resolved = probe.fillStyle;
-        if (resolved !== '#000000' || s === 'black' || s === '#000000') {
-            return parseColor(resolved);
-        }
-        return null;
-    }
-
-    function rgbToHsl(r, g, b) {
-        r /= 255; g /= 255; b /= 255;
-        var max = Math.max(r, g, b), min = Math.min(r, g, b);
-        var h = 0, s = 0, l = (max + min) / 2;
-        var d = max - min;
-        if (d) {
-            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-            if (max === r) h = ((g - b) / d + (g < b ? 6 : 0));
-            else if (max === g) h = (b - r) / d + 2;
-            else h = (r - g) / d + 4;
-            h *= 60;
-        }
-        return [Math.round(h), Math.round(s * 100), Math.round(l * 100)];
-    }
-
-    function hslToRgb(h, s, l) {
-        h = ((h % 360) + 360) % 360; s /= 100; l /= 100;
-        var c = (1 - Math.abs(2 * l - 1)) * s;
-        var x = c * (1 - Math.abs((h / 60) % 2 - 1));
-        var m = l - c / 2;
-        var rgb = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x]
-            : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x];
-        return rgb.map(function (v) { return Math.round((v + m) * 255); });
-    }
-
-    function rgbToCmyk(r, g, b) {
-        r /= 255; g /= 255; b /= 255;
-        var k = 1 - Math.max(r, g, b);
-        if (k === 1) return [0, 0, 0, 100];
-        return [
-            Math.round((1 - r - k) / (1 - k) * 100),
-            Math.round((1 - g - k) / (1 - k) * 100),
-            Math.round((1 - b - k) / (1 - k) * 100),
-            Math.round(k * 100)
-        ];
-    }
-
-    function toHex(r, g, b) {
-        return '#' + [r, g, b].map(function (v) {
-            return ('0' + Math.round(v).toString(16)).slice(-2);
-        }).join('');
-    }
-
-    /** WCAG relative luminance. */
-    function luminance(r, g, b) {
-        var a = [r, g, b].map(function (v) {
-            v /= 255;
-            return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-        });
-        return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
-    }
-
-    ZT.color = { parse: parseColor, rgbToHsl: rgbToHsl, hslToRgb: hslToRgb, toHex: toHex, luminance: luminance, rgbToCmyk: rgbToCmyk };
 
     define({
         id: 'color-converter',
@@ -466,14 +376,14 @@
         ],
         run: function (ctx) {
             var source = ctx.opt.usePicker ? ctx.opt.picker : (ctx.text || ctx.opt.picker);
-            var rgba = parseColor(source);
+            var rgba = ZT.color.parse(source);
             if (!rgba) ZT.fail('"' + String(source).trim() + '" is not a colour I recognise. Try #RRGGBB, rgb(), hsl() or a CSS colour name.');
 
             var r = Math.round(rgba[0]), g = Math.round(rgba[1]), b = Math.round(rgba[2]), a = rgba[3];
-            var hsl = rgbToHsl(r, g, b);
-            var cmyk = rgbToCmyk(r, g, b);
-            var hex = toHex(r, g, b);
-            var lum = luminance(r, g, b);
+            var hsl = ZT.color.rgbToHsl(r, g, b);
+            var cmyk = ZT.color.rgbToCmyk(r, g, b);
+            var hex = ZT.color.toHex(r, g, b);
+            var lum = ZT.color.luminance(r, g, b);
 
             var swatch = ZT.el('div', { class: 'zt-color-preview' }, [
                 ZT.el('div', { class: 'zt-color-chip', style: { background: 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')' } }),
@@ -504,8 +414,8 @@
                 var strip = ZT.el('div', { class: 'zt-swatch-row' });
                 for (var i = 9; i >= 1; i--) {
                     var l = i * 10;
-                    var shade = hslToRgb(hsl[0], hsl[1], l);
-                    var shadeHex = toHex(shade[0], shade[1], shade[2]);
+                    var shade = ZT.color.hslToRgb(hsl[0], hsl[1], l);
+                    var shadeHex = ZT.color.toHex(shade[0], shade[1], shade[2]);
                     strip.appendChild(ZT.el('button', {
                         class: 'zt-swatch',
                         style: { background: shadeHex },
@@ -536,12 +446,12 @@
             { id: 'bold', type: 'checkbox', label: 'Bold text', value: false }
         ],
         run: function (ctx) {
-            var fg = parseColor(ctx.opt.foreground);
-            var bg = parseColor(ctx.opt.background);
+            var fg = ZT.color.parse(ctx.opt.foreground);
+            var bg = ZT.color.parse(ctx.opt.background);
             if (!fg || !bg) ZT.fail('Both colours must be valid.');
 
-            var l1 = luminance(fg[0], fg[1], fg[2]);
-            var l2 = luminance(bg[0], bg[1], bg[2]);
+            var l1 = ZT.color.luminance(fg[0], fg[1], fg[2]);
+            var l2 = ZT.color.luminance(bg[0], bg[1], bg[2]);
             var ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
 
             // WCAG treats 18.66px bold or 24px regular as "large text".

@@ -12,9 +12,14 @@
 <meta property="og:description" content="Pick random lines from a list — draws, raffles and sampling.">
 <meta property="og:url" content="https://zynctools.github.io/random-line-picker/">
 <meta property="og:site_name" content="ZyncTools">
+<meta property="og:image" content="https://zynctools.github.io/assets/images/og/text.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Random Line Picker — ZyncTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Random Line Picker — ZyncTools">
 <meta name="twitter:description" content="Pick random lines from a list — draws, raffles and sampling.">
+<meta name="twitter:image" content="https://zynctools.github.io/assets/images/og/text.png">
 <meta name="theme-color" content="#0B0D11">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
@@ -25,8 +30,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/zynctools.css">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Random Line Picker","description":"Pick random lines from a list — draws, raffles and sampling.","url":"https://zynctools.github.io/random-line-picker/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any browser","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["How many to pick","No repeats","Trim and skip empty lines","Number the results"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Random Line Picker","description":"Pick random lines from a list — draws, raffles and sampling.","url":"https://zynctools.github.io/random-line-picker/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any browser","browserRequirements":"Requires JavaScript","image":"https://zynctools.github.io/assets/images/og/text.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["How many to pick","No repeats","Trim and skip empty lines","Number the results"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Tools","item":"https://zynctools.github.io/"},{"@type":"ListItem","position":2,"name":"Text","item":"https://zynctools.github.io/#text"},{"@type":"ListItem","position":3,"name":"Random Line Picker","item":"https://zynctools.github.io/random-line-picker/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to use Random Line Picker","description":"Pick random lines from a list — draws, raffles and sampling.","totalTime":"PT1M","supply":[],"tool":[],"step":[{"@type":"HowToStep","position":1,"name":"Add your input","text":"Paste or type your text into the input box. You can also load a text file from your device."},{"@type":"HowToStep","position":2,"name":"Choose your settings","text":"Adjust how many to pick, no repeats, trim and skip empty lines and the other 1 settings to suit what you need."},{"@type":"HowToStep","position":3,"name":"Run the tool","text":"Press Run. Processing happens on your own device, so the time it takes depends on your machine rather than a queue."},{"@type":"HowToStep","position":4,"name":"Save the result","text":"Copy the output, or press Download to save it. Nothing is kept once you close the tab."}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are my files uploaded when I use Random Line Picker?","acceptedAnswer":{"@type":"Answer","text":"No. Random Line Picker runs entirely inside your browser. Your text is read locally, processed on your own device, and handed straight back to you. You can confirm this yourself: open your browser's developer tools, watch the Network tab, and run the tool — no request carries your data anywhere."}},{"@type":"Question","name":"Is Random Line Picker free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely. No account, no sign-up, no watermark on your output, and no cap on how many times you can use it. The project is open source under the AGPL licence."}},{"@type":"Question","name":"Does Random Line Picker work offline?","acceptedAnswer":{"@type":"Answer","text":"Mostly. The site caches itself after your first visit, so it keeps working without a connection. Tools that need a specialised library — PDF editing, OCR, QR codes, MP3 encoding — need a connection the first time you run them, then that library is cached too."}}]}</script>
 
 <script>
 (function () {
@@ -147,6 +154,94 @@
                         </div>
                     </section>
 
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">How to use Random Line Picker</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <ol class="zt-howto">
+                                <li><strong>Add your input.</strong> Paste or type your text into the input box. You can also load a text file from your device.</li>
+                                <li><strong>Choose your settings.</strong> Adjust how many to pick, no repeats, trim and skip empty lines and the other 1 settings to suit what you need.</li>
+                                <li><strong>Run the tool.</strong> Press Run. Processing happens on your own device, so the time it takes depends on your machine rather than a queue.</li>
+                                <li><strong>Save the result.</strong> Copy the output, or press Download to save it. Nothing is kept once you close the tab.</li>
+                            </ol>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Frequently asked questions</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-faq">
+                                <details>
+                                    <summary>Are my files uploaded when I use Random Line Picker?</summary>
+                                    <div class="zt-faq__body"><p>No. Random Line Picker runs entirely inside your browser. Your text is read locally, processed on your own device, and handed straight back to you. You can confirm this yourself: open your browser&#39;s developer tools, watch the Network tab, and run the tool — no request carries your data anywhere.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Is Random Line Picker free?</summary>
+                                    <div class="zt-faq__body"><p>Yes, completely. No account, no sign-up, no watermark on your output, and no cap on how many times you can use it. The project is open source under the AGPL licence.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Does Random Line Picker work offline?</summary>
+                                    <div class="zt-faq__body"><p>Mostly. The site caches itself after your first visit, so it keeps working without a connection. Tools that need a specialised library — PDF editing, OCR, QR codes, MP3 encoding — need a connection the first time you run them, then that library is cached too.</p></div>
+                                </details>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Related text tools</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-related-grid">
+                                <a href="../word-counter/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Word Counter</span>
+                                        <span class="zt-related-grid__desc">Count words, characters, sentences and estimated reading time.</span>
+                                    </span>
+                                </a>
+                                <a href="../case-converter/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 15 4-8 4 8M4.5 13h5M21 12a3 3 0 1 0-6 0v3a3 3 0 1 0 6 0M21 9v6"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Case Converter</span>
+                                        <span class="zt-related-grid__desc">Switch text between upper, lower, title, camel, snake, kebab and more.</span>
+                                    </span>
+                                </a>
+                                <a href="../text-reverser/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3M12 20v2M12 14v2M12 8v2M12 2v2"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Text Reverser</span>
+                                        <span class="zt-related-grid__desc">Reverse text by character, word or line order.</span>
+                                    </span>
+                                </a>
+                                <a href="../slug-generator/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">URL Slug Generator</span>
+                                        <span class="zt-related-grid__desc">Turn titles into clean, URL-safe slugs.</span>
+                                    </span>
+                                </a>
+                                <a href="../find-replace/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 4a2 2 0 0 1 2-2M16 10a2 2 0 0 1-2-2M20 2a2 2 0 0 1 2 2M22 8a2 2 0 0 1-2 2M4 16a2 2 0 0 0-2 2M2 20a2 2 0 0 0 2 2"/><path d="M3 7 7 3l4 4M7 3v13a2 2 0 0 0 2 2h2M8 16h6a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2z"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Find &amp; Replace</span>
+                                        <span class="zt-related-grid__desc">Search and replace across text, with optional regular expressions.</span>
+                                    </span>
+                                </a>
+                                <a href="../line-sorter/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 16 4 4 4-4M7 4v16M20 8h-5l5-5V3h-5M15 21h5l-5-5v5h5"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Line Sorter</span>
+                                        <span class="zt-related-grid__desc">Sort lines alphabetically, numerically, by length or at random.</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
                 </div>
 
                 <aside class="zt-work__side" id="zt-side" aria-label="About this tool"></aside>
@@ -176,14 +271,6 @@
 
 </div>
 
-<nav class="zt-visually-hidden" aria-label="Related tools">
-    <a href="../word-counter/">Word Counter</a>
-    <a href="../case-converter/">Case Converter</a>
-    <a href="../text-reverser/">Text Reverser</a>
-    <a href="../slug-generator/">URL Slug Generator</a>
-    <a href="../find-replace/">Find &amp; Replace</a>
-    <a href="../line-sorter/">Line Sorter</a>
-</nav>
 
 <!-- Assistant -->
 <button class="zt-chat-fab" id="zt-chat-fab" aria-label="Open the assistant" aria-expanded="false" aria-controls="zt-chat">
@@ -231,18 +318,9 @@
 <script src="../assets/js/zt-icons.js"></script>
 <script src="../assets/js/zt-registry.js"></script>
 
-<script src="../assets/js/tools/image.js"></script>
-<script src="../assets/js/tools/pdf.js"></script>
-<script src="../assets/js/tools/media.js"></script>
+<!-- The full catalogue as metadata, then only the module this tool needs. -->
+<script src="../assets/js/zt-catalog.js"></script>
 <script src="../assets/js/tools/text.js"></script>
-<script src="../assets/js/tools/code.js"></script>
-<script src="../assets/js/tools/convert.js"></script>
-<script src="../assets/js/tools/design.js"></script>
-<script src="../assets/js/tools/security.js"></script>
-<script src="../assets/js/tools/generate.js"></script>
-<script src="../assets/js/tools/seo.js"></script>
-<script src="../assets/js/tools/datetime.js"></script>
-<script src="../assets/js/tools/math.js"></script>
 
 <script src="../assets/js/zt-theme.js"></script>
 <script src="../assets/js/zt-tool-page.js"></script>

@@ -12,9 +12,14 @@
 <meta property="og:description" content="Add or subtract time from a date, or convert between duration units.">
 <meta property="og:url" content="https://zynctools.github.io/duration-calculator/">
 <meta property="og:site_name" content="ZyncTools">
+<meta property="og:image" content="https://zynctools.github.io/assets/images/og/datetime.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Duration Calculator — ZyncTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Duration Calculator — ZyncTools">
 <meta name="twitter:description" content="Add or subtract time from a date, or convert between duration units.">
+<meta name="twitter:image" content="https://zynctools.github.io/assets/images/og/datetime.png">
 <meta name="theme-color" content="#0B0D11">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
@@ -25,8 +30,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/zynctools.css">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Duration Calculator","description":"Add or subtract time from a date, or convert between duration units.","url":"https://zynctools.github.io/duration-calculator/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any browser","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Mode","Starting date","Starting time","Operation","Years","Months","Weeks","Days","Hours","Minutes","Count working days only","Amount"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Duration Calculator","description":"Add or subtract time from a date, or convert between duration units.","url":"https://zynctools.github.io/duration-calculator/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any browser","browserRequirements":"Requires JavaScript","image":"https://zynctools.github.io/assets/images/og/datetime.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Mode","Starting date","Starting time","Operation","Years","Months","Weeks","Days","Hours","Minutes","Count working days only","Amount"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Tools","item":"https://zynctools.github.io/"},{"@type":"ListItem","position":2,"name":"Date & Time","item":"https://zynctools.github.io/#datetime"},{"@type":"ListItem","position":3,"name":"Duration Calculator","item":"https://zynctools.github.io/duration-calculator/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to use Duration Calculator","description":"Add or subtract time from a date, or convert between duration units.","totalTime":"PT1M","supply":[],"tool":[],"step":[{"@type":"HowToStep","position":1,"name":"Open the tool","text":"Open Duration Calculator. There is nothing to upload — it works from the settings alone."},{"@type":"HowToStep","position":2,"name":"Choose your settings","text":"Adjust mode, starting date, starting time and the other 10 settings to suit what you need."},{"@type":"HowToStep","position":3,"name":"Generate","text":"Press Generate. The result appears immediately and updates whenever you change a setting."},{"@type":"HowToStep","position":4,"name":"Save the result","text":"Copy the output, or press Download to save it. Nothing is kept once you close the tab."}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are my files uploaded when I use Duration Calculator?","acceptedAnswer":{"@type":"Answer","text":"No. Duration Calculator runs entirely inside your browser. Your file is read locally, processed on your own device, and handed straight back to you. You can confirm this yourself: open your browser's developer tools, watch the Network tab, and run the tool — no request carries your data anywhere."}},{"@type":"Question","name":"Is Duration Calculator free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely. No account, no sign-up, no watermark on your output, and no cap on how many times you can use it. The project is open source under the AGPL licence."}},{"@type":"Question","name":"Does Duration Calculator work offline?","acceptedAnswer":{"@type":"Answer","text":"Mostly. The site caches itself after your first visit, so it keeps working without a connection. Tools that need a specialised library — PDF editing, OCR, QR codes, MP3 encoding — need a connection the first time you run them, then that library is cached too."}}]}</script>
 
 <script>
 (function () {
@@ -147,6 +154,80 @@
                         </div>
                     </section>
 
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">How to use Duration Calculator</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <ol class="zt-howto">
+                                <li><strong>Open the tool.</strong> Open Duration Calculator. There is nothing to upload — it works from the settings alone.</li>
+                                <li><strong>Choose your settings.</strong> Adjust mode, starting date, starting time and the other 10 settings to suit what you need.</li>
+                                <li><strong>Generate.</strong> Press Generate. The result appears immediately and updates whenever you change a setting.</li>
+                                <li><strong>Save the result.</strong> Copy the output, or press Download to save it. Nothing is kept once you close the tab.</li>
+                            </ol>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Frequently asked questions</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-faq">
+                                <details>
+                                    <summary>Are my files uploaded when I use Duration Calculator?</summary>
+                                    <div class="zt-faq__body"><p>No. Duration Calculator runs entirely inside your browser. Your file is read locally, processed on your own device, and handed straight back to you. You can confirm this yourself: open your browser&#39;s developer tools, watch the Network tab, and run the tool — no request carries your data anywhere.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Is Duration Calculator free?</summary>
+                                    <div class="zt-faq__body"><p>Yes, completely. No account, no sign-up, no watermark on your output, and no cap on how many times you can use it. The project is open source under the AGPL licence.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Does Duration Calculator work offline?</summary>
+                                    <div class="zt-faq__body"><p>Mostly. The site caches itself after your first visit, so it keeps working without a connection. Tools that need a specialised library — PDF editing, OCR, QR codes, MP3 encoding — need a connection the first time you run them, then that library is cached too.</p></div>
+                                </details>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Related date &amp; time tools</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-related-grid">
+                                <a href="../timestamp-converter/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Unix Timestamp Converter</span>
+                                        <span class="zt-related-grid__desc">Convert Unix timestamps to readable dates and back, in any time zone.</span>
+                                    </span>
+                                </a>
+                                <a href="../date-difference-calculator/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M17 14h-6M13 18H7M7 14h.01M17 18h.01"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Date Difference Calculator</span>
+                                        <span class="zt-related-grid__desc">Work out the time between two dates, with or without weekends.</span>
+                                    </span>
+                                </a>
+                                <a href="../age-calculator/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1M2 21h20M7 8v3M12 8v3M17 8v3M7 4h.01M12 4h.01M17 4h.01"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Age Calculator</span>
+                                        <span class="zt-related-grid__desc">Calculate exact age in years, months, days — and the next birthday.</span>
+                                    </span>
+                                </a>
+                                <a href="../timezone-converter/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Time Zone Converter</span>
+                                        <span class="zt-related-grid__desc">See what one moment in time looks like across several time zones.</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
                 </div>
 
                 <aside class="zt-work__side" id="zt-side" aria-label="About this tool"></aside>
@@ -176,12 +257,6 @@
 
 </div>
 
-<nav class="zt-visually-hidden" aria-label="Related tools">
-    <a href="../timestamp-converter/">Unix Timestamp Converter</a>
-    <a href="../date-difference-calculator/">Date Difference Calculator</a>
-    <a href="../age-calculator/">Age Calculator</a>
-    <a href="../timezone-converter/">Time Zone Converter</a>
-</nav>
 
 <!-- Assistant -->
 <button class="zt-chat-fab" id="zt-chat-fab" aria-label="Open the assistant" aria-expanded="false" aria-controls="zt-chat">
@@ -229,18 +304,9 @@
 <script src="../assets/js/zt-icons.js"></script>
 <script src="../assets/js/zt-registry.js"></script>
 
-<script src="../assets/js/tools/image.js"></script>
-<script src="../assets/js/tools/pdf.js"></script>
-<script src="../assets/js/tools/media.js"></script>
-<script src="../assets/js/tools/text.js"></script>
-<script src="../assets/js/tools/code.js"></script>
-<script src="../assets/js/tools/convert.js"></script>
-<script src="../assets/js/tools/design.js"></script>
-<script src="../assets/js/tools/security.js"></script>
-<script src="../assets/js/tools/generate.js"></script>
-<script src="../assets/js/tools/seo.js"></script>
+<!-- The full catalogue as metadata, then only the module this tool needs. -->
+<script src="../assets/js/zt-catalog.js"></script>
 <script src="../assets/js/tools/datetime.js"></script>
-<script src="../assets/js/tools/math.js"></script>
 
 <script src="../assets/js/zt-theme.js"></script>
 <script src="../assets/js/zt-tool-page.js"></script>

@@ -1462,6 +1462,625 @@
         }
     });
 
+
+    /* ============================================================
+       Sign PDF
+       ============================================================ */
+    define({
+        id: 'sign-pdf',
+        name: 'Sign PDF',
+        category: 'pdf',
+        icon: 'pen-tool',
+        description: 'Draw or type a signature and place it on any page of a PDF.',
+        tags: ['sign', 'signature', 'esign', 'e-signature', 'initial', 'contract'],
+        input: 'file',
+        accept: PDF_ACCEPT,
+        popular: true,
+        options: [
+            {
+                id: 'source', type: 'radio', label: 'Signature', value: 'draw',
+                options: [
+                    { value: 'draw', label: 'Draw it' },
+                    { value: 'type', label: 'Type it' },
+                    { value: 'image', label: 'Upload an image' }
+                ]
+            },
+            { id: 'signature', type: 'signature', label: 'Draw your signature', when: function (o) { return o.source === 'draw'; } },
+            { id: 'text', type: 'text', label: 'Your name', value: '', when: function (o) { return o.source === 'type'; } },
+            {
+                id: 'font', type: 'select', label: 'Style', value: 'cursive',
+                options: [
+                    { value: 'cursive', label: 'Handwriting' },
+                    { value: 'serif', label: 'Serif' },
+                    { value: 'sans-serif', label: 'Sans-serif' }
+                ],
+                when: function (o) { return o.source === 'type'; }
+            },
+            { id: 'image', type: 'file', label: 'Signature image', accept: 'image/*', when: function (o) { return o.source === 'image'; }, help: 'A PNG with a transparent background works best.' },
+            { id: 'page', type: 'text', label: 'Place on page', value: 'last', help: 'A page number, "first", "last", or "all".' },
+            {
+                id: 'position', type: 'select', label: 'Position', value: 'bottom-right',
+                options: [
+                    { value: 'bottom-right', label: 'Bottom right' }, { value: 'bottom-left', label: 'Bottom left' },
+                    { value: 'bottom-center', label: 'Bottom centre' }, { value: 'top-right', label: 'Top right' },
+                    { value: 'top-left', label: 'Top left' }, { value: 'custom', label: 'Exact position…' }
+                ]
+            },
+            { id: 'x', type: 'number', label: 'X from left', suffix: 'pt', value: 400, min: 0, when: function (o) { return o.position === 'custom'; } },
+            { id: 'y', type: 'number', label: 'Y from bottom', suffix: 'pt', value: 100, min: 0, when: function (o) { return o.position === 'custom'; } },
+            { id: 'width', type: 'range', label: 'Signature width', value: 180, min: 40, max: 420, step: 10, suffix: 'pt' },
+            { id: 'margin', type: 'number', label: 'Margin from the edge', suffix: 'pt', value: 48, min: 0, max: 200, when: function (o) { return o.position !== 'custom'; } },
+            { id: 'add-date', type: 'checkbox', label: 'Add the date under the signature', value: false },
+            { id: 'note', type: 'note', text: 'This places a visible signature image on the page. It is not a cryptographic digital signature, so it does not prove who signed — the same as signing a printed page with a pen.' }
+        ],
+        run: async function (ctx) {
+            var o = ctx.opt;
+            var PDFLib = await ZT.libs.pdfLib();
+            var file = ctx.files[0];
+            var doc = await loadPdf(file);
+            var pages = doc.getPages();
+
+            // Build the signature as a transparent PNG, whatever its source.
+            var signatureCanvas;
+
+            if (o.source === 'draw') {
+                if (!o.signature) ZT.fail('Draw your signature in the box above first.');
+                signatureCanvas = await ZT.loadImage(o.signature).then(function (bmp) {
+                    return ZT.drawToCanvas(bmp);
+                });
+            } else if (o.source === 'type') {
+                if (!String(o.text).trim()) ZT.fail('Type the name you want to sign with.');
+                signatureCanvas = renderTypedSignature(o.text, o.font);
+            } else {
+                if (!o.image) ZT.fail('Choose a signature image.');
+                var bmp = await ZT.loadImage(o.image);
+                signatureCanvas = ZT.drawToCanvas(bmp);
+            }
+
+            var pngBlob = await ZT.encodeCanvas(signatureCanvas, 'png');
+            var embedded = await doc.embedPng(await pngBlob.arrayBuffer());
+
+            var targets = resolveSignaturePages(o.page, pages.length);
+            var drawWidth = o.width;
+            var drawHeight = drawWidth * (signatureCanvas.height / signatureCanvas.width);
+
+            var font = o.addDate ? await doc.embedFont(PDFLib.StandardFonts.Helvetica) : null;
+            var today = new Date().toLocaleDateString();
+
+            targets.forEach(function (index) {
+                var page = pages[index];
+                var size = page.getSize();
+
+                var x, y;
+                if (o.position === 'custom') {
+                    x = o.x; y = o.y;
+                } else {
+                    var parts = o.position.split('-');
+                    x = parts[1] === 'left' ? o.margin
+                        : parts[1] === 'right' ? size.width - o.margin - drawWidth
+                        : (size.width - drawWidth) / 2;
+                    y = parts[0] === 'top' ? size.height - o.margin - drawHeight : o.margin;
+                }
+
+                page.drawImage(embedded, { x: x, y: y, width: drawWidth, height: drawHeight });
+
+                if (o.addDate && font) {
+                    page.drawText(today, {
+                        x: x, y: y - 14,
+                        size: 9, font: font,
+                        color: PDFLib.rgb(0.35, 0.35, 0.38)
+                    });
+                }
+            });
+
+            doc.setProducer('ZyncTools');
+            var bytes = await doc.save();
+
+            return ZT.fileResult(pdfBlob(bytes), ZT.outName(file.name, 'signed', 'pdf'), {
+                note: 'Signed on ' + targets.length + ' page' + (targets.length === 1 ? '' : 's') + '  ·  ' + ZT.formatBytes(bytes.length)
+            });
+        }
+    });
+
+    function resolveSignaturePages(spec, count) {
+        var value = String(spec || 'last').trim().toLowerCase();
+        if (value === 'last') return [count - 1];
+        if (value === 'first') return [0];
+        if (value === 'all') return Array.from({ length: count }, function (_, i) { return i; });
+        return parsePageRange(value, count);
+    }
+
+    /** Draw typed text onto a transparent canvas so it can be embedded. */
+    function renderTypedSignature(text, fontFamily) {
+        var FONTS = {
+            cursive: '"Segoe Script", "Brush Script MT", "Snell Roundhand", cursive',
+            serif: 'Georgia, "Times New Roman", serif',
+            'sans-serif': '"Segoe UI", Helvetica, Arial, sans-serif'
+        };
+
+        var fontSize = 96;
+        var font = (fontFamily === 'cursive' ? 'italic ' : '') + fontSize + 'px ' + (FONTS[fontFamily] || FONTS.cursive);
+
+        // Measure first so the canvas fits the text exactly.
+        var measure = ZT.makeCanvas(10, 10).getContext('2d');
+        measure.font = font;
+        var width = Math.ceil(measure.measureText(text).width) + 40;
+
+        var canvas = ZT.makeCanvas(width, Math.round(fontSize * 1.6));
+        var c2d = canvas.getContext('2d');
+        c2d.font = font;
+        c2d.fillStyle = '#111827';
+        c2d.textBaseline = 'middle';
+        c2d.fillText(text, 20, canvas.height / 2);
+        return canvas;
+    }
+
+    /* ============================================================
+       Redact PDF
+       ============================================================ */
+    define({
+        id: 'pdf-redact',
+        name: 'Redact PDF',
+        category: 'pdf',
+        icon: 'square',
+        description: 'Black out regions of a PDF so the text underneath is genuinely gone.',
+        tags: ['redact', 'black out', 'censor', 'hide', 'confidential', 'remove text'],
+        input: 'file',
+        accept: PDF_ACCEPT,
+        heavy: true,
+        options: [
+            { id: 'regions', type: 'textarea', label: 'Regions to black out', value: '', rows: 5,
+              placeholder: '1: 60, 600, 300, 30\n2: 100, 420, 250, 20',
+              help: 'One per line as  page: x, y, width, height  in points from the bottom-left of the page. Use the "PDF to Images" tool to find coordinates.' },
+            { id: 'whole-pages', type: 'text', label: 'Or black out entire pages', value: '', placeholder: 'e.g. 3, 5-7' },
+            { id: 'color', type: 'color', label: 'Redaction colour', value: '#000000' },
+            { id: 'dpi', type: 'select', label: 'Output resolution', value: '150',
+              options: [
+                  { value: '120', label: '120 DPI — smaller file' },
+                  { value: '150', label: '150 DPI — recommended' },
+                  { value: '200', label: '200 DPI — sharper text' },
+                  { value: '300', label: '300 DPI — print quality' }
+              ] },
+            { id: 'note', type: 'note', text: 'Redaction is only real if the text is removed, not merely covered. Drawing a black box over text leaves it fully selectable and copyable underneath — a mistake that has leaked real documents. This tool re-renders every page as an image after masking, so nothing remains beneath the boxes. The trade-off is that the output text is no longer selectable.' }
+        ],
+        run: async function (ctx) {
+            var o = ctx.opt;
+            var file = ctx.files[0];
+
+            var regions = parseRedactionRegions(o.regions);
+            var fullPages = o.wholePages.trim() ? o.wholePages : '';
+
+            if (!regions.length && !fullPages) {
+                ZT.fail('Add at least one region, or list whole pages to black out.');
+            }
+
+            var PDFLib = await ZT.libs.pdfLib();
+            var pdf = await openWithPdfJs(file);
+            var out = await PDFLib.PDFDocument.create();
+
+            var pageNumbers = fullPages ? parsePageRange(fullPages, pdf.numPages) : [];
+            var scale = parseInt(o.dpi, 10) / 72;
+            var rgb = ZT.color.parse(o.color) || [0, 0, 0, 1];
+            var fill = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+
+            for (var p = 1; p <= pdf.numPages; p++) {
+                ctx.progress((p - 1) / pdf.numPages, 'Redacting page ' + p + ' of ' + pdf.numPages);
+
+                var page = await pdf.getPage(p);
+                var viewport = page.getViewport({ scale: scale });
+                var canvas = ZT.makeCanvas(viewport.width, viewport.height);
+                var c2d = canvas.getContext('2d');
+                c2d.fillStyle = '#ffffff';
+                c2d.fillRect(0, 0, canvas.width, canvas.height);
+                await page.render({ canvasContext: c2d, viewport: viewport }).promise;
+
+                c2d.fillStyle = fill;
+
+                if (pageNumbers.indexOf(p - 1) !== -1) {
+                    c2d.fillRect(0, 0, canvas.width, canvas.height);
+                } else {
+                    regions.filter(function (r) { return r.page === p; }).forEach(function (r) {
+                        // PDF coordinates start bottom-left; canvas starts top-left.
+                        var unscaledHeight = viewport.height / scale;
+                        c2d.fillRect(
+                            r.x * scale,
+                            (unscaledHeight - r.y - r.height) * scale,
+                            r.width * scale,
+                            r.height * scale
+                        );
+                    });
+                }
+
+                var jpeg = await ZT.encodeCanvas(canvas, 'jpeg', 0.85);
+                var embedded = await out.embedJpg(await jpeg.arrayBuffer());
+                var original = page.getViewport({ scale: 1 });
+                var newPage = out.addPage([original.width, original.height]);
+                newPage.drawImage(embedded, { x: 0, y: 0, width: original.width, height: original.height });
+            }
+
+            out.setProducer('ZyncTools');
+            var bytes = await out.save();
+            ctx.progress(1);
+
+            return [
+                ZT.dataResult([
+                    { label: 'Regions blacked out', value: String(regions.length) },
+                    { label: 'Whole pages blacked out', value: String(pageNumbers.length) },
+                    { label: 'Text underneath', value: 'Removed — pages were re-rendered as images' },
+                    { label: 'Selectable text in output', value: 'No' }
+                ], { title: 'Redaction summary', columns: 2 }),
+                ZT.fileResult(pdfBlob(bytes), ZT.outName(file.name, 'redacted', 'pdf'), {
+                    note: pdf.numPages + ' pages · ' + ZT.formatBytes(bytes.length)
+                })
+            ];
+        }
+    });
+
+    function parseRedactionRegions(text) {
+        var regions = [];
+        String(text || '').split(/\r?\n/).forEach(function (line) {
+            if (!line.trim()) return;
+            var match = line.match(/^\s*(\d+)\s*:\s*(.+)$/);
+            if (!match) ZT.fail('"' + line.trim() + '" is not a valid region. Use  page: x, y, width, height');
+
+            var numbers = match[2].split(/[,\s]+/).filter(Boolean).map(Number);
+            if (numbers.length !== 4 || numbers.some(isNaN)) {
+                ZT.fail('"' + line.trim() + '" needs exactly four numbers: x, y, width, height.');
+            }
+            regions.push({
+                page: parseInt(match[1], 10),
+                x: numbers[0], y: numbers[1], width: numbers[2], height: numbers[3]
+            });
+        });
+        return regions;
+    }
+
+    /* ============================================================
+       Word to PDF
+       ============================================================ */
+    define({
+        id: 'word-to-pdf',
+        name: 'Word to PDF',
+        category: 'pdf',
+        icon: 'file-output',
+        description: 'Convert a Word .docx document into a PDF.',
+        tags: ['word to pdf', 'docx', 'doc', 'convert', 'document'],
+        input: 'file',
+        accept: '.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        popular: true,
+        options: [
+            {
+                id: 'page-size', type: 'select', label: 'Page size', value: 'a4',
+                options: [
+                    { value: 'a4', label: 'A4' }, { value: 'letter', label: 'US Letter' },
+                    { value: 'a5', label: 'A5' }, { value: 'legal', label: 'US Legal' }
+                ]
+            },
+            { id: 'font-size', type: 'number', label: 'Body font size', suffix: 'pt', value: 11, min: 6, max: 24 },
+            { id: 'margin', type: 'number', label: 'Page margin', suffix: 'pt', value: 56, min: 18, max: 150 },
+            { id: 'line-height', type: 'range', label: 'Line spacing', value: 1.45, min: 1, max: 2.5, step: 0.05 },
+            { id: 'add-page-numbers', type: 'checkbox', label: 'Add page numbers', value: true },
+            { id: 'note', type: 'note', text: 'Headings, bold, italic, lists and paragraph structure carry over. Exact page layout, embedded images, tables and fancy styling do not — this rebuilds the document rather than rendering Word itself.' }
+        ],
+        run: async function (ctx) {
+            var o = ctx.opt;
+            var file = ctx.files[0];
+
+            if (/\.doc$/i.test(file.name)) {
+                ZT.fail('Old .doc files are not supported — only .docx. Open it in Word or Google Docs and save as .docx first.');
+            }
+
+            ctx.progress(0.2, 'Reading the document');
+            var mammoth = await ZT.libs.mammoth();
+            var buffer = await ZT.readAsArrayBuffer(file);
+
+            var result;
+            try {
+                result = await mammoth.convertToHtml({ arrayBuffer: buffer });
+            } catch (err) {
+                ZT.fail('That file could not be read as a .docx document.');
+            }
+
+            ctx.progress(0.5, 'Laying out the PDF');
+            var blocks = htmlToBlocks(result.value);
+            if (!blocks.length) ZT.fail('That document appears to be empty.');
+
+            var bytes = await renderBlocksToPdf(blocks, o);
+            ctx.progress(1);
+
+            var warnings = (result.messages || []).filter(function (m) { return m.type === 'warning'; });
+            var results = [];
+
+            if (warnings.length) {
+                results.push(ZT.dataResult([{
+                    label: 'Note',
+                    value: warnings.length + ' element' + (warnings.length === 1 ? '' : 's') +
+                        ' could not be converted exactly — usually images, tables or unusual styling.'
+                }], { title: 'Conversion notes' }));
+            }
+
+            results.push(ZT.fileResult(pdfBlob(bytes), ZT.outName(file.name, '', 'pdf'), {
+                note: blocks.length + ' blocks · ' + ZT.formatBytes(bytes.length)
+            }));
+            return results;
+        }
+    });
+
+    /** Flatten converted HTML into a simple ordered list of typed blocks. */
+    function htmlToBlocks(html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var blocks = [];
+
+        Array.prototype.forEach.call(doc.body.children, function (node) {
+            var tag = node.tagName.toLowerCase();
+            var text = node.textContent.replace(/\s+/g, ' ').trim();
+
+            if (/^h[1-6]$/.test(tag)) {
+                if (text) blocks.push({ type: 'heading', level: parseInt(tag[1], 10), text: text });
+            } else if (tag === 'ul' || tag === 'ol') {
+                Array.prototype.forEach.call(node.querySelectorAll('li'), function (li, i) {
+                    var item = li.textContent.replace(/\s+/g, ' ').trim();
+                    if (item) blocks.push({ type: 'list', text: (tag === 'ol' ? (i + 1) + '. ' : '•  ') + item });
+                });
+            } else if (tag === 'table') {
+                Array.prototype.forEach.call(node.querySelectorAll('tr'), function (tr) {
+                    var cells = Array.prototype.map.call(tr.children, function (td) {
+                        return td.textContent.replace(/\s+/g, ' ').trim();
+                    }).filter(Boolean);
+                    if (cells.length) blocks.push({ type: 'paragraph', text: cells.join('   |   ') });
+                });
+            } else if (text) {
+                blocks.push({ type: 'paragraph', text: text });
+            }
+        });
+
+        return blocks;
+    }
+
+    /** Shared layout engine for Word-to-PDF and anything else block-shaped. */
+    async function renderBlocksToPdf(blocks, o) {
+        var PDFLib = await ZT.libs.pdfLib();
+        var doc = await PDFLib.PDFDocument.create();
+
+        var regular = await doc.embedFont(PDFLib.StandardFonts.Helvetica);
+        var bold = await doc.embedFont(PDFLib.StandardFonts.HelveticaBold);
+
+        var dims = PAGE_SIZES[o.pageSize] || PAGE_SIZES.a4;
+        var contentWidth = dims[0] - o.margin * 2;
+        var page = doc.addPage(dims.slice());
+        var cursorY = dims[1] - o.margin;
+
+        function sanitise(s) {
+            return String(s)
+                .replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
+                .replace(/[–—]/g, '-').replace(/…/g, '...')
+                .replace(/ /g, ' ')
+                .replace(/[^\x00-\xFF]/g, '?');
+        }
+
+        function write(text, font, size, indent, spaceAfter) {
+            var lineHeight = size * o.lineHeight;
+            var words = sanitise(text).split(/\s+/);
+            var lines = [];
+            var current = '';
+
+            words.forEach(function (word) {
+                var candidate = current ? current + ' ' + word : word;
+                if (font.widthOfTextAtSize(candidate, size) <= contentWidth - (indent || 0) && current) {
+                    current = candidate;
+                } else if (!current) {
+                    current = word;
+                } else {
+                    lines.push(current);
+                    current = word;
+                }
+            });
+            if (current) lines.push(current);
+
+            lines.forEach(function (line) {
+                if (cursorY - lineHeight < o.margin) {
+                    page = doc.addPage(dims.slice());
+                    cursorY = dims[1] - o.margin;
+                }
+                cursorY -= lineHeight;
+                page.drawText(line, {
+                    x: o.margin + (indent || 0),
+                    y: cursorY,
+                    size: size,
+                    font: font,
+                    color: PDFLib.rgb(0.1, 0.1, 0.12)
+                });
+            });
+            cursorY -= (spaceAfter || 0);
+        }
+
+        blocks.forEach(function (block) {
+            if (block.type === 'heading') {
+                var size = o.fontSize * (block.level === 1 ? 1.85 : block.level === 2 ? 1.5 : block.level === 3 ? 1.28 : 1.12);
+                cursorY -= size * 0.5;
+                write(block.text, bold, size, 0, size * 0.3);
+            } else if (block.type === 'list') {
+                write(block.text, regular, o.fontSize, 16, 3);
+            } else {
+                write(block.text, regular, o.fontSize, 0, o.fontSize * 0.55);
+            }
+        });
+
+        if (o.addPageNumbers) {
+            var all = doc.getPages();
+            all.forEach(function (p, i) {
+                var label = (i + 1) + ' / ' + all.length;
+                var width = regular.widthOfTextAtSize(label, 9);
+                p.drawText(label, {
+                    x: dims[0] / 2 - width / 2, y: o.margin / 2.2,
+                    size: 9, font: regular, color: PDFLib.rgb(0.45, 0.45, 0.48)
+                });
+            });
+        }
+
+        doc.setProducer('ZyncTools');
+        doc.setCreationDate(new Date());
+        return doc.save();
+    }
+
+    /* ============================================================
+       PDF to Word
+       ============================================================ */
+    define({
+        id: 'pdf-to-word',
+        name: 'PDF to Word',
+        category: 'pdf',
+        icon: 'file-down',
+        description: 'Turn a PDF into an editable Word .docx document.',
+        tags: ['pdf to word', 'docx', 'convert', 'editable', 'doc'],
+        input: 'file',
+        accept: PDF_ACCEPT,
+        popular: true,
+        options: [
+            Object.assign({}, PAGE_RANGE_OPTION),
+            {
+                id: 'layout', type: 'select', label: 'Structure', value: 'paragraphs',
+                options: [
+                    { value: 'paragraphs', label: 'Join lines into paragraphs' },
+                    { value: 'lines', label: 'Keep every line separate' }
+                ]
+            },
+            { id: 'detect-headings', type: 'checkbox', label: 'Detect headings from font size', value: true },
+            { id: 'page-breaks', type: 'checkbox', label: 'Start a new page for each PDF page', value: false },
+            { id: 'note', type: 'note', text: 'This extracts the text and rebuilds it as an editable document. Columns, images, tables and exact positioning are not reproduced. A scanned PDF has no text to extract — run it through the OCR tool first.' }
+        ],
+        run: async function (ctx) {
+            var o = ctx.opt;
+            var file = ctx.files[0];
+
+            ctx.progress(0.1, 'Reading the PDF');
+            var pdf = await openWithPdfJs(file);
+            var targets = parsePageRange(o.pages, pdf.numPages);
+
+            var pageBlocks = [];
+            var sizes = [];
+
+            for (var i = 0; i < targets.length; i++) {
+                ctx.progress(0.1 + (i / targets.length) * 0.6, 'Reading page ' + (targets[i] + 1));
+                var page = await pdf.getPage(targets[i] + 1);
+                var content = await page.getTextContent();
+
+                // Group items into visual lines, keeping the largest glyph
+                // height per line so headings can be told from body text.
+                var rows = {};
+                content.items.forEach(function (item) {
+                    var y = Math.round(item.transform[5]);
+                    (rows[y] = rows[y] || []).push(item);
+                });
+
+                var lines = Object.keys(rows)
+                    .sort(function (a, b) { return b - a; })
+                    .map(function (y) {
+                        var items = rows[y].sort(function (a, b) { return a.transform[4] - b.transform[4]; });
+                        var height = Math.max.apply(null, items.map(function (it) { return Math.abs(it.transform[3]) || 0; }));
+                        var text = items.map(function (it) { return it.str; }).join('').replace(/\s+/g, ' ').trim();
+                        if (text) sizes.push(height);
+                        return { text: text, size: height };
+                    })
+                    .filter(function (l) { return l.text; });
+
+                pageBlocks.push(lines);
+            }
+
+            if (!sizes.length) {
+                ZT.fail('No text could be extracted. This PDF is most likely a scan — run it through the OCR tool first.');
+            }
+
+            // The most common glyph height is the body text; anything clearly
+            // larger is a heading.
+            var median = sizes.slice().sort(function (a, b) { return a - b; })[Math.floor(sizes.length / 2)];
+
+            ctx.progress(0.75, 'Building the document');
+            var docx = await ZT.libs.docx();
+
+            var children = [];
+            pageBlocks.forEach(function (lines, pageIndex) {
+                if (o.pageBreaks && pageIndex > 0 && children.length) {
+                    children[children.length - 1] = new docx.Paragraph({
+                        children: children[children.length - 1].options
+                            ? children[children.length - 1].options.children
+                            : [],
+                        pageBreakBefore: false
+                    });
+                }
+
+                if (o.layout === 'lines') {
+                    lines.forEach(function (line) {
+                        children.push(makeParagraph(docx, line, median, o.detectHeadings));
+                    });
+                } else {
+                    // Merge consecutive body lines into paragraphs; a heading
+                    // or a blank gap ends the current one.
+                    var buffer = [];
+                    lines.forEach(function (line) {
+                        var isHeading = o.detectHeadings && line.size > median * 1.25;
+                        var endsSentence = /[.!?:;]$/.test(line.text);
+
+                        if (isHeading) {
+                            if (buffer.length) {
+                                children.push(makeParagraph(docx, { text: buffer.join(' '), size: median }, median, false));
+                                buffer = [];
+                            }
+                            children.push(makeParagraph(docx, line, median, true));
+                        } else {
+                            buffer.push(line.text);
+                            if (endsSentence && buffer.join(' ').length > 180) {
+                                children.push(makeParagraph(docx, { text: buffer.join(' '), size: median }, median, false));
+                                buffer = [];
+                            }
+                        }
+                    });
+                    if (buffer.length) {
+                        children.push(makeParagraph(docx, { text: buffer.join(' '), size: median }, median, false));
+                    }
+                }
+
+                if (o.pageBreaks && pageIndex < pageBlocks.length - 1) {
+                    children.push(new docx.Paragraph({ children: [new docx.PageBreak()] }));
+                }
+            });
+
+            var document = new docx.Document({
+                creator: 'ZyncTools',
+                title: ZT.stem(file.name),
+                sections: [{ properties: {}, children: children }]
+            });
+
+            var blob = await docx.Packer.toBlob(document);
+            ctx.progress(1);
+
+            return [
+                ZT.dataResult([
+                    { label: 'Pages read', value: String(targets.length) },
+                    { label: 'Paragraphs written', value: String(children.length) },
+                    { label: 'Reproduced', value: 'Text, paragraph structure and headings' },
+                    { label: 'Not reproduced', value: 'Images, tables, columns and exact layout' }
+                ], { title: 'Conversion summary', columns: 2 }),
+                ZT.fileResult(blob, ZT.outName(file.name, '', 'docx'), {
+                    note: ZT.formatBytes(blob.size) + ' · opens in Word, Google Docs and LibreOffice'
+                })
+            ];
+        }
+    });
+
+    function makeParagraph(docx, line, median, detectHeadings) {
+        var isHeading = detectHeadings && line.size > median * 1.25;
+        var level = line.size > median * 1.8 ? docx.HeadingLevel.HEADING_1
+            : line.size > median * 1.45 ? docx.HeadingLevel.HEADING_2
+            : docx.HeadingLevel.HEADING_3;
+
+        return new docx.Paragraph({
+            heading: isHeading ? level : undefined,
+            spacing: { after: isHeading ? 160 : 120 },
+            children: [new docx.TextRun({ text: line.text })]
+        });
+    }
+
     /* ============================================================
        QPDF (WASM) — encryption support
        ============================================================ */

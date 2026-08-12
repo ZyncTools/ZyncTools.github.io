@@ -16,9 +16,13 @@
 const fs = require('fs');
 const path = require('path');
 const { loadRegistry } = require('./build-lib.js');
+const { buildSteps, buildFaqs } = require('./build-content.js');
 
 const SITE = (process.argv[2] || readConfiguredSite() || 'https://zynctools.github.io').replace(/\/+$/, '');
 const ROOT = __dirname;
+
+/** tool id -> owning module, filled in by main(). */
+let MODULE_OF = {};
 
 /** Reuse whatever host the existing sitemap was built for. */
 function readConfiguredSite() {
@@ -48,6 +52,8 @@ function renderToolPage(tool, registry) {
     /* A short, tool-specific intro. Generic boilerplate on 124 pages reads
        as thin content; this at least says what this tool does with what. */
     const intro = buildIntro(tool);
+    const steps = buildSteps(tool);
+    const faqs = buildFaqs(tool);
     const related = registry.inCategory(tool.category)
         .filter((t) => t.id !== tool.id)
         .slice(0, 6);
@@ -61,11 +67,37 @@ function renderToolPage(tool, registry) {
         applicationCategory: 'UtilitiesApplication',
         operatingSystem: 'Any browser',
         browserRequirements: 'Requires JavaScript',
+        image: `${SITE}/assets/images/og/${tool.category}.png`,
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
         featureList: (tool.options || [])
             .filter((o) => o.type !== 'note')
             .map((o) => o.label)
             .slice(0, 12)
+    };
+
+    const howTo = {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: `How to use ${tool.name}`,
+        description: tool.description,
+        totalTime: 'PT1M',
+        supply: [], tool: [],
+        step: steps.map((st, i) => ({
+            '@type': 'HowToStep',
+            position: i + 1,
+            name: st.name,
+            text: st.text
+        }))
+    };
+
+    const faqSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqs.map((f) => ({
+            '@type': 'Question',
+            name: f.question,
+            acceptedAnswer: { '@type': 'Answer', text: f.answer }
+        }))
     };
 
     const breadcrumbs = {
@@ -92,9 +124,14 @@ function renderToolPage(tool, registry) {
 <meta property="og:description" content="${esc(tool.description)}">
 <meta property="og:url" content="${esc(url)}">
 <meta property="og:site_name" content="ZyncTools">
+<meta property="og:image" content="${SITE}/assets/images/og/${esc(tool.category)}.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${esc(tool.name)} — ZyncTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(tool.name)} — ZyncTools">
 <meta name="twitter:description" content="${esc(tool.description)}">
+<meta name="twitter:image" content="${SITE}/assets/images/og/${esc(tool.category)}.png">
 <meta name="theme-color" content="#0B0D11">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
@@ -107,6 +144,8 @@ function renderToolPage(tool, registry) {
 
 <script type="application/ld+json">${JSON.stringify(schema)}</script>
 <script type="application/ld+json">${JSON.stringify(breadcrumbs)}</script>
+<script type="application/ld+json">${JSON.stringify(howTo)}</script>
+<script type="application/ld+json">${JSON.stringify(faqSchema)}</script>
 
 <script>
 (function () {
@@ -224,6 +263,48 @@ ${intro}
                         </div>
                     </section>
 
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">How to use ${esc(tool.name)}</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <ol class="zt-howto">
+${steps.map((st) => `                                <li><strong>${esc(st.name)}.</strong> ${esc(st.text)}</li>`).join('\n')}
+                            </ol>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Frequently asked questions</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-faq">
+${faqs.map((f) => `                                <details>
+                                    <summary>${esc(f.question)}</summary>
+                                    <div class="zt-faq__body"><p>${esc(f.answer)}</p></div>
+                                </details>`).join('\n')}
+                            </div>
+                        </div>
+                    </section>
+
+${related.length ? `                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Related ${esc(category ? category.name.toLowerCase() : '')} tools</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-related-grid">
+${related.map((t) => `                                <a href="../${t.id}/">
+                                    <span class="zt-related-grid__icon">${iconSvg(t.icon)}</span>
+                                    <span>
+                                        <span class="zt-related-grid__name">${esc(t.name)}</span>
+                                        <span class="zt-related-grid__desc">${esc(t.description)}</span>
+                                    </span>
+                                </a>`).join('\n')}
+                            </div>
+                        </div>
+                    </section>` : ''}
+
                 </div>
 
                 <aside class="zt-work__side" id="zt-side" aria-label="About this tool"></aside>
@@ -253,9 +334,6 @@ ${intro}
 
 </div>
 
-${related.length ? `<nav class="zt-visually-hidden" aria-label="Related tools">
-${related.map((t) => `    <a href="../${t.id}/">${esc(t.name)}</a>`).join('\n')}
-</nav>` : ''}
 
 <!-- Assistant -->
 <button class="zt-chat-fab" id="zt-chat-fab" aria-label="Open the assistant" aria-expanded="false" aria-controls="zt-chat">
@@ -303,18 +381,9 @@ ${related.map((t) => `    <a href="../${t.id}/">${esc(t.name)}</a>`).join('\n')}
 <script src="../assets/js/zt-icons.js"></script>
 <script src="../assets/js/zt-registry.js"></script>
 
-<script src="../assets/js/tools/image.js"></script>
-<script src="../assets/js/tools/pdf.js"></script>
-<script src="../assets/js/tools/media.js"></script>
-<script src="../assets/js/tools/text.js"></script>
-<script src="../assets/js/tools/code.js"></script>
-<script src="../assets/js/tools/convert.js"></script>
-<script src="../assets/js/tools/design.js"></script>
-<script src="../assets/js/tools/security.js"></script>
-<script src="../assets/js/tools/generate.js"></script>
-<script src="../assets/js/tools/seo.js"></script>
-<script src="../assets/js/tools/datetime.js"></script>
-<script src="../assets/js/tools/math.js"></script>
+<!-- The full catalogue as metadata, then only the module this tool needs. -->
+<script src="../assets/js/zt-catalog.js"></script>
+<script src="../assets/js/tools/${MODULE_OF[tool.id]}.js"></script>
 
 <script src="../assets/js/zt-theme.js"></script>
 <script src="../assets/js/zt-tool-page.js"></script>
@@ -438,10 +507,53 @@ function writeSitemap(registry) {
 /* ============================================================
    MAIN
    ============================================================ */
+/**
+ * Write assets/js/zt-catalog.js — name, description, tags and icon for every
+ * tool, and nothing else. Roughly a tenth the size of the twelve modules it
+ * replaces on pages that only need to list tools rather than run them.
+ */
+function writeCatalog(registry, owner) {
+    const meta = registry.all().map((t) => ({
+        id: t.id,
+        name: t.name,
+        category: t.category,
+        description: t.description,
+        icon: t.icon,
+        tags: t.tags,
+        // Interface-level facts, not implementation. They cost a few bytes and
+        // let anything reading the catalogue describe the tool accurately
+        // before its module has loaded.
+        input: t.input,
+        accept: t.accept || undefined,
+        live: t.live || undefined,
+        popular: t.popular || undefined,
+        heavy: t.heavy || undefined,
+        maxFiles: t.maxFiles,
+        module: owner[t.id]
+    }));
+
+    const body = `/**
+ * ZyncTools — tool catalogue (generated)
+ *
+ * Metadata only: enough for the homepage grid, search and the assistant,
+ * without the option schemas and run() implementations that make up most of
+ * the weight. Generated by build-pages.js — do not edit by hand.
+ */
+(function () {
+    'use strict';
+    window.ZT.registry.defineMeta(${JSON.stringify(meta, null, 0)});
+})();
+`;
+
+    fs.writeFileSync(path.join(ROOT, 'assets/js/zt-catalog.js'), body);
+    return body.length;
+}
+
 function main() {
-    const registry = loadRegistry(ROOT);
+    const { registry, owner } = loadRegistry(ROOT);
     const tools = registry.all();
     const ids = new Set(tools.map((t) => t.id));
+    MODULE_OF = owner;
 
     let written = 0;
     tools.forEach((tool) => {
@@ -479,11 +591,13 @@ function main() {
         pages: tools.map((t) => t.id).sort()
     }, null, 2) + '\n');
 
+    const catalogBytes = writeCatalog(registry, owner);
     const urls = writeSitemap(registry);
 
     console.log(`${written} tool pages written for ${SITE}`);
     if (removed) console.log(`${removed} stale tool directories removed`);
     console.log(`sitemap.xml written — ${urls} URLs`);
+    console.log(`zt-catalog.js written — ${Math.round(catalogBytes / 1024)} KB of metadata`);
 }
 
 main();

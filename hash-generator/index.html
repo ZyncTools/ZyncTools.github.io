@@ -12,9 +12,14 @@
 <meta property="og:description" content="Generate MD5, SHA-1, SHA-256, SHA-384 and SHA-512 hashes of text.">
 <meta property="og:url" content="https://zynctools.github.io/hash-generator/">
 <meta property="og:site_name" content="ZyncTools">
+<meta property="og:image" content="https://zynctools.github.io/assets/images/og/security.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Hash Generator — ZyncTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Hash Generator — ZyncTools">
 <meta name="twitter:description" content="Generate MD5, SHA-1, SHA-256, SHA-384 and SHA-512 hashes of text.">
+<meta name="twitter:image" content="https://zynctools.github.io/assets/images/og/security.png">
 <meta name="theme-color" content="#0B0D11">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
@@ -25,8 +30,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/zynctools.css">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Hash Generator","description":"Generate MD5, SHA-1, SHA-256, SHA-384 and SHA-512 hashes of text.","url":"https://zynctools.github.io/hash-generator/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any browser","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Show every algorithm at once","Algorithm","Uppercase output","Output encoding"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Hash Generator","description":"Generate MD5, SHA-1, SHA-256, SHA-384 and SHA-512 hashes of text.","url":"https://zynctools.github.io/hash-generator/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any browser","browserRequirements":"Requires JavaScript","image":"https://zynctools.github.io/assets/images/og/security.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Show every algorithm at once","Algorithm","Uppercase output","Output encoding"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Tools","item":"https://zynctools.github.io/"},{"@type":"ListItem","position":2,"name":"Security","item":"https://zynctools.github.io/#security"},{"@type":"ListItem","position":3,"name":"Hash Generator","item":"https://zynctools.github.io/hash-generator/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to use Hash Generator","description":"Generate MD5, SHA-1, SHA-256, SHA-384 and SHA-512 hashes of text.","totalTime":"PT1M","supply":[],"tool":[],"step":[{"@type":"HowToStep","position":1,"name":"Add your input","text":"Paste or type your text into the input box. You can also load a text file from your device."},{"@type":"HowToStep","position":2,"name":"Choose your settings","text":"Adjust show every algorithm at once, algorithm, uppercase output and the other 1 settings to suit what you need."},{"@type":"HowToStep","position":3,"name":"Run the tool","text":"The result updates as you type. Press Run to refresh it at any point."},{"@type":"HowToStep","position":4,"name":"Save the result","text":"Copy the output, or press Download to save it. Nothing is kept once you close the tab."}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which algorithm should I use?","acceptedAnswer":{"@type":"Answer","text":"SHA-256 for anything security-related. MD5 and SHA-1 are included because you still need them to verify older published checksums, but both are broken for security purposes and should not be used to protect anything."}},{"@type":"Question","name":"Are my files uploaded when I use Hash Generator?","acceptedAnswer":{"@type":"Answer","text":"No. Hash Generator runs entirely inside your browser. Your text is read locally, processed on your own device, and handed straight back to you. You can confirm this yourself: open your browser's developer tools, watch the Network tab, and run the tool — no request carries your data anywhere."}},{"@type":"Question","name":"Is Hash Generator free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely. No account, no sign-up, no watermark on your output, and no cap on how many times you can use it. The project is open source under the AGPL licence."}},{"@type":"Question","name":"Does Hash Generator work offline?","acceptedAnswer":{"@type":"Answer","text":"Mostly. The site caches itself after your first visit, so it keeps working without a connection. Tools that need a specialised library — PDF editing, OCR, QR codes, MP3 encoding — need a connection the first time you run them, then that library is cached too."}}]}</script>
 
 <script>
 (function () {
@@ -147,6 +154,91 @@
                         </div>
                     </section>
 
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">How to use Hash Generator</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <ol class="zt-howto">
+                                <li><strong>Add your input.</strong> Paste or type your text into the input box. You can also load a text file from your device.</li>
+                                <li><strong>Choose your settings.</strong> Adjust show every algorithm at once, algorithm, uppercase output and the other 1 settings to suit what you need.</li>
+                                <li><strong>Run the tool.</strong> The result updates as you type. Press Run to refresh it at any point.</li>
+                                <li><strong>Save the result.</strong> Copy the output, or press Download to save it. Nothing is kept once you close the tab.</li>
+                            </ol>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Frequently asked questions</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-faq">
+                                <details>
+                                    <summary>Which algorithm should I use?</summary>
+                                    <div class="zt-faq__body"><p>SHA-256 for anything security-related. MD5 and SHA-1 are included because you still need them to verify older published checksums, but both are broken for security purposes and should not be used to protect anything.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Are my files uploaded when I use Hash Generator?</summary>
+                                    <div class="zt-faq__body"><p>No. Hash Generator runs entirely inside your browser. Your text is read locally, processed on your own device, and handed straight back to you. You can confirm this yourself: open your browser&#39;s developer tools, watch the Network tab, and run the tool — no request carries your data anywhere.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Is Hash Generator free?</summary>
+                                    <div class="zt-faq__body"><p>Yes, completely. No account, no sign-up, no watermark on your output, and no cap on how many times you can use it. The project is open source under the AGPL licence.</p></div>
+                                </details>
+                                <details>
+                                    <summary>Does Hash Generator work offline?</summary>
+                                    <div class="zt-faq__body"><p>Mostly. The site caches itself after your first visit, so it keeps working without a connection. Tools that need a specialised library — PDF editing, OCR, QR codes, MP3 encoding — need a connection the first time you run them, then that library is cached too.</p></div>
+                                </details>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">Related security tools</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-related-grid">
+                                <a href="../file-hash-generator/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">File Checksum Generator</span>
+                                        <span class="zt-related-grid__desc">Compute file checksums and verify a download against a known hash.</span>
+                                    </span>
+                                </a>
+                                <a href="../hmac-generator/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">HMAC Generator</span>
+                                        <span class="zt-related-grid__desc">Sign a message with a secret key using HMAC.</span>
+                                    </span>
+                                </a>
+                                <a href="../text-encryptor/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Text Encryptor</span>
+                                        <span class="zt-related-grid__desc">Encrypt and decrypt text with AES-256-GCM and a passphrase.</span>
+                                    </span>
+                                </a>
+                                <a href="../password-strength-checker/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">Password Strength Checker</span>
+                                        <span class="zt-related-grid__desc">Estimate how long a password would take to crack, entirely offline.</span>
+                                    </span>
+                                </a>
+                                <a href="../file-encryptor/">
+                                    <span class="zt-related-grid__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><rect width="8" height="5" x="8" y="13" rx="1"/><path d="M10 13v-1a2 2 0 1 1 4 0v1"/></svg></span>
+                                    <span>
+                                        <span class="zt-related-grid__name">File Encryptor</span>
+                                        <span class="zt-related-grid__desc">Encrypt any file with AES-256 and a passphrase, then decrypt it later.</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
                 </div>
 
                 <aside class="zt-work__side" id="zt-side" aria-label="About this tool"></aside>
@@ -176,13 +268,6 @@
 
 </div>
 
-<nav class="zt-visually-hidden" aria-label="Related tools">
-    <a href="../file-hash-generator/">File Checksum Generator</a>
-    <a href="../hmac-generator/">HMAC Generator</a>
-    <a href="../text-encryptor/">Text Encryptor</a>
-    <a href="../password-strength-checker/">Password Strength Checker</a>
-    <a href="../file-encryptor/">File Encryptor</a>
-</nav>
 
 <!-- Assistant -->
 <button class="zt-chat-fab" id="zt-chat-fab" aria-label="Open the assistant" aria-expanded="false" aria-controls="zt-chat">
@@ -230,18 +315,9 @@
 <script src="../assets/js/zt-icons.js"></script>
 <script src="../assets/js/zt-registry.js"></script>
 
-<script src="../assets/js/tools/image.js"></script>
-<script src="../assets/js/tools/pdf.js"></script>
-<script src="../assets/js/tools/media.js"></script>
-<script src="../assets/js/tools/text.js"></script>
-<script src="../assets/js/tools/code.js"></script>
-<script src="../assets/js/tools/convert.js"></script>
-<script src="../assets/js/tools/design.js"></script>
+<!-- The full catalogue as metadata, then only the module this tool needs. -->
+<script src="../assets/js/zt-catalog.js"></script>
 <script src="../assets/js/tools/security.js"></script>
-<script src="../assets/js/tools/generate.js"></script>
-<script src="../assets/js/tools/seo.js"></script>
-<script src="../assets/js/tools/datetime.js"></script>
-<script src="../assets/js/tools/math.js"></script>
 
 <script src="../assets/js/zt-theme.js"></script>
 <script src="../assets/js/zt-tool-page.js"></script>
