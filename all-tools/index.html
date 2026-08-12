@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>All 180 tools — ZyncTools</title>
+<meta name="description" content="Every tool on ZyncTools, grouped by category — 180 of them, all running in your browser with nothing uploaded.">
+<link rel="canonical" href="https://zynctools.github.io/all-tools/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="All 180 tools — ZyncTools">
+<meta property="og:description" content="Every tool on ZyncTools, grouped by category.">
+<meta property="og:url" content="https://zynctools.github.io/all-tools/">
+<meta property="og:image" content="https://zynctools.github.io/assets/images/og/default.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://zynctools.github.io/assets/images/og/default.png">
+<meta name="theme-color" content="#0B0D11">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
+<link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/zynctools.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"All tools","description":"Every one of the 180 tools on ZyncTools, grouped by category.","url":"https://zynctools.github.io/all-tools/"}</script>
+<script>
+(function () {
+    try {
+        var s = localStorage.getItem('zynctools-theme');
+        var v = s === 'dark' || s === 'light' || s === 'midnight';
+        document.documentElement.setAttribute('data-theme', v ? s
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+    } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+</script>
+<style>
+    .zt-index { max-width: 900px; margin: 0 auto; }
+    .zt-index__group { margin-bottom: var(--sp-10); }
+    .zt-index__group h2 {
+        font-size: var(--text-xl);
+        margin: 0 0 var(--sp-1);
+        scroll-margin-top: calc(var(--header-h) + var(--sp-4));
+    }
+    .zt-index__count {
+        font-size: var(--text-xs);
+        font-weight: 600;
+        color: var(--fg-muted);
+        background: var(--bg-input);
+        border-radius: var(--radius-full);
+        padding: 2px 9px;
+        vertical-align: middle;
+    }
+    .zt-index__blurb { color: var(--fg-muted); font-size: var(--text-sm); margin: 0 0 var(--sp-4); }
+    .zt-index__list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-1); }
+    @media (min-width: 700px) { .zt-index__list { grid-template-columns: 1fr 1fr; gap: var(--sp-1) var(--sp-5); } }
+    .zt-index__list li {
+        display: flex;
+        flex-direction: column;
+        padding: var(--sp-2) 0;
+        border-bottom: 1px solid var(--border-soft, var(--border));
+    }
+    .zt-index__list a { font-weight: 600; font-size: var(--text-sm); }
+    .zt-index__list span { font-size: var(--text-xs); color: var(--fg-muted); line-height: 1.5; }
+    .zt-index__jump {
+        display: flex; flex-wrap: wrap; gap: var(--sp-2);
+        margin: var(--sp-5) 0 var(--sp-10);
+        padding-bottom: var(--sp-5);
+        border-bottom: 1px solid var(--border);
+    }
+    .zt-index__jump a {
+        font-size: var(--text-xs); font-weight: 600;
+        padding: 4px 10px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-full);
+        text-decoration: none;
+    }
+    .zt-index__jump a:hover { border-color: var(--accent); }
+</style>
+</head>
+<body>
+<a href="#main" class="zt-skip-link">Skip to content</a>
+
+<div class="zt-shell">
+    <header class="zt-header">
+        <a class="zt-brand" href="../">
+            <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+            <span class="zt-brand__name">ZyncTools</span>
+        </a>
+        <div class="zt-header__spacer"></div>
+        <a class="zt-btn zt-btn--ghost zt-btn--sm" href="../">Home</a>
+        <button class="zt-icon-btn" id="zt-theme-toggle" aria-label="Switch theme"></button>
+    </header>
+
+    <main class="zt-main" id="main">
+        <div class="zt-index">
+            <h1 style="font-size:var(--text-3xl);margin-bottom:var(--sp-3)">All 180 tools</h1>
+            <p style="color:var(--fg-muted);max-width:60ch;line-height:1.7">
+                Everything on the site, grouped by category. Every one of them runs in your
+                browser — your files are never uploaded to anything.
+            </p>
+
+            <nav class="zt-index__jump" aria-label="Jump to category">
+                <a href="#pdf">PDF</a>
+                <a href="#image">Image</a>
+                <a href="#media">Audio &amp; Video</a>
+                <a href="#text">Text</a>
+                <a href="#code">Code &amp; Data</a>
+                <a href="#convert">Converters</a>
+                <a href="#design">CSS &amp; Design</a>
+                <a href="#security">Security</a>
+                <a href="#generate">Generators</a>
+                <a href="#seo">SEO &amp; Web</a>
+                <a href="#datetime">Date &amp; Time</a>
+                <a href="#math">Math &amp; Units</a>
+            </nav>
+
+                <section class="zt-index__group">
+                    <h2 id="pdf">PDF <span class="zt-index__count">19</span></h2>
+                    <p class="zt-index__blurb">Merge, split, sign, protect and convert PDF documents.</p>
+                    <ul class="zt-index__list">
+                    <li><a href="../merge-pdf/">Merge PDF</a><span>Combine several PDFs into one document, in the order you choose.</span></li>
+                    <li><a href="../split-pdf/">Split PDF</a><span>Split a PDF into single pages, fixed-size chunks or custom ranges.</span></li>
+                    <li><a href="../pdf-page-manager/">Extract, Delete &amp; Reorder Pages</a><span>Keep, remove, duplicate or reorder pages in a PDF.</span></li>
+                    <li><a href="../rotate-pdf/">Rotate PDF</a><span>Rotate every page or just a selection to fix sideways scans.</span></li>
+                    <li><a href="../compress-pdf/">Compress PDF</a><span>Reduce PDF size by re-rendering pages at a lower resolution and quality.</span></li>
+                    <li><a href="../pdf-to-image/">PDF to Images</a><span>Render PDF pages as PNG, JPEG or WebP images at any resolution.</span></li>
+                    <li><a href="../image-to-pdf/">Images to PDF</a><span>Turn photos and scans into a single PDF with control over page size.</span></li>
+                    <li><a href="../pdf-to-text/">PDF to Text</a><span>Extract the text layer from a PDF, with layout or plain output.</span></li>
+                    <li><a href="../pdf-ocr/">Scanned PDF to Text (OCR)</a><span>Read text out of scanned PDFs and images using in-browser OCR.</span></li>
+                    <li><a href="../watermark-pdf/">Watermark PDF</a><span>Stamp text across PDF pages — DRAFT, CONFIDENTIAL or your own wording.</span></li>
+                    <li><a href="../pdf-page-numbers/">Add Page Numbers &amp; Headers</a><span>Number PDF pages and add headers or footers with custom text.</span></li>
+                    <li><a href="../protect-pdf/">Password Protect PDF</a><span>Encrypt a PDF with a password and set what readers are allowed to do.</span></li>
+                    <li><a href="../unlock-pdf/">Unlock PDF</a><span>Remove a known password from a PDF so it opens without prompting.</span></li>
+                    <li><a href="../pdf-metadata/">PDF Metadata Editor</a><span>View and rewrite the title, author, subject and keywords of a PDF.</span></li>
+                    <li><a href="../text-to-pdf/">Text &amp; Markdown to PDF</a><span>Turn plain text or Markdown into a properly typeset PDF.</span></li>
+                    <li><a href="../sign-pdf/">Sign PDF</a><span>Draw or type a signature and place it on any page of a PDF.</span></li>
+                    <li><a href="../pdf-redact/">Redact PDF</a><span>Black out regions of a PDF so the text underneath is genuinely gone.</span></li>
+                    <li><a href="../word-to-pdf/">Word to PDF</a><span>Convert a Word .docx document into a PDF.</span></li>
+                    <li><a href="../pdf-to-word/">PDF to Word</a><span>Turn a PDF into an editable Word .docx document.</span></li>
+                    </ul>
+                </section>
+
+                <section class="zt-index__group">
+                    <h2 id="image">Image <span class="zt-index__count">22</span></h2>
+                    <p class="zt-index__blurb">Compress, convert, resize, crop and retouch pictures.</p>
+                    <ul class="zt-index__list">
+                    <li><a href="../image-compressor/">Image Compressor</a><span>Shrink image file size with a quality slider or a target file size.</span></li>
+                    <li><a href="../image-resizer/">Image Resizer</a><span>Resize images by pixels, percentage or to fit inside a box.</span></li>
+                    <li><a href="../image-converter/">Image Format Converter</a><span>Convert between PNG, JPEG, WebP, AVIF, BMP, HEIC and SVG raster output.</span></li>
+                    <li><a href="../image-cropper/">Image Cropper</a><span>Crop to an aspect ratio, exact pixels, or a centred square.</span></li>
+                    <li><a href="../image-rotate-flip/">Rotate &amp; Flip Image</a><span>Rotate by any angle and mirror images horizontally or vertically.</span></li>
+                    <li><a href="../image-filters/">Image Filters &amp; Adjustments</a><span>Adjust brightness, contrast, saturation, blur and apply photo presets.</span></li>
+                    <li><a href="../image-watermark/">Image Watermark</a><span>Stamp text or a logo onto images, once or tiled across the frame.</span></li>
+                    <li><a href="../meme-generator/">Meme Generator</a><span>Add classic top and bottom caption text to any image.</span></li>
+                    <li><a href="../image-pixelate/">Pixelate / Blur Image</a><span>Pixelate or blur a whole image, or just a rectangular region.</span></li>
+                    <li><a href="../image-border/">Add Border to Image</a><span>Add a coloured border, padding or rounded corners around an image.</span></li>
+                    <li><a href="../image-joiner/">Merge Images</a><span>Combine several images into a strip or grid collage.</span></li>
+                    <li><a href="../image-splitter/">Image Splitter</a><span>Slice an image into a grid of tiles — great for Instagram carousels.</span></li>
+                    <li><a href="../favicon-generator/">Favicon Generator</a><span>Build a full favicon set with every size a site needs, plus the HTML.</span></li>
+                    <li><a href="../color-palette-extractor/">Image Colour Palette</a><span>Pull the dominant colours out of a photo as a usable palette.</span></li>
+                    <li><a href="../image-to-ascii/">Image to ASCII Art</a><span>Turn a photo into ASCII art you can paste anywhere.</span></li>
+                    <li><a href="../image-metadata-viewer/">Image Metadata &amp; EXIF Viewer</a><span>Inspect EXIF, camera settings, GPS and other embedded image metadata.</span></li>
+                    <li><a href="../image-metadata-remover/">Remove Image Metadata</a><span>Strip EXIF, GPS and all embedded metadata by re-encoding the pixels.</span></li>
+                    <li><a href="../placeholder-image-generator/">Placeholder Image Generator</a><span>Create solid or gradient placeholder images with size labels.</span></li>
+                    <li><a href="../image-diff/">Image Difference Checker</a><span>Highlight the pixels that differ between two similar images.</span></li>
+                    <li><a href="../background-remover/">Background Remover</a><span>Remove a plain or uniform background and save a transparent PNG.</span></li>
+                    <li><a href="../image-upscaler/">Image Upscaler</a><span>Enlarge an image with smooth resampling and edge sharpening.</span></li>
+                    <li><a href="../screenshot-beautifier/">Screenshot Beautifier</a><span>Put a screenshot on a gradient backdrop with rounded corners and a shadow.</span></li>
+                    </ul>
+                </section>
+
+                <section class="zt-index__group">
+                    <h2 id="media">Audio &amp; Video <span class="zt-index__count">13</span></h2>
+                    <p class="zt-index__blurb">Trim, convert and extract audio and video.</p>
+                    <ul class="zt-index__list">
+                    <li><a href="../audio-converter/">Audio Converter</a><span>Convert audio between formats, change sample rate and channels.</span></li>
+                    <li><a href="../audio-trimmer/">Audio Trimmer &amp; Cutter</a><span>Cut a section out of an audio file, with optional fades.</span></li>
+                    <li><a href="../audio-merger/">Audio Merger</a><span>Join several audio files end to end, with optional crossfades.</span></li>
+                    <li><a href="../audio-effects/">Audio Speed, Pitch &amp; Volume</a><span>Change playback speed, adjust volume, reverse audio or trim silence.</span></li>
+                    <li><a href="../audio-waveform/">Audio Waveform Image</a><span>Render an audio file as a waveform graphic for thumbnails and posts.</span></li>
+                    <li><a href="../extract-audio-from-video/">Extract Audio from Video</a><span>Pull the soundtrack out of a video and save it as MP3 or WAV.</span></li>
+                    <li><a href="../video-frame-extractor/">Video Frame Extractor</a><span>Grab still frames from a video at set intervals or one exact moment.</span></li>
+                    <li><a href="../video-to-gif/">Video to GIF</a><span>Turn a clip of a video into an animated GIF.</span></li>
+                    <li><a href="../media-info/">Audio &amp; Video Info</a><span>Inspect duration, resolution, sample rate and other media properties.</span></li>
+                    <li><a href="../screen-recorder/">Screen Recorder</a><span>Record your screen, a window or a browser tab and save it as a video.</span></li>
+                    <li><a href="../audio-recorder/">Voice &amp; Audio Recorder</a><span>Record from your microphone and save it as MP3 or WAV.</span></li>
+                    <li><a href="../text-to-speech/">Text to Speech</a><span>Read text aloud using the voices installed on your device.</span></li>
+                    <li><a href="../gif-maker/">GIF Maker</a><span>Turn a set of images into an animated GIF.</span></li>
+                    </ul>
+                </section>
+
+                <section class="zt-index__group">
+                    <h2 id="text">Text <span class="zt-index__count">25</span></h2>
+                    <p class="zt-index__blurb">Count, clean, compare and transform writing.</p>
+                    <ul class="zt-index__list">
+                    <li><a href="../word-counter/">Word Counter</a><span>Count words, characters, sentences and estimated reading time.</span></li>
+                    <li><a href="../case-converter/">Case Converter</a><span>Switch text between upper, lower, title, camel, snake, kebab and more.</span></li>
+                    <li><a href="../text-reverser/">Text Reverser</a><span>Reverse text by character, word or line order.</span></li>
+                    <li><a href="../slug-generator/">URL Slug Generator</a><span>Turn titles into clean, URL-safe slugs.</span></li>
+                    <li><a href="../find-replace/">Find &amp; Replace</a><span>Search and replace across text, with optional regular expressions.</span></li>
+                    <li><a href="../line-sorter/">Line Sorter</a><span>Sort lines alphabetically, numerically, by length or at random.</span></li>
+                    <li><a href="../duplicate-line-finder/">Duplicate Line Finder</a><span>Find, remove or isolate repeated lines in a list.</span></li>
+                    <li><a href="../random-line-picker/">Random Line Picker</a><span>Pick random lines from a list — draws, raffles and sampling.</span></li>
+                    <li><a href="../text-cleaner/">Text Cleaner</a><span>Strip extra spaces, blank lines, line breaks and invisible characters.</span></li>
+                    <li><a href="../text-repeater/">Text Repeater</a><span>Repeat text a set number of times with custom separators.</span></li>
+                    <li><a href="../diff-checker/">Diff Checker</a><span>Compare two blocks of text and highlight every difference.</span></li>
+                    <li><a href="../markdown-to-html/">Markdown to HTML</a><span>Convert Markdown into clean HTML, with a live preview.</span></li>
+                    <li><a href="../html-to-markdown/">HTML to Markdown</a><span>Convert HTML markup back into readable Markdown.</span></li>
+                    <li><a href="../morse-code-translator/">Morse Code Translator</a><span>Translate between plain text and Morse code, in either direction.</span></li>
+                    <li><a href="../caesar-cipher/">Caesar Cipher / ROT13</a><span>Shift letters by a fixed amount — ROT13 and classic Caesar ciphers.</span></li>
+                    <li><a href="../leet-speak-converter/">Leet Speak Converter</a><span>Convert text to and from 1337 5p34k.</span></li>
+                    <li><a href="../ascii-banner-generator/">ASCII Banner Generator</a><span>Turn short text into big ASCII-art letters for banners and READMEs.</span></li>
+                    <li><a href="../lorem-ipsum-generator/">Lorem Ipsum Generator</a><span>Generate placeholder paragraphs, sentences, words or list items.</span></li>
+                    <li><a href="../url-parser/">URL Parser</a><span>Break a URL into its parts and decode every query parameter.</span></li>
+                    <li><a href="../character-counter/">Character Counter</a><span>Count characters against the limits of every major platform, live.</span></li>
+                    <li><a href="../readability-score/">Readability Score Checker</a><span>Score how easy your writing is to read with Flesch, Gunning Fog and more.</span></li>
+                    <li><a href="../number-to-words/">Number to Words Converter</a><span>Spell out numbers in words, including currency for cheques and invoices.</span></li>
+                    <li><a href="../bionic-reading-converter/">Bionic Reading Converter</a><span>Bold the leading letters of each word to guide the eye while reading.</span></li>
+                    <li><a href="../nato-phonetic-converter/">NATO Phonetic Alphabet Converter</a><span>Spell text using the NATO phonetic alphabet — Alpha, Bravo, Charlie.</span></li>
+                    <li><a href="../emoji-search/">Emoji Search &amp; Copy</a><span>Find an emoji by name or feeling and copy it with one click.</span></li>
+                    </ul>
+                </section>
+
+                <section class="zt-index__group">
+                    <h2 id="code">Code &amp; Data <span class="zt-index__count">25</span></h2>
+                    <p class="zt-index__blurb">Format, minify and convert JSON, YAML, CSV and XML.</p>
+                    <ul class="zt-index__list">
+                    <li><a href="../json-formatter/">JSON Formatter &amp; Validator</a><span>Pretty-print, validate and minify JSON with clear error positions.</span></li>
+                    <li><a href="../json-path-finder/">JSON Path Finder</a><span>List every path in a JSON document, or query it with a dot path.</span></li>
+                    <li><a href="../yaml-json-converter/">YAML ⇄ JSON Converter</a><span>Convert YAML to JSON and back, in either direction.</span></li>
+                    <li><a href="../xml-formatter/">XML Formatter</a><span>Pretty-print, validate or minify XML documents.</span></li>
+                    <li><a href="../xml-json-converter/">XML ⇄ JSON Converter</a><span>Convert XML into JSON and JSON back into XML.</span></li>
+                    <li><a href="../csv-json-converter/">CSV ⇄ JSON Converter</a><span>Convert CSV to JSON records and JSON arrays back to CSV.</span></li>
+                    <li><a href="../csv-formatter/">CSV Formatter &amp; Viewer</a><span>Clean up CSV, change delimiters and preview it as a table.</span></li>
+                    <li><a href="../sql-formatter/">SQL Formatter</a><span>Format SQL queries with consistent keyword casing and indentation.</span></li>
+                    <li><a href="../css-minifier/">CSS Minifier &amp; Beautifier</a><span>Shrink CSS for production or expand it back for editing.</span></li>
+                    <li><a href="../js-minifier/">JavaScript Minifier</a><span>Minify JavaScript with Terser, including optional name mangling.</span></li>
+                    <li><a href="../html-minifier/">HTML Minifier</a><span>Strip comments and needless whitespace from HTML markup.</span></li>
+                    <li><a href="../regex-tester/">Regex Tester</a><span>Test regular expressions live and inspect every match and capture group.</span></li>
+                    <li><a href="../jwt-decoder/">JWT Decoder</a><span>Decode a JSON Web Token and inspect its header, claims and expiry.</span></li>
+                    <li><a href="../cron-expression-builder/">Cron Expression Builder</a><span>Build a cron schedule from plain fields and read back what it means.</span></li>
+                    <li><a href="../html-formatter/">HTML Formatter &amp; Beautifier</a><span>Indent and tidy messy or minified HTML into readable markup.</span></li>
+                    <li><a href="../js-formatter/">JavaScript Formatter &amp; Beautifier</a><span>Reformat minified or messy JavaScript into readable code.</span></li>
+                    <li><a href="../json-to-code/">JSON to TypeScript, Go &amp; Python</a><span>Turn a JSON sample into typed interfaces, structs or dataclasses.</span></li>
+                    <li><a href="../json-diff/">JSON Diff</a><span>Compare two JSON documents and list every added, removed or changed value.</span></li>
+                    <li><a href="../curl-converter/">curl to Code Converter</a><span>Turn a curl command into fetch, axios, Python requests or Go code.</span></li>
+                    <li><a href="../string-escaper/">String Escape &amp; Unescape</a><span>Escape or unescape strings for JavaScript, JSON, SQL, shell, CSV and regex.</span></li>
+                    <li><a href="../query-string-converter/">Query String ⇄ JSON</a><span>Convert a URL query string into JSON and back again.</span></li>
+                    <li><a href="../toml-json-converter/">TOML ⇄ JSON Converter</a><span>Convert TOML configuration to JSON and back.</span></li>
+                    <li><a href="../env-json-converter/">.env ⇄ JSON Converter</a><span>Convert environment files to JSON, YAML or a docker-compose block.</span></li>
+                    <li><a href="../markdown-table-generator/">Markdown Table Generator</a><span>Turn CSV, TSV or JSON into a formatted Markdown or HTML table.</span></li>
+                    <li><a href="../http-status-reference/">HTTP Status Code Reference</a><span>Look up any HTTP status code and what it actually means in practice.</span></li>
+                    </ul>
+                </section>
+
+                <section class="zt-index__group">
+                    <h2 id="convert">Converters <span class="zt-index__count">9</span></h2>
+                    <p class="zt-index__blurb">Encodings, number bases, colours and units.</p>
+                    <ul class="zt-index__list">
+                    <li><a href="../base64-encoder/">Base64 Encoder / Decoder</a><span>Encode text to Base64 or decode it back, with URL-safe support.</span></li>
+                    <li><a href="../base64-image-encoder/">Image to Base64 / Data URI</a><span>Turn an image into a Base64 data URI for CSS, HTML or JSON.</span></li>
+                    <li><a href="../url-encoder/">URL Encoder / Decoder</a><span>Percent-encode text for URLs, or decode an encoded string.</span></li>
+                    <li><a href="../html-entity-encoder/">HTML Entity Encoder / Decoder</a><span>Escape HTML special characters, or turn entities back into text.</span></li>
+                    <li><a href="../number-base-converter/">Number Base Converter</a><span>Convert numbers between binary, octal, decimal, hex and any base up to 36.</span></li>
+                    <li><a href="../text-binary-converter/">Text ⇄ Binary / Hex</a><span>Convert text to binary, hexadecimal or decimal byte values, and back.</span></li>
+                    <li><a href="../color-converter/">Colour Converter</a><span>Convert a colour between HEX, RGB, HSL, CMYK and named values.</span></li>
+                    <li><a href="../contrast-checker/">Colour Contrast Checker</a><span>Check text and background contrast against WCAG AA and AAA levels.</span></li>
+                    <li><a href="../unicode-inspector/">Unicode Character Inspector</a><span>Break text into code points and find invisible or look-alike characters.</span></li>
+                    </ul>
+                </section>
+
+                <section class="zt-index__group">
+                    <h2 id="design">CSS &amp; Design <span class="zt-index__count">17</span></h2>
+                    <p class="zt-index__blurb">Generate gradients, shadows, layouts and palettes.</p>
+                    <ul class="zt-index__list">
+                    <li><a href="../box-shadow-generator/">Box Shadow Generator</a><span>Design CSS box shadows visually and copy the rule.</span></li>
+                    <li><a href="../text-shadow-generator/">Text Shadow Generator</a><span>Create CSS text shadows, glows and outlines with a live preview.</span></li>
+                    <li><a href="../gradient-generator/">CSS Gradient Generator</a><span>Build linear, radial and conic gradients with up to five colour stops.</span></li>
+                    <li><a href="../border-radius-generator/">Border Radius Generator</a><span>Shape corners individually, including organic blob shapes.</span></li>
+                    <li><a href="../flexbox-generator/">Flexbox Generator</a><span>Experiment with flex properties and see the layout change instantly.</span></li>
+                    <li><a href="../grid-generator/">CSS Grid Generator</a><span>Lay out CSS Grid templates and copy the generated rules.</span></li>
+                    <li><a href="../glassmorphism-generator/">Glassmorphism Generator</a><span>Create frosted-glass card effects with backdrop blur.</span></li>
+                    <li><a href="../clip-path-generator/">Clip Path Generator</a><span>Cut elements into polygons, circles and custom shapes with clip-path.</span></li>
+                    <li><a href="../easing-generator/">CSS Easing &amp; Animation</a><span>Pick a timing curve, watch it animate, and copy the transition rule.</span></li>
+                    <li><a href="../color-palette-generator/">Colour Palette Generator</a><span>Build harmonious palettes and tint scales from one base colour.</span></li>
+                    <li><a href="../css-unit-converter/">CSS Unit Converter</a><span>Convert between px, rem, em, pt, %, vw and vh.</span></li>
+                    <li><a href="../csp-generator/">Content Security Policy Generator</a><span>Build a Content-Security-Policy header with sensible defaults.</span></li>
+                    <li><a href="../media-query-generator/">Media Query Generator</a><span>Generate responsive breakpoints for common device sizes and frameworks.</span></li>
+                    <li><a href="../css-specificity-calculator/">CSS Specificity Calculator</a><span>Score CSS selectors and see which one wins a conflict.</span></li>
+                    <li><a href="../svg-to-css/">SVG to CSS Background</a><span>Turn an SVG into an inline data URI for CSS, HTML or a mask.</span></li>
+                    <li><a href="../neumorphism-generator/">Neumorphism Generator</a><span>Create soft extruded and inset shadow effects.</span></li>
+                    <li><a href="../css-filter-generator/">CSS Filter Generator</a><span>Build CSS filter and backdrop-filter chains with a live preview.</span></li>
+                    </ul>
+                </section>
+
+                <section class="zt-index__group">
+                    <h2 id="security">Security <span class="zt-index__count">14</span></h2>
+                    <p class="zt-index__blurb">Hash, encrypt and inspect files and secrets.</p>
+                    <ul class="zt-index__list">
+                    <li><a href="../hash-generator/">Hash Generator</a><span>Generate MD5, SHA-1, SHA-256, SHA-384 and SHA-512 hashes of text.</span></li>
+                    <li><a href="../file-hash-generator/">File Checksum Generator</a><span>Compute file checksums and verify a download against a known hash.</span></li>
+                    <li><a href="../hmac-generator/">HMAC Generator</a><span>Sign a message with a secret key using HMAC.</span></li>
+                    <li><a href="../text-encryptor/">Text Encryptor</a><span>Encrypt and decrypt text with AES-256-GCM and a passphrase.</span></li>
+                    <li><a href="../password-strength-checker/">Password Strength Checker</a><span>Estimate how long a password would take to crack, entirely offline.</span></li>
+                    <li><a href="../file-encryptor/">File Encryptor</a><span>Encrypt any file with AES-256 and a passphrase, then decrypt it later.</span></li>
+                    <li><a href="../base32-encoder/">Base32 Encoder / Decoder</a><span>Encode and decode Base32, the format used by TOTP keys and DNS records.</span></li>
+                    <li><a href="../totp-generator/">TOTP / 2FA Code Generator</a><span>Generate the current two-factor code from a TOTP secret key.</span></li>
+                    <li><a href="../bcrypt-generator/">Bcrypt Hash Generator &amp; Verifier</a><span>Hash a password with bcrypt, or check a password against an existing hash.</span></li>
+                    <li><a href="../htpasswd-generator/">htpasswd Generator</a><span>Create Apache or nginx .htpasswd entries for basic authentication.</span></li>
+                    <li><a href="../jwt-encoder/">JWT Encoder / Signer</a><span>Build and sign a JSON Web Token with HMAC.</span></li>
+                    <li><a href="../keypair-generator/">RSA &amp; ECDSA Key Pair Generator</a><span>Generate a public and private key pair in PEM format.</span></li>
+                    <li><a href="../hash-identifier/">Hash Identifier</a><span>Work out which algorithm produced a hash from its shape.</span></li>
+                    <li><a href="../credit-card-validator/">Card Number Validator &amp; Test Numbers</a><span>Check a card number with the Luhn algorithm and generate valid test numbers.</span></li>
+                    </ul>
+                </section>
+
+                <section class="zt-index__group">
+                    <h2 id="generate">Generators <span class="zt-index__count">9</span></h2>
+                    <p class="zt-index__blurb">QR codes, passwords, UUIDs, placeholder data.</p>
+                    <ul class="zt-index__list">
+                    <li><a href="../qr-code-generator/">QR Code Generator</a><span>Create QR codes for links, Wi-Fi, contacts, email and plain text.</span></li>
+                    <li><a href="../barcode-generator/">Barcode Generator</a><span>Generate EAN, UPC, Code 128, Code 39 and other retail barcodes.</span></li>
+                    <li><a href="../password-generator/">Password Generator</a><span>Generate strong random passwords or memorable passphrases.</span></li>
+                    <li><a href="../uuid-generator/">UUID Generator</a><span>Generate cryptographically random UUIDs, ULIDs and nano IDs in bulk.</span></li>
+                    <li><a href="../fake-data-generator/">Test Data Generator</a><span>Generate realistic fake records for testing, as JSON, CSV or SQL.</span></li>
+                    <li><a href="../avatar-generator/">Avatar &amp; Identicon Generator</a><span>Generate a unique deterministic avatar from any name or email.</span></li>
+                    <li><a href="../og-image-generator/">Social Share Image Generator</a><span>Create a 1200×630 Open Graph card for links shared on social media.</span></li>
+                    <li><a href="../signature-generator/">Signature Generator</a><span>Draw or type a signature and save it as a transparent PNG.</span></li>
+                    <li><a href="../invoice-generator/">Invoice Generator</a><span>Fill in a form and download a clean PDF invoice.</span></li>
+                    </ul>
+                </section>
+
+                <section class="zt-index__group">
+                    <h2 id="seo">SEO &amp; Web <span class="zt-index__count">8</span></h2>
+                    <p class="zt-index__blurb">Meta tags, schema, sitemaps and content checks.</p>
+                    <ul class="zt-index__list">
+                    <li><a href="../meta-tag-generator/">Meta Tag Generator</a><span>Generate title, description, Open Graph and Twitter Card tags at once.</span></li>
+                    <li><a href="../schema-markup-generator/">Schema Markup Generator</a><span>Build JSON-LD structured data for articles, products, FAQs and more.</span></li>
+                    <li><a href="../robots-txt-generator/">robots.txt Generator</a><span>Build a robots.txt file with crawl rules and a sitemap reference.</span></li>
+                    <li><a href="../sitemap-generator/">XML Sitemap Generator</a><span>Turn a list of URLs into a valid XML sitemap with priorities.</span></li>
+                    <li><a href="../keyword-density-checker/">Keyword Density Checker</a><span>Analyse word and phrase frequency to spot thin or over-optimised copy.</span></li>
+                    <li><a href="../utm-builder/">UTM Campaign Builder</a><span>Build tagged campaign URLs that analytics tools can attribute.</span></li>
+                    <li><a href="../html-heading-analyzer/">HTML Heading Analyser</a><span>Check heading hierarchy, link counts and image alt text in HTML.</span></li>
+                    <li><a href="../hreflang-generator/">Hreflang Tag Generator</a><span>Generate hreflang tags so search engines serve the right language.</span></li>
+                    </ul>
+                </section>
+
+                <section class="zt-index__group">
+                    <h2 id="datetime">Date &amp; Time <span class="zt-index__count">7</span></h2>
+                    <p class="zt-index__blurb">Timestamps, differences, ages and time zones.</p>
+                    <ul class="zt-index__list">
+                    <li><a href="../timestamp-converter/">Unix Timestamp Converter</a><span>Convert Unix timestamps to readable dates and back, in any time zone.</span></li>
+                    <li><a href="../date-difference-calculator/">Date Difference Calculator</a><span>Work out the time between two dates, with or without weekends.</span></li>
+                    <li><a href="../age-calculator/">Age Calculator</a><span>Calculate exact age in years, months, days — and the next birthday.</span></li>
+                    <li><a href="../timezone-converter/">Time Zone Converter</a><span>See what one moment in time looks like across several time zones.</span></li>
+                    <li><a href="../duration-calculator/">Duration Calculator</a><span>Add or subtract time from a date, or convert between duration units.</span></li>
+                    <li><a href="../cron-parser/">Cron Expression Parser</a><span>Explain what a cron expression means and when it will next run.</span></li>
+                    <li><a href="../countdown-timer/">Countdown Timer</a><span>Count down to a date and see exactly how long is left.</span></li>
+                    </ul>
+                </section>
+
+                <section class="zt-index__group">
+                    <h2 id="math">Math &amp; Units <span class="zt-index__count">12</span></h2>
+                    <p class="zt-index__blurb">Convert units and run everyday calculations.</p>
+                    <ul class="zt-index__list">
+                    <li><a href="../unit-converter/">Unit Converter</a><span>Convert length, weight, temperature, volume, data, speed and more.</span></li>
+                    <li><a href="../percentage-calculator/">Percentage Calculator</a><span>Work out percentages, increases, discounts and percentage change.</span></li>
+                    <li><a href="../aspect-ratio-calculator/">Aspect Ratio Calculator</a><span>Scale dimensions while keeping the aspect ratio, or identify a ratio.</span></li>
+                    <li><a href="../statistics-calculator/">Statistics Calculator</a><span>Mean, median, mode, standard deviation and quartiles for a set of numbers.</span></li>
+                    <li><a href="../random-number-generator/">Random Number Generator</a><span>Draw random numbers, dice rolls or lottery picks using secure randomness.</span></li>
+                    <li><a href="../roman-numeral-converter/">Roman Numeral Converter</a><span>Convert between Roman numerals and ordinary numbers.</span></li>
+                    <li><a href="../loan-calculator/">Loan &amp; EMI Calculator</a><span>Work out monthly repayments, total interest and an amortisation schedule.</span></li>
+                    <li><a href="../compound-interest-calculator/">Compound Interest Calculator</a><span>See how savings or investments grow with regular contributions.</span></li>
+                    <li><a href="../bmi-calculator/">BMI Calculator</a><span>Calculate body mass index in metric or imperial units.</span></li>
+                    <li><a href="../discount-calculator/">Discount &amp; Sale Price Calculator</a><span>Work out sale prices, savings, stacked discounts and tax.</span></li>
+                    <li><a href="../gpa-calculator/">GPA Calculator</a><span>Calculate a weighted grade point average from your courses.</span></li>
+                    <li><a href="../fraction-calculator/">Fraction Calculator &amp; Converter</a><span>Add, subtract, multiply and divide fractions, or convert to and from decimals.</span></li>
+                    </ul>
+                </section>
+        </div>
+    </main>
+
+    <footer class="zt-footer">
+        <div class="zt-footer__inner">
+            <p class="zt-footer__copy">Private, browser-based utilities. Open source under AGPL-3.0.</p>
+            <nav class="zt-footer__links" aria-label="Footer">
+                <a href="../">Home</a>
+                <a href="../pages/self-hosted.html">Self-hosted</a>
+                <a href="../pages/privacy.html">Privacy</a>
+                <a href="../pages/terms.html">Terms</a>
+                <a href="../pages/support.html">Support</a>
+            </nav>
+        </div>
+    </footer>
+</div>
+
+<script src="../assets/js/zt-core.js" defer></script>
+<script src="../assets/js/zt-icons.js" defer></script>
+<script src="../assets/js/zt-theme.js" defer></script>
+<script src="../assets/js/zt-analytics.js" defer></script>
+</body>
+</html>

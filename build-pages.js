@@ -89,20 +89,10 @@ function renderToolPage(tool, registry) {
             .slice(0, 12)
     };
 
-    const howTo = {
-        '@context': 'https://schema.org',
-        '@type': 'HowTo',
-        name: `How to use ${tool.name}`,
-        description: tool.description,
-        totalTime: 'PT1M',
-        supply: [], tool: [],
-        step: steps.map((st, i) => ({
-            '@type': 'HowToStep',
-            position: i + 1,
-            name: st.name,
-            text: st.text
-        }))
-    };
+    /* No HowTo JSON-LD. Google deprecated HowTo rich results in 2023 and no
+       longer renders or reports them, so it was 180 pages carrying markup
+       nothing consumes. The steps still render as visible content, which is
+       what actually earns the traffic. */
 
     const faqSchema = {
         '@context': 'https://schema.org',
@@ -150,15 +140,11 @@ function renderToolPage(tool, registry) {
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
 <link rel="manifest" href="../site.webmanifest">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/css/zynctools.css">
 
 <script type="application/ld+json">${JSON.stringify(schema)}</script>
 <script type="application/ld+json">${JSON.stringify(breadcrumbs)}</script>
-<script type="application/ld+json">${JSON.stringify(howTo)}</script>
 <script type="application/ld+json">${JSON.stringify(faqSchema)}</script>
 
 <script>
@@ -232,14 +218,14 @@ function renderToolPage(tool, registry) {
                     <section class="zt-step" id="zt-input-step">
                         <div class="zt-step__head">
                             <span class="zt-step__num">1</span>
-                            <span class="zt-step__title" id="zt-input-title">Input</span>
+                            <h2 class="zt-step__title" id="zt-input-title">Input</h2>
                         </div>
                     </section>
 
                     <section class="zt-step" id="zt-options-step">
                         <div class="zt-step__head">
                             <span class="zt-step__num">2</span>
-                            <span class="zt-step__title">Settings</span>
+                            <h2 class="zt-step__title">Settings</h2>
                         </div>
                         <div class="zt-step__body" id="zt-options"></div>
                     </section>
@@ -247,7 +233,7 @@ function renderToolPage(tool, registry) {
                     <section class="zt-step" id="zt-run-step">
                         <div class="zt-step__head">
                             <span class="zt-step__num">3</span>
-                            <span class="zt-step__title">Run</span>
+                            <h2 class="zt-step__title">Run</h2>
                         </div>
                         <div class="zt-step__body">
                             <div class="zt-runbar" id="zt-runbar"></div>
@@ -258,7 +244,7 @@ function renderToolPage(tool, registry) {
                     <section class="zt-step" id="zt-results-step">
                         <div class="zt-step__head">
                             <span class="zt-step__num">4</span>
-                            <span class="zt-step__title">Results</span>
+                            <h2 class="zt-step__title">Results</h2>
                         </div>
                         <div class="zt-step__body">
                             <div class="zt-results" id="zt-results"></div>
@@ -270,7 +256,7 @@ function renderToolPage(tool, registry) {
 
                     <section class="zt-step">
                         <div class="zt-step__head">
-                            <span class="zt-step__title">About ${esc(tool.name)}</span>
+                            <h2 class="zt-step__title">About ${esc(tool.name)}</h2>
                         </div>
                         <div class="zt-step__body zt-prose-sm">
 ${intro}
@@ -279,7 +265,7 @@ ${intro}
 
                     <section class="zt-step">
                         <div class="zt-step__head">
-                            <span class="zt-step__title">How to use ${esc(tool.name)}</span>
+                            <h2 class="zt-step__title">How to use ${esc(tool.name)}</h2>
                         </div>
                         <div class="zt-step__body">
                             <ol class="zt-howto">
@@ -290,7 +276,7 @@ ${steps.map((st) => `                                <li><strong>${esc(st.name)}
 
                     <section class="zt-step">
                         <div class="zt-step__head">
-                            <span class="zt-step__title">Frequently asked questions</span>
+                            <h2 class="zt-step__title">Frequently asked questions</h2>
                         </div>
                         <div class="zt-step__body">
                             <div class="zt-faq">
@@ -304,7 +290,7 @@ ${faqs.map((f) => `                                <details>
 
 ${related.length ? `                    <section class="zt-step">
                         <div class="zt-step__head">
-                            <span class="zt-step__title">Related ${esc(category ? category.name.toLowerCase() : '')} tools</span>
+                            <h2 class="zt-step__title">Related ${esc(category ? category.name.toLowerCase() : '')} tools</h2>
                         </div>
                         <div class="zt-step__body">
                             <div class="zt-related-grid">
@@ -337,7 +323,8 @@ ${related.map((t) => `                                <a href="../${t.id}/">
                 <p class="zt-footer__copy">Private, browser-based utilities. Open source under AGPL-3.0.</p>
             </div>
             <nav class="zt-footer__links" aria-label="Footer">
-                <a href="../">All tools</a>
+                <a href="../">Home</a>
+                <a href="../all-tools/">All tools</a>
                 <a href="../pages/self-hosted.html">Self-hosted</a>
                 <a href="../pages/privacy.html">Privacy</a>
                 <a href="../pages/terms.html">Terms</a>
@@ -392,19 +379,19 @@ ${related.map((t) => `                                <a href="../${t.id}/">
 
 <script>window.__ZT_TOOL_ID__ = ${JSON.stringify(tool.id)};</script>
 
-<script src="../assets/js/zt-core.js"></script>
-<script src="../assets/js/zt-icons.js"></script>
-<script src="../assets/js/zt-registry.js"></script>
+<script src="../assets/js/zt-core.js" defer></script>
+<script src="../assets/js/zt-icons.js" defer></script>
+<script src="../assets/js/zt-registry.js" defer></script>
 
 <!-- The full catalogue as metadata, then only the module this tool needs. -->
-<script src="../assets/js/zt-catalog.js"></script>
-<script src="../assets/js/tools/${MODULE_OF[tool.id]}.js"></script>
+<script src="../assets/js/zt-catalog.js" defer></script>
+<script src="../assets/js/tools/${MODULE_OF[tool.id]}.js" defer></script>
 
-<script src="../assets/js/zt-theme.js"></script>
-<script src="../assets/js/zt-tool-page.js"></script>
-<script src="../assets/js/zt-tool-search.js"></script>
-<script src="../assets/js/zt-assistant.js"></script>
-<script src="../assets/js/zt-analytics.js"></script>
+<script src="../assets/js/zt-theme.js" defer></script>
+<script src="../assets/js/zt-tool-page.js" defer></script>
+<script src="../assets/js/zt-tool-search.js" defer></script>
+<script src="../assets/js/zt-assistant.js" defer></script>
+<script src="../assets/js/zt-analytics.js" defer></script>
 
 <script>
 if ('serviceWorker' in navigator) {
@@ -484,10 +471,18 @@ function iconSvg(name) {
 /* ============================================================
    SITEMAP
    ============================================================ */
+/*
+ * No <lastmod>. It used to carry new Date(), which broke two things at once:
+ * CI rebuilds the site and fails on any diff, so the first push made on a
+ * later calendar day than the previous commit would have blocked the deploy.
+ * It was also worthless as a signal — 187 URLs all claiming to have changed
+ * today, every day, is exactly the pattern Google discounts. An absent
+ * lastmod is treated better than one that cannot be trusted.
+ */
 function writeSitemap(registry) {
-    const today = new Date().toISOString().slice(0, 10);
     const entries = [
         { loc: SITE + '/', priority: '1.0', changefreq: 'weekly' },
+        { loc: SITE + '/all-tools/', priority: '0.8', changefreq: 'weekly' },
         { loc: SITE + '/pages/support.html', priority: '0.4', changefreq: 'monthly' },
         { loc: SITE + '/pages/self-hosted.html', priority: '0.6', changefreq: 'monthly' },
         { loc: SITE + '/pages/changelog.html', priority: '0.4', changefreq: 'monthly' },
@@ -509,7 +504,6 @@ function writeSitemap(registry) {
     entries.forEach((e) => {
         xml.push('  <url>');
         xml.push(`    <loc>${esc(e.loc)}</loc>`);
-        xml.push(`    <lastmod>${today}</lastmod>`);
         xml.push(`    <changefreq>${e.changefreq}</changefreq>`);
         xml.push(`    <priority>${e.priority}</priority>`);
         xml.push('  </url>');
@@ -528,6 +522,168 @@ function writeSitemap(registry) {
  * tool, and nothing else. Roughly a tenth the size of the twelve modules it
  * replaces on pages that only need to list tools rather than run them.
  */
+/*
+ * A flat, fully-linked directory of every tool.
+ *
+ * The homepage deliberately shows 12 tools rather than 180, which is right for
+ * a first-time visitor but leaves the other 168 two clicks deep and reachable
+ * only through JavaScript-driven category filters. This page puts every tool
+ * one hop from a plain crawlable link, and doubles as the page a returning
+ * visitor actually wants when they know what they are looking for.
+ */
+function renderAllToolsPage(registry) {
+    const tools = registry.all();
+    const sections = registry.categories().map((category) => {
+        const inCategory = registry.inCategory(category.id);
+        if (!inCategory.length) return '';
+        const links = inCategory.map((t) =>
+            `                    <li><a href="../${esc(t.id)}/">${esc(t.name)}</a><span>${esc(t.description)}</span></li>`
+        ).join('\n');
+        return `
+                <section class="zt-index__group">
+                    <h2 id="${esc(category.id)}">${esc(category.name)} <span class="zt-index__count">${inCategory.length}</span></h2>
+                    <p class="zt-index__blurb">${esc(category.blurb || '')}</p>
+                    <ul class="zt-index__list">
+${links}
+                    </ul>
+                </section>`;
+    }).join('\n');
+
+    const itemList = {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: 'All tools',
+        description: `Every one of the ${tools.length} tools on ZyncTools, grouped by category.`,
+        url: `${SITE}/all-tools/`
+    };
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>All ${tools.length} tools — ZyncTools</title>
+<meta name="description" content="Every tool on ZyncTools, grouped by category — ${tools.length} of them, all running in your browser with nothing uploaded.">
+<link rel="canonical" href="${SITE}/all-tools/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="All ${tools.length} tools — ZyncTools">
+<meta property="og:description" content="Every tool on ZyncTools, grouped by category.">
+<meta property="og:url" content="${SITE}/all-tools/">
+<meta property="og:image" content="${SITE}/assets/images/og/default.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${SITE}/assets/images/og/default.png">
+<meta name="theme-color" content="#0B0D11">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
+<link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/zynctools.css">
+<script type="application/ld+json">${JSON.stringify(itemList)}</script>
+<script>
+(function () {
+    try {
+        var s = localStorage.getItem('zynctools-theme');
+        var v = s === 'dark' || s === 'light' || s === 'midnight';
+        document.documentElement.setAttribute('data-theme', v ? s
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+    } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+</script>
+<style>
+    .zt-index { max-width: 900px; margin: 0 auto; }
+    .zt-index__group { margin-bottom: var(--sp-10); }
+    .zt-index__group h2 {
+        font-size: var(--text-xl);
+        margin: 0 0 var(--sp-1);
+        scroll-margin-top: calc(var(--header-h) + var(--sp-4));
+    }
+    .zt-index__count {
+        font-size: var(--text-xs);
+        font-weight: 600;
+        color: var(--fg-muted);
+        background: var(--bg-input);
+        border-radius: var(--radius-full);
+        padding: 2px 9px;
+        vertical-align: middle;
+    }
+    .zt-index__blurb { color: var(--fg-muted); font-size: var(--text-sm); margin: 0 0 var(--sp-4); }
+    .zt-index__list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-1); }
+    @media (min-width: 700px) { .zt-index__list { grid-template-columns: 1fr 1fr; gap: var(--sp-1) var(--sp-5); } }
+    .zt-index__list li {
+        display: flex;
+        flex-direction: column;
+        padding: var(--sp-2) 0;
+        border-bottom: 1px solid var(--border-soft, var(--border));
+    }
+    .zt-index__list a { font-weight: 600; font-size: var(--text-sm); }
+    .zt-index__list span { font-size: var(--text-xs); color: var(--fg-muted); line-height: 1.5; }
+    .zt-index__jump {
+        display: flex; flex-wrap: wrap; gap: var(--sp-2);
+        margin: var(--sp-5) 0 var(--sp-10);
+        padding-bottom: var(--sp-5);
+        border-bottom: 1px solid var(--border);
+    }
+    .zt-index__jump a {
+        font-size: var(--text-xs); font-weight: 600;
+        padding: 4px 10px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-full);
+        text-decoration: none;
+    }
+    .zt-index__jump a:hover { border-color: var(--accent); }
+</style>
+</head>
+<body>
+<a href="#main" class="zt-skip-link">Skip to content</a>
+
+<div class="zt-shell">
+    <header class="zt-header">
+        <a class="zt-brand" href="../">
+            <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+            <span class="zt-brand__name">ZyncTools</span>
+        </a>
+        <div class="zt-header__spacer"></div>
+        <a class="zt-btn zt-btn--ghost zt-btn--sm" href="../">Home</a>
+        <button class="zt-icon-btn" id="zt-theme-toggle" aria-label="Switch theme"></button>
+    </header>
+
+    <main class="zt-main" id="main">
+        <div class="zt-index">
+            <h1 style="font-size:var(--text-3xl);margin-bottom:var(--sp-3)">All ${tools.length} tools</h1>
+            <p style="color:var(--fg-muted);max-width:60ch;line-height:1.7">
+                Everything on the site, grouped by category. Every one of them runs in your
+                browser — your files are never uploaded to anything.
+            </p>
+
+            <nav class="zt-index__jump" aria-label="Jump to category">
+${registry.categories().filter((c) => registry.inCategory(c.id).length)
+        .map((c) => `                <a href="#${esc(c.id)}">${esc(c.name)}</a>`).join('\n')}
+            </nav>
+${sections}
+        </div>
+    </main>
+
+    <footer class="zt-footer">
+        <div class="zt-footer__inner">
+            <p class="zt-footer__copy">Private, browser-based utilities. Open source under AGPL-3.0.</p>
+            <nav class="zt-footer__links" aria-label="Footer">
+                <a href="../">Home</a>
+                <a href="../pages/self-hosted.html">Self-hosted</a>
+                <a href="../pages/privacy.html">Privacy</a>
+                <a href="../pages/terms.html">Terms</a>
+                <a href="../pages/support.html">Support</a>
+            </nav>
+        </div>
+    </footer>
+</div>
+
+<script src="../assets/js/zt-core.js" defer></script>
+<script src="../assets/js/zt-icons.js" defer></script>
+<script src="../assets/js/zt-theme.js" defer></script>
+<script src="../assets/js/zt-analytics.js" defer></script>
+</body>
+</html>
+`;
+}
+
 function writeCatalog(registry, owner) {
     const meta = registry.all().map((t) => ({
         id: t.id,
@@ -607,10 +763,15 @@ function main() {
         pages: tools.map((t) => t.id).sort()
     }, null, 2) + '\n');
 
+    const indexDir = path.join(ROOT, 'all-tools');
+    fs.mkdirSync(indexDir, { recursive: true });
+    fs.writeFileSync(path.join(indexDir, 'index.html'), renderAllToolsPage(registry));
+
     const catalogBytes = writeCatalog(registry, owner);
     const urls = writeSitemap(registry);
 
     console.log(`${written} tool pages written for ${SITE}`);
+    console.log(`all-tools/index.html written — ${tools.length} links`);
     if (removed) console.log(`${removed} stale tool directories removed`);
     console.log(`sitemap.xml written — ${urls} URLs`);
     console.log(`zt-catalog.js written — ${Math.round(catalogBytes / 1024)} KB of metadata`);

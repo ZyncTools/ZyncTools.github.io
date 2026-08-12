@@ -191,10 +191,12 @@
             ]));
         });
 
+        // Points at the real directory page rather than the in-page filter, so
+        // the link is crawlable and every tool stays one hop from a plain link.
         var browse = el('div', { class: 'zt-dir__foot' }, [
             el('a', {
                 class: 'zt-btn zt-btn--outline',
-                href: '#all'
+                href: ZT.url('all-tools/')
             }, [el('span', { text: 'See all ' + ZT.registry.all().length + ' tools' })])
         ]);
 

@@ -3,8 +3,10 @@
 User-agent: *
 Allow: /
 
-# tool.html is the fallback route for older links. Every tool has a clean
-# canonical address at /<tool-id>/, and those are what should be indexed.
-Disallow: /tool.html
+# tool.html is the fallback route for older ?id= links. It carries
+# <meta name="robots" content="noindex, follow"> and is deliberately left
+# crawlable: a Disallow here would stop crawlers ever reading that directive,
+# and blocked-but-linked URLs get indexed as bare titles with no description.
+# Every tool has a real canonical page at /<tool-id>/.
 
 Sitemap: https://zynctools.github.io/sitemap.xml

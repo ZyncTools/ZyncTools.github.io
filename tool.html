@@ -5,7 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tool — ZyncTools</title>
 <meta name="description" content="A private, browser-based utility. Your files never leave your device.">
-<link rel="canonical" href="https://zynctools.github.io/tool.html">
+
+<!-- This is the fallback route for old ?id= links. Every tool has a real page
+     at /<tool-id>/ and that is what should rank. noindex keeps this one out of
+     the index; robots.txt deliberately does not disallow it, because a
+     disallowed URL cannot be crawled and so this directive would never be
+     read — which is how blocked URLs end up indexed with no description. -->
+<meta name="robots" content="noindex, follow">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="ZyncTools">
@@ -21,10 +27,7 @@
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
 <link rel="manifest" href="site.webmanifest">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/zynctools.css">
 
 <script>
@@ -185,14 +188,14 @@
 </div>
 
 <!-- Core -->
-<script src="assets/js/zt-core.js"></script>
-<script src="assets/js/zt-icons.js"></script>
-<script src="assets/js/zt-registry.js"></script>
+<script src="assets/js/zt-core.js" defer></script>
+<script src="assets/js/zt-icons.js" defer></script>
+<script src="assets/js/zt-registry.js" defer></script>
 
 <!-- Catalogue metadata. The one module needed is fetched below, once the
      requested tool is known — this page is the fallback route and could
      be asked for any of them. -->
-<script src="assets/js/zt-catalog.js"></script>
+<script src="assets/js/zt-catalog.js" defer></script>
 
 <script>
 /* The assistant answers "how does this tool work?" from this. */
@@ -203,7 +206,7 @@
 </script>
 
 <!-- App -->
-<script src="assets/js/zt-theme.js"></script>
+<script src="assets/js/zt-theme.js" defer></script>
 <script>
 /* Fetch the implementation for the requested tool, then load the controller.
    Generated pages at /<tool-id>/ include their module directly; this route
@@ -225,9 +228,9 @@
     window.ZT.registry.ensureLoaded(id).then(loadController, loadController);
 })();
 </script>
-<script src="assets/js/zt-tool-search.js"></script>
-<script src="assets/js/zt-assistant.js"></script>
-<script src="assets/js/zt-analytics.js"></script>
+<script src="assets/js/zt-tool-search.js" defer></script>
+<script src="assets/js/zt-assistant.js" defer></script>
+<script src="assets/js/zt-analytics.js" defer></script>
 
 <script>
 if ('serviceWorker' in navigator) {
