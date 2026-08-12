@@ -1,168 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - ZyncPDF</title>
-    <link rel="stylesheet" href="../assets/css/modern-styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="/logo.png" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="/logo.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <script src="../assets/js/theme-switcher.js" defer></script>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy — ZyncTools</title>
+<meta name="description" content="ZyncTools processes every file in your browser. Nothing is uploaded, nothing is stored, and there are no accounts.">
+<link rel="canonical" href="https://zynctools.com/pages/privacy.html">
+<meta name="theme-color" content="#0B0D11">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/zynctools.css">
+<script>
+(function () {
+    try {
+        var s = localStorage.getItem('zynctools-theme');
+        var v = s === 'dark' || s === 'light' || s === 'midnight';
+        document.documentElement.setAttribute('data-theme', v ? s
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+    } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+</script>
+<style>
+    .zt-prose { max-width: 72ch; margin: 0 auto; }
+    .zt-prose h2 { font-size: var(--text-xl); margin: var(--sp-10) 0 var(--sp-3); }
+    .zt-prose h3 { font-size: var(--text-md); margin: var(--sp-6) 0 var(--sp-2); }
+    .zt-prose p, .zt-prose li { color: var(--fg-muted); line-height: 1.75; }
+    .zt-prose p { margin-bottom: var(--sp-4); }
+    .zt-prose ul { margin: 0 0 var(--sp-4) var(--sp-5); }
+    .zt-prose li { margin-bottom: var(--sp-2); }
+    .zt-prose strong { color: var(--fg); }
+    .zt-lead { font-size: var(--text-lg); color: var(--fg) !important; }
+    .zt-updated { font-size: var(--text-xs); color: var(--fg-subtle); }
+</style>
+</head>
 <body>
-     <header class="header">
-   <div class="container">
-     <a href="../index.html" class="logo-link" aria-label="ZyncPDF Home">
-       <div class="logo">
-         <img src="../assets/images/logo.png" alt="ZyncPDF Logo" class="logo-img">
-         <span class="logo-text">ZyncPDF</span>
-       </div>
-     </a>
-            <nav class="nav">
-                <a href="index.html#tools" class="nav-link">Tools</a>
-                <a href="index.html#features" class="nav-link">Features</a>
-                <a href="donate.html" class="nav-link">Support</a>
-            </nav>
-            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-                <i class="fas fa-sun sun-icon"></i>
-                <i class="fas fa-moon moon-icon"></i>
-            </button>
-        </div>
+<a href="#main" class="zt-skip-link">Skip to content</a>
+
+<div class="zt-shell">
+    <header class="zt-header">
+        <a class="zt-brand" href="../index.html">
+            <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+            <span class="zt-brand__name">ZyncTools</span>
+        </a>
+        <div class="zt-header__spacer"></div>
+        <a class="zt-btn zt-btn--ghost zt-btn--sm" href="../index.html">All tools</a>
+        <button class="zt-icon-btn" id="zt-theme-toggle" aria-label="Switch theme"></button>
     </header>
 
-    <main class="main">
-        <section class="policy-section">
-            <div class="container">
-                <h2 class="section-title">Privacy Policy</h2>
-                <div class="policy-content">
-                    <p><strong>Effective Date: September 17, 2025</strong></p>
+    <main class="zt-main" id="main">
+        <article class="zt-prose">
+            <h1 style="font-size:var(--text-3xl);margin-bottom:var(--sp-3)">Privacy</h1>
+            <p class="zt-updated">Last updated 12 August 2026</p>
 
-                    <h3>1. Your Agreement</h3>
-                    <p>This Privacy Policy applies to all users who access or use the ZyncPDF website and its tools. By using the site, you agree to the terms of this Privacy Policy. If you do not agree with these terms, please do not use our Service.</p>
+            <p class="zt-lead">
+                ZyncTools does not receive your files. Every tool runs inside your browser,
+                so there is no upload step and nothing to store on our side.
+            </p>
 
-                    <h3>2. Our Privacy-First Philosophy</h3>
-                    <p>The core functionality of ZyncPDF is performed entirely on your device (client-side). We do not upload, process, or store your files on our servers. We do not track your IP address, browser activity, or session data, beyond what is captured by third-party services as outlined below. We do not sell, rent, or trade user data under any circumstances.</p>
+            <h2>How the tools work</h2>
+            <p>
+                When you choose a file, the browser hands it to the page through the
+                standard File API. The tool reads it into memory, does the work with
+                JavaScript and WebAssembly, and hands you back a result. That whole
+                sequence happens on your device. No network request carries your file
+                anywhere, and closing the tab discards everything.
+            </p>
+            <p>
+                You can verify this yourself: open your browser's developer tools, switch
+                to the Network tab, and run any tool. You will see requests for the page's
+                own scripts and nothing containing your file.
+            </p>
 
-                    <h3>3. Data Collection by Third-Party Services</h3>
-                    <p>While ZyncPDF itself does not collect your files or personal data, our website relies on a small number of third-party providers to deliver static assets, fonts, analytics, and optional donations. When your browser requests resources from these providers, they inevitably receive limited technical data such as your IP address, User-Agent, and timestamp in order to deliver content securely and efficiently.</p>
-                    <p><strong>Recipients we use and purposes:</strong></p>
-                    <ul>
-                        <li><strong>CDNs (infrastructure & delivery):</strong> Cloudflare (cdnjs.cloudflare.com), jsDelivr (cdn.jsdelivr.net), and UNPKG (unpkg.com) to serve JavaScript/CSS libraries. <em>Legal basis:</em> Legitimate interests (GDPR Art. 6(1)(f)).</li>
-                        <li><strong>Google Fonts:</strong> To load the Inter webfont for consistent typography. <em>Legal basis:</em> Legitimate interests (GDPR Art. 6(1)(f)).</li>
-                        <li><strong>Plausible Analytics:</strong> To measure site usage without cookies or persistent identifiers. EU-hosted. <em>Legal basis:</em> Legitimate interests (GDPR Art. 6(1)(f)).</li>
-                        <li><strong>GitHub Sponsors:</strong> Optional donations/sponsorships. Processes necessary payment data. <em>Legal basis:</em> Performance of a contract (Art. 6(1)(b)) and/or legitimate interests (Art. 6(1)(f)).</li>
-                    </ul>
-                    <p><strong>International transfers:</strong> Where data may be processed in the United States (e.g., by certain CDNs or Google Fonts), transfers rely on the providerâ€™s EUâ€“US Data Privacy Framework certification (if applicable) or on Standard Contractual Clauses with appropriate safeguards.</p>
+            <h2>What we collect</h2>
+            <p>Nothing that identifies you. Specifically:</p>
+            <ul>
+                <li><strong>No accounts.</strong> There is nothing to sign up for.</li>
+                <li><strong>No file contents or file names</strong> ever leave your device.</li>
+                <li><strong>No cookies</strong> are set by ZyncTools.</li>
+                <li><strong>No advertising or tracking scripts</strong> are loaded.</li>
+            </ul>
 
-                    <h4>Infrastructure & delivery (legitimate interests)</h4>
-                    <p>We use reputable content delivery networks (CDNs) to serve static assets (e.g., JavaScript/CSS) so pages load fast and securely worldwide. When your browser fetches these files, the CDN receives limited technical data (IP address, Userâ€‘Agent, timestamp) for delivery and security (e.g., caching, DDoS protection).</p>
+            <h3>What is stored locally</h3>
+            <p>
+                One item in your browser's <code>localStorage</code>: the key
+                <code>zynctools-theme</code>, holding <code>dark</code>, <code>light</code>
+                or <code>midnight</code>. It never leaves your browser and you can clear it
+                from your browser settings at any time.
+            </p>
 
-                    <h4>Fonts</h4>
-                    <p>We currently load the Inter typeface via Google Fonts. This requires your browser to request the font files from Googleâ€™s servers, which provides Google with your IP address and Userâ€‘Agent. We are evaluating migration to selfâ€‘hosted fonts to avoid remote requests. Until then, the legal basis is legitimate interests (GDPR Art. 6(1)(f)).</p>
+            <h2>Third parties</h2>
+            <p>
+                Some tools load an open-source library the first time you use them — for
+                example pdf-lib for PDF editing, Tesseract for OCR, or lamejs for MP3
+                encoding. These come from the jsDelivr CDN, which will see your IP address
+                and the name of the file being requested, exactly as it would for any other
+                site. It does not see your files, because your files are never part of that
+                request. Fonts are loaded from Google Fonts on the same basis.
+            </p>
+            <p>
+                If you would rather avoid those requests entirely, the project is open
+                source and can be self-hosted with the libraries served from your own
+                domain.
+            </p>
 
-                    <h4>Analytics (legitimate interests)</h4>
-                    <p>We use Plausible Analytics (EUâ€‘hosted) to measure site usage without cookies or persistent identifiers. To count daily unique visits, Plausible briefly processes IP address and Userâ€‘Agent to create a rotating 24â€‘hour hash. The raw values arenâ€™t stored; only aggregated statistics are retained. See Plausibleâ€™s data policy: <a href="https://plausible.io/data-policy" target="_blank" rel="noopener">plausible.io/data-policy</a>.</p>
+            <h2>Hosting</h2>
+            <p>
+                The site is static files served over HTTPS. The host keeps standard server
+                logs, which typically include IP addresses and requested paths. We do not
+                add analytics on top of that.
+            </p>
 
-                    <h3>4. Cookies and Tracking Technologies</h3>
-                    <p>ZyncPDF itself does not use cookies. Thirdâ€‘party providers that we integrate (e.g., GitHub Sponsors, Google Fonts) may use cookies or similar technologies where necessary to provide their services (e.g., load balancing, fraud prevention, payment flows). Please refer to each provider's privacy policy for details and controls. You can also manage cookie behavior via your browser settings.</p>
-                    
-                    <h3>5. Do Not Track (DNT) Signals</h3>
-                    <p>ZyncPDF does not currently respond to Do Not Track (DNT) signals from browsers. However, we are committed to your privacy and strive to limit tracking by avoiding unnecessary data collection wherever possible.</p>
+            <h2>Children</h2>
+            <p>
+                The service is not directed at children and collects no personal data from
+                anyone, including children.
+            </p>
 
-                    <h3>6. Third-Party Links</h3>
-                    <p>Our site may contain links to third-party websites, including GitHub Sponsors. We are not responsible for the content or privacy practices of these external sites. We encourage you to review their privacy policies before providing any personal information.</p>
+            <h2>Changes</h2>
+            <p>
+                If this policy changes, the date at the top changes with it. The core
+                commitment — that your files stay on your device — is architectural rather
+                than a promise, so it is not something a policy update can quietly reverse.
+            </p>
 
-                    <h3>7. Children's Privacy</h3>
-                    <p>In compliance with the Childrenâ€™s Online Privacy Protection Act (COPPA), we do not knowingly collect personal information from children under the age of 13. If we learn that we have inadvertently collected such information, we will take steps to delete it.</p>
-
-                    <h3>8. Your Data Rights (EEA & California Residents)</h3>
-                    <p>If you are a resident of the European Economic Area (EEA) or California, you may have certain rights regarding your personal data, including the right to access, correct, or delete any information third-party services have collected about you. Since we do not hold your data, these requests should be directed to the respective third-party services. For questions or guidance on how to do this, you can contact us at: ZyncPDFadm@gmail.com</p>
-
-                    <h3>9. Changes to This Privacy Policy</h3>
-                    <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this Privacy Policy periodically for any changes.</p>
-
-                    <h3>10. Contact Us</h3>
-                    <p>If you have any questions about this Privacy Policy, you can contact us at: admin@luxpdf.com</p>
-                </div>
-            </div>
-        </section>
+            <h2>Contact</h2>
+            <p>
+                Questions or a suspected issue: open one on the
+                <a href="https://github.com/alanjollyc/ZyncPDF" rel="noopener">project's GitHub repository</a>.
+            </p>
+        </article>
     </main>
 
-
-<footer class="footer">
-  <div class="container">
-    <div class="footer-content">
-    <a href="../index.html" class="logo-link" aria-label="ZyncPDF Home">
-      <div class="logo">
-        <img src="../assets/images/logo.png" alt="ZyncPDF Logo" class="logo-img">
-        <span class="logo-text">ZyncPDF</span>
-      </div>
-    </a>
-
-      <div class="footer-privacy">
-        <div class="privacy-badge">
-          <i class="fas fa-lock"></i> View our <a href="terms.html">Terms of Service</a>, 
-          <a href="changelog.html">Changelog</a>, and 
-          <a href="privacy.html">Privacy Policy</a> for full transparency.
+    <footer class="zt-footer">
+        <div class="zt-footer__inner">
+            <p class="zt-footer__copy">Private, browser-based utilities. Open source under AGPL-3.0.</p>
+            <nav class="zt-footer__links" aria-label="Footer">
+                <a href="../index.html">All tools</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+                <a href="support.html">Support</a>
+            </nav>
         </div>
-      </div>
+    </footer>
+</div>
 
-      <div class="footer-links">
-        <a href="terms.html" class="footer-link">Terms of Service</a>
-        <a href="changelog.html" class="footer-link">Changelog</a>
-        <a href="privacy.html" class="footer-link">Privacy Policy</a>
-      </div>
-
-      <div class="footer-social">
-        <a href="https://github.com/alanjollyc/ZyncPDF.git" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-        <a href="https://www.instagram.com/alan._.jolly/" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-          <i class="fab fa-instagram"></i>
-        </a>
-      </div>
-
-      <p class="footer-contact">For questions, inquiries, or contributions, email us at: <a href="mailto:adm.converto@gmail.com">adm.converto@gmail.com</a></p>
-      <p class="copyright">&copy; 2025 ZyncPDF. All rights reserved.</p>
-
-      <!-- Page Visit Counter -->
-      <div id="visit-counter" class="visit-counter">
-        ðŸ‘€ Total Visits: <span id="visit-count">0</span>
-      </div>
-    </div>
-  </div>
-</footer>
-     <script>
-   // Use localStorage as a simple static counter for demo/local use
-   const counterKey = "ZyncPDF-visit-count";
-   let visitCount = localStorage.getItem(counterKey);
-   if (!visitCount) {
-     visitCount = 1;
-   } else {
-     visitCount = parseInt(visitCount) + 1;
-   }
-   localStorage.setItem(counterKey, visitCount);
-   document.getElementById("visit-count").textContent = visitCount.toLocaleString();
- </script>
-
- <script>
-     // Theme Toggle
-     const themeToggle = document.getElementById('theme-toggle');
-     if (themeToggle) {
-         themeToggle.addEventListener('click', () => {
-             window.themeManager.toggle();
-         });
-     }
- </script>
-
+<script src="../assets/js/zt-core.js"></script>
+<script src="../assets/js/zt-icons.js"></script>
+<script src="../assets/js/zt-theme.js"></script>
 </body>
-
 </html>
-
-
-
-

@@ -1,49 +1,48 @@
 {
-  "name": "ZyncPDF",
-  "short_name": "ZyncPDF",
-  "description": "Professional PDF Workspace - Open-source, privacy-first PDF toolkit",
-  "start_url": "/",
+  "name": "ZyncTools — private browser-based utilities",
+  "short_name": "ZyncTools",
+  "description": "Free file and developer tools that run entirely in your browser. Nothing is ever uploaded.",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#4f46e5",
-  "orientation": "portrait-primary",
+  "background_color": "#0B0D11",
+  "theme_color": "#0B0D11",
+  "orientation": "any",
+  "categories": ["productivity", "utilities", "developer"],
   "icons": [
     {
-      "src": "/assets/images/logo.png",
+      "src": "assets/images/logo.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
-  "categories": ["productivity", "utilities"],
   "shortcuts": [
     {
-      "name": "Merge PDF",
-      "short_name": "Merge",
-      "description": "Combine multiple PDFs",
-      "url": "/tools/merge-pdf.html",
-      "icons": [{ "src": "/assets/images/logo.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "Split PDF",
-      "short_name": "Split",
-      "description": "Split PDF into pages",
-      "url": "/tools/split-pdf.html",
-      "icons": [{ "src": "/assets/images/logo.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "Compress PDF",
+      "name": "Compress an image",
       "short_name": "Compress",
-      "description": "Reduce PDF file size",
-      "url": "/tools/compress-pdf.html",
-      "icons": [{ "src": "/assets/images/logo.png", "sizes": "192x192" }]
+      "url": "./tool.html?id=image-compressor"
     },
     {
-      "name": "PDF Text Editor",
-      "short_name": "Editor",
-      "description": "Edit text in PDF",
-      "url": "/tools/pdf-text-editor.html",
-      "icons": [{ "src": "/assets/images/logo.png", "sizes": "192x192" }]
+      "name": "Merge PDFs",
+      "short_name": "Merge PDF",
+      "url": "./tool.html?id=merge-pdf"
+    },
+    {
+      "name": "Convert an image",
+      "short_name": "Convert",
+      "url": "./tool.html?id=image-converter"
+    },
+    {
+      "name": "Format JSON",
+      "short_name": "JSON",
+      "url": "./tool.html?id=json-formatter"
     }
   ]
 }

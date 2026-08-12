@@ -1,4 +1,19 @@
+# ZyncTools — https://zynctools.com
+
 User-agent: *
 Allow: /
 
-Sitemap: https://zyncpdf.github.io/sitemap.xml
+# Legacy pages from the pre-rewrite build. They are superseded by
+# /tool.html?id=<tool> and should not be indexed.
+Disallow: /tools/
+Disallow: /index-legacy.html
+Disallow: /viewer.html
+Disallow: /tool-viewer.html
+Disallow: /pdf-tool.html
+Disallow: /image-tool.html
+Disallow: /seo-tools.html
+Disallow: /settings-ui.html
+Disallow: /chat-ui.html
+Disallow: /chat-widget.html
+
+Sitemap: https://zynctools.com/sitemap.xml

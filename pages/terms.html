@@ -1,159 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service - ZyncPDF</title>
-    <link rel="stylesheet" href="../assets/css/modern-styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="/logo.png" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="/logo.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <script src="../assets/js/theme-switcher.js" defer></script>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Terms — ZyncTools</title>
+<meta name="description" content="Terms of use for ZyncTools — free, browser-based utilities with no accounts and no uploads.">
+<link rel="canonical" href="https://zynctools.com/pages/terms.html">
+<meta name="theme-color" content="#0B0D11">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/zynctools.css">
+<script>
+(function () {
+    try {
+        var s = localStorage.getItem('zynctools-theme');
+        var v = s === 'dark' || s === 'light' || s === 'midnight';
+        document.documentElement.setAttribute('data-theme', v ? s
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+    } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+</script>
+<style>
+    .zt-prose { max-width: 72ch; margin: 0 auto; }
+    .zt-prose h2 { font-size: var(--text-xl); margin: var(--sp-10) 0 var(--sp-3); }
+    .zt-prose p, .zt-prose li { color: var(--fg-muted); line-height: 1.75; }
+    .zt-prose p { margin-bottom: var(--sp-4); }
+    .zt-prose ul { margin: 0 0 var(--sp-4) var(--sp-5); }
+    .zt-prose li { margin-bottom: var(--sp-2); }
+    .zt-prose strong { color: var(--fg); }
+    .zt-lead { font-size: var(--text-lg); color: var(--fg) !important; }
+    .zt-updated { font-size: var(--text-xs); color: var(--fg-subtle); }
+</style>
+</head>
 <body>
-     <header class="header">
-   <div class="container">
-     <a href="../index.html" class="logo-link" aria-label="ZyncPDF Home">
-       <div class="logo">
-         <img src="../assets/images/logo.png" alt="ZyncPDF Logo" class="logo-img">
-         <span class="logo-text">ZyncPDF</span>
-       </div>
-     </a>
-            <nav class="nav">
-                <a href="index.html#tools" class="nav-link">Tools</a>
-                <a href="index.html#features" class="nav-link">Features</a>
-                <a href="support.html" class="nav-link">Support</a>
-                <a href="donate.html" class="nav-link" style="color: var(--support-us-color); font-weight: 700;">Donate</a>
-            </nav>
-            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-                <i class="fas fa-sun sun-icon"></i>
-                <i class="fas fa-moon moon-icon"></i>
-            </button>
-        </div>
+<a href="#main" class="zt-skip-link">Skip to content</a>
+
+<div class="zt-shell">
+    <header class="zt-header">
+        <a class="zt-brand" href="../index.html">
+            <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+            <span class="zt-brand__name">ZyncTools</span>
+        </a>
+        <div class="zt-header__spacer"></div>
+        <a class="zt-btn zt-btn--ghost zt-btn--sm" href="../index.html">All tools</a>
+        <button class="zt-icon-btn" id="zt-theme-toggle" aria-label="Switch theme"></button>
     </header>
 
-    <main class="main">
-        <section class="policy-section">
-            <div class="container">
-                <h2 class="section-title">Terms of Service</h2>
-                <div class="policy-content">
-    <p><strong>Effective Date: July 23, 2025</strong></p>
+    <main class="zt-main" id="main">
+        <article class="zt-prose">
+            <h1 style="font-size:var(--text-3xl);margin-bottom:var(--sp-3)">Terms of use</h1>
+            <p class="zt-updated">Last updated 12 August 2026</p>
 
-    <h3>1. Agreement to Terms</h3>
-    <p>By accessing or using the ZyncPDF website in any way â€” including browsing, using tools, or interacting with any content â€” you agree to be bound by these Terms. If you do not agree to these terms, please do not use this Service.</p>
+            <p class="zt-lead">
+                ZyncTools is free to use, with no account and no limits. These terms cover
+                the short list of things worth stating plainly.
+            </p>
 
-    <h3>2. Eligibility</h3>
-    <p>You must be at least 13 years old (or the minimum legal age in your country) to use this Service. If you are under 18, you may only use the Service under the supervision of a parent or legal guardian who agrees to these Terms.</p>
+            <h2>1. What the service is</h2>
+            <p>
+                ZyncTools is a collection of utilities that run in your web browser. All
+                processing happens on your own device; files are not uploaded. The service
+                is provided free of charge, without registration, and without usage limits.
+            </p>
 
-    <h3>3. Description of Service</h3>
-    <p>ZyncPDF provides a free, unlimited, and registration-free suite of online tools for converting and modifying PDF files. All file processing occurs directly on your device â€” nothing is uploaded to our servers. For more details, see our <a href="privacy.html">Privacy Policy</a>.</p>
+            <h2>2. Using the service</h2>
+            <p>You agree not to:</p>
+            <ul>
+                <li>Use the service to process material you have no right to process.</li>
+                <li>Attempt to disrupt the site or the people using it.</li>
+                <li>Present the service as your own product, or resell access to it.</li>
+            </ul>
+            <p>
+                Because processing is local, what you do with your own files is between you
+                and your files. We have no visibility into it and no ability to intervene.
+            </p>
 
-    <h3>4. Intellectual Property Rights</h3>
-    <p>The website design, interface, graphics, code, and all other elements of the ZyncPDF website (â€œMaterialsâ€) are protected by copyright, trademark, and other intellectual property laws. The ZyncPDF name and logo are exclusive to the site owners. Use of the service does not transfer any ownership of these Materials.</p>
+            <h2>3. Your files and your responsibility</h2>
+            <p>
+                <strong>Keep your originals.</strong> Tools transform data, and a mistaken
+                setting can produce a result you did not want. Nothing is recoverable from
+                our side because nothing reaches our side. Encryption tools are a particular
+                case: if you lose a passphrase, the data cannot be recovered by anyone,
+                including us.
+            </p>
 
-    <h3>5. Content Ownership</h3>
-    <p>ZyncPDF does not claim ownership over files you upload, edit, or convert. You retain all intellectual property rights to your content. You are responsible for the material you process through our Service.</p>
+            <h2>4. No warranty</h2>
+            <p>
+                The service is provided "as is", without warranty of any kind. We do not
+                guarantee that every tool produces a correct result for every input, that
+                the site will always be available, or that it is fit for any particular
+                purpose. Verify anything important before relying on it.
+            </p>
 
-    <h3>6. User Conduct</h3>
-    <p>You agree not to use the service for any illegal, harmful, or unauthorized purpose. You will not process unlawful or offensive content, nor attempt to disrupt or overload the Service (including automated access such as â€œbotsâ€).</p>
+            <h2>5. Limitation of liability</h2>
+            <p>
+                To the extent permitted by law, we are not liable for any loss of data,
+                loss of profit, or other damages arising from use of the service. Since the
+                service is free and processes nothing on our infrastructure, the practical
+                scope of any such claim is limited.
+            </p>
 
-    <h3>7. Third-Party Services</h3>
-    <p>ZyncPDF may use third-party services for analytics or monetization (e.g., GitHub Sponsors, Plausible.io, Google Ads). These services are governed by their own terms and policies. ZyncPDF is not responsible for their content or practices.</p>
+            <h2>6. Third-party libraries</h2>
+            <p>
+                Some tools load open-source libraries from a public CDN at runtime. Those
+                libraries are governed by their own licences, and their availability is
+                outside our control.
+            </p>
 
-    <h3>8. Disclaimers & Limitation of Liability</h3>
-    <p>The Service is provided â€œas isâ€ and â€œas available.â€ You use ZyncPDF at your own risk. We disclaim all warranties, express or implied, related to the use of the Service.</p>
-    <p>Since all file processing occurs on your local device, ZyncPDF bears no responsibility for data loss, corruption, or damages arising from use of the Service.</p>
+            <h2>7. Licence</h2>
+            <p>
+                The ZyncTools source is released under the AGPL-3.0-or-later licence. You
+                may use, modify and self-host it under those terms, which include making
+                your modified source available to users of your version.
+            </p>
 
-    <h3>9. Bug Reporting</h3>
-    <p>We welcome feedback and bug reports at <a href="mailto:admin@ZyncPDF.com">admin@ZyncPDF.com</a>. Submission of a report does not create any obligation for us to respond or fix the issue.</p>
+            <h2>8. Changes</h2>
+            <p>
+                These terms may be updated; the date at the top reflects the current
+                version. Continued use after a change means you accept it.
+            </p>
 
-    <h3>10. Changes to Service & Terms</h3>
-    <p>We may modify, suspend, or discontinue the Service at any time without notice. Updates to these Terms will be posted on this page, and continued use constitutes acceptance of the new Terms.</p>
-
-    <h3>11. Governing Law</h3>
-    <p>These Terms are governed by the laws of your jurisdiction. By using the site, you agree to resolve any disputes under the applicable legal framework.</p>
-</div>
-
-            </div>
-        </section>
+            <h2>9. Contact</h2>
+            <p>
+                Questions go to the
+                <a href="https://github.com/alanjollyc/ZyncPDF" rel="noopener">project's GitHub repository</a>.
+            </p>
+        </article>
     </main>
 
-<footer class="footer">
-  <div class="container">
-    <div class="footer-content">
-    <a href="../index.html" class="logo-link" aria-label="ZyncPDF Home">
-      <div class="logo">
-        <img src="../assets/images/logo.png" alt="ZyncPDF Logo" class="logo-img">
-        <span class="logo-text">ZyncPDF</span>
-      </div>
-    </a>
-
-      <div class="footer-privacy">
-        <div class="privacy-badge">
-          <i class="fas fa-lock"></i> View our <a href="terms.html">Terms of Service</a>, 
-          <a href="changelog.html">Changelog</a>, and 
-          <a href="privacy.html">Privacy Policy</a> for full transparency.
+    <footer class="zt-footer">
+        <div class="zt-footer__inner">
+            <p class="zt-footer__copy">Private, browser-based utilities. Open source under AGPL-3.0.</p>
+            <nav class="zt-footer__links" aria-label="Footer">
+                <a href="../index.html">All tools</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+                <a href="support.html">Support</a>
+            </nav>
         </div>
-      </div>
+    </footer>
+</div>
 
-      <div class="footer-links">
-        <a href="terms.html" class="footer-link">Terms of Service</a>
-        <a href="changelog.html" class="footer-link">Changelog</a>
-        <a href="privacy.html" class="footer-link">Privacy Policy</a>
-      </div>
-
-      <div class="footer-social">
-        <a href="https://github.com/alanjollyc/ZyncPDF.git" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-        <a href="https://www.instagram.com/alan._.jolly/" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-          <i class="fab fa-instagram"></i>
-        </a>
-      </div>
-
-      <p class="footer-contact">For questions, inquiries, or contributions, email us at: <a href="mailto:adm.converto@gmail.com">adm.converto@gmail.com</a></p>
-      <p class="copyright">&copy; 2025 ZyncPDF. All rights reserved.</p>
-
-      <!-- Page Visit Counter -->
-      <div id="visit-counter" class="visit-counter">
-        ðŸ‘€ Total Visits: <span id="visit-count">0</span>
-      </div>
-    </div>
-  </div>
-</footer>
-
-
-<!-- Client-Side Visit Counter -->
-   <script>
-   // Use localStorage as a simple static counter for demo/local use
-   const counterKey = "ZyncPDF-visit-count";
-   let visitCount = localStorage.getItem(counterKey);
-   if (!visitCount) {
-     visitCount = 1;
-   } else {
-     visitCount = parseInt(visitCount) + 1;
-   }
-   localStorage.setItem(counterKey, visitCount);
-   document.getElementById("visit-count").textContent = visitCount.toLocaleString();
- </script>
-
- <script>
-     // Theme Toggle
-     const themeToggle = document.getElementById('theme-toggle');
-     if (themeToggle) {
-         themeToggle.addEventListener('click', () => {
-             window.themeManager.toggle();
-         });
-     }
- </script>
-
+<script src="../assets/js/zt-core.js"></script>
+<script src="../assets/js/zt-icons.js"></script>
+<script src="../assets/js/zt-theme.js"></script>
 </body>
-
 </html>
-
-
-
-

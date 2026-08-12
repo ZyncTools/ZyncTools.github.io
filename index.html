@@ -1,298 +1,235 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZyncTools — 403 Privacy-First Utilities</title>
-    <meta name="description" content="403 free, privacy-first, client-side utilities. No uploads. No tracking. No registration.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%2300CC00'>⚡</text></svg>">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { inter: ['Inter', 'system-ui', 'sans-serif'] }
-                }
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="assets/css/styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ZyncTools — Private, browser-based file and developer tools</title>
+<meta name="description" content="Free file and developer utilities that run entirely in your browser. Compress images, edit PDFs, convert audio, format code. Nothing is ever uploaded.">
+<link rel="canonical" href="https://zynctools.com/">
 
-    <!-- FOUC prevention — apply stored theme before paint -->
-    <script>
-        (function () {
-            var stored = null;
-            try { stored = localStorage.getItem('zync-theme-v2'); } catch (e) {}
-            var theme = (stored === 'dark' || stored === 'grass' || stored === 'light') ? stored : 'dark';
-            document.documentElement.setAttribute('data-theme', theme);
-            document.documentElement.classList.add('theme-' + theme);
-            document.documentElement.style.colorScheme = theme === 'dark' ? 'dark' : 'light';
-        })();
-    </script>
+<meta property="og:type" content="website">
+<meta property="og:title" content="ZyncTools — Private, browser-based tools">
+<meta property="og:description" content="Free utilities that run entirely in your browser. Your files never leave your device.">
+<meta property="og:url" content="https://zynctools.com/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ZyncTools — Private, browser-based tools">
+<meta name="twitter:description" content="Free utilities that run entirely in your browser. Your files never leave your device.">
+<meta name="theme-color" content="#0B0D11">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
+<link rel="manifest" href="site.webmanifest">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/zynctools.css">
+
+<script>
+/* Apply the stored theme before first paint so the page never flashes. */
+(function () {
+    try {
+        var stored = localStorage.getItem('zynctools-theme');
+        var valid = stored === 'dark' || stored === 'light' || stored === 'midnight';
+        var theme = valid ? stored
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+})();
+</script>
 </head>
+
 <body>
-    <div class="app-shell" id="app">
+<a href="#zt-main" class="zt-skip-link">Skip to content</a>
 
-        <!-- ==================== HEADER ==================== -->
-        <header class="app-header">
-            <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-            </button>
+<div class="zt-shell">
 
-            <a href="/" class="brand">
-                <div class="brand-mark">⚡</div>
-                <span class="brand-name">ZyncTools</span>
-            </a>
+    <header class="zt-header">
+        <button class="zt-icon-btn zt-sidebar-toggle" id="zt-sidebar-toggle"
+                aria-label="Open categories" aria-expanded="false" aria-controls="zt-sidebar">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
 
-            <div class="header-search">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" id="global-search" placeholder="Search tools..." autocomplete="off">
-            </div>
+        <a class="zt-brand" href="index.html">
+            <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+            <span class="zt-brand__name">ZyncTools</span>
+        </a>
 
-            <div class="header-spacer"></div>
+        <div class="zt-search">
+            <svg class="zt-search__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input type="search" class="zt-search__input" id="zt-search" placeholder="Search tools…"
+                   autocomplete="off" aria-label="Search tools">
+            <span class="zt-search__kbd">/</span>
+            <div class="zt-suggest" id="zt-suggest" role="listbox" aria-label="Search suggestions"></div>
+        </div>
 
-            <div class="header-actions">
-                <button class="theme-cycle-btn" data-theme-cycle-btn aria-label="Theme: Dark. Click to switch." title="Neon-green on charcoal">
-                    <span class="theme-cycle-swatch" data-theme-cycle-swatch></span>
-                    <span class="theme-cycle-label" data-theme-cycle-label>Dark</span>
-                    <svg data-theme-cycle-icon width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-                </button>
-            </div>
-        </header>
+        <button class="zt-icon-btn" id="zt-theme-toggle" aria-label="Switch theme"></button>
+    </header>
 
-        <!-- ==================== SIDEBAR ==================== -->
-        <nav class="app-sidebar" id="app-sidebar">
-            <div class="sidebar-section-label">Browse</div>
-            <div class="sidebar-nav" id="sidebar-nav">
-                <!-- All Tools link injected by JS -->
-            </div>
-            <div class="sidebar-section-label">Categories</div>
-            <div class="sidebar-nav" id="sidebar-categories">
-                <!-- Category links injected by JS -->
-            </div>
+    <div class="zt-body">
+        <div class="zt-sidebar__backdrop" id="zt-sidebar-backdrop"></div>
 
-            <!-- Personal (History/Favorites) — shown only if enabled -->
-            <div id="sidebar-personal" style="display:none;">
-                <div class="sidebar-section-label">Personal</div>
-                <div class="sidebar-nav" id="sidebar-personal-nav">
-                    <button class="sidebar-link" data-sidebar-cat="history" id="nav-history" style="display:none;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        History
-                        <span class="sidebar-link-count" id="history-count">0</span>
-                    </button>
-                    <button class="sidebar-link" data-sidebar-cat="favorites" id="nav-favorites" style="display:none;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                        Favorites
-                        <span class="sidebar-link-count" id="favorites-count">0</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Settings -->
-            <div class="sidebar-section-label">Settings</div>
-            <div class="sidebar-nav" id="sidebar-settings-nav">
-                <button class="sidebar-link" id="nav-settings" data-sidebar-cat="settings">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                        Privacy & Data
-                    </button>
-                </div>
-
-            <!-- Privacy / History Toggle (bottom of sidebar) -->
-            <div class="privacy-toggle-wrap">
-                <span class="privacy-toggle-label">Privacy</span>
-                <div class="toggle-switch" id="history-toggle" role="switch" aria-checked="false" tabindex="0">
-                    <span class="toggle-switch-text">Enable History & Favorites</span>
-                    <div class="toggle-track">
-                        <div class="toggle-thumb"></div>
-                    </div>
-                </div>
-                <p style="font-size:0.68rem;color:var(--text-muted);margin-top:6px;line-height:1.4;">OFF by default. Only stored locally in your browser.</p>
-            </div>
+        <nav class="zt-sidebar" id="zt-sidebar" aria-label="Tool categories">
+            <div class="zt-sidebar__label">Browse</div>
+            <div id="zt-sidebar-nav"></div>
         </nav>
 
-        <!-- ==================== MAIN CONTENT ==================== -->
-        <main class="app-main" id="app-main">
+        <main class="zt-main" id="zt-main">
 
-            <!-- Mobile category bar (hidden on desktop) -->
-            <div class="mobile-cat-bar" id="mobile-cat-bar">
-                <button class="mobile-cat-btn active" data-mobile-cat="all">All</button>
-            </div>
+            <section class="zt-hero">
+                <span class="zt-hero__badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+                    </svg>
+                    Runs in your browser · Nothing uploaded
+                </span>
 
-            <!-- Hero Panel -->
-            <section class="hero-panel">
-                <div class="hero-panel-inner">
-                    <div class="hero-eyebrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                        100% Client-Side · Zero Uploads · Zero Tracking
-                    </div>
-                    <h1 class="hero-title">Utilities that respect your privacy.</h1>
-                    <p class="hero-subtitle">Professional-grade tools running entirely in your browser. No servers. No data collection. Just fast, secure utilities.</p>
-                    <a href="#dashboard" class="hero-cta">
-                        Browse Tools
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                    </a>
+                <h1 class="zt-hero__title">Tools that never see your files.</h1>
+                <p class="zt-hero__sub">
+                    Compress an image, edit a PDF, convert audio, format code. Every tool runs on your
+                    device — no account, no upload, no waiting on a server.
+                </p>
+
+                <div class="zt-hero__actions">
+                    <a class="zt-btn zt-btn--primary zt-btn--lg" href="#zt-catalog">Browse all tools</a>
+                    <a class="zt-btn zt-btn--outline zt-btn--lg" href="tool.html?id=image-compressor">Compress an image</a>
                 </div>
             </section>
 
-            <!-- Stats Row -->
-            <section class="stats-grid" id="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-card-head">
-                        <span class="stat-card-label">Total Tools</span>
-                        <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
-                    </div>
-                    <div class="stat-card-value" id="stat-total">—</div>
-                    <div class="stat-card-meta">across <strong id="stat-categories">—</strong> categories</div>
+            <section class="zt-stats">
+                <div class="zt-stat">
+                    <div class="zt-stat__label">Tools</div>
+                    <div class="zt-stat__value" id="zt-stat-tools">—</div>
+                    <div class="zt-stat__hint">all working, all free</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-card-head">
-                        <span class="stat-card-label">Active Now</span>
-                        <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-                    </div>
-                    <div class="stat-card-value" id="stat-active">—</div>
-                    <div class="stat-card-meta">tools ready to use</div>
+                <div class="zt-stat">
+                    <div class="zt-stat__label">Categories</div>
+                    <div class="zt-stat__value" id="zt-stat-categories">—</div>
+                    <div class="zt-stat__hint">files, media, code and more</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-card-head">
-                        <span class="stat-card-label">Most Popular</span>
-                        <div class="stat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-                    </div>
-                    <div class="stat-card-value" id="stat-popular" style="font-size:1.3rem;">—</div>
-                    <div class="stat-card-meta">highest engagement</div>
+                <div class="zt-stat">
+                    <div class="zt-stat__label">Files uploaded</div>
+                    <div class="zt-stat__value" id="zt-stat-uploads">0</div>
+                    <div class="zt-stat__hint">and that will never change</div>
                 </div>
             </section>
 
-            <!-- Category Panels (rendered by JS) -->
-            <div id="dashboard">
-                <!-- Injected: <div class="panel" data-category="...">...</div> -->
-            </div>
+            <div id="zt-catalog"></div>
 
-            <!-- No Results -->
-            <div class="no-results" id="no-results">
-                <div class="no-results-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
-                <div class="no-results-title">No tools match your search</div>
-                <div class="no-results-sub">Try a different keyword or browse categories from the sidebar.</div>
-            </div>
-
-            <!-- Settings Panel (hidden by default) -->
-            <div id="settings-panel" class="panel" style="display:none;">
-                <div class="panel-header">
-                    <div class="panel-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
-                    <div class="panel-title-group">
-                        <h2 class="panel-title">Privacy & Data</h2>
-                        <p class="panel-subtitle">Control how your data is stored locally</p>
-                    </div>
-                    <button class="panel-badge" id="settings-close-btn" style="cursor:pointer;border:none;font-size:1.2rem;padding:4px 10px;">✕</button>
+            <div class="zt-empty" id="zt-empty">
+                <div class="zt-empty__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m13.5 8.5-5 5M8.5 8.5l5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                    </svg>
                 </div>
-                <div class="panel-body">
-                    <div style="max-width:600px;">
-                        <div style="margin-bottom:24px;padding:16px;border-radius:12px;background:var(--accent-tint);border:1px solid var(--accent-tint-border);">
-                            <p style="font-size:0.85rem;font-weight:600;color:var(--accent-dark);margin:0 0 4px;">Your Privacy Matters</p>
-                            <p style="font-size:0.8rem;color:var(--text-secondary);margin:0;">All data is stored <strong>only in your browser</strong>. Nothing is ever sent to a server. You can clear or disable history at any time.</p>
-                        </div>
-
-                        <div style="display:flex;flex-direction:column;gap:16px;">
-                            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px;border-radius:12px;border:1px solid var(--border-subtle);background:var(--bg-card);">
-                                <div>
-                                    <p style="font-size:0.9rem;font-weight:600;color:var(--text-primary);margin:0 0 4px;">Enable Local History & Favorites</p>
-                                    <p style="font-size:0.78rem;color:var(--text-secondary);margin:0;">Store tool usage history and favorites in IndexedDB. Required for heart icon and history panel.</p>
-                                </div>
-                                <div class="toggle-switch" id="settings-history-toggle" role="switch" aria-checked="false" tabindex="0" style="flex-shrink:0;">
-                                    <span class="toggle-track"><span class="toggle-thumb"></span></span>
-                                </div>
-                            </div>
-
-                            <div id="settings-history-options" style="display:none;flex-direction:column;gap:12px;padding-left:8px;">
-                                <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px;border-radius:10px;border:1px solid var(--border-subtle);">
-                                    <div>
-                                        <p style="font-size:0.85rem;font-weight:600;color:var(--text-primary);margin:0 0 2px;">Auto-Delete History</p>
-                                        <p style="font-size:0.72rem;color:var(--text-muted);margin:0;">Automatically remove entries after a time period.</p>
-                                    </div>
-                                    <select id="settings-auto-expire" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border-subtle);background:var(--bg-input);color:var(--text-primary);font-size:0.8rem;font-family:inherit;cursor:pointer;">
-                                        <option value="">Never</option>
-                                        <option value="1">After 24 hours</option>
-                                        <option value="7">After 7 days</option>
-                                        <option value="30">After 30 days</option>
-                                    </select>
-                                </div>
-                                <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                                    <button id="settings-pause-btn" class="btn-secondary" style="padding:8px 16px;border-radius:8px;font-size:0.8rem;">Pause Tracking</button>
-                                    <button id="settings-clear-btn" class="btn-secondary" style="padding:8px 16px;border-radius:8px;font-size:0.8rem;color:var(--danger);border-color:var(--danger);">Clear All History</button>
-                                </div>
-                                <p id="settings-status" style="font-size:0.72rem;color:var(--text-muted);margin:0;"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="zt-empty__title">No tools match that search</div>
+                <div class="zt-empty__sub">Try a different word, or browse the categories in the sidebar.</div>
             </div>
 
         </main>
     </div>
 
-    <!-- ==================== FOOTER ==================== -->
-    <footer>
-        <div class="footer-inner">
-            <div class="footer-brand">
-                <div class="footer-brand-mark">⚡</div>
-                <span class="footer-brand-name">ZyncTools</span>
+    <footer class="zt-footer">
+        <div class="zt-footer__inner">
+            <div>
+                <div class="zt-brand" style="margin-bottom:8px">
+                    <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+                    <span class="zt-brand__name">ZyncTools</span>
+                </div>
+                <p class="zt-footer__copy">Private, browser-based utilities. Open source under AGPL-3.0.</p>
             </div>
-            <p class="footer-copy">2026 ZyncTools. Open source, privacy-first utilities.</p>
+            <nav class="zt-footer__links" aria-label="Footer">
+                <a href="pages/privacy.html">Privacy</a>
+                <a href="pages/terms.html">Terms</a>
+                <a href="pages/support.html">Support</a>
+                <a href="https://github.com/alanjollyc/ZyncPDF" rel="noopener">GitHub</a>
+            </nav>
         </div>
     </footer>
 
-    <!-- ==================== CHATBOT WIDGET ==================== -->
-    <button id="chatbot-fab" aria-label="Open assistant">
-        <svg class="fab-chat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        <svg class="fab-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
+</div>
 
-    <div id="chatbot-window" role="dialog" aria-label="Chat assistant">
-        <div class="chat-header">
-            <div class="chat-avatar">Z</div>
-            <div class="chat-title-group">
-                <p class="chat-title">ZyncTools Assistant</p>
-                <p class="chat-subtitle"><span class="chat-status-dot"></span>Privacy-first AI</p>
-            </div>
-            <button class="chat-close-btn" id="chatbot-close-btn" aria-label="Close chat">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
+<!-- Assistant -->
+<button class="zt-chat-fab" id="zt-chat-fab" aria-label="Open the assistant" aria-expanded="false" aria-controls="zt-chat">
+    <svg class="zt-chat-fab__open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/>
+    </svg>
+    <svg class="zt-chat-fab__close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12"/>
+    </svg>
+</button>
+
+<div class="zt-chat" id="zt-chat" role="dialog" aria-label="ZyncTools assistant">
+    <div class="zt-chat__head">
+        <div class="zt-chat__avatar" aria-hidden="true">Z</div>
+        <div style="flex:1;min-width:0">
+            <div class="zt-chat__title">Assistant</div>
+            <div class="zt-chat__status"><span class="zt-chat__dot"></span>Runs offline, in this tab</div>
         </div>
-
-        <div class="chat-messages" id="chatbot-messages"></div>
-
-        <div class="chat-typing" id="chatbot-typing">
-            <div class="chat-message-avatar" style="width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">Z</div>
-            <div class="chat-typing-dots">
-                <span class="chat-typing-dot"></span>
-                <span class="chat-typing-dot"></span>
-                <span class="chat-typing-dot"></span>
-            </div>
-        </div>
-
-        <div class="chat-input-area">
-            <input type="text" class="chat-input" id="chatbot-input" placeholder="Ask about any tool..." autocomplete="off">
-            <button class="chat-send-btn" id="chatbot-send" aria-label="Send message">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
-        </div>
+        <button class="zt-icon-btn" id="zt-chat-close" aria-label="Close assistant">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 6 6 18M6 6l12 12"/>
+            </svg>
+        </button>
     </div>
 
-    <!-- ==================== SCRIPTS ==================== -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.basic.min.js"></script>
-    <script src="assets/js/privacy-settings.js"></script>
-    <script src="assets/js/db-manager.js"></script>
-    <script src="assets/js/sidebar-ui.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/chatbot-global.js"></script>
-    <script>
-        // Chatbot bootstrap — loaded after main.js so ZyncGlobalChat is available
-        document.addEventListener('DOMContentLoaded', function () {
-            if (window.ZyncGlobalChat) window.ZyncGlobalChat.init();
-        });
-    </script>
+    <div class="zt-chat__body" id="zt-chat-body"></div>
+
+    <div class="zt-chat__foot">
+        <input type="text" class="zt-chat__input" id="zt-chat-input"
+               placeholder="Describe what you need…" autocomplete="off" aria-label="Message">
+        <button class="zt-chat__send" id="zt-chat-send" aria-label="Send">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/>
+                <path d="m21.854 2.147-10.94 10.939"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<!-- Core -->
+<script src="assets/js/zt-core.js"></script>
+<script src="assets/js/zt-icons.js"></script>
+<script src="assets/js/zt-registry.js"></script>
+
+<!-- Tool definitions -->
+<script src="assets/js/tools/image.js"></script>
+<script src="assets/js/tools/pdf.js"></script>
+<script src="assets/js/tools/media.js"></script>
+<script src="assets/js/tools/text.js"></script>
+<script src="assets/js/tools/code.js"></script>
+<script src="assets/js/tools/convert.js"></script>
+<script src="assets/js/tools/design.js"></script>
+<script src="assets/js/tools/security.js"></script>
+<script src="assets/js/tools/generate.js"></script>
+<script src="assets/js/tools/seo.js"></script>
+<script src="assets/js/tools/datetime.js"></script>
+<script src="assets/js/tools/math.js"></script>
+
+<!-- App -->
+<script src="assets/js/zt-theme.js"></script>
+<script src="assets/js/zt-home.js"></script>
+<script src="assets/js/zt-assistant.js"></script>
+
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function () { /* offline support is optional */ });
+    });
+}
+</script>
 </body>
 </html>

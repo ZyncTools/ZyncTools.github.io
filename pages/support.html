@@ -1,179 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="description" content="Support ZyncPDF and help us maintain our suite of free, private, and open-source PDF tools. Your contribution keeps our services available for everyone.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support Us - ZyncPDF</title>
-    <link rel="stylesheet" href="../assets/css/modern-styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="/logo.png" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="/logo.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <script src="../assets/js/theme-switcher.js" defer></script>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Support — ZyncTools</title>
+<meta name="description" content="Answers to common ZyncTools questions: file limits, offline use, browser support and troubleshooting.">
+<link rel="canonical" href="https://zynctools.com/pages/support.html">
+<meta name="theme-color" content="#0B0D11">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/zynctools.css">
+<script>
+(function () {
+    try {
+        var s = localStorage.getItem('zynctools-theme');
+        var v = s === 'dark' || s === 'light' || s === 'midnight';
+        document.documentElement.setAttribute('data-theme', v ? s
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+    } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+</script>
+<style>
+    .zt-prose { max-width: 74ch; margin: 0 auto; }
+    .zt-prose h2 { font-size: var(--text-xl); margin: var(--sp-10) 0 var(--sp-4); }
+    .zt-prose p, .zt-prose li { color: var(--fg-muted); line-height: 1.75; }
+    .zt-prose p { margin-bottom: var(--sp-4); }
+    .zt-prose strong { color: var(--fg); }
+    .zt-lead { font-size: var(--text-lg); color: var(--fg) !important; }
+    .zt-faq { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .zt-faq details { border-bottom: 1px solid var(--border); }
+    .zt-faq details:last-child { border-bottom: 0; }
+    .zt-faq summary {
+        padding: var(--sp-4);
+        font-weight: 600;
+        cursor: pointer;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        gap: var(--sp-3);
+        background: var(--bg-card);
+    }
+    .zt-faq summary::-webkit-details-marker { display: none; }
+    .zt-faq summary::after { content: '+'; color: var(--fg-subtle); font-size: 1.2em; line-height: 1; }
+    .zt-faq details[open] summary::after { content: '\2212'; }
+    .zt-faq summary:hover { background: var(--bg-hover); }
+    .zt-faq .body { padding: 0 var(--sp-4) var(--sp-4); }
+    .zt-faq .body p { margin: 0 0 var(--sp-3); font-size: var(--text-sm); }
+    .zt-faq .body p:last-child { margin-bottom: 0; }
+</style>
+</head>
 <body>
-     <header class="header">
-   <div class="container">
-     <a href="../index.html" class="logo-link" aria-label="ZyncPDF Home">
-       <div class="logo">
-         <img src="../assets/images/logo.png" alt="ZyncPDF Logo" class="logo-img">
-         <span class="logo-text">ZyncPDF</span>
-       </div>
-     </a>
-            <nav class="nav">
-                <a href="index.html#tools" class="nav-link">Tools</a>
-                <a href="index.html#features" class="nav-link">Features</a>
-                <a href="donate.html" class="nav-link" style="color: var(--support-us-color); font-weight: 700;">Donate</a>
-            </nav>
-            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-                <i class="fas fa-sun sun-icon"></i>
-                <i class="fas fa-moon moon-icon"></i>
-            </button>
-        </div>
+<a href="#main" class="zt-skip-link">Skip to content</a>
+
+<div class="zt-shell">
+    <header class="zt-header">
+        <a class="zt-brand" href="../index.html">
+            <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+            <span class="zt-brand__name">ZyncTools</span>
+        </a>
+        <div class="zt-header__spacer"></div>
+        <a class="zt-btn zt-btn--ghost zt-btn--sm" href="../index.html">All tools</a>
+        <button class="zt-icon-btn" id="zt-theme-toggle" aria-label="Switch theme"></button>
     </header>
-<main class="main">
-   <section class="support-section" data-aos="fade-up">
-     <div class="container text-center">
-      <h2 class="section-title">Support ZyncPDF</h2>
-      <p class="section-subtitle">
-        ZyncPDF is a 100% free, open-source platform built to simplify file conversions â€” fast, private, and without limits. 
-        Your support keeps our mission alive and fuels future innovation.
-      </p>
-    </div>
 
-    <div class="container">
-      <div class="support-grid">
-        <!-- Donor Card -->
-        <div class="support-card">
-          <div class="support-card-icon">
-            <i class="fas fa-heart"></i>
-          </div>
-          <h3>Support With a Donation</h3>
-          <p>
-            Help us keep ZyncPDF ad-free, private, and accessible to everyone. Your donation directly supports 
-            maintenance, new tool development, and hosting costs â€” no middlemen, no data selling.
-          </p>
-          <a href="https://github.com/sponsors/alanjollyc" class="btn btn-primary">Donate Now</a>
+    <main class="zt-main" id="main">
+        <article class="zt-prose">
+            <h1 style="font-size:var(--text-3xl);margin-bottom:var(--sp-3)">Support</h1>
+            <p class="zt-lead">
+                Common questions, and what to try when something is not working.
+            </p>
+
+            <h2>Frequently asked</h2>
+            <div class="zt-faq">
+                <details open>
+                    <summary>Are my files really not uploaded?</summary>
+                    <div class="body">
+                        <p>
+                            Correct. Tools read your file with the browser's File API and process it
+                            in memory. There is no upload endpoint to send it to.
+                        </p>
+                        <p>
+                            You can confirm it: open developer tools, go to the Network tab, and run a
+                            tool. The only requests are for the page's own scripts.
+                        </p>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>How large a file can I process?</summary>
+                    <div class="body">
+                        <p>
+                            There is no server limit, so the ceiling is your device's memory. On a
+                            modern laptop: images up to roughly 50 megapixels, PDFs of a few hundred
+                            pages, and audio or video up to around 500 MB are comfortable. Phones and
+                            older machines handle noticeably less.
+                        </p>
+                        <p>
+                            If a tab crashes or the tool stalls, the file was too large for the
+                            available memory. Try a smaller file, or lower the output resolution.
+                        </p>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Does it work offline?</summary>
+                    <div class="body">
+                        <p>
+                            Mostly. The site installs a service worker, so the pages and scripts are
+                            cached after your first visit.
+                        </p>
+                        <p>
+                            Tools that pull in a library on first use — PDF editing, OCR, QR codes,
+                            MP3 encoding, GIF creation — need a connection the first time you run
+                            them. After that the browser caches the library too.
+                        </p>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Which browsers are supported?</summary>
+                    <div class="body">
+                        <p>
+                            Current Chrome, Edge, Firefox and Safari, on desktop and mobile. A few
+                            tools depend on newer capabilities: AVIF export needs a recent Chrome or
+                            Firefox, and the tool will tell you if your browser cannot save that
+                            format rather than silently producing a PNG.
+                        </p>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>A tool gave an error. What now?</summary>
+                    <div class="body">
+                        <p><strong>Reload the page.</strong> This clears any half-loaded library.</p>
+                        <p>
+                            <strong>Check the file.</strong> Password-protected PDFs must be unlocked
+                            first. Some MKV and AVI files use codecs browsers cannot decode; convert
+                            to MP4 or WebM first.
+                        </p>
+                        <p>
+                            <strong>Try a smaller file</strong> to rule out a memory limit.
+                        </p>
+                        <p>
+                            <strong>Check for a blocker.</strong> Some tools fetch a library from
+                            jsDelivr; a strict content blocker or firewall can prevent that.
+                        </p>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Why did compressing my PDF make it bigger?</summary>
+                    <div class="body">
+                        <p>
+                            PDF compression rasterises each page into an image. For a text-heavy PDF
+                            that is already efficiently encoded, images are larger than the text they
+                            replace. The tool detects this and tells you to keep your original.
+                        </p>
+                        <p>
+                            Compression pays off on scanned documents and image-heavy PDFs, which is
+                            where the large files usually are.
+                        </p>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>I lost the passphrase for an encrypted file.</summary>
+                    <div class="body">
+                        <p>
+                            The file cannot be recovered. Encryption uses AES-256-GCM with a key
+                            derived from your passphrase; no key is stored, and no copy of your file
+                            exists anywhere else. This is what makes the encryption meaningful, and
+                            it also means there is no reset.
+                        </p>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Can I self-host it?</summary>
+                    <div class="body">
+                        <p>
+                            Yes. It is a static site with no build step — clone the repository and
+                            serve the folder. The AGPL-3.0 licence asks that you make your modified
+                            source available to your users.
+                        </p>
+                    </div>
+                </details>
+            </div>
+
+            <h2>Reporting a problem</h2>
+            <p>
+                Open an issue on the
+                <a href="https://github.com/alanjollyc/ZyncPDF" rel="noopener">GitHub repository</a>.
+                It helps to include the tool name, your browser and version, roughly what the
+                file was (type and size), and anything shown in the browser console.
+            </p>
+            <p>
+                Please do not attach confidential files to a bug report. A small example that
+                reproduces the same problem is more useful and safer for you.
+            </p>
+        </article>
+    </main>
+
+    <footer class="zt-footer">
+        <div class="zt-footer__inner">
+            <p class="zt-footer__copy">Private, browser-based utilities. Open source under AGPL-3.0.</p>
+            <nav class="zt-footer__links" aria-label="Footer">
+                <a href="../index.html">All tools</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+                <a href="support.html">Support</a>
+            </nav>
         </div>
+    </footer>
+</div>
 
-        <!-- Sponsor Card -->
-        <div class="support-card">
-          <div class="support-card-icon">
-            <i class="fas fa-handshake"></i>
-          </div>
-          <h3>Become a Sponsor</h3>
-          <p>
-            Get your brand featured on our platform and connect with thousands of developers, students, 
-            and professionals who use ZyncPDF daily. Partner with us to build the future of open web tools.
-          </p>
-          <p>Email us: <a href="mailto:adm.converto@gmail.com">adm.converto@gmail.com</a></p>
-        </div>
-      </div>
-    </div>
-
-    <div class="container hall-of-fame">
-      <h3 class="text-center">Our Amazing Supporters ðŸ’š</h3>
-      <div class="supporters-list text-center">
-        <p><span class="supporter-name"></span></p>
-
-      </div>
-      <blockquote>
-        Want to see your name or brand here? Join our community of supporters and make ZyncPDF better for everyone.
-      </blockquote>
-    </div>
-  </section>
-</main>
-
-
-
-<footer class="footer">
-  <div class="container">
-    <div class="footer-content">
-    <a href="../index.html" class="logo-link" aria-label="ZyncPDF Home">
-      <div class="logo">
-        <img src="../assets/images/logo.png" alt="ZyncPDF Logo" class="logo-img">
-        <span class="logo-text">ZyncPDF</span>
-      </div>
-    </a>
-
-      <div class="footer-privacy">
-        <div class="privacy-badge">
-          <i class="fas fa-lock"></i> View our <a href="terms.html">Terms of Service</a>, 
-          <a href="changelog.html">Changelog</a>, and 
-          <a href="privacy.html">Privacy Policy</a> for full transparency.
-        </div>
-      </div>
-
-      <div class="footer-links">
-        <a href="terms.html" class="footer-link">Terms of Service</a>
-        <a href="changelog.html" class="footer-link">Changelog</a>
-        <a href="privacy.html" class="footer-link">Privacy Policy</a>
-      </div>
-
-      <div class="footer-social">
-        <a href="https://github.com/alanjollyc/ZyncPDF.git" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-        <a href="https://www.instagram.com/alan._.jolly/" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-          <i class="fab fa-instagram"></i>
-        </a>
-      </div>
-
-      <p class="footer-contact">For questions, inquiries, or contributions, email us at: <a href="mailto:adm.converto@gmail.com">adm.converto@gmail.com</a></p>
-      <p class="copyright">&copy; 2025 ZyncPDF. All rights reserved.</p>
-
-      <!-- Page Visit Counter -->
-      <div id="visit-counter" class="visit-counter">
-        ðŸ‘€ Total Visits: <span id="visit-count">0</span>
-      </div>
-    </div>
-  </div>
-</footer>
-
-
-    <!-- Client-Side Visit Counter -->
-    <script>
-      // Use localStorage as a simple static counter for demo/local use
-      const counterKey = "ZyncPDF-visit-count";
-      let visitCount = localStorage.getItem(counterKey);
-      if (!visitCount) {
-        visitCount = 1;
-      } else {
-        visitCount = parseInt(visitCount) + 1;
-      }
-      localStorage.setItem(counterKey, visitCount);
-      document.getElementById("visit-count").textContent = visitCount.toLocaleString();
-    </script>
-
-    <script>
-        // Theme Toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('click', () => {
-                window.themeManager.toggle();
-            });
-        }
-
-        // Scroll Animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('aos-animate');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
-    </script>
-
-    <script src="script.js?v=1.1"></script>
+<script src="../assets/js/zt-core.js"></script>
+<script src="../assets/js/zt-icons.js"></script>
+<script src="../assets/js/zt-theme.js"></script>
 </body>
-
 </html>
-
-
-
-

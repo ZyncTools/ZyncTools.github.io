@@ -1,0 +1,19 @@
+{
+  "name": "zynctools",
+  "version": "4.0.0",
+  "private": true,
+  "description": "Browser-based file and developer utilities. The site itself has no build step; these scripts are for testing and for regenerating the sitemap.",
+  "license": "AGPL-3.0-or-later",
+  "type": "commonjs",
+  "scripts": {
+    "serve": "python -m http.server 8899 --bind 127.0.0.1",
+    "test": "node test/run.mjs",
+    "test:smoke": "node test/smoke.mjs",
+    "test:correctness": "node test/correctness.mjs",
+    "test:video": "node test/video.mjs",
+    "sitemap": "node build-sitemap.js"
+  },
+  "devDependencies": {
+    "playwright-core": "1.49.1"
+  }
+}
