@@ -143,11 +143,11 @@
                             <h2 class="zt-step__title">About Compress PDF</h2>
                         </div>
                         <div class="zt-step__body zt-prose-sm">
-                            <p>Reduce PDF size by re-rendering pages at a lower resolution and quality. Drop one or more files into Compress PDF — it handles up to 100 at a time.</p>
-                            <p><strong>Your files stay on your device.</strong> ZyncTools has no upload step: the file is read in your browser, processed there, and handed straight back to you. There is no account, no watermark and no size cap beyond what your own device can hold.</p>
-                            <p><strong>Settings.</strong> Compress PDF gives you control over compression level, resolution, image quality and convert to greyscale.</p>
-                            <p><strong>This one works your device hard.</strong> Processing happens locally, so a large file takes real time and real CPU. It is still faster than uploading for most files, and nothing leaves your machine.</p>
-                            <p class="zt-field__help">Also known as: compress, reduce, shrink, optimise, size.</p>
+                            <p>Compress PDF reduces file size by rendering each page and re-encoding it as an image at a lower resolution and quality. Five levels run from light to extreme, or you can set resolution and quality by hand and watch what each change costs you.</p>
+                            <p><strong>This works well on scans and badly on text.</strong> A scanned document is already a series of images, so re-encoding them smaller is a straight win — often 80% or more. A born-digital PDF full of selectable text is a different story: text is stored as instructions to draw glyphs, which is far more compact than a picture of those glyphs. Compressing it can make the file <em>larger</em>.</p>
+                            <p><strong>The tool checks, and tells you.</strong> If the compressed result comes out bigger than the original, you are told to keep the original rather than being handed a worse file with a success message. Greyscale conversion is there for scans of black-and-white paper, where the colour channels are recording nothing but the scanner noise.</p>
+                            <p><strong>The trade-off you are making:</strong> because pages become images, selectable text and any text layer are lost. Search, copy-paste and screen readers stop working on the result. If you need the text preserved, compress lightly or not at all.</p>
+                            <p><strong>It runs on your machine.</strong> Rendering every page of a long PDF takes real processor time — a hundred-page document is not instant. In exchange, a confidential file never gets uploaded to anyone, and there is no size limit or daily quota.</p>
                         </div>
                     </section>
 
@@ -157,10 +157,10 @@
                         </div>
                         <div class="zt-step__body">
                             <ol class="zt-howto">
-                                <li><strong>Add your input.</strong> Drop your files onto the upload area, or click to browse. You can add up to 100 at once, and they are read in your browser rather than uploaded.</li>
-                                <li><strong>Choose your settings.</strong> Adjust compression level, resolution, image quality and the other 1 settings to suit what you need.</li>
-                                <li><strong>Run the tool.</strong> Press Run. Processing happens on your own device, so the time it takes depends on your machine rather than a queue.</li>
-                                <li><strong>Save the result.</strong> Copy the output, or press Download to save it. Nothing is kept once you close the tab.</li>
+                                <li><strong>Add your PDF.</strong> Drop in one or more documents — up to 100. Compression works best on scans and image-heavy files.</li>
+                                <li><strong>Pick a compression level.</strong> Start with balanced. Move to strong or extreme if the file is still too big, or switch to custom to set resolution and image quality yourself.</li>
+                                <li><strong>Consider greyscale.</strong> If the document is a scan of black-and-white paper, converting to greyscale removes colour channels that are only recording scanner noise.</li>
+                                <li><strong>Run it and check the result.</strong> Press Run. You are shown the before and after size. If the result came out larger — which happens with text-heavy PDFs — you are told to keep your original.</li>
                             </ol>
                         </div>
                     </section>

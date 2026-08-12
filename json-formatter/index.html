@@ -143,10 +143,11 @@
                             <h2 class="zt-step__title">About JSON Formatter &amp; Validator</h2>
                         </div>
                         <div class="zt-step__body zt-prose-sm">
-                            <p>Pretty-print, validate and minify JSON with clear error positions. Paste or type your text into JSON Formatter &amp; Validator, adjust the settings, and the result appears below.</p>
-                            <p><strong>Your files stay on your device.</strong> ZyncTools has no upload step: the file is read in your browser, processed there, and handed straight back to you. There is no account, no watermark and no size cap beyond what your own device can hold.</p>
-                            <p><strong>Settings.</strong> JSON Formatter &amp; Validator gives you control over output, indentation, sort object keys alphabetically and escape non-ascii characters.</p>
-                            <p class="zt-field__help">Also known as: json, format, beautify, validate, pretty print.</p>
+                            <p>JSON Formatter pretty-prints, validates and minifies JSON, and when the JSON is broken it tells you the line and column where parsing failed rather than just refusing.</p>
+                            <p><strong>The error position is the point.</strong> Most invalid JSON comes from four things: a trailing comma after the last item, single quotes instead of double, an unquoted key, or a stray control character pasted in from somewhere else. Being told "unexpected token at line 42, column 8" turns a hunt through a thousand lines into a two-second fix.</p>
+                            <p><strong>Sorting keys makes diffs readable.</strong> Two JSON files with the same content in a different key order look completely different to a diff tool. Sort both alphabetically and the real changes stand out. It is also the quickest way to compare two API responses that should match.</p>
+                            <p><strong>Escaping non-ASCII</strong> rewrites accented characters and emoji as <code>\u</code> sequences. Modern systems handle UTF-8 fine and you rarely need this, but it will save you when a config file is being read by something older that mangles anything outside ASCII.</p>
+                            <p><strong>It formats as you type,</strong> with no run button and no round trip to a server. That is worth more than convenience here: JSON pasted into a formatter is very often an API response containing tokens, customer records or internal identifiers. Pasting that into a website hands it over. Nothing typed here leaves the tab.</p>
                         </div>
                     </section>
 
@@ -156,10 +157,10 @@
                         </div>
                         <div class="zt-step__body">
                             <ol class="zt-howto">
-                                <li><strong>Add your input.</strong> Paste or type your text into the input box. You can also load a text file from your device.</li>
-                                <li><strong>Choose your settings.</strong> Adjust output, indentation, sort object keys alphabetically and the other 1 settings to suit what you need.</li>
-                                <li><strong>Run the tool.</strong> The result updates as you type. Press Run to refresh it at any point.</li>
-                                <li><strong>Save the result.</strong> Copy the output, or press Download to save it. Nothing is kept once you close the tab.</li>
+                                <li><strong>Paste your JSON.</strong> Type or paste it into the box. It formats as you go — nothing is sent anywhere, which matters when the JSON is an API response full of tokens.</li>
+                                <li><strong>Read the error, if there is one.</strong> Invalid JSON gets the exact line and column where parsing failed. Look first for a trailing comma, single quotes, or an unquoted key.</li>
+                                <li><strong>Choose pretty or minified.</strong> Pretty-print with 2 spaces, 4 spaces or tabs to read it. Minify to strip every unnecessary byte before shipping it.</li>
+                                <li><strong>Sort keys if you are comparing.</strong> Sorting alphabetically makes two versions of the same object directly comparable in a diff tool.</li>
                             </ol>
                         </div>
                     </section>

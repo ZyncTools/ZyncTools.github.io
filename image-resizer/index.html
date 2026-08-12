@@ -143,10 +143,11 @@
                             <h2 class="zt-step__title">About Image Resizer</h2>
                         </div>
                         <div class="zt-step__body zt-prose-sm">
-                            <p>Resize images by pixels, percentage or to fit inside a box. Drop one or more files into Image Resizer — it handles up to 100 at a time.</p>
-                            <p><strong>Your files stay on your device.</strong> ZyncTools has no upload step: the file is read in your browser, processed there, and handed straight back to you. There is no account, no watermark and no size cap beyond what your own device can hold.</p>
-                            <p><strong>Settings.</strong> Image Resizer gives you control over resize mode, width, height, scale, never enlarge images beyond their original size, output format, quality and background for transparent areas.</p>
-                            <p class="zt-field__help">Also known as: resize, scale, dimensions, width, height.</p>
+                            <p>Image Resizer changes the pixel dimensions of a picture six different ways, because "resize" means different things depending on why you are doing it.</p>
+                            <p><strong>Fit</strong> scales the image to sit inside a box you specify while keeping its proportions — the safe default, and the one you want for "make this no bigger than 1280 by 720". <strong>Exact</strong> forces both dimensions and will distort the picture if the aspect ratio does not match. <strong>Cover</strong> fills the box completely and crops whatever overflows, which is how you make square thumbnails from mixed-shape photos. <strong>Percent</strong> scales by a proportion, and <strong>width</strong> or <strong>height</strong> set one dimension and let the other follow.</p>
+                            <p><strong>Enlarging does not add detail.</strong> Scaling a small image up produces a bigger, blurrier version of the same picture — the information was never captured. The "never enlarge" option is on by default so a batch of mixed sizes does not quietly upscale the small ones into mush.</p>
+                            <p><strong>Pick the output format deliberately.</strong> PNG stays lossless and keeps transparency, so repeated edits never degrade. JPEG and WebP are far smaller for photographs. If you are resizing to put images on a website, WebP at quality 85 is usually the right answer.</p>
+                            <p><strong>Up to a hundred images at once,</strong> resized in your browser. Nothing is uploaded, so there is no size limit and no server that keeps a copy.</p>
                         </div>
                     </section>
 
@@ -156,10 +157,10 @@
                         </div>
                         <div class="zt-step__body">
                             <ol class="zt-howto">
-                                <li><strong>Add your input.</strong> Drop your files onto the upload area, or click to browse. You can add up to 100 at once, and they are read in your browser rather than uploaded.</li>
-                                <li><strong>Choose your settings.</strong> Adjust resize mode, width, height and the other 5 settings to suit what you need.</li>
-                                <li><strong>Run the tool.</strong> Press Run. Processing happens on your own device, so the time it takes depends on your machine rather than a queue.</li>
-                                <li><strong>Save the result.</strong> Copy the output, or press Download to save it. Nothing is kept once you close the tab.</li>
+                                <li><strong>Add your images.</strong> Drop in up to 100 pictures at once.</li>
+                                <li><strong>Choose a resize mode.</strong> Fit keeps proportions inside a box. Cover fills and crops, for square thumbnails. Exact forces both dimensions and may distort. Percent, width and height do what they say.</li>
+                                <li><strong>Set the dimensions.</strong> Enter your target size. Leave &quot;never enlarge&quot; on so smaller images in a mixed batch are not upscaled into blur.</li>
+                                <li><strong>Pick a format and run.</strong> PNG to stay lossless, JPEG or WebP for much smaller photos. Press Run and download.</li>
                             </ol>
                         </div>
                     </section>

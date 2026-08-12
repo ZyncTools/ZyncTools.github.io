@@ -143,10 +143,11 @@
                             <h2 class="zt-step__title">About Image Format Converter</h2>
                         </div>
                         <div class="zt-step__body zt-prose-sm">
-                            <p>Convert between PNG, JPEG, WebP, AVIF, BMP, HEIC and SVG raster output. Drop one or more files into Image Format Converter — it handles up to 100 at a time.</p>
-                            <p><strong>Your files stay on your device.</strong> ZyncTools has no upload step: the file is read in your browser, processed there, and handed straight back to you. There is no account, no watermark and no size cap beyond what your own device can hold.</p>
-                            <p><strong>Settings.</strong> Image Format Converter gives you control over output format, quality, background for transparent areas and rasterise svg at width.</p>
-                            <p class="zt-field__help">Also known as: convert, png, jpg, webp, avif, heic, format.</p>
+                            <p>Image Converter moves pictures between PNG, JPEG, WebP, AVIF and BMP, and reads HEIC and SVG as inputs. The two conversions people arrive here for are HEIC to JPEG and anything to WebP.</p>
+                            <p><strong>HEIC is why most people come.</strong> iPhones save photos as HEIC by default, and a great deal of software still cannot open them — Windows without a paid codec, older Office, plenty of upload forms. Converting to JPEG or PNG makes the photo work everywhere.</p>
+                            <p><strong>Choosing a target format.</strong> WebP and AVIF are dramatically smaller than JPEG at matching quality and are supported everywhere current; use them for the web. JPEG is the safe choice for anything being sent to someone else or into old software. PNG is for screenshots, diagrams, logos and anything needing transparency. BMP is uncompressed and enormous, and exists here for the rare bit of software that insists on it.</p>
+                            <p><strong>Some conversions lose things, permanently.</strong> Moving to JPEG discards transparency, so set the fill colour first. Converting a lossy image to PNG does not restore quality that was already thrown away — it just stores the existing pixels losslessly in a bigger file. And every lossy re-encode degrades the picture a little further, so convert from your original rather than from a converted copy.</p>
+                            <p><strong>SVG rasterises</strong> at whatever width you set. That is a one-way trip: the result is pixels, and scaling it back up will not be sharp. Keep the SVG.</p>
                         </div>
                     </section>
 
@@ -156,10 +157,10 @@
                         </div>
                         <div class="zt-step__body">
                             <ol class="zt-howto">
-                                <li><strong>Add your input.</strong> Drop your files onto the upload area, or click to browse. You can add up to 100 at once, and they are read in your browser rather than uploaded.</li>
-                                <li><strong>Choose your settings.</strong> Adjust output format, quality, background for transparent areas and the other 1 settings to suit what you need.</li>
-                                <li><strong>Run the tool.</strong> Press Run. Processing happens on your own device, so the time it takes depends on your machine rather than a queue.</li>
-                                <li><strong>Save the result.</strong> Copy the output, or press Download to save it. Nothing is kept once you close the tab.</li>
+                                <li><strong>Add your images.</strong> Drop in up to 100 files. HEIC from an iPhone and SVG both work as inputs.</li>
+                                <li><strong>Choose the output format.</strong> JPEG for compatibility, WebP or AVIF for small web files, PNG for transparency and sharp edges, BMP only if some old software demands it.</li>
+                                <li><strong>Handle transparency.</strong> If you are converting to JPEG, set the background colour first — JPEG cannot store transparency and will fill it with whatever you choose.</li>
+                                <li><strong>Convert and download.</strong> Press Run. Converting several files gives you a ZIP.</li>
                             </ol>
                         </div>
                     </section>

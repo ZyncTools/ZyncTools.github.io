@@ -16,7 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { loadRegistry } = require('./build-lib.js');
-const { buildSteps, buildFaqs } = require('./build-content.js');
+const { buildSteps, buildFaqs, SPECIFIC_INTRO } = require('./build-content.js');
 
 const ROOT = __dirname;
 const SITE = (process.argv[2] || readSiteConfig() || readConfiguredSite() || 'https://zynctools.github.io').replace(/\/+$/, '');
@@ -412,6 +412,15 @@ if ('serviceWorker' in navigator) {
    tool changes and never claims a capability the tool does not have.
 */
 function buildIntro(tool) {
+    /* Tools we intend to rank for get copy written by hand. The generated
+       version below is honest but interchangeable, which is fine for a tool
+       nobody searches by name and not fine for the front page. */
+    if (SPECIFIC_INTRO[tool.id]) {
+        return SPECIFIC_INTRO[tool.id]
+            .map((line) => '                            ' + line)
+            .join('\n');
+    }
+
     const lines = [];
     const settings = (tool.options || []).filter((o) => o.type !== 'note');
 

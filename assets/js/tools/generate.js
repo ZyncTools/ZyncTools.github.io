@@ -47,7 +47,7 @@
                     { value: 'vcard', label: 'Contact card' }, { value: 'geo', label: 'Map location' }
                 ]
             },
-            { id: 'url', type: 'text', label: 'URL', value: 'https://zynctools.com', when: typeIs('url') },
+            { id: 'url', type: 'text', label: 'URL', value: 'https://example.com', when: typeIs('url') },
             { id: 'text', type: 'textarea', label: 'Text', value: 'Hello from ZyncTools', rows: 3, when: typeIs('text') },
 
             { id: 'ssid', type: 'text', label: 'Network name (SSID)', value: '', when: typeIs('wifi') },
