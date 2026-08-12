@@ -1,6 +1,5 @@
 {
   "note": "Written by build-pages.js. Lists the tool directories it owns so stale ones can be cleaned up. Do not edit by hand.",
-  "generated": "2026-08-12T08:26:41.182Z",
   "pages": [
     "age-calculator",
     "ascii-banner-generator",

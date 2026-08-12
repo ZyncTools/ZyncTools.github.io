@@ -470,9 +470,12 @@ function main() {
         }
     });
 
+    /* Deliberately no timestamp. CI checks that rebuilding produces no diff,
+       so anything that changes on every run — a build time, a random id —
+       makes that check impossible to pass. Git history already records when
+       this file last changed. */
     fs.writeFileSync(manifestPath, JSON.stringify({
         note: 'Written by build-pages.js. Lists the tool directories it owns so stale ones can be cleaned up. Do not edit by hand.',
-        generated: new Date().toISOString(),
         pages: tools.map((t) => t.id).sort()
     }, null, 2) + '\n');
 

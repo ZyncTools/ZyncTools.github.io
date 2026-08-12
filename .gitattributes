@@ -1,0 +1,14 @@
+# Normalise line endings so the generated pages are byte-identical no matter
+# which OS built them. CI regenerates the pages and fails if anything differs,
+# so a CRLF/LF mismatch between a Windows checkout and a Linux runner would
+# otherwise fail the build for no real reason.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
