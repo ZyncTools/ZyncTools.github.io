@@ -1,4 +1,4 @@
-# ZyncTools — https://zynctools.com
+# ZyncTools — https://zynctools.github.io
 
 User-agent: *
 Allow: /
@@ -16,4 +16,4 @@ Disallow: /settings-ui.html
 Disallow: /chat-ui.html
 Disallow: /chat-widget.html
 
-Sitemap: https://zynctools.com/sitemap.xml
+Sitemap: https://zynctools.github.io/sitemap.xml

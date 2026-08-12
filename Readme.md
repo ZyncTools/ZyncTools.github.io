@@ -205,16 +205,29 @@ git rm -r tools/ \
 
 ## Deploying
 
-Any static host works. For GitHub Pages, push to `main` and set
-**Settings → Pages → Deploy from a branch**.
+Pushing to `main` deploys automatically via `.github/workflows/deploy.yml`.
+The site is live at <https://zynctools.github.io>.
 
-Before going live on a new domain:
+### Moving to a custom domain
 
-1. `node build-sitemap.js https://your-domain.com`
-2. Update the `Sitemap:` line in `robots.txt`.
-3. Update the `<link rel="canonical">` and `og:url` values in `index.html`
-   and `tool.html`.
-4. Bump `CACHE_VERSION` in `sw.js` so returning visitors get the new build.
+Canonical tags, `robots.txt` and `sitemap.xml` currently point at
+`zynctools.github.io`. Point them somewhere that does not resolve yet and
+search engines will follow the canonical to a dead URL, so change these only
+once the domain actually serves the site:
+
+1. Add a `CNAME` file at the repo root containing just the domain, e.g.
+   `zynctools.com`.
+2. Point the domain's DNS at GitHub Pages, and wait for the certificate to
+   issue under **Settings → Pages**.
+3. Confirm the domain serves the site over HTTPS.
+4. Then update the URLs:
+   ```bash
+   node build-sitemap.js https://your-domain.com
+   # replace the old host in the canonical/og:url tags and robots.txt
+   grep -rl "zynctools.github.io" index.html tool.html pages robots.txt
+   ```
+5. Bump `CACHE_VERSION` in `sw.js` so returning visitors get the new build
+   rather than a cached copy of the old one.
 
 ---
 
