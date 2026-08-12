@@ -202,7 +202,7 @@ for (const tool of list) {
   const row = { id: tool.id, category: tool.category, status: 'ok', notes: [] };
 
   try {
-    await page.goto(`${BASE}/tool.html?id=${tool.id}`, { waitUntil: 'networkidle', timeout: 25000 });
+    await page.goto(`${BASE}/${tool.id}/`, { waitUntil: 'networkidle', timeout: 25000 });
 
     const title = await page.textContent('.zt-tool-head__title').catch(() => null);
     if (!title) { row.status = 'FAIL'; row.notes.push('tool header did not render'); }

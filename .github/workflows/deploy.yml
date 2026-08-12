@@ -1,27 +1,74 @@
-name: Deploy to GitHub Pages
+name: Test and deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# A newer push supersedes an in-flight run, but never cancels a deploy midway.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
-  deploy:
-    environment:
-      name: github-pages
+  test:
+    name: Verify every tool
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install test dependencies
+        run: npm ci
+
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v1
+        id: chrome
+        with:
+          chrome-version: stable
+
+      - name: Check generated pages are up to date
+        run: |
+          node build-pages.js
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Generated pages are stale. Run 'npm run build' and commit the result."
+            git --no-pager diff --stat
+            exit 1
+          fi
+
+      - name: Run the test suite
+        env:
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: npm test
+
+  deploy:
+    name: Deploy to GitHub Pages
+    # Only publish once the tools are proven to work, and never from a PR.
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy
+        id: deployment
         uses: actions/deploy-pages@v4

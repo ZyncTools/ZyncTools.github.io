@@ -29,6 +29,19 @@
         return ROOT + String(relPath).replace(/^\//, '');
     }
 
+    /**
+     * Canonical address of a tool: a clean directory path such as
+     * `/merge-pdf/` rather than `tool.html?id=merge-pdf`.
+     *
+     * Search engines treat query strings as one page wearing hats, which
+     * matters a lot for a site whose visitors arrive by searching for the
+     * task they want done. `build-pages.js` writes a real HTML file at each
+     * of these paths.
+     */
+    function toolUrl(id) {
+        return ROOT + String(id) + '/';
+    }
+
     /* ============================================================
        DOM
        ============================================================ */
@@ -580,7 +593,7 @@
     }
 
     global.ZT = {
-        ROOT: ROOT, url: url,
+        ROOT: ROOT, url: url, toolUrl: toolUrl,
         $: $, $$: $$, el: el, esc: esc,
         formatBytes: formatBytes, formatDuration: formatDuration, formatNumber: formatNumber,
         stem: stem, extOf: extOf, outName: outName, slugify: slugify, clamp: clamp,

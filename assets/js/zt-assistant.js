@@ -417,7 +417,7 @@
             extras.cards.forEach(function (tool) {
                 cards.appendChild(el('a', {
                     class: 'zt-chat-card',
-                    href: ZT.url('tool.html') + '?id=' + tool.id
+                    href: ZT.toolUrl(tool.id)
                 }, [
                     el('span', { class: 'zt-chat-card__icon', html: ZT.icons.svg(tool.icon) }),
                     el('span', { class: 'zt-chat-card__info' }, [

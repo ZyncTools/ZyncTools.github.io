@@ -79,7 +79,7 @@ for (const id of TOOLS) {
   page.on('console', m => { if (m.type() === 'error') errors.push('CONSOLE: ' + m.text().slice(0, 200)); });
 
   try {
-    await page.goto(`${BASE}/tool.html?id=${id}`, { waitUntil: 'networkidle', timeout: 25000 });
+    await page.goto(`${BASE}/${id}/`, { waitUntil: 'networkidle', timeout: 25000 });
 
     const info = await page.evaluate(MAKE_VIDEO);
 

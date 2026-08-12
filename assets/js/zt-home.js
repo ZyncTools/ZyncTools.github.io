@@ -166,7 +166,7 @@
 
         return el('a', {
             class: 'zt-tool-card',
-            href: ZT.url('tool.html') + '?id=' + tool.id
+            href: ZT.toolUrl(tool.id)
         }, [
             el('div', { class: 'zt-tool-card__top' }, [
                 el('div', { class: 'zt-tool-card__icon', html: ZT.icons.svg(tool.icon) }),
@@ -276,7 +276,7 @@
                 var category = ZT.registry.category(tool.category);
                 suggest.appendChild(el('a', {
                     class: 'zt-suggest__item',
-                    href: ZT.url('tool.html') + '?id=' + tool.id
+                    href: ZT.toolUrl(tool.id)
                 }, [
                     el('span', { class: 'zt-suggest__icon', html: ZT.icons.svg(tool.icon) }),
                     el('span', { class: 'zt-suggest__body' }, [

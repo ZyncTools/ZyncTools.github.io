@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>What we want in a PDF web app — ZyncTools</title>
+<meta name="description" content="Why we built a PDF toolkit that never sees your files — the story behind ZyncTools.">
+<link rel="canonical" href="https://zynctools.github.io/pages/why-we-built-zynctools.html">
+<meta name="theme-color" content="#0B0D11">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="What we want in a PDF web app">
+<meta property="og:description" content="Why we built a PDF toolkit that never sees your files.">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/zynctools.css">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","headline":"What we want in a PDF web app","datePublished":"2025-08-12","description":"Why we built a PDF toolkit that never sees your files."}
+</script>
+
+<script>
+(function () {
+    try {
+        var s = localStorage.getItem('zynctools-theme');
+        var v = s === 'dark' || s === 'light' || s === 'midnight';
+        document.documentElement.setAttribute('data-theme', v ? s
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+    } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+</script>
+<style>
+    .zt-prose { max-width: 68ch; margin: 0 auto; }
+    .zt-prose p { color: var(--fg-muted); line-height: 1.8; margin-bottom: var(--sp-5); }
+    .zt-prose h2 { font-size: var(--text-xl); margin: var(--sp-10) 0 var(--sp-4); }
+    .zt-prose li { color: var(--fg-muted); line-height: 1.75; margin-bottom: var(--sp-3); }
+    .zt-prose ul { margin: 0 0 var(--sp-5) var(--sp-5); }
+    .zt-prose strong { color: var(--fg); }
+    .zt-meta { font-size: var(--text-xs); color: var(--fg-subtle); margin-bottom: var(--sp-8); }
+    .zt-pull {
+        border-left: 3px solid var(--accent);
+        padding: var(--sp-2) 0 var(--sp-2) var(--sp-5);
+        margin: var(--sp-6) 0;
+        font-size: var(--text-lg);
+        color: var(--fg) !important;
+        font-style: italic;
+    }
+</style>
+</head>
+<body>
+<a href="#main" class="zt-skip-link">Skip to content</a>
+
+<div class="zt-shell">
+    <header class="zt-header">
+        <a class="zt-brand" href="../index.html">
+            <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+            <span class="zt-brand__name">ZyncTools</span>
+        </a>
+        <div class="zt-header__spacer"></div>
+        <a class="zt-btn zt-btn--ghost zt-btn--sm" href="blog.html">Blog</a>
+        <a class="zt-btn zt-btn--ghost zt-btn--sm" href="../index.html">All tools</a>
+        <button class="zt-icon-btn" id="zt-theme-toggle" aria-label="Switch theme"></button>
+    </header>
+
+    <main class="zt-main" id="main">
+        <article class="zt-prose">
+            <p style="margin-bottom:var(--sp-4)"><a href="blog.html">← Back to blog</a></p>
+
+            <h1 style="font-size:var(--text-3xl);margin-bottom:var(--sp-3)">What we want in a PDF web app</h1>
+            <p class="zt-meta">12 August 2025 · 5 min read</p>
+
+            <p>
+                This whole journey started with helping my father with financial documents.
+            </p>
+
+            <p>
+                He sent me photos (HEIC files) that needed to become a single, merged PDF
+                file. A very easy task, right? I looked at the popular sites everyone
+                recommends: Free Convert, PDF Candy, etc. And then I paused, and in my mind
+                I imagined:
+            </p>
+
+            <p class="zt-pull">
+                “How the actual hell do people trust these sites with sensitive files? It's
+                closed source, with no privacy promises at all.”
+            </p>
+
+            <p>
+                Those forms held extremely personal information — information that could be
+                used for malicious intent if exposed. The more I looked at these PDF
+                websites, the more uneasy I felt. All of these tools were closed source.
+                Privacy promises were vague. Some required holding your emails and payment
+                information to use. I myself couldn't verify what actually happened to my
+                files, and that was unacceptable.
+            </p>
+
+            <p>
+                So I called a friend who shared the same exact problems as me. We decided to
+                build the PDF web app we wished existed.
+            </p>
+
+            <p>
+                Its main differentiator is that you don't need to trust what we say — you can
+                check the code yourself in our repository.
+            </p>
+
+            <h2>Our non-negotiables</h2>
+
+            <p>
+                From day one, we chose to be different: not by cramming in every feature
+                possible, but by committing to a few things we would not trade away.
+            </p>
+
+            <ul>
+                <li>
+                    <strong>Confidentiality by design.</strong> We design features with 100%
+                    confidentiality in mind and avoid unnecessary data collection wherever
+                    possible.
+                </li>
+                <li>
+                    <strong>Everything public.</strong> Every line of code we write is
+                    public — transparency you can verify, not just trust.
+                </li>
+                <li>
+                    <strong>Genuinely free.</strong> No freemium model, no paywalls, no
+                    watermarks, no trials, no limited usage.
+                </li>
+                <li>
+                    <strong>Do the simple things better.</strong> Not focusing on adding
+                    every feature humanly possible.
+                </li>
+            </ul>
+
+            <p class="zt-pull">
+                Privacy isn't a feature. It's the foundation.
+            </p>
+
+            <p>
+                If you've ever hesitated to upload a document because it felt risky, you're
+                not alone — not even a little. We literally built this for that exact reason.
+            </p>
+
+            <p>
+                Try it on <a href="../index.html">the homepage</a>, or audit the code
+                yourself on
+                <a href="https://github.com/ZyncTools/ZyncTools.github.io" rel="noopener">GitHub</a>.
+            </p>
+
+            <hr style="border:0;border-top:1px solid var(--border);margin:var(--sp-10) 0">
+
+            <p style="font-size:var(--text-sm)">
+                <strong>An update, a year on.</strong> The project began as ZyncPDF and has
+                since grown well past PDFs — images, audio, video, text, code and more — so
+                it is now <strong>ZyncTools</strong>. The principle has not moved an inch:
+                every tool still runs in your browser, and your files still never leave your
+                device.
+            </p>
+        </article>
+    </main>
+
+    <footer class="zt-footer">
+        <div class="zt-footer__inner">
+            <p class="zt-footer__copy">Private, browser-based utilities. Open source under AGPL-3.0.</p>
+            <nav class="zt-footer__links" aria-label="Footer">
+                <a href="../index.html">All tools</a>
+                <a href="blog.html">Blog</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+                <a href="support.html">Support</a>
+            </nav>
+        </div>
+    </footer>
+</div>
+
+<script src="../assets/js/zt-core.js"></script>
+<script src="../assets/js/zt-icons.js"></script>
+<script src="../assets/js/zt-theme.js"></script>
+<script src="../assets/js/zt-analytics.js"></script>
+</body>
+</html>

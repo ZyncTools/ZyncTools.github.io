@@ -9,7 +9,7 @@
  * cache that does not match, which is what evicts a stale build.
  */
 
-const CACHE_VERSION = 'zynctools-v4';
+const CACHE_VERSION = 'zynctools-v5';
 const SHELL_CACHE = CACHE_VERSION + '-shell';
 const RUNTIME_CACHE = CACHE_VERSION + '-runtime';
 
@@ -28,6 +28,7 @@ const SHELL_ASSETS = [
     './assets/js/zt-tool-page.js',
     './assets/js/zt-tool-search.js',
     './assets/js/zt-assistant.js',
+    './assets/js/zt-analytics.js',
     './assets/js/tools/image.js',
     './assets/js/tools/pdf.js',
     './assets/js/tools/media.js',

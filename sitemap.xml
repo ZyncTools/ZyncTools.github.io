@@ -7,18 +7,6 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/pages/privacy.html</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/pages/terms.html</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
     <loc>https://zynctools.github.io/pages/support.html</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
@@ -31,745 +19,763 @@
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-compressor</loc>
+    <loc>https://zynctools.github.io/pages/blog.html</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/pages/privacy.html</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/pages/terms.html</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/image-compressor/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-resizer</loc>
+    <loc>https://zynctools.github.io/image-resizer/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-converter</loc>
+    <loc>https://zynctools.github.io/image-converter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-cropper</loc>
+    <loc>https://zynctools.github.io/image-cropper/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-rotate-flip</loc>
+    <loc>https://zynctools.github.io/image-rotate-flip/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-filters</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-watermark</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=meme-generator</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-pixelate</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-border</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-joiner</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-splitter</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=favicon-generator</loc>
+    <loc>https://zynctools.github.io/image-filters/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=color-palette-extractor</loc>
+    <loc>https://zynctools.github.io/image-watermark/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-to-ascii</loc>
+    <loc>https://zynctools.github.io/meme-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-metadata-viewer</loc>
+    <loc>https://zynctools.github.io/image-pixelate/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-metadata-remover</loc>
+    <loc>https://zynctools.github.io/image-border/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=placeholder-image-generator</loc>
+    <loc>https://zynctools.github.io/image-joiner/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-diff</loc>
+    <loc>https://zynctools.github.io/image-splitter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=merge-pdf</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=split-pdf</loc>
+    <loc>https://zynctools.github.io/favicon-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=pdf-page-manager</loc>
+    <loc>https://zynctools.github.io/color-palette-extractor/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/image-to-ascii/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/image-metadata-viewer/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/image-metadata-remover/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/placeholder-image-generator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/image-diff/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/merge-pdf/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=rotate-pdf</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=compress-pdf</loc>
+    <loc>https://zynctools.github.io/split-pdf/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=pdf-to-image</loc>
+    <loc>https://zynctools.github.io/pdf-page-manager/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=image-to-pdf</loc>
+    <loc>https://zynctools.github.io/rotate-pdf/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/compress-pdf/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=pdf-to-text</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=pdf-ocr</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=watermark-pdf</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=pdf-page-numbers</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=protect-pdf</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=unlock-pdf</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=pdf-metadata</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=text-to-pdf</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=audio-converter</loc>
+    <loc>https://zynctools.github.io/pdf-to-image/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=audio-trimmer</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=audio-merger</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=audio-effects</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=audio-waveform</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=extract-audio-from-video</loc>
+    <loc>https://zynctools.github.io/image-to-pdf/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=video-frame-extractor</loc>
+    <loc>https://zynctools.github.io/pdf-to-text/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=video-to-gif</loc>
+    <loc>https://zynctools.github.io/pdf-ocr/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/watermark-pdf/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/pdf-page-numbers/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/protect-pdf/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/unlock-pdf/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/pdf-metadata/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/text-to-pdf/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/audio-converter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=media-info</loc>
+    <loc>https://zynctools.github.io/audio-trimmer/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=word-counter</loc>
+    <loc>https://zynctools.github.io/audio-merger/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/audio-effects/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/audio-waveform/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/extract-audio-from-video/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=case-converter</loc>
+    <loc>https://zynctools.github.io/video-frame-extractor/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/video-to-gif/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=text-reverser</loc>
+    <loc>https://zynctools.github.io/media-info/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=slug-generator</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=find-replace</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=line-sorter</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=duplicate-line-finder</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=random-line-picker</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=text-cleaner</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=text-repeater</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=diff-checker</loc>
+    <loc>https://zynctools.github.io/word-counter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=markdown-to-html</loc>
+    <loc>https://zynctools.github.io/case-converter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=html-to-markdown</loc>
+    <loc>https://zynctools.github.io/text-reverser/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=morse-code-translator</loc>
+    <loc>https://zynctools.github.io/slug-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=caesar-cipher</loc>
+    <loc>https://zynctools.github.io/find-replace/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=leet-speak-converter</loc>
+    <loc>https://zynctools.github.io/line-sorter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=ascii-banner-generator</loc>
+    <loc>https://zynctools.github.io/duplicate-line-finder/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=lorem-ipsum-generator</loc>
+    <loc>https://zynctools.github.io/random-line-picker/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/text-cleaner/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/text-repeater/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/diff-checker/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=url-parser</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=json-formatter</loc>
+    <loc>https://zynctools.github.io/markdown-to-html/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=json-path-finder</loc>
+    <loc>https://zynctools.github.io/html-to-markdown/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=yaml-json-converter</loc>
+    <loc>https://zynctools.github.io/morse-code-translator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/caesar-cipher/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/leet-speak-converter/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/ascii-banner-generator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/lorem-ipsum-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=xml-formatter</loc>
+    <loc>https://zynctools.github.io/url-parser/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=xml-json-converter</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=csv-json-converter</loc>
+    <loc>https://zynctools.github.io/json-formatter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=csv-formatter</loc>
+    <loc>https://zynctools.github.io/json-path-finder/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=sql-formatter</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=css-minifier</loc>
+    <loc>https://zynctools.github.io/yaml-json-converter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=js-minifier</loc>
+    <loc>https://zynctools.github.io/xml-formatter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=html-minifier</loc>
+    <loc>https://zynctools.github.io/xml-json-converter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=regex-tester</loc>
+    <loc>https://zynctools.github.io/csv-json-converter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=jwt-decoder</loc>
+    <loc>https://zynctools.github.io/csv-formatter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=cron-expression-builder</loc>
+    <loc>https://zynctools.github.io/sql-formatter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=base64-encoder</loc>
+    <loc>https://zynctools.github.io/css-minifier/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=base64-image-encoder</loc>
+    <loc>https://zynctools.github.io/js-minifier/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=url-encoder</loc>
+    <loc>https://zynctools.github.io/html-minifier/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/regex-tester/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=html-entity-encoder</loc>
+    <loc>https://zynctools.github.io/jwt-decoder/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=number-base-converter</loc>
+    <loc>https://zynctools.github.io/cron-expression-builder/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/base64-encoder/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=text-binary-converter</loc>
+    <loc>https://zynctools.github.io/base64-image-encoder/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=color-converter</loc>
+    <loc>https://zynctools.github.io/url-encoder/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=contrast-checker</loc>
+    <loc>https://zynctools.github.io/html-entity-encoder/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=box-shadow-generator</loc>
+    <loc>https://zynctools.github.io/number-base-converter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=text-shadow-generator</loc>
+    <loc>https://zynctools.github.io/text-binary-converter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=gradient-generator</loc>
+    <loc>https://zynctools.github.io/color-converter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=border-radius-generator</loc>
+    <loc>https://zynctools.github.io/contrast-checker/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=flexbox-generator</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=grid-generator</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=glassmorphism-generator</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=clip-path-generator</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=easing-generator</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=color-palette-generator</loc>
+    <loc>https://zynctools.github.io/box-shadow-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=hash-generator</loc>
+    <loc>https://zynctools.github.io/text-shadow-generator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/gradient-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=file-hash-generator</loc>
+    <loc>https://zynctools.github.io/border-radius-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=hmac-generator</loc>
+    <loc>https://zynctools.github.io/flexbox-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=text-encryptor</loc>
+    <loc>https://zynctools.github.io/grid-generator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/glassmorphism-generator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/clip-path-generator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/easing-generator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/color-palette-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=password-strength-checker</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=file-encryptor</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=qr-code-generator</loc>
+    <loc>https://zynctools.github.io/hash-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=barcode-generator</loc>
+    <loc>https://zynctools.github.io/file-hash-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=password-generator</loc>
+    <loc>https://zynctools.github.io/hmac-generator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/text-encryptor/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=uuid-generator</loc>
+    <loc>https://zynctools.github.io/password-strength-checker/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/file-encryptor/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/qr-code-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=fake-data-generator</loc>
+    <loc>https://zynctools.github.io/barcode-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=meta-tag-generator</loc>
+    <loc>https://zynctools.github.io/password-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=schema-markup-generator</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=robots-txt-generator</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=sitemap-generator</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=keyword-density-checker</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=utm-builder</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=html-heading-analyzer</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=hreflang-generator</loc>
-    <lastmod>2026-08-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://zynctools.github.io/tool.html?id=timestamp-converter</loc>
+    <loc>https://zynctools.github.io/uuid-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=date-difference-calculator</loc>
+    <loc>https://zynctools.github.io/fake-data-generator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/meta-tag-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=age-calculator</loc>
+    <loc>https://zynctools.github.io/schema-markup-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=timezone-converter</loc>
+    <loc>https://zynctools.github.io/robots-txt-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=duration-calculator</loc>
+    <loc>https://zynctools.github.io/sitemap-generator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=unit-converter</loc>
+    <loc>https://zynctools.github.io/keyword-density-checker/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/utm-builder/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/html-heading-analyzer/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/hreflang-generator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/timestamp-converter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=percentage-calculator</loc>
+    <loc>https://zynctools.github.io/date-difference-calculator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=aspect-ratio-calculator</loc>
+    <loc>https://zynctools.github.io/age-calculator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=statistics-calculator</loc>
+    <loc>https://zynctools.github.io/timezone-converter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=random-number-generator</loc>
+    <loc>https://zynctools.github.io/duration-calculator/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://zynctools.github.io/tool.html?id=roman-numeral-converter</loc>
+    <loc>https://zynctools.github.io/unit-converter/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/percentage-calculator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/aspect-ratio-calculator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/statistics-calculator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/random-number-generator/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://zynctools.github.io/roman-numeral-converter/</loc>
     <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

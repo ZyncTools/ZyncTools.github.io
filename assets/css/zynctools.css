@@ -1644,6 +1644,16 @@ h1, h2, h3, h4 { line-height: 1.25; font-weight: 700; letter-spacing: -0.015em; 
 .zt-social-card__title { font-size: var(--text-sm); font-weight: 650; margin: 2px 0; }
 .zt-social-card__desc { font-size: var(--text-xs); color: var(--fg-muted); }
 
+/* --- Static "About this tool" copy on generated pages --- */
+.zt-prose-sm p {
+    color: var(--fg-muted);
+    font-size: var(--text-sm);
+    line-height: 1.7;
+    max-width: 68ch;
+}
+.zt-prose-sm p + p { margin-top: var(--sp-3); }
+.zt-prose-sm strong { color: var(--fg); }
+
 /* -------------------------------------------------------------------------
    12. SIDE PANELS (about / related / privacy)
    ------------------------------------------------------------------------- */

@@ -1,107 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="description" content="The LuxPDF Blog: Insights, updates, and tips about working with PDFs, privacy, and productivity.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - ZyncPDF</title>
-    <link rel="stylesheet" href="../assets/css/modern-styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="/logo.png" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="/logo.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <script src="../assets/js/theme-switcher.js" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Blog — ZyncTools</title>
+<meta name="description" content="Notes on building a privacy-first toolkit that runs entirely in your browser.">
+<link rel="canonical" href="https://zynctools.github.io/pages/blog.html">
+<meta name="theme-color" content="#0B0D11">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/zynctools.css">
+<script>
+(function () {
+    try {
+        var s = localStorage.getItem('zynctools-theme');
+        var v = s === 'dark' || s === 'light' || s === 'midnight';
+        document.documentElement.setAttribute('data-theme', v ? s
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+    } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+</script>
+<style>
+    .zt-prose { max-width: 70ch; margin: 0 auto; }
+    .zt-prose p { color: var(--fg-muted); line-height: 1.75; }
+    .zt-lead { font-size: var(--text-lg); color: var(--fg) !important; }
+    .zt-post {
+        display: block;
+        padding: var(--sp-5);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        background: var(--bg-card);
+        color: var(--fg);
+        margin-bottom: var(--sp-4);
+        transition: border-color 130ms ease, transform 130ms ease;
+    }
+    .zt-post:hover { text-decoration: none; border-color: var(--accent-border); transform: translateY(-2px); }
+    .zt-post__date { font-size: var(--text-xs); color: var(--fg-subtle); }
+    .zt-post__title { font-size: var(--text-lg); font-weight: 700; margin: var(--sp-1) 0 var(--sp-2); }
+    .zt-post__excerpt { font-size: var(--text-sm); color: var(--fg-muted); line-height: 1.65; }
+</style>
 </head>
 <body>
-    <header class="header">
-  <div class="container">
-    <a href="../index.html" class="logo-link" aria-label="ZyncPDF Home">
-      <div class="logo">
-        <img src="../assets/images/logo.png" alt="ZyncPDF Logo" class="logo-img">
-        <span class="logo-text">ZyncPDF</span>
-      </div>
-    </a>
-            <nav class="nav">
-                <a href="../index.html#tools" class="nav-link">Tools</a>
-                <a href="blog.html" class="nav-link">Blog</a>
-                <a href="support.html" class="nav-link">Support Us</a>
-                <a href="../index.html#about" class="nav-link">About</a>
-                <a href="../index.html#comparison" class="nav-link">Comparison</a>
-                <a href="../index.html#faq" class="nav-link">FAQ</a>
-            </nav>
-        </div>
+<a href="#main" class="zt-skip-link">Skip to content</a>
+
+<div class="zt-shell">
+    <header class="zt-header">
+        <a class="zt-brand" href="../index.html">
+            <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+            <span class="zt-brand__name">ZyncTools</span>
+        </a>
+        <div class="zt-header__spacer"></div>
+        <a class="zt-btn zt-btn--ghost zt-btn--sm" href="../index.html">All tools</a>
+        <button class="zt-icon-btn" id="zt-theme-toggle" aria-label="Switch theme"></button>
     </header>
 
-    <main class="main">
-        <section class="blog-section">
-            <div class="container">
-                <div class="blog-header text-center">
-                    <h2 class="section-title">The LuxPDF Blog</h2>
-                    <p class="section-subtitle">Hi, we're building an  open-sourced, privacy-focused, better alternative to other PDF WebApps. You can read about our journey and what we've learnt along the way on this blog.</p>
-                </div>
+    <main class="zt-main" id="main">
+        <article class="zt-prose">
+            <h1 style="font-size:var(--text-3xl);margin-bottom:var(--sp-3)">Blog</h1>
+            <p class="zt-lead" style="margin-bottom:var(--sp-8)">
+                We're building an open-source, privacy-first alternative to the file tools
+                everyone recommends but nobody can verify. Here's the thinking behind it.
+            </p>
 
-                <div class="blog-grid">
-                    <a href="introducing-luxpdf.html" class="blog-card" aria-label="Read: What we want in a PDF WebApp">
-                        <div class="blog-date">Aug 12, 2025</div>
-                        <h3 class="blog-title">What we want in a PDF WebApp</h3>
-                        <p class="blog-description">Here's our story, our beginning. Why we built LuxPDF, and how we're building it.</p>
-                        <span class="blog-arrow" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
-                    </a>
+            <a class="zt-post" href="why-we-built-zynctools.html">
+                <div class="zt-post__date">12 August 2025 · 5 min read</div>
+                <div class="zt-post__title">What we want in a PDF web app</div>
+                <p class="zt-post__excerpt">
+                    It started with my father sending me HEIC photos of financial documents
+                    that needed to become one PDF. Every site I found was closed source with
+                    vague privacy promises. Here's why we built our own.
+                </p>
+            </a>
 
-                </div>
-            </div>
-        </section>
+            <a class="zt-post" href="changelog.html">
+                <div class="zt-post__date">12 August 2026</div>
+                <div class="zt-post__title">Version 4.0 — rebuilt from the ground up</div>
+                <p class="zt-post__excerpt">
+                    124 working tools, a rewritten interface that behaves on phones, and an
+                    automated suite that opens every tool to prove it still works. See the
+                    changelog for the full list.
+                </p>
+            </a>
+        </article>
     </main>
 
-<footer class="footer">
-  <div class="container">
-    <div class="footer-content">
-    <a href="../index.html" class="logo-link" aria-label="ZyncPDF Home">
-      <div class="logo">
-        <img src="../assets/images/logo.png" alt="ZyncPDF Logo" class="logo-img">
-        <span class="logo-text">ZyncPDF</span>
-      </div>
-    </a>
-
-      <div class="footer-privacy">
-        <div class="privacy-badge">
-          <i class="fas fa-lock"></i> View our <a href="terms.html">Terms of Service</a>, 
-          <a href="changelog.html">Changelog</a>, and 
-          <a href="privacy.html">Privacy Policy</a> for full transparency.
+    <footer class="zt-footer">
+        <div class="zt-footer__inner">
+            <p class="zt-footer__copy">Private, browser-based utilities. Open source under AGPL-3.0.</p>
+            <nav class="zt-footer__links" aria-label="Footer">
+                <a href="../index.html">All tools</a>
+                <a href="changelog.html">Changelog</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+                <a href="support.html">Support</a>
+            </nav>
         </div>
-      </div>
+    </footer>
+</div>
 
-      <div class="footer-links">
-        <a href="terms.html" class="footer-link">Terms of Service</a>
-        <a href="changelog.html" class="footer-link">Changelog</a>
-        <a href="privacy.html" class="footer-link">Privacy Policy</a>
-      </div>
-
-      <div class="footer-social">
-        <a href="https://github.com/alanjollyc/ZyncPDF.git" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-        <a href="https://www.instagram.com/alan._.jolly/" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-          <i class="fab fa-instagram"></i>
-        </a>
-      </div>
-
-      <p class="footer-contact">For questions, inquiries, or contributions, email us at: <a href="mailto:adm.converto@gmail.com">adm.converto@gmail.com</a></p>
-      <p class="copyright">&copy; 2025 ZyncPDF. All rights reserved.</p>
-
-      <!-- Page Visit Counter -->
-      <div id="visit-counter" class="visit-counter">
-        Ã°Å¸â€˜â‚¬ Total Visits: <span id="visit-count">0</span>
-      </div>
-    </div>
-  </div>
-</footer>
-
-    <script src="script.js?v=1.1"></script>
+<script src="../assets/js/zt-core.js"></script>
+<script src="../assets/js/zt-icons.js"></script>
+<script src="../assets/js/zt-theme.js"></script>
+<script src="../assets/js/zt-analytics.js"></script>
 </body>
 </html>
-
-
-
-

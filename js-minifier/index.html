@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JavaScript Minifier — free, private, in your browser | ZyncTools</title>
+<meta name="description" content="Minify JavaScript with Terser, including optional name mangling. Runs entirely in your browser — no upload, no account, no limits.">
+<link rel="canonical" href="https://zynctools.github.io/js-minifier/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="JavaScript Minifier — ZyncTools">
+<meta property="og:description" content="Minify JavaScript with Terser, including optional name mangling.">
+<meta property="og:url" content="https://zynctools.github.io/js-minifier/">
+<meta property="og:site_name" content="ZyncTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="JavaScript Minifier — ZyncTools">
+<meta name="twitter:description" content="Minify JavaScript with Terser, including optional name mangling.">
+<meta name="theme-color" content="#0B0D11">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
+<link rel="manifest" href="../site.webmanifest">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/zynctools.css">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"JavaScript Minifier","description":"Minify JavaScript with Terser, including optional name mangling.","url":"https://zynctools.github.io/js-minifier/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any browser","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Shorten local variable names","Apply compression passes","Remove console.* calls","Remove debugger statements","Keep class names","Output syntax"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Tools","item":"https://zynctools.github.io/"},{"@type":"ListItem","position":2,"name":"Code & Data","item":"https://zynctools.github.io/#code"},{"@type":"ListItem","position":3,"name":"JavaScript Minifier","item":"https://zynctools.github.io/js-minifier/"}]}</script>
+
+<script>
+(function () {
+    try {
+        var stored = localStorage.getItem('zynctools-theme');
+        var valid = stored === 'dark' || stored === 'light' || stored === 'midnight';
+        document.documentElement.setAttribute('data-theme', valid ? stored
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+    } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+})();
+</script>
+</head>
+
+<body>
+<a href="#zt-main" class="zt-skip-link">Skip to content</a>
+
+<div class="zt-shell">
+
+    <header class="zt-header">
+        <a class="zt-brand" href="../">
+            <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+            <span class="zt-brand__name">ZyncTools</span>
+        </a>
+
+        <div class="zt-search">
+            <svg class="zt-search__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input type="search" class="zt-search__input" id="zt-search" placeholder="Search other tools…"
+                   autocomplete="off" aria-label="Search tools">
+            <span class="zt-search__kbd">/</span>
+            <div class="zt-suggest" id="zt-suggest" role="listbox" aria-label="Search suggestions"></div>
+        </div>
+
+        <button class="zt-icon-btn" id="zt-theme-toggle" aria-label="Switch theme"></button>
+    </header>
+
+    <main class="zt-main" id="zt-main">
+        <div id="zt-tool-root">
+
+            <div class="zt-tool-head" id="zt-tool-head">
+                <!-- Rendered statically so the page is complete without JavaScript.
+                     zt-tool-page.js replaces this with the interactive version. -->
+                <nav class="zt-breadcrumb" aria-label="Breadcrumb">
+                    <a href="../">Tools</a>
+                    <span>/</span>
+                    <a href="../#code">Code &amp; Data</a>
+                    <span>/</span>
+                    <span>JavaScript Minifier</span>
+                </nav>
+                <div class="zt-tool-head__row">
+                    <div class="zt-tool-head__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m8 16 2-2-2-2M12 18h4"/></svg></div>
+                    <div style="min-width:0">
+                        <div class="zt-row" style="gap:10px">
+                            <h1 class="zt-tool-head__title">JavaScript Minifier</h1>
+                            
+                            
+                        </div>
+                        <p class="zt-tool-head__desc">Minify JavaScript with Terser, including optional name mangling.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="zt-work">
+                <div class="zt-work__main">
+
+                    <section class="zt-step" id="zt-input-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__num">1</span>
+                            <span class="zt-step__title" id="zt-input-title">Input</span>
+                        </div>
+                    </section>
+
+                    <section class="zt-step" id="zt-options-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__num">2</span>
+                            <span class="zt-step__title">Settings</span>
+                        </div>
+                        <div class="zt-step__body" id="zt-options"></div>
+                    </section>
+
+                    <section class="zt-step" id="zt-run-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__num">3</span>
+                            <span class="zt-step__title">Run</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-runbar" id="zt-runbar"></div>
+                            <div id="zt-error" class="zt-mt-4"></div>
+                        </div>
+                    </section>
+
+                    <section class="zt-step" id="zt-results-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__num">4</span>
+                            <span class="zt-step__title">Results</span>
+                        </div>
+                        <div class="zt-step__body">
+                            <div class="zt-results" id="zt-results"></div>
+                            <p class="zt-fields--empty" id="zt-results-placeholder">
+                                Results will appear here once you run the tool.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section class="zt-step">
+                        <div class="zt-step__head">
+                            <span class="zt-step__title">About JavaScript Minifier</span>
+                        </div>
+                        <div class="zt-step__body zt-prose-sm">
+                            <p>Minify JavaScript with Terser, including optional name mangling. Paste or type your text into JavaScript Minifier, adjust the settings, and the result appears below.</p>
+                            <p><strong>Your files stay on your device.</strong> ZyncTools has no upload step: the file is read in your browser, processed there, and handed straight back to you. There is no account, no watermark and no size cap beyond what your own device can hold.</p>
+                            <p><strong>Settings.</strong> JavaScript Minifier gives you control over shorten local variable names, apply compression passes, remove console.* calls, remove debugger statements, keep class names and output syntax.</p>
+                            <p class="zt-field__help">Also known as: javascript, js, minify, compress, terser, uglify.</p>
+                        </div>
+                    </section>
+
+                </div>
+
+                <aside class="zt-work__side" id="zt-side" aria-label="About this tool"></aside>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="zt-footer">
+        <div class="zt-footer__inner">
+            <div>
+                <div class="zt-brand" style="margin-bottom:8px">
+                    <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+                    <span class="zt-brand__name">ZyncTools</span>
+                </div>
+                <p class="zt-footer__copy">Private, browser-based utilities. Open source under AGPL-3.0.</p>
+            </div>
+            <nav class="zt-footer__links" aria-label="Footer">
+                <a href="../">All tools</a>
+                <a href="../pages/privacy.html">Privacy</a>
+                <a href="../pages/terms.html">Terms</a>
+                <a href="../pages/support.html">Support</a>
+                <a href="https://github.com/ZyncTools/ZyncTools.github.io" rel="noopener">GitHub</a>
+            </nav>
+        </div>
+    </footer>
+
+</div>
+
+<nav class="zt-visually-hidden" aria-label="Related tools">
+    <a href="../json-formatter/">JSON Formatter &amp; Validator</a>
+    <a href="../json-path-finder/">JSON Path Finder</a>
+    <a href="../yaml-json-converter/">YAML ⇄ JSON Converter</a>
+    <a href="../xml-formatter/">XML Formatter</a>
+    <a href="../xml-json-converter/">XML ⇄ JSON Converter</a>
+    <a href="../csv-json-converter/">CSV ⇄ JSON Converter</a>
+</nav>
+
+<!-- Assistant -->
+<button class="zt-chat-fab" id="zt-chat-fab" aria-label="Open the assistant" aria-expanded="false" aria-controls="zt-chat">
+    <svg class="zt-chat-fab__open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/>
+    </svg>
+    <svg class="zt-chat-fab__close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12"/>
+    </svg>
+</button>
+
+<div class="zt-chat" id="zt-chat" role="dialog" aria-label="ZyncTools assistant">
+    <div class="zt-chat__head">
+        <div class="zt-chat__avatar" aria-hidden="true">Z</div>
+        <div style="flex:1;min-width:0">
+            <div class="zt-chat__title">Assistant</div>
+            <div class="zt-chat__status"><span class="zt-chat__dot"></span>Runs offline, in this tab</div>
+        </div>
+        <button class="zt-icon-btn" id="zt-chat-close" aria-label="Close assistant">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 6 6 18M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+    <div class="zt-chat__body" id="zt-chat-body"></div>
+    <div class="zt-chat__foot">
+        <input type="text" class="zt-chat__input" id="zt-chat-input"
+               placeholder="Ask about this tool…" autocomplete="off" aria-label="Message">
+        <button class="zt-chat__send" id="zt-chat-send" aria-label="Send">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/>
+                <path d="m21.854 2.147-10.94 10.939"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<script>window.__ZT_TOOL_ID__ = "js-minifier";</script>
+
+<script src="../assets/js/zt-core.js"></script>
+<script src="../assets/js/zt-icons.js"></script>
+<script src="../assets/js/zt-registry.js"></script>
+
+<script src="../assets/js/tools/image.js"></script>
+<script src="../assets/js/tools/pdf.js"></script>
+<script src="../assets/js/tools/media.js"></script>
+<script src="../assets/js/tools/text.js"></script>
+<script src="../assets/js/tools/code.js"></script>
+<script src="../assets/js/tools/convert.js"></script>
+<script src="../assets/js/tools/design.js"></script>
+<script src="../assets/js/tools/security.js"></script>
+<script src="../assets/js/tools/generate.js"></script>
+<script src="../assets/js/tools/seo.js"></script>
+<script src="../assets/js/tools/datetime.js"></script>
+<script src="../assets/js/tools/math.js"></script>
+
+<script src="../assets/js/zt-theme.js"></script>
+<script src="../assets/js/zt-tool-page.js"></script>
+<script src="../assets/js/zt-tool-search.js"></script>
+<script src="../assets/js/zt-assistant.js"></script>
+<script src="../assets/js/zt-analytics.js"></script>
+
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('../sw.js').catch(function () {});
+    });
+}
+</script>
+</body>
+</html>

@@ -10,14 +10,15 @@ own device.
 
 ## Quick start
 
-It is a static site with no build step.
-
 ```bash
-python -m http.server 3000
-# or: npx serve .
+npm install     # playwright-core, for the tests only
+npm run build   # generates a page per tool + sitemap.xml
+npm run serve   # http://localhost:8899
 ```
 
-Then open <http://localhost:3000>.
+The site itself has no bundler — the browser loads the source files as
+written. `npm run build` only writes the static per-tool pages, and its
+output is committed, so a plain checkout is already deployable.
 
 ---
 
@@ -29,7 +30,8 @@ every definition at load time and refuses to register anything incomplete.
 
 ```
 index.html                  Homepage — renders the catalogue from the registry
-tool.html                   Every tool runs on this one page, driven by its schema
+<tool-id>/index.html        One generated page per tool, e.g. /merge-pdf/
+tool.html                   Fallback route for older ?id= links
 
 assets/css/
   zynctools.css             The entire design system. Mobile-first, three themes.
@@ -43,6 +45,7 @@ assets/js/
   zt-tool-page.js           Renders any tool from its option schema and runs it
   zt-tool-search.js         Header search on tool pages
   zt-assistant.js           Local tool-finding assistant (no API calls)
+  zt-analytics.js           Optional page-view counting, off until configured
 
   tools/
     image.js      19 tools   pdf.js      15 tools   media.js     9 tools
@@ -50,7 +53,8 @@ assets/js/
     design.js     10 tools   security.js  6 tools   generate.js  5 tools
     seo.js         8 tools   datetime.js  5 tools   math.js      6 tools
 
-build-sitemap.js            Regenerates sitemap.xml from the registry
+build-pages.js              Generates the per-tool pages and sitemap.xml
+build-lib.js                Loads the browser registry inside Node
 sw.js                       Service worker — offline support
 
 test/
@@ -87,7 +91,7 @@ search index, the assistant and the sitemap all follow automatically.
 
 ```js
 ZT.registry.define({
-    id: 'image-resizer',              // unique; becomes ?id=image-resizer
+    id: 'image-resizer',              // unique; becomes /image-resizer/
     name: 'Image Resizer',
     category: 'image',                // must exist in CATEGORIES
     icon: 'maximize-2',               // key in zt-icons.js
@@ -116,11 +120,14 @@ Option types: `range`, `number`, `select`, `radio`, `checkbox`, `text`,
 Result builders: `ZT.fileResult`, `ZT.textResult`, `ZT.dataResult`,
 `ZT.nodeResult`. Throw a user-facing error with `ZT.fail('message')`.
 
-After adding a tool, regenerate the sitemap:
+After adding a tool, regenerate the static pages:
 
 ```bash
-node build-sitemap.js https://your-domain.com
+npm run build
 ```
+
+CI fails the build if the generated pages are out of date, so this cannot be
+forgotten.
 
 ---
 
@@ -147,59 +154,32 @@ Most of the catalogue uses none of these.
 
 ---
 
-## Legacy files
+## URLs
 
-This repository was rewritten. The old application layer is still present but
-is **no longer referenced by anything** — `index.html` and `tool.html` load
-only the `zt-*` files listed above.
+Every tool has its own address — `/merge-pdf/`, `/compress-image/`,
+`/json-formatter/` — rather than a query string. For a site whose visitors
+arrive by searching for the task they want done, a URL containing those words
+is worth real traffic, and search engines index query strings reluctantly.
 
-The files below are dead and can be deleted whenever you are ready. They are
-kept for now so nothing is lost before you have reviewed the rewrite.
+`build-pages.js` writes each of those pages from the registry. Every page
+carries its own title, meta description, canonical, Open Graph tags, JSON-LD
+and a crawlable `<h1>` plus a short intro built from what the tool actually
+declares — so a crawler sees a complete page without running any JavaScript.
 
-**Old app scripts** — `assets/js/`:
-`advanced-logic.js`, `app.js`, `chat-ui.js`, `chatbot-global.js`,
-`chatbot-logic.js`, `dashboard-logic.js`, `db-manager.js`, `dev-utilities.js`,
-`icon-mapping-logic.js`, `implementation-check.js`, `logic-core.js`,
-`logic-currency.js`, `logic-image.js`, `logic-media.js`, `logic-pdf.js`,
-`logic-units.js`, `main-fixed.js`, `main.js`, `media-logic.js`,
-`media-preview.js`, `pdf-workbench-core.js`, `privacy-settings.js`,
-`registry-loader.js`, `script.js`, `search-engine.js`, `seo-generators.js`,
-`seo-logic.js`, `seo-registry.js`, `sidebar-ui.js`, `theme-cycler.js`,
-`theme-switcher.js`, `theme.js`, `tool-bridge.js`, `tool-registry.js`,
-`tool-viewer.js`, `tools-batch-logic.js`, `ui-components.js`,
-`verify-tools.js`, `viewer.js`, `virtualized-grid.js`, and the old
-`assets/js/tools/*-logic.js` files.
+`tool.html?id=…` still resolves, for any older link, and rewrites its own
+canonical to the clean address so the two never compete.
 
-**Old stylesheets** — `assets/css/`: `components.css`, `modern-styles.css`,
-`styles-chat.css`, `styles-dashboard.css`, `styles-fixed.css`, `styles.css`,
-`zync-tools.css`.
+---
 
-**Old pages**: `image-tool.html`, `pdf-tool.html`, `tool-viewer.html`,
-`seo-tools.html`, `viewer.html`, `settings-ui.html`, `chat-ui.html`,
-`chat-widget.html`, `index-legacy.html`, and the entire `tools/` directory
-(147 per-tool pages, now replaced by `tool.html?id=…`).
+## Analytics
 
-**Old data and build scripts**: `tools-database.json`,
-`tools-database-real.json`, `tools-database-cleaned.json`,
-`tools-database.backup.json`, `registry.json`, `new-tools-registry.json`,
-`tool-status.json`, `knowledge-base.json`, `icon-migration-map.json`,
-`activate-batch.js`, `build-cleaned.js`, `build-real-db.js`,
-`check-status.js`, `generate_tool_status.py`, `audit-report.txt`.
+Off by default. `assets/js/zt-analytics.js` does nothing at all until you
+fill in its config — no request, no storage, no globals.
 
-`robots.txt` already tells crawlers to ignore the old paths, so they will not
-be indexed while they remain.
-
-To remove them all:
-
-```bash
-git rm -r tools/ \
-  image-tool.html pdf-tool.html tool-viewer.html seo-tools.html viewer.html \
-  settings-ui.html chat-ui.html chat-widget.html index-legacy.html \
-  tools-database*.json registry.json new-tools-registry.json tool-status.json \
-  knowledge-base.json icon-migration-map.json audit-report.txt \
-  activate-batch.js build-cleaned.js build-real-db.js check-status.js \
-  generate_tool_status.py
-```
+If you want to know which of the 124 tools people actually use, it supports
+GoatCounter and Plausible: no cookies, no cross-site identifier, and therefore
+no consent banner. It counts page views only. Your files are never involved,
+because they never leave the browser in the first place.
 
 ---
 
@@ -222,7 +202,7 @@ once the domain actually serves the site:
 3. Confirm the domain serves the site over HTTPS.
 4. Then update the URLs:
    ```bash
-   node build-sitemap.js https://your-domain.com
+   npm run build -- https://your-domain.com
    # replace the old host in the canonical/og:url tags and robots.txt
    grep -rl "zynctools.github.io" index.html tool.html pages robots.txt
    ```

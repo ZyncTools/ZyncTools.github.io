@@ -1,103 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZyncPDF Changelog: View Updates, Features & Improvements</title>
-    <link rel="stylesheet" href="../assets/css/modern-styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="/logo.png" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="/logo.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <script src="../assets/js/theme-switcher.js" defer></script>
-
-    <!-- JSZip Library for ZIP functionality -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Changelog — ZyncTools</title>
+<meta name="description" content="What has changed in ZyncTools, newest first.">
+<link rel="canonical" href="https://zynctools.github.io/pages/changelog.html">
+<meta name="theme-color" content="#0B0D11">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/zynctools.css">
+<script>
+(function () {
+    try {
+        var s = localStorage.getItem('zynctools-theme');
+        var v = s === 'dark' || s === 'light' || s === 'midnight';
+        document.documentElement.setAttribute('data-theme', v ? s
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+    } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+</script>
+<style>
+    .zt-prose { max-width: 74ch; margin: 0 auto; }
+    .zt-prose p, .zt-prose li { color: var(--fg-muted); line-height: 1.75; }
+    .zt-prose strong { color: var(--fg); }
+    .zt-lead { font-size: var(--text-lg); color: var(--fg) !important; }
+    .zt-release { border-left: 2px solid var(--border); padding-left: var(--sp-5); margin-bottom: var(--sp-10); position: relative; }
+    .zt-release::before {
+        content: ''; position: absolute; left: -5px; top: 7px;
+        width: 8px; height: 8px; border-radius: 999px; background: var(--accent);
+    }
+    .zt-release__version { font-size: var(--text-lg); font-weight: 700; }
+    .zt-release__date { font-size: var(--text-xs); color: var(--fg-subtle); margin-bottom: var(--sp-3); }
+    .zt-release h3 { font-size: var(--text-sm); text-transform: uppercase; letter-spacing: .05em;
+                     color: var(--fg-subtle); margin: var(--sp-4) 0 var(--sp-2); }
+    .zt-release ul { margin: 0 0 0 var(--sp-5); }
+    .zt-release li { margin-bottom: var(--sp-2); font-size: var(--text-sm); }
+</style>
 </head>
-
 <body>
-    <header class="header">
-  <div class="container">
-    <a href="../index.html" class="logo-link" aria-label="ZyncPDF Home">
-      <div class="logo">
-        <img src="../assets/images/logo.png" alt="ZyncPDF Logo" class="logo-img">
-        <span class="logo-text">ZyncPDF</span>
-      </div>
-    </a>
-            <nav class="nav">
-                <a href="../index.html#tools" class="nav-link">Tools</a>
-                <a href="blog.html" class="nav-link">Blog</a>
-                <a href="support.html" class="nav-link">Support Us</a>
-                <a href="../index.html#about" class="nav-link">About</a>
-                <a href="../index.html#faq" class="nav-link">FAQ</a>
-            </nav>
-        </div>
+<a href="#main" class="zt-skip-link">Skip to content</a>
+
+<div class="zt-shell">
+    <header class="zt-header">
+        <a class="zt-brand" href="../index.html">
+            <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+            <span class="zt-brand__name">ZyncTools</span>
+        </a>
+        <div class="zt-header__spacer"></div>
+        <a class="zt-btn zt-btn--ghost zt-btn--sm" href="../index.html">All tools</a>
+        <button class="zt-icon-btn" id="zt-theme-toggle" aria-label="Switch theme"></button>
     </header>
 
-    <main class="main">
-        <section class="policy-section">
-            <div class="container">
-                <div class="policy-content">
-                    <h2>Changelog</h2>
-                    <p>Our Plans & Updates Will Be Posted Here, Feel Free To Email: ZyncPDFadm@gmail.com for Inquiries,
-                        Bugs, Suggestions etc.</p>
+    <main class="zt-main" id="main">
+        <article class="zt-prose">
+            <h1 style="font-size:var(--text-3xl);margin-bottom:var(--sp-3)">Changelog</h1>
+            <p class="zt-lead">What has changed, newest first.</p>
 
+            <div style="margin-top:var(--sp-10)">
 
-                </div>
+                <section class="zt-release">
+                    <div class="zt-release__version">4.0 — Rebuilt from the ground up</div>
+                    <div class="zt-release__date">12 August 2026</div>
+                    <p>
+                        The application layer has been rewritten. The previous build had a
+                        fault that threw on load, which meant no tool actually ran; the
+                        catalogue also counted a lot of duplicated and placeholder entries.
+                        This release replaces all of it with 124 tools that work, each
+                        verified by an automated test suite.
+                    </p>
+
+                    <h3>New</h3>
+                    <ul>
+                        <li>124 working tools across 12 categories, every one with settings written for its own job.</li>
+                        <li>Each tool now has its own address, such as <code>/merge-pdf/</code>.</li>
+                        <li>A rebuilt interface that works properly on phones.</li>
+                        <li>Three themes: dark, light and midnight.</li>
+                        <li>An assistant that finds a tool from a plain description of the task.</li>
+                        <li>An automated suite that opens every tool and checks its output.</li>
+                    </ul>
+
+                    <h3>Fixed</h3>
+                    <ul>
+                        <li>Tool pages threw <code>updateProcessBtn is not defined</code> on load, so nothing ran.</li>
+                        <li>The mobile layout rendered at desktop width inside a phone viewport.</li>
+                        <li>Many tools were wired to unrelated functions — the CSS minifier generated box shadows.</li>
+                        <li>The assistant registered its click handler twice, so it opened and shut immediately.</li>
+                        <li>Icons came from a content network that was failing, leaving blank squares.</li>
+                        <li>The offline service worker had a fault that stopped it caching anything.</li>
+                        <li>Uploaded file thumbnails vanished the moment they appeared.</li>
+                    </ul>
+
+                    <h3>Removed</h3>
+                    <ul>
+                        <li>Duplicate catalogue entries — four separate listings pointed at one UUID generator.</li>
+                        <li>Placeholder entries that had a name but no implementation.</li>
+                        <li>Tools that cannot work without a server, rather than shipping ones that quietly fail.</li>
+                    </ul>
+                </section>
+
             </div>
-        </section>
+
+            <p style="margin-top:var(--sp-10)">
+                Suggestions and bug reports are welcome on
+                <a href="https://github.com/ZyncTools/ZyncTools.github.io" rel="noopener">GitHub</a>.
+            </p>
+        </article>
     </main>
 
-<footer class="footer">
-  <div class="container">
-    <div class="footer-content">
-    <a href="../index.html" class="logo-link" aria-label="ZyncPDF Home">
-      <div class="logo">
-        <img src="../assets/images/logo.png" alt="ZyncPDF Logo" class="logo-img">
-        <span class="logo-text">ZyncPDF</span>
-      </div>
-    </a>
-
-      <div class="footer-privacy">
-        <div class="privacy-badge">
-          <i class="fas fa-lock"></i> View our <a href="terms.html">Terms of Service</a>, 
-          <a href="changelog.html">Changelog</a>, and 
-          <a href="privacy.html">Privacy Policy</a> for full transparency.
+    <footer class="zt-footer">
+        <div class="zt-footer__inner">
+            <p class="zt-footer__copy">Private, browser-based utilities. Open source under AGPL-3.0.</p>
+            <nav class="zt-footer__links" aria-label="Footer">
+                <a href="../index.html">All tools</a>
+                <a href="blog.html">Blog</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+                <a href="support.html">Support</a>
+            </nav>
         </div>
-      </div>
+    </footer>
+</div>
 
-      <div class="footer-links">
-        <a href="terms.html" class="footer-link">Terms of Service</a>
-        <a href="changelog.html" class="footer-link">Changelog</a>
-        <a href="privacy.html" class="footer-link">Privacy Policy</a>
-      </div>
-
-      <div class="footer-social">
-        <a href="https://github.com/alanjollyc/ZyncPDF.git" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-        <a href="https://www.instagram.com/alan._.jolly/" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-          <i class="fab fa-instagram"></i>
-        </a>
-      </div>
-
-      <p class="footer-contact">For questions, inquiries, or contributions, email us at: <a href="mailto:adm.converto@gmail.com">adm.converto@gmail.com</a></p>
-      <p class="copyright">&copy; 2025 ZyncPDF. All rights reserved.</p>
-
-      <!-- Page Visit Counter -->
-      <div id="visit-counter" class="visit-counter">
-        Ã°Å¸â€˜â‚¬ Total Visits: <span id="visit-count">0</span>
-      </div>
-    </div>
-  </div>
-</footer>
+<script src="../assets/js/zt-core.js"></script>
+<script src="../assets/js/zt-icons.js"></script>
+<script src="../assets/js/zt-theme.js"></script>
+<script src="../assets/js/zt-analytics.js"></script>
 </body>
-
 </html>
-
-
-
-

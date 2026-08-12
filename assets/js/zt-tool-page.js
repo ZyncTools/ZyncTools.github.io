@@ -29,8 +29,7 @@
        BOOT
        ============================================================ */
     function boot() {
-        var params = new URLSearchParams(location.search);
-        var id = params.get('id') || params.get('tool') || '';
+        var id = resolveToolId();
         var tool = ZT.registry.get(id);
 
         if (!tool) {
@@ -55,6 +54,24 @@
         if (tool.input === 'none') run();
     }
 
+    /**
+     * Work out which tool this page is.
+     *
+     * Generated pages declare it outright, which is the normal path. The
+     * directory name is the fallback for a generated page whose inline
+     * script did not run, and the query string keeps the older
+     * `tool.html?id=…` links working.
+     */
+    function resolveToolId() {
+        if (window.__ZT_TOOL_ID__) return window.__ZT_TOOL_ID__;
+
+        var fromPath = location.pathname.replace(/\/index\.html$/, '').replace(/\/+$/, '').split('/').pop();
+        if (fromPath && ZT.registry.get(fromPath)) return fromPath;
+
+        var params = new URLSearchParams(location.search);
+        return params.get('id') || params.get('tool') || '';
+    }
+
     function applyMetadata(tool) {
         var suffix = ' — ZyncTools';
         document.title = tool.name + suffix;
@@ -62,8 +79,13 @@
         var description = $('meta[name="description"]');
         if (description) description.setAttribute('content', tool.description);
 
+        // Generated pages already carry the right canonical. Only rewrite it
+        // when the tool was reached through the legacy tool.html?id= route,
+        // so both addresses point search engines at the clean URL.
         var canonical = $('link[rel="canonical"]');
-        if (canonical) canonical.setAttribute('href', location.origin + location.pathname + '?id=' + tool.id);
+        if (canonical && /tool\.html$/.test(location.pathname)) {
+            canonical.setAttribute('href', new URL(ZT.toolUrl(tool.id), location.href).href);
+        }
 
         setMeta('og:title', tool.name + suffix);
         setMeta('og:description', tool.description);
@@ -1149,7 +1171,7 @@
     }
 
     function toolLink(tool) {
-        return el('a', { href: ZT.url('tool.html') + '?id=' + tool.id }, [
+        return el('a', { href: ZT.toolUrl(tool.id) }, [
             nodeFromHtml(icon(tool.icon)),
             el('span', { text: tool.name })
         ]);
