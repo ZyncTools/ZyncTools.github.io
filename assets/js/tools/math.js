@@ -152,7 +152,6 @@
         description: 'Convert length, weight, temperature, volume, data, speed and more.',
         tags: ['unit', 'convert', 'metric', 'imperial', 'length', 'weight', 'temperature'],
         input: 'none',
-        popular: true,
         options: [
             {
                 id: 'family', type: 'select', label: 'Category', value: 'length',
@@ -233,7 +232,6 @@
         description: 'Work out percentages, increases, discounts and percentage change.',
         tags: ['percentage', 'percent', 'discount', 'increase', 'change', 'calculator'],
         input: 'none',
-        popular: true,
         options: [
             {
                 id: 'mode', type: 'select', label: 'What do you want to work out', value: 'of',
@@ -667,7 +665,6 @@
         description: 'Work out monthly repayments, total interest and an amortisation schedule.',
         tags: ['loan', 'emi', 'mortgage', 'repayment', 'interest', 'amortisation', 'finance', 'car loan'],
         input: 'none',
-        popular: true,
         options: [
             { id: 'amount', type: 'number', label: 'Loan amount', value: 250000, min: 1, step: 'any' },
             { id: 'rate', type: 'number', label: 'Annual interest rate', suffix: '%', value: 5.5, min: 0, max: 100, step: 0.01 },
@@ -866,7 +863,6 @@
         description: 'Calculate body mass index in metric or imperial units.',
         tags: ['bmi', 'body mass index', 'weight', 'health', 'fitness', 'calculator'],
         input: 'none',
-        popular: true,
         options: [
             {
                 id: 'units', type: 'radio', label: 'Units', value: 'metric',
@@ -963,7 +959,6 @@
         description: 'Work out sale prices, savings, stacked discounts and tax.',
         tags: ['discount', 'sale', 'percent off', 'savings', 'price', 'shopping', 'markdown'],
         input: 'none',
-        popular: true,
         options: [
             { id: 'price', type: 'number', label: 'Original price', value: 100, min: 0, step: 'any' },
             {

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Run it on your own network — ZyncTools</title>
+<meta name="description" content="ZyncTools has no backend, so the whole suite can run inside your own network. No data leaves the building, no processing agreement, no vendor review. Free under AGPL-3.0, or under a commercial licence.">
+<link rel="canonical" href="https://zynctools.github.io/pages/self-hosted.html">
+<meta name="theme-color" content="#0B0D11">
+<meta property="og:title" content="Run ZyncTools on your own network">
+<meta property="og:description" content="No backend, so nothing leaves the building. Free under AGPL-3.0, or under a commercial licence.">
+<meta property="og:image" content="https://zynctools.github.io/assets/images/og/default.png">
+<meta name="twitter:image" content="https://zynctools.github.io/assets/images/og/default.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234F8DF7'/><path d='M56 12 30 54h16l-6 34 30-44H54z' fill='%23fff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/zynctools.css">
+<script>
+(function () {
+    try {
+        var s = localStorage.getItem('zynctools-theme');
+        var v = s === 'dark' || s === 'light' || s === 'midnight';
+        document.documentElement.setAttribute('data-theme', v ? s
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+    } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+})();
+</script>
+<style>
+    .zt-prose { max-width: 68ch; margin: 0 auto; }
+    .zt-prose p { color: var(--fg-muted); line-height: 1.75; margin-bottom: var(--sp-4); }
+    .zt-prose h2 { font-size: var(--text-xl); margin: var(--sp-10) 0 var(--sp-4); }
+    .zt-prose h3 { font-size: var(--text-md); margin: var(--sp-6) 0 var(--sp-2); }
+    .zt-prose strong { color: var(--fg); }
+    .zt-prose ul { color: var(--fg-muted); line-height: 1.75; margin: 0 0 var(--sp-4); padding-left: var(--sp-5); }
+    .zt-prose li { margin-bottom: var(--sp-2); }
+    .zt-lead { font-size: var(--text-lg); color: var(--fg) !important; }
+
+    .zt-tiers { display: grid; gap: var(--sp-4); margin: var(--sp-6) 0 var(--sp-8); }
+    @media (min-width: 720px) { .zt-tiers { grid-template-columns: 1fr 1fr; } }
+    .zt-tier {
+        padding: var(--sp-5);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        background: var(--bg-card);
+        display: flex;
+        flex-direction: column;
+        gap: var(--sp-2);
+    }
+    .zt-tier--paid { border-color: var(--accent); }
+    .zt-tier__name { font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+    .zt-tier__price { font-size: var(--text-2xl); font-weight: 750; line-height: 1.1; }
+    .zt-tier__note { font-size: var(--text-xs); color: var(--fg-muted); }
+    .zt-tier ul { margin: var(--sp-3) 0 0; padding-left: var(--sp-5); font-size: var(--text-sm); }
+
+    .zt-check-list { list-style: none; padding: 0 !important; }
+    .zt-check-list li { display: flex; gap: var(--sp-2); align-items: flex-start; }
+    .zt-check-list li::before { content: "✓"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+    .zt-callout {
+        padding: var(--sp-4) var(--sp-5);
+        border-left: 3px solid var(--accent);
+        background: var(--bg-card);
+        border-radius: 0 var(--radius) var(--radius) 0;
+        margin: var(--sp-6) 0;
+    }
+    .zt-callout p:last-child { margin-bottom: 0; }
+</style>
+</head>
+<body>
+<a href="#main" class="zt-skip-link">Skip to content</a>
+
+<div class="zt-shell">
+    <header class="zt-header">
+        <a class="zt-brand" href="../index.html">
+            <span class="zt-brand__mark" aria-hidden="true">⚡</span>
+            <span class="zt-brand__name">ZyncTools</span>
+        </a>
+        <div class="zt-header__spacer"></div>
+        <a class="zt-btn zt-btn--ghost zt-btn--sm" href="../index.html">All tools</a>
+        <button class="zt-icon-btn" id="zt-theme-toggle" aria-label="Switch theme"></button>
+    </header>
+
+    <main class="zt-main" id="main">
+        <article class="zt-prose">
+            <h1 style="font-size:var(--text-3xl);margin-bottom:var(--sp-3)">Run it on your own network</h1>
+
+            <p class="zt-lead">
+                ZyncTools has no backend. Every tool runs in the browser, which means the whole
+                suite is a folder of static files — and a folder of static files can live on your
+                intranet, behind your firewall, with no route to the outside world at all.
+            </p>
+
+            <h2>The problem this solves</h2>
+
+            <p>
+                If you handle documents that belong to somebody else — a client contract, a
+                patient record, a tax return, a signed offer letter — you are usually not allowed
+                to upload them to a third-party website to be processed. Not because the website
+                is untrustworthy, but because sending the file <em>is itself</em> the disclosure.
+            </p>
+
+            <p>
+                So the work gets done some other way: an expensive desktop licence for everyone
+                who might occasionally need to merge two PDFs, or a shadow-IT habit of using a
+                free site and not mentioning it.
+            </p>
+
+            <div class="zt-callout">
+                <p>
+                    <strong>There is no upload step to review.</strong> The file is opened by the
+                    browser, changed by the browser, and saved by the browser. Nothing is
+                    transmitted, because there is nowhere for it to be transmitted to.
+                </p>
+            </div>
+
+            <h2>What deploying it actually involves</h2>
+
+            <p>
+                It is a static site. There is no database, no runtime, no container, no scheduled
+                job and nothing to patch on a server.
+            </p>
+
+            <ul>
+                <li>Copy the folder onto any web server, file share or intranet host.</li>
+                <li>Serve it over HTTPS so the browser grants clipboard and file access.</li>
+                <li>That is the deployment.</li>
+            </ul>
+
+            <p>
+                A handful of tools reach out to a public CDN the first time they are used, to
+                fetch a library for a heavier job like OCR or PDF rendering. Those files can be
+                vendored locally instead, so an air-gapped install never makes a single outbound
+                request. Ask and we will point you at the list.
+            </p>
+
+            <h2>Licensing</h2>
+
+            <p>
+                ZyncTools is published under <strong>AGPL-3.0-or-later</strong>. You do not need
+                our permission to run it, and for a great many organisations that licence is
+                perfectly fine — take it, deploy it, done.
+            </p>
+
+            <p>
+                The AGPL does carry obligations. If you modify it and make it available over a
+                network, you have to offer your changes back under the same terms. Some legal
+                departments will not accept copyleft on internal software at all. A commercial
+                licence exists for those cases.
+            </p>
+
+            <div class="zt-tiers">
+                <div class="zt-tier">
+                    <span class="zt-tier__name">Open source</span>
+                    <span class="zt-tier__price">Free</span>
+                    <span class="zt-tier__note">AGPL-3.0-or-later, no agreement needed</span>
+                    <ul class="zt-check-list">
+                        <li>Every tool, no feature gates</li>
+                        <li>Unlimited users and installs</li>
+                        <li>Community support via GitHub</li>
+                        <li>Source available, modify freely</li>
+                    </ul>
+                </div>
+
+                <div class="zt-tier zt-tier--paid">
+                    <span class="zt-tier__name">Commercial licence</span>
+                    <span class="zt-tier__price">Let's talk</span>
+                    <span class="zt-tier__note">Priced per organisation, billed annually</span>
+                    <ul class="zt-check-list">
+                        <li>No copyleft obligation on your changes</li>
+                        <li>A signed agreement your legal team can file</li>
+                        <li>Written answers for security review and DPIA</li>
+                        <li>A fully offline build with no CDN calls</li>
+                        <li>Named contact and an agreed response time</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>Who this tends to suit</h2>
+
+            <p>
+                Law firms and in-house legal, clinics and hospital departments, accountancy
+                practices, HR teams, schools, and anyone working to a public-sector procurement
+                rule that treats an upload as a data transfer.
+            </p>
+
+            <h2>Talk to us</h2>
+
+            <p>
+                We are looking for a small number of design partners — organisations willing to
+                deploy it, tell us what breaks and what their security review asked for, in
+                exchange for a permanent licence at the partner rate. If that sounds like your
+                organisation, get in touch.
+            </p>
+
+            <!-- TODO: replace with licensing@<your-domain> once the domain is bought.
+                 A public GitHub thread is the wrong front door for a procurement conversation. -->
+            <p>
+                <a class="zt-btn zt-btn--primary" href="https://github.com/ZyncTools/ZyncTools.github.io/discussions" rel="noopener">Start a conversation</a>
+            </p>
+
+            <p style="font-size:var(--text-xs)">
+                Nothing on this page is legal advice, and it does not replace your own review.
+                It describes how the software works so that your review has something accurate
+                to look at.
+            </p>
+        </article>
+    </main>
+
+    <footer class="zt-footer">
+        <div class="zt-footer__inner">
+            <p class="zt-footer__copy">Private, browser-based utilities. Open source under AGPL-3.0.</p>
+            <nav class="zt-footer__links" aria-label="Footer">
+                <a href="../index.html">All tools</a>
+                <a href="self-hosted.html">Self-hosted</a>
+                <a href="blog.html">Blog</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+                <a href="support.html">Support</a>
+            </nav>
+        </div>
+    </footer>
+</div>
+
+<script src="../assets/js/zt-core.js"></script>
+<script src="../assets/js/zt-icons.js"></script>
+<script src="../assets/js/zt-theme.js"></script>
+<script src="../assets/js/zt-analytics.js"></script>
+</body>
+</html>

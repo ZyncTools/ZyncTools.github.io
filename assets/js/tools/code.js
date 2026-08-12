@@ -163,7 +163,6 @@
         tags: ['yaml', 'json', 'convert', 'yml'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: 'name: ZyncTools\ntools:\n  - merge\n  - split',
         options: [
             {
@@ -432,7 +431,6 @@
         tags: ['csv', 'json', 'convert', 'spreadsheet', 'excel'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: 'name,role\nAda,admin\nGrace,dev',
         options: [
             {
@@ -695,7 +693,6 @@
         tags: ['css', 'minify', 'compress', 'beautify', 'stylesheet'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: '.card {\n  color: red;\n  padding: 8px;\n}',
         options: [
             {
@@ -889,7 +886,6 @@
         tags: ['regex', 'regexp', 'pattern', 'match', 'test'],
         input: 'text',
         live: true,
-        popular: true,
         inputLabel: 'Test string',
         placeholder: 'The year 2024 and the year 2026.',
         options: [
@@ -1173,7 +1169,6 @@
         description: 'Indent and tidy messy or minified HTML into readable markup.',
         tags: ['html', 'format', 'beautify', 'indent', 'pretty print', 'tidy'],
         input: 'text',
-        popular: true,
         placeholder: '<div class="card"><h2>Title</h2><p>Some text</p></div>',
         options: [
             Object.assign({}, INDENT_OPTION),
@@ -1209,7 +1204,6 @@
         description: 'Reformat minified or messy JavaScript into readable code.',
         tags: ['javascript', 'js', 'beautify', 'format', 'unminify', 'prettify', 'json'],
         input: 'text',
-        popular: true,
         placeholder: 'function f(a,b){return a>b?a:b}',
         options: [
             Object.assign({}, INDENT_OPTION),
@@ -1255,7 +1249,6 @@
         description: 'Turn a JSON sample into typed interfaces, structs or dataclasses.',
         tags: ['json', 'typescript', 'golang', 'python', 'types', 'interface', 'struct', 'codegen'],
         input: 'text',
-        popular: true,
         live: true,
         placeholder: '{"id":1,"name":"Ada","tags":["dev"],"active":true,"address":{"city":"London"}}',
         options: [
@@ -1550,7 +1543,6 @@
         tags: ['curl', 'fetch', 'axios', 'python', 'requests', 'http', 'api', 'convert'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: "curl -X POST https://api.example.com/users \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"name\":\"Ada\"}'",
         options: [
             {

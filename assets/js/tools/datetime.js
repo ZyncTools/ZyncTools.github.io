@@ -21,7 +21,6 @@
         tags: ['timestamp', 'unix', 'epoch', 'date', 'convert', 'iso'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: '1767225600   or   2026-01-01 00:00:00',
         options: [
             {
@@ -151,7 +150,6 @@
         description: 'Work out the time between two dates, with or without weekends.',
         tags: ['date', 'difference', 'duration', 'days between', 'business days'],
         input: 'none',
-        popular: true,
         options: [
             { id: 'start', type: 'date', label: 'Start date', value: '' },
             { id: 'end', type: 'date', label: 'End date', value: '' },
@@ -506,7 +504,6 @@
         tags: ['cron', 'crontab', 'parse', 'explain', 'schedule', 'next run', 'when'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: '30 2 * * 1-5',
         options: [
             { id: 'occurrences', type: 'number', label: 'Show the next', suffix: 'run times', value: 8, min: 1, max: 50 },

@@ -23,7 +23,6 @@
         tags: ['count', 'words', 'characters', 'reading time', 'essay'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: 'Paste or type your text here…',
         options: [
             { id: 'wpm', type: 'number', label: 'Reading speed', suffix: 'words/min', value: 220, min: 50, max: 1000, help: 'Used for the reading-time estimate. 200–250 is typical for adults.' },
@@ -129,7 +128,6 @@
         tags: ['uppercase', 'lowercase', 'camelcase', 'snake case', 'title case'],
         input: 'text',
         live: true,
-        popular: true,
         options: [
             {
                 id: 'mode', type: 'select', label: 'Convert to', value: 'title',
@@ -617,7 +615,6 @@
         tags: ['diff', 'compare', 'changes', 'text compare'],
         input: 'text',
         live: true,
-        popular: true,
         inputLabel: 'Original text',
         options: [
             { id: 'compare-to', type: 'textarea', label: 'Changed text', value: '', rows: 8, placeholder: 'Paste the second version here…' },
@@ -693,7 +690,6 @@
         tags: ['markdown', 'md', 'html', 'convert'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: '# Hello\n\nWrite **Markdown** here…',
         options: [
             { id: 'show-preview', type: 'checkbox', label: 'Show rendered preview', value: true },
@@ -980,7 +976,6 @@
         description: 'Generate placeholder paragraphs, sentences, words or list items.',
         tags: ['lorem', 'ipsum', 'placeholder', 'dummy text', 'filler'],
         input: 'none',
-        popular: true,
         options: [
             {
                 id: 'unit', type: 'select', label: 'Generate', value: 'paragraphs',
@@ -1123,7 +1118,6 @@
         tags: ['character counter', 'character count', 'twitter', 'sms', 'meta description', 'limit', 'length'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: 'Start typing and the counts update as you go…',
         options: [
             { id: 'count-spaces', type: 'checkbox', label: 'Count spaces', value: true },
@@ -1200,7 +1194,6 @@
         tags: ['readability', 'flesch', 'kincaid', 'grade level', 'reading ease', 'seo', 'writing'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: 'Paste the text you want to assess…',
         options: [
             { id: 'target', type: 'select', label: 'Writing for', value: 'general',
@@ -1619,7 +1612,6 @@
         tags: ['emoji', 'copy paste', 'search', 'smiley', 'symbols', 'unicode', 'icons'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: 'Search: happy, fire, rocket, heart, food…',
         options: [
             {

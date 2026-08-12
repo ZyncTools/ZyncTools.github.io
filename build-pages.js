@@ -18,13 +18,27 @@ const path = require('path');
 const { loadRegistry } = require('./build-lib.js');
 const { buildSteps, buildFaqs } = require('./build-content.js');
 
-const SITE = (process.argv[2] || readConfiguredSite() || 'https://zynctools.github.io').replace(/\/+$/, '');
 const ROOT = __dirname;
+const SITE = (process.argv[2] || readSiteConfig() || readConfiguredSite() || 'https://zynctools.github.io').replace(/\/+$/, '');
 
 /** tool id -> owning module, filled in by main(). */
 let MODULE_OF = {};
 
-/** Reuse whatever host the existing sitemap was built for. */
+/**
+ * site.config.json is the one place the domain is written down. Changing it
+ * there and rebuilding moves every canonical, OG tag and sitemap entry at once.
+ */
+function readSiteConfig() {
+    try {
+        const raw = fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8');
+        const site = JSON.parse(raw).site;
+        return site && /^https?:\/\//.test(site) ? site : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+/** Fall back to whatever host the existing sitemap was built for. */
 function readConfiguredSite() {
     try {
         const xml = fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8');
@@ -324,6 +338,7 @@ ${related.map((t) => `                                <a href="../${t.id}/">
             </div>
             <nav class="zt-footer__links" aria-label="Footer">
                 <a href="../">All tools</a>
+                <a href="../pages/self-hosted.html">Self-hosted</a>
                 <a href="../pages/privacy.html">Privacy</a>
                 <a href="../pages/terms.html">Terms</a>
                 <a href="../pages/support.html">Support</a>
@@ -474,6 +489,7 @@ function writeSitemap(registry) {
     const entries = [
         { loc: SITE + '/', priority: '1.0', changefreq: 'weekly' },
         { loc: SITE + '/pages/support.html', priority: '0.4', changefreq: 'monthly' },
+        { loc: SITE + '/pages/self-hosted.html', priority: '0.6', changefreq: 'monthly' },
         { loc: SITE + '/pages/changelog.html', priority: '0.4', changefreq: 'monthly' },
         { loc: SITE + '/pages/blog.html', priority: '0.4', changefreq: 'monthly' },
         { loc: SITE + '/pages/privacy.html', priority: '0.3', changefreq: 'yearly' },

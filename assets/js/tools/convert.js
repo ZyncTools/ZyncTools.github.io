@@ -20,7 +20,6 @@
         tags: ['base64', 'encode', 'decode', 'btoa', 'atob'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: 'Hello, world!',
         options: [
             {
@@ -116,7 +115,6 @@
         tags: ['url', 'encode', 'decode', 'percent', 'uri', 'escape'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: 'hello world & more',
         options: [
             {
@@ -215,7 +213,6 @@
         tags: ['binary', 'hex', 'octal', 'decimal', 'base', 'radix', 'convert'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: '255',
         options: [
             {
@@ -367,7 +364,6 @@
         tags: ['color', 'colour', 'hex', 'rgb', 'hsl', 'cmyk', 'convert'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: '#3B82F6   or   rgb(59,130,246)   or   dodgerblue',
         options: [
             { id: 'picker', type: 'color', label: 'Or pick a colour', value: '#3B82F6', help: 'Picking here replaces whatever is in the text box.' },

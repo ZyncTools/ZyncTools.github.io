@@ -310,7 +310,6 @@
         description: 'Generate strong random passwords or memorable passphrases.',
         tags: ['password', 'random', 'secure', 'passphrase', 'generator'],
         input: 'none',
-        popular: true,
         options: [
             {
                 id: 'style', type: 'radio', label: 'Password style', value: 'random',
@@ -510,7 +509,6 @@
         description: 'Generate cryptographically random UUIDs, ULIDs and nano IDs in bulk.',
         tags: ['uuid', 'guid', 'id', 'random', 'ulid', 'nanoid', 'identifier'],
         input: 'none',
-        popular: true,
         options: [
             {
                 id: 'version', type: 'select', label: 'Identifier type', value: 'v4',
@@ -914,7 +912,6 @@
         description: 'Create a 1200×630 Open Graph card for links shared on social media.',
         tags: ['og image', 'open graph', 'social', 'twitter card', 'share', 'thumbnail', 'banner'],
         input: 'none',
-        popular: true,
         options: [
             { id: 'title', type: 'text', label: 'Headline', value: 'How to ship faster' },
             { id: 'subtitle', type: 'textarea', label: 'Supporting line', value: 'A practical guide for small teams', rows: 2 },
@@ -1190,7 +1187,6 @@
         description: 'Fill in a form and download a clean PDF invoice.',
         tags: ['invoice', 'bill', 'receipt', 'pdf', 'freelance', 'accounting', 'template'],
         input: 'none',
-        popular: true,
         options: [
             { id: 'invoice-number', type: 'text', label: 'Invoice number', value: 'INV-001' },
             { id: 'date', type: 'date', label: 'Invoice date', value: '' },

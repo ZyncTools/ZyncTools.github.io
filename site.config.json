@@ -1,0 +1,15 @@
+{
+  "_help": "Change \"site\" to your own domain, then run: node build-pages.js. That single edit rewrites every canonical URL, the sitemap, the Open Graph tags and the JSON-LD across all 180 tool pages. No trailing slash.",
+
+  "site": "https://zynctools.github.io",
+
+  "_analytics": "Page-view counting is configured in assets/js/zt-analytics.js — set provider and endpoint at the top of that file. It is deliberately not duplicated here: it runs in the browser, not at build time, and two places to change one setting is one place too many.",
+
+  "_migration_checklist": [
+    "1. Buy the domain and point its DNS at GitHub Pages.",
+    "2. Add the domain in Settings > Pages > Custom domain (this writes the CNAME file).",
+    "3. Change \"site\" above.",
+    "4. Run: node build-pages.js && npm test",
+    "5. Commit and push. Then add the new domain as a property in Google Search Console and submit sitemap.xml."
+  ]
+}

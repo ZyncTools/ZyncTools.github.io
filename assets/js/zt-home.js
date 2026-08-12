@@ -8,8 +8,14 @@
     var ZT = window.ZT;
     var $ = ZT.$, $$ = ZT.$$, el = ZT.el;
 
+    /*
+     * 'home' is a curated landing: the tools we intend to be found for, then a
+     * directory of categories. 'all' still lists the full catalogue — dropping
+     * 180 undifferentiated cards on a first-time visitor asked them to do the
+     * editing we should have done ourselves.
+     */
     var state = {
-        category: 'all',
+        category: 'home',
         query: ''
     };
 
@@ -32,6 +38,7 @@
         var all = ZT.registry.all();
         var counts = ZT.registry.countByCategory();
 
+        host.appendChild(navButton('home', 'sparkles', 'Start here', 12));
         host.appendChild(navButton('all', 'layout-grid', 'All tools', all.length));
 
         var label = el('div', { class: 'zt-sidebar__label', text: 'Categories' });
@@ -71,7 +78,7 @@
         closeSidebar();
         render();
 
-        if (id !== 'all') {
+        if (id !== 'home') {
             history.replaceState(null, '', '#' + id);
         } else {
             history.replaceState(null, '', location.pathname);
@@ -105,6 +112,13 @@
         var host = $('#zt-catalog');
         var empty = $('#zt-empty');
         if (!host) return;
+
+        if (!state.query && state.category === 'home') {
+            host.innerHTML = '';
+            if (empty) empty.classList.remove('is-visible');
+            renderHome(host);
+            return;
+        }
 
         var tools;
         if (state.query) {
@@ -142,6 +156,59 @@
             if (!inCategory.length) return;
             host.appendChild(section(category, inCategory));
         });
+    }
+
+    /**
+     * The curated landing. Featured tools first, then a directory of
+     * categories rather than every tool in every category.
+     */
+    function renderHome(host) {
+        var featured = ZT.registry.all().filter(function (t) { return t.popular; });
+
+        host.appendChild(section({
+            name: 'Start here',
+            icon: 'sparkles',
+            blurb: 'The tools people open most. Everything runs on your device.'
+        }, featured));
+
+        var counts = ZT.registry.countByCategory();
+        var grid = el('div', { class: 'zt-dir' });
+
+        // Real anchors, so they are crawlable and work with the keyboard and
+        // middle-click. The hash handler picks the click up.
+        ZT.registry.categories().forEach(function (category) {
+            if (!counts[category.id]) return;
+            grid.appendChild(el('a', {
+                class: 'zt-dir__card',
+                href: '#' + category.id
+            }, [
+                el('div', { class: 'zt-dir__icon', html: ZT.icons.svg(category.icon || 'wrench') }),
+                el('div', { class: 'zt-dir__body' }, [
+                    el('h3', { class: 'zt-dir__title', text: category.name }),
+                    el('p', { class: 'zt-dir__blurb', text: category.blurb || '' })
+                ]),
+                el('span', { class: 'zt-dir__count', text: String(counts[category.id]) })
+            ]));
+        });
+
+        var browse = el('div', { class: 'zt-dir__foot' }, [
+            el('a', {
+                class: 'zt-btn zt-btn--outline',
+                href: '#all'
+            }, [el('span', { text: 'See all ' + ZT.registry.all().length + ' tools' })])
+        ]);
+
+        host.appendChild(el('section', { class: 'zt-section' }, [
+            el('div', { class: 'zt-section__head' }, [
+                el('div', { class: 'zt-section__icon', html: ZT.icons.svg('layout-grid') }),
+                el('div', { style: { minWidth: '0' } }, [
+                    el('h2', { class: 'zt-section__title', text: 'Everything else' }),
+                    el('p', { class: 'zt-section__sub', text: 'Pick a category to see what is in it.' })
+                ])
+            ]),
+            grid,
+            browse
+        ]));
     }
 
     function section(category, tools) {
@@ -302,13 +369,17 @@
     function bindHash() {
         function applyHash() {
             var hash = location.hash.replace('#', '');
-            if (hash && ZT.registry.category(hash)) {
-                state.category = hash;
-                $$('[data-category]').forEach(function (b) {
-                    b.classList.toggle('is-active', b.getAttribute('data-category') === hash);
-                });
-                render();
-            }
+            // 'all' and 'home' are views rather than categories, so they are
+            // checked explicitly — registry.category() will not know them.
+            var known = hash === 'all' || hash === 'home' || (hash && ZT.registry.category(hash));
+            if (!known) return;
+
+            state.category = hash;
+            state.query = '';
+            $$('[data-category]').forEach(function (b) {
+                b.classList.toggle('is-active', b.getAttribute('data-category') === hash);
+            });
+            render();
         }
         applyHash();
         window.addEventListener('hashchange', applyHash);

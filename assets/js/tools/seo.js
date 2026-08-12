@@ -21,7 +21,6 @@
         description: 'Generate title, description, Open Graph and Twitter Card tags at once.',
         tags: ['meta', 'seo', 'open graph', 'twitter card', 'tags', 'head'],
         input: 'none',
-        popular: true,
         options: [
             { id: 'title', type: 'text', label: 'Page title', value: '', placeholder: 'Aim for 50–60 characters' },
             { id: 'description', type: 'textarea', label: 'Meta description', value: '', rows: 3, placeholder: 'Aim for 140–160 characters' },

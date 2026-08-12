@@ -545,7 +545,6 @@
         tags: ['filter', 'brightness', 'contrast', 'saturation', 'grayscale', 'sepia', 'blur', 'effects'],
         input: 'files',
         accept: IMAGE_ACCEPT,
-        popular: true,
         options: [
             {
                 id: 'preset', type: 'select', label: 'Preset', value: 'none',
@@ -1157,7 +1156,6 @@
         tags: ['favicon', 'icon', 'ico', 'apple touch', 'pwa', 'website'],
         input: 'file',
         accept: IMAGE_ACCEPT,
-        popular: true,
         options: [
             { id: 'sizes', type: 'text', label: 'PNG sizes', value: '16,32,48,64,96,128,180,192,256,512', help: 'Comma-separated pixel sizes.' },
             { id: 'include-ico', type: 'checkbox', label: 'Include a multi-size favicon.ico', value: true },
@@ -1802,7 +1800,6 @@
         tags: ['background', 'remove background', 'transparent', 'cutout', 'product photo', 'png'],
         input: 'files',
         accept: IMAGE_ACCEPT,
-        popular: true,
         options: [
             {
                 id: 'mode', type: 'radio', label: 'Pick the background by', value: 'corners',
@@ -2088,7 +2085,6 @@
         tags: ['screenshot', 'beautify', 'mockup', 'gradient', 'shadow', 'social', 'twitter'],
         input: 'files',
         accept: 'image/*',
-        popular: true,
         options: [
             {
                 id: 'background', type: 'select', label: 'Backdrop', value: 'gradient-blue',

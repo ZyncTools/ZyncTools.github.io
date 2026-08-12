@@ -175,7 +175,6 @@
         tags: ['audio', 'convert', 'mp3', 'wav', 'm4a', 'ogg', 'flac'],
         input: 'files',
         accept: AUDIO_ACCEPT + ',' + VIDEO_ACCEPT,
-        popular: true,
         heavy: true,
         options: [
             FORMAT_OPTION, BITRATE_OPTION,
@@ -760,7 +759,6 @@
         tags: ['extract audio', 'video to mp3', 'soundtrack', 'rip audio', 'convert'],
         input: 'files',
         accept: VIDEO_ACCEPT,
-        popular: true,
         heavy: true,
         options: [
             FORMAT_OPTION, BITRATE_OPTION,
@@ -997,7 +995,6 @@
         tags: ['gif', 'video to gif', 'animation', 'convert', 'clip'],
         input: 'file',
         accept: VIDEO_ACCEPT,
-        popular: true,
         heavy: true,
         options: [
             { id: 'start', type: 'text', label: 'Start at', value: '0:00', help: 'Use mm:ss or seconds.' },
@@ -1192,7 +1189,6 @@
         description: 'Record your screen, a window or a browser tab and save it as a video.',
         tags: ['screen recorder', 'record screen', 'capture', 'screencast', 'video', 'demo'],
         input: 'none',
-        popular: true,
         options: [
             {
                 id: 'source', type: 'select', label: 'Record', value: 'prompt',
@@ -1329,7 +1325,6 @@
         description: 'Record from your microphone and save it as MP3 or WAV.',
         tags: ['audio recorder', 'voice recorder', 'record', 'microphone', 'mp3', 'dictation'],
         input: 'none',
-        popular: true,
         options: [
             FORMAT_OPTION, BITRATE_OPTION,
             { id: 'max-duration', type: 'number', label: 'Stop automatically after', suffix: 'seconds', value: 300, min: 5, max: 3600 },
@@ -1555,7 +1550,6 @@
         tags: ['gif', 'animated gif', 'maker', 'images to gif', 'animation', 'slideshow'],
         input: 'files',
         accept: 'image/*',
-        popular: true,
         heavy: true,
         maxFiles: 200,
         options: [

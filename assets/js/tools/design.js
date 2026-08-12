@@ -33,7 +33,6 @@
         description: 'Design CSS box shadows visually and copy the rule.',
         tags: ['css', 'shadow', 'box-shadow', 'elevation', 'depth'],
         input: 'none',
-        popular: true,
         options: [
             { id: 'offset-x', type: 'range', label: 'Horizontal offset', value: 0, min: -100, max: 100, step: 1, suffix: 'px' },
             { id: 'offset-y', type: 'range', label: 'Vertical offset', value: 8, min: -100, max: 100, step: 1, suffix: 'px' },
@@ -157,7 +156,6 @@
         description: 'Build linear, radial and conic gradients with up to five colour stops.',
         tags: ['css', 'gradient', 'linear', 'radial', 'conic', 'background'],
         input: 'none',
-        popular: true,
         options: [
             {
                 id: 'type', type: 'select', label: 'Gradient type', value: 'linear',
@@ -658,7 +656,6 @@
         description: 'Build harmonious palettes and tint scales from one base colour.',
         tags: ['palette', 'colors', 'scheme', 'complementary', 'triadic', 'theme'],
         input: 'none',
-        popular: true,
         options: [
             { id: 'base', type: 'color', label: 'Base colour', value: '#6366F1' },
             {
@@ -778,7 +775,6 @@
         description: 'Convert between px, rem, em, pt, %, vw and vh.',
         tags: ['css', 'px', 'rem', 'em', 'pt', 'unit', 'convert', 'responsive'],
         input: 'none',
-        popular: true,
         options: [
             { id: 'value', type: 'number', label: 'Value', value: 16, step: 'any' },
             {

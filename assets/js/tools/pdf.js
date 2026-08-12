@@ -317,7 +317,6 @@
         tags: ['pages', 'extract', 'delete', 'remove', 'reorder', 'rearrange', 'organise'],
         input: 'file',
         accept: PDF_ACCEPT,
-        popular: true,
         options: [
             {
                 id: 'action', type: 'select', label: 'Action', value: 'keep',
@@ -525,7 +524,6 @@
         tags: ['pdf to jpg', 'pdf to png', 'convert', 'render', 'export', 'image'],
         input: 'file',
         accept: PDF_ACCEPT,
-        popular: true,
         options: [
             Object.assign({}, PAGE_RANGE_OPTION),
             {

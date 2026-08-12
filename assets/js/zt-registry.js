@@ -50,9 +50,11 @@
     /* ============================================================
        CATEGORIES
        ============================================================ */
+    /* PDF leads. It is the category we intend to be found for, and the order
+       here drives the sidebar, the homepage and the generated breadcrumbs. */
     var CATEGORIES = [
+        { id: 'pdf',      name: 'PDF',            icon: 'file-text',    blurb: 'Merge, split, sign, protect and convert PDF documents.' },
         { id: 'image',    name: 'Image',          icon: 'image',        blurb: 'Compress, convert, resize, crop and retouch pictures.' },
-        { id: 'pdf',      name: 'PDF',            icon: 'file-text',    blurb: 'Merge, split, protect and convert PDF documents.' },
         { id: 'media',    name: 'Audio & Video',  icon: 'film',         blurb: 'Trim, convert and extract audio and video.' },
         { id: 'text',     name: 'Text',           icon: 'type',         blurb: 'Count, clean, compare and transform writing.' },
         { id: 'code',     name: 'Code & Data',    icon: 'code',         blurb: 'Format, minify and convert JSON, YAML, CSV and XML.' },

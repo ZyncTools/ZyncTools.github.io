@@ -89,7 +89,6 @@
         tags: ['hash', 'md5', 'sha256', 'sha1', 'checksum', 'digest'],
         input: 'text',
         live: true,
-        popular: true,
         placeholder: 'Type anything to hash it…',
         options: [
             { id: 'all-algorithms', type: 'checkbox', label: 'Show every algorithm at once', value: true },
@@ -250,7 +249,6 @@
         description: 'Encrypt and decrypt text with AES-256-GCM and a passphrase.',
         tags: ['encrypt', 'decrypt', 'aes', 'password', 'secure', 'cipher'],
         input: 'text',
-        popular: true,
         placeholder: 'Text to encrypt, or a ZYNC1: string to decrypt…',
         options: [
             {
@@ -631,7 +629,6 @@
         description: 'Generate the current two-factor code from a TOTP secret key.',
         tags: ['totp', '2fa', 'otp', 'authenticator', 'two factor', 'mfa', 'google authenticator'],
         input: 'none',
-        popular: true,
         options: [
             { id: 'secret', type: 'text', label: 'Secret key', value: '', placeholder: 'JBSWY3DPEHPK3PXP', mono: true, help: 'The Base32 key an app shows you when you set up 2FA.' },
             { id: 'digits', type: 'select', label: 'Code length', value: '6',
@@ -714,7 +711,6 @@
         description: 'Hash a password with bcrypt, or check a password against an existing hash.',
         tags: ['bcrypt', 'hash', 'password', 'verify', 'salt', 'laravel', 'php'],
         input: 'none',
-        popular: true,
         heavy: true,
         options: [
             {
